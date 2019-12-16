@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5519FEFE-C279-4274-92B0-0BA3A03DD55C}</ProjectGuid>
+    <RootNamespace>MAMClient</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>F:\SDL2-2.0.8\include;F:\SDL2_image-2.0.3\include;F:\SDL2_ttf-2.0.14\include;$(VC_IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>F:\SDL2-2.0.8\lib\x86;F:\SDL2_image-2.0.3\lib\x86;F:\SDL2_ttf-2.0.14\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>F:\SDL2-2.0.10\include;F:\SDL2_image-2.0.3\include;F:\SDL2_ttf-2.0.15\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>F:\SDL2-2.0.10\lib\x86;F:\SDL2_image-2.0.3\lib\x86;F:\SDL2_ttf-2.0.15\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(VcpkgRoot)include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <FloatingPointModel>Precise</FloatingPointModel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_gfx.lib;ws2_32.lib;winmm.lib;FreeImage.lib;FreeImagePlus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <PreprocessToFile>false</PreprocessToFile>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_gfx.lib;ws2_32.lib;winmm.lib;FreeImage.lib;FreeImagePlus.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Battle.cpp" />
+    <ClCompile Include="BattleResult.cpp" />
+    <ClCompile Include="BattleScene.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CharCreateForm.cpp" />
+    <ClCompile Include="Chat.cpp" />
+    <ClCompile Include="CheckBox.cpp" />
+    <ClCompile Include="Cipher.cpp" />
+    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Colosseum.cpp" />
+    <ClCompile Include="Dialogue.cpp" />
+    <ClCompile Include="Dropdown.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Field.cpp" />
+    <ClCompile Include="FormError.cpp" />
+    <ClCompile Include="FormExit.cpp" />
+    <ClCompile Include="FormInventory.cpp" />
+    <ClCompile Include="FormLogin.cpp" />
+    <ClCompile Include="FormMessage.cpp" />
+    <ClCompile Include="FormPetList.cpp" />
+    <ClCompile Include="FormPrompt.cpp" />
+    <ClCompile Include="FormShop.cpp" />
+    <ClCompile Include="Global.cpp" />
+    <ClCompile Include="ImageBox.cpp" />
+    <ClCompile Include="ImageView.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ListView.cpp" />
+    <ClCompile Include="LoginForm.cpp" />
+    <ClCompile Include="LogoutForm.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Form.cpp" />
+    <ClCompile Include="FormMain.cpp" />
+    <ClCompile Include="GameMap.cpp" />
+    <ClCompile Include="GameLibrary.cpp" />
+    <ClCompile Include="Gauge.cpp" />
+    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="INI.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="MapFile.cpp" />
+    <ClCompile Include="MessageForm.cpp" />
+    <ClCompile Include="MessageManager.cpp" />
+    <ClCompile Include="nNpcDialogue.cpp" />
+    <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="pAction.cpp" />
+    <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="pBattleAction.cpp" />
+    <ClCompile Include="pBattleResponse.cpp" />
+    <ClCompile Include="pBattleResult.cpp" />
+    <ClCompile Include="pBattleRound.cpp" />
+    <ClCompile Include="pBattleState.cpp" />
+    <ClCompile Include="pColor.cpp" />
+    <ClCompile Include="pColosseum.cpp" />
+    <ClCompile Include="pDirection.cpp" />
+    <ClCompile Include="pEnemyInfo.cpp" />
+    <ClCompile Include="Pet.cpp" />
+    <ClCompile Include="pFighterInfo.cpp" />
+    <ClCompile Include="pFriend.cpp" />
+    <ClCompile Include="pGSConnect.cpp" />
+    <ClCompile Include="pItem.cpp" />
+    <ClCompile Include="pItemAction.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="pLoginRequest.cpp" />
+    <ClCompile Include="pLoginResponse.cpp" />
+    <ClCompile Include="pMapInfo.cpp" />
+    <ClCompile Include="pMessage.cpp" />
+    <ClCompile Include="pNpc.cpp" />
+    <ClCompile Include="pNpcAction.cpp" />
+    <ClCompile Include="pNpcInfo.cpp" />
+    <ClCompile Include="pPetAction.cpp" />
+    <ClCompile Include="pPetInfo.cpp" />
+    <ClCompile Include="pPetShop.cpp" />
+    <ClCompile Include="pPosition.cpp" />
+    <ClCompile Include="pPlayerInfo.cpp" />
+    <ClCompile Include="pRole.cpp" />
+    <ClCompile Include="PromptForm.cpp" />
+    <ClCompile Include="pTick.cpp" />
+    <ClCompile Include="pUserInfo.cpp" />
+    <ClCompile Include="pWalk.cpp" />
+    <ClCompile Include="RC5.cpp" />
+    <ClCompile Include="RLE.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteView.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="SubForm.cpp" />
+    <ClCompile Include="TestForm.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TGA.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserManager.cpp" />
+    <ClCompile Include="VideoFrame.cpp" />
+    <ClCompile Include="WDF.cpp" />
+    <ClCompile Include="Widget.cpp" />
+    <ClCompile Include="Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Battle.h" />
+    <ClInclude Include="BattleResult.h" />
+    <ClInclude Include="BattleScene.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CharCreateForm.h" />
+    <ClInclude Include="Chat.h" />
+    <ClInclude Include="CheckBox.h" />
+    <ClInclude Include="Cipher.h" />
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="Colosseum.h" />
+    <ClInclude Include="Dialogue.h" />
+    <ClInclude Include="Dropdown.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Field.h" />
+    <ClInclude Include="Form.h" />
+    <ClInclude Include="FormClasses.h" />
+    <ClInclude Include="FormError.h" />
+    <ClInclude Include="FormExit.h" />
+    <ClInclude Include="FormInventory.h" />
+    <ClInclude Include="FormLogin.h" />
+    <ClInclude Include="FormMain.h" />
+    <ClInclude Include="FormMessage.h" />
+    <ClInclude Include="FormPetList.h" />
+    <ClInclude Include="FormPrompt.h" />
+    <ClInclude Include="FormShop.h" />
+    <ClInclude Include="FormStruct.h" />
+    <ClInclude Include="GameMap.h" />
+    <ClInclude Include="Gauge.h" />
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="GUI.h" />
+    <ClInclude Include="GameLibrary.h" />
+    <ClInclude Include="ImageBox.h" />
+    <ClInclude Include="ImageView.h" />
+    <ClInclude Include="INI.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="ListView.h" />
+    <ClInclude Include="LoginForm.h" />
+    <ClInclude Include="LogoutForm.h" />
+    <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="MapFile.h" />
+    <ClInclude Include="MessageForm.h" />
+    <ClInclude Include="MessageManager.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="Packet.h" />
+    <ClInclude Include="pAction.h" />
+    <ClInclude Include="Panel.h" />
+    <ClInclude Include="pBattleAction.h" />
+    <ClInclude Include="pBattleResponse.h" />
+    <ClInclude Include="pBattleResult.h" />
+    <ClInclude Include="pBattleRound.h" />
+    <ClInclude Include="pBattleState.h" />
+    <ClInclude Include="pColor.h" />
+    <ClInclude Include="pColosseum.h" />
+    <ClInclude Include="pDirection.h" />
+    <ClInclude Include="pEnemyInfo.h" />
+    <ClInclude Include="Pet.h" />
+    <ClInclude Include="pFighterInfo.h" />
+    <ClInclude Include="pFriend.h" />
+    <ClInclude Include="pGSConnect.h" />
+    <ClInclude Include="pItem.h" />
+    <ClInclude Include="pItemAction.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="pLoginRequest.h" />
+    <ClInclude Include="pLoginResponse.h" />
+    <ClInclude Include="pMapInfo.h" />
+    <ClInclude Include="pMessage.h" />
+    <ClInclude Include="pNpc.h" />
+    <ClInclude Include="pNpcAction.h" />
+    <ClInclude Include="pNpcDialogue.h" />
+    <ClInclude Include="pNpcInfo.h" />
+    <ClInclude Include="pPetAction.h" />
+    <ClInclude Include="pPetInfo.h" />
+    <ClInclude Include="pPetShop.h" />
+    <ClInclude Include="pPosition.h" />
+    <ClInclude Include="pPlayerInfo.h" />
+    <ClInclude Include="pRole.h" />
+    <ClInclude Include="PromptForm.h" />
+    <ClInclude Include="pTick.h" />
+    <ClInclude Include="pUserInfo.h" />
+    <ClInclude Include="pWalk.h" />
+    <ClInclude Include="RC5.h" />
+    <ClInclude Include="RLE.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteView.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SubForm.h" />
+    <ClInclude Include="TestForm.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TGA.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="UserManager.h" />
+    <ClInclude Include="VideoFrame.h" />
+    <ClInclude Include="WDF.h" />
+    <ClInclude Include="Widget.h" />
+    <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
