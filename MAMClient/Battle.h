@@ -43,7 +43,9 @@ enum BattleMenu {
 enum bActorType {
 	PLAYER,
 	PET,
-	ENEMY
+	ENEMY,
+	ALLY_PLAYER,
+	ALLY_PET
 };
 
 enum bEffect {
@@ -99,7 +101,7 @@ public:
 	HSBSet hslSets[7] = { 0 };
 	int hslSetCount = 0;
 
-	int id;
+	unsigned int id;
 	int battleId;
 	std::string name;
 	int look;

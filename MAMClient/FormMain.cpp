@@ -10,7 +10,6 @@
 #include "Player.h"
 #include "Pet.h"
 
-#include "FormExit.h"
 #include "FormError.h"
 
 FormMain::FormMain(int w, int h) : Form(w, h) {
@@ -58,14 +57,14 @@ void FormMain::initLogin() {
 	std::string loginTitle = "Login - ";
 	//get selected server name
 	loginTitle += "MythOfOrient";
-	formLogin = new FormLogin(loginTitle, width/2, height/2);
+	//formLogin = new FormLogin(loginTitle, width/2, height/2);
 }
 
 
 void FormMain::initMain() {
 	//Cleanup Intro
 	delete logo;
-	delete formLogin;
+	//delete formLogin;
 
 	//Start Main
 	setFormType(ftMain);
@@ -194,7 +193,7 @@ void FormMain::render_intro() {
 
 void FormMain::render_login() {
 	SDL_RenderCopy(renderer, logo->texture, NULL, &logo->rect);
-	formLogin->render();
+	//formLogin->render();
 
 	for (auto subform : subforms) {
 		subform->render();
@@ -280,7 +279,7 @@ void FormMain::handleEvent_login(SDL_Event& e) {
 		if (doesPointIntersect(sfRect, mx, my)) return;
 	}
 
-	formLogin->handleEvent(&e);
+	//formLogin->handleEvent(&e);
 }
 
 
@@ -358,7 +357,7 @@ void FormMain::handleWidgetEvent_login() {
 		if (i < subforms.size()) subforms[i]->handleWidgetEvent();
 	}
 
-	formLogin->handleWidgetEvent();
+	//formLogin->handleWidgetEvent();
 
 	std::vector<SubForm*>::iterator itr;
 	for (itr = subforms.begin(); itr != subforms.end();)
@@ -395,12 +394,12 @@ void FormMain::handleWidgetEvent_main() {
 
 	SubForm* findForm = getSubform("Exit");
 	if (findForm) {
-		if (((FormExit*)findForm)->submitted) {
+		/*if (((FormExit*)findForm)->submitted) {
 			deleteSubform("Exit");
 			SDL_Event quitEvent;
 			quitEvent.type = SDL_QUIT;
 			SDL_PushEvent(&quitEvent);
-		}
+		}*/
 	}
 
 	//These events happen on every 'step'
@@ -594,5 +593,5 @@ void FormMain::setCash(int cash) {
 
 
 void FormMain::handleLoginResponse(pLoginResponse* packet) {
-	formLogin->handleLoginResponse(packet);
+	//formLogin->handleLoginResponse(packet);
 }

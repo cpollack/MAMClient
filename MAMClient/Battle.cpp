@@ -60,8 +60,6 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 		else btnPath = btnPetPath;
 		battleButtons[i]->SetUnPressedImage(btnPath + std::to_string(i) + ".bmp");
 		battleButtons[i]->SetPressedImage(btnPath + std::to_string(i) + "-1.bmp");
-		//battleButtons[i] = new CButton(offTexture->texture, onTexture->texture, 0, y);
-		//battleButtons[i]->buttonType = btPress;
 	}
 
 	int x = battleRect.w - 300 - 20;
@@ -198,16 +196,24 @@ void Battle::render() {
 		if (ally[i]->battleYell != "") {
 			SDL_Rect chatBubbleRect = { ally[i]->pos.x - 118, ally[i]->pos.y - 50, 118, 62 };
 			SDL_RenderCopy(renderer, chatBubble, NULL, &chatBubbleRect);
-			Label lblYell(ally[i]->battleYell, chatBubbleRect.x + 10, chatBubbleRect.y + 5);
-			lblYell.render();
+
+			SDL_Point p = { chatBubbleRect.x + 10, chatBubbleRect.y + 5 };
+			Texture *tYell = stringToTexture(renderer, ally[i]->battleYell, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
+			tYell->setPosition(p);
+			tYell->Render();
+			delete tYell;
 		}
 	}
 	for (int i = 0; i < monster.size(); i++) {
 		if (monster[i]->battleYell != "") {
 			SDL_Rect chatBubbleRect = { monster[i]->pos.x - 118, monster[i]->pos.y - 50, 118, 62 };
 			SDL_RenderCopy(renderer, chatBubble, NULL, &chatBubbleRect);
-			Label lblYell(monster[i]->battleYell, chatBubbleRect.x + 10, chatBubbleRect.y + 5);
-			lblYell.render();
+
+			SDL_Point p = { chatBubbleRect.x + 10, chatBubbleRect.y + 5 };
+			Texture *tYell = stringToTexture(renderer, monster[i]->battleYell, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
+			tYell->setPosition(p);
+			tYell->Render();
+			delete tYell;
 		}
 	}
 
@@ -478,7 +484,9 @@ bool Battle::handleEvent(SDL_Event& e) {
 		}
 
 		if (e.button.button == SDL_BUTTON_LEFT) {
-			if (focusedActor && focusedActor->alive) {
+			//Temporarily restrict all target clicks to enemies
+			//Later, allies can be healed
+			if (focusedActor && focusedActor->alive && focusedActor->type == ENEMY) {
 				if (selectTarget) {
 					selectedTarget = focusedActor;
 					selectTarget = false;
@@ -624,7 +632,7 @@ void Battle::step() {
 		BattleScene *newScene = new BattleScene(ally, monster, &floatingLabels);
 		for (auto actor : ally) {
 			if (actor->alive) {
-				if (actor->id == player->getActivePet()->getId()) {
+				if (actor->id == player->getActivePet()->getBattleId()) {
 					SDL_Point targetPoint = getBattlePosFromArray(allyArray, actor->battleId, false);
 					newScene->addAction(actor, bsVictory, AnimType::Laugh, targetPoint, "Victory!");
 				}
@@ -1156,6 +1164,7 @@ bool Battle::doesMouseIntersect(SDL_Rect aRect, int x, int y) {
 }*/
 
 void Battle::makeChatBubbleTexture() {
+	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
 	chatBubble = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 118, 62);
 	SDL_SetRenderTarget(renderer, chatBubble);
 
@@ -1170,7 +1179,7 @@ void Battle::makeChatBubbleTexture() {
 	filledTrigonRGBA(renderer, 67, 46, 90, 46, 117, 61, 0, 0, 0, 96);
 	trigonRGBA(renderer, 67, 46, 90, 46, 117, 61, 0, 0, 0, 255);
 
-	SDL_SetRenderTarget(renderer, NULL);
+	SDL_SetRenderTarget(renderer, priorTarget);
 }
 
 

@@ -78,6 +78,9 @@
     <Filter Include="Header Files\Forms\Old Forms">
       <UniqueIdentifier>{7261f753-a67c-48f8-8ba6-a812b1162a7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{607c9e76-aadd-4d6a-8936-3d4cca18b416}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Widget.cpp">
@@ -314,13 +317,7 @@
     <ClCompile Include="FormError.cpp">
       <Filter>Source Files\Forms\Old Forms</Filter>
     </ClCompile>
-    <ClCompile Include="FormExit.cpp">
-      <Filter>Source Files\Forms\Old Forms</Filter>
-    </ClCompile>
     <ClCompile Include="FormInventory.cpp">
-      <Filter>Source Files\Forms\Old Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="FormLogin.cpp">
       <Filter>Source Files\Forms\Old Forms</Filter>
     </ClCompile>
     <ClCompile Include="FormMain.cpp">
@@ -369,6 +366,12 @@
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="MessageManager.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Define.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -607,13 +610,7 @@
     <ClInclude Include="FormError.h">
       <Filter>Header Files\Forms\Old Forms</Filter>
     </ClInclude>
-    <ClInclude Include="FormExit.h">
-      <Filter>Header Files\Forms\Old Forms</Filter>
-    </ClInclude>
     <ClInclude Include="FormInventory.h">
-      <Filter>Header Files\Forms\Old Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="FormLogin.h">
       <Filter>Header Files\Forms\Old Forms</Filter>
     </ClInclude>
     <ClInclude Include="FormMain.h">
@@ -667,10 +664,20 @@
     <ClInclude Include="MessageManager.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Notes.txt">
-      <Filter>Notes</Filter>
-    </Text>
+    <ResourceCompile Include="MAMClient.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Icon.ico" />
   </ItemGroup>
 </Project>

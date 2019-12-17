@@ -10,7 +10,7 @@ public:
 	int hp_cur=0, hp_max=0, mana_cur=0, mana_max=0;
 	char name[16] = { 0 };
 
-	int petId=0;
+	unsigned int petId=0;
 	int petLook=0, petLevel=0;
 	int pet_hp_cur=0, pet_hp_max=0;
 	char petName[16] = { 0 };

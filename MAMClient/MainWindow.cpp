@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MainWindow.h"
+#include "Global.h"
 
 #include "Client.h"
 #include "GUI.h"
@@ -507,7 +508,7 @@ void CMainWindow::details_step() {
 /* Main Form - Main Begin */
 
 void CMainWindow::main_init() {
-	SetTitle("Monster & Me - [ServerName]");
+	SetTitle("Monster & Me - [ServerName] - " + std::string(version));
 	SetUseClose(true);
 	SetUseMinimize(true);
 

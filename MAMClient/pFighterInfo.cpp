@@ -23,7 +23,7 @@ pFighterInfo::pFighterInfo(int pSize, char* buf, char* encBuf) {
 	getString(20, name, 16);
 
 	if (fiType == 201) { //201 includes pet
-		getInt(36, &petId);
+		getInt(36, (int*)&petId);
 		getWord(40, &petLook);
 		getWord(42, &petLevel);
 		getWord(44, &pet_hp_cur);

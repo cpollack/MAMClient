@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "BattleResult.h"
+#include "Text.h"
 
-BattleResult::BattleResult(bool victory, int money, int exp, int petExp, int centerX, int centerY) {
-	renderer = gClient.renderer;
+BattleResult::BattleResult(SDL_Renderer* r, bool victory, int money, int exp, int petExp, int centerX, int centerY) {
+	renderer = r;
 	int width = 240;
 	int height = 85;
 
@@ -16,6 +17,7 @@ BattleResult::BattleResult(bool victory, int money, int exp, int petExp, int cen
 
 	mainTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
 
+	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
 	SDL_SetRenderTarget(renderer, mainTexture);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetTextureBlendMode(mainTexture, SDL_BLENDMODE_BLEND);
@@ -27,9 +29,7 @@ BattleResult::BattleResult(bool victory, int money, int exp, int petExp, int cen
 	vlineRGBA(renderer, 0, 0, height - 1, 0, 0, 0, 0xFF);
 	vlineRGBA(renderer, width - 1, 0, height - 1, 0, 0, 0, 0xFF);
 
-	Label drawText(victorious, 7, 14);
-	drawText.setFont(gui->font_battleResult);
-	drawText.setFontColor(SDL_Color{ 255,255,255,255 });
+	Text drawText(renderer, victorious, 7, 14);
 	drawText.render();
 	
 	drawText.setText(gainMoney);
@@ -37,15 +37,14 @@ BattleResult::BattleResult(bool victory, int money, int exp, int petExp, int cen
 	drawText.render();
 
 	drawText.setText(gainExp);
-	drawText.setPosition(drawText.x, 42);
+	drawText.setY(42);
 	drawText.render();
 
 	drawText.setText(gainPetExp);
-	drawText.setPosition(drawText.x, 56);
+	drawText.setY(56);
 	drawText.render();
 
-
-	SDL_SetRenderTarget(renderer, NULL);
+	SDL_SetRenderTarget(renderer, priorTarget);
 	renderRect = { centerX - (width / 2), centerY - (height / 2), width, height };
 }
 

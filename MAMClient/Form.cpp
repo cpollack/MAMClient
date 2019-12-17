@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Form.h"
-#include "FormExit.h"
 
 Form::Form(int w, int h) {
 	width = w;
@@ -180,8 +179,8 @@ void Form::handleEvent(SDL_Event& e) {
 				//SDL_Event quitEvent;
 				//quitEvent.type = SDL_QUIT;
 				//SDL_PushEvent(&quitEvent);
-				FormExit* exitForm = new FormExit("Exit", "Exit", width / 2, height / 2);
-				addSubform("Exit", exitForm);
+				//FormExit* exitForm = new FormExit("Exit", "Exit", width / 2, height / 2);
+				//addSubform("Exit", exitForm);
 			}
 			isClosePressed = false;
 			return;

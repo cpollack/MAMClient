@@ -1,5 +1,4 @@
-#ifndef __LABEL_H
-#define __LABEL_H
+#pragma once
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -11,6 +10,7 @@ enum LabelAlignment {
 	laCenter,
 	laRight
 };
+
 enum LabelVAlignment {
 	lvaTop,
 	lvaCenter,
@@ -61,5 +61,3 @@ public:
 	void Label::setAlignment(LabelAlignment algn);
 	int Label::getHeight();
 };
-#endif
-

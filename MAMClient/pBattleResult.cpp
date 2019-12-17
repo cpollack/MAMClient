@@ -38,7 +38,7 @@ void pBattleResult::process() {
 	SDL_Rect mainWindowRect = gui->mainWindow->rect;
 	bool victory = false;
 	if (resultMode == brmVictory) victory = true;
-	map->addBattleResult(new BattleResult(victory, cash, player_exp, pet_exp, mainWindowRect.x + (mainWindowRect.w / 2), mainWindowRect.y + (mainWindowRect.h / 2)));
+	map->addBattleResult(new BattleResult(mainForm->renderer, victory, cash, player_exp, pet_exp, mainWindowRect.x + (mainWindowRect.w / 2), mainWindowRect.y + (mainWindowRect.h / 2)));
 
 	mainForm->setPlayerHealthGauge(player_hp);
 	mainForm->setPlayerManaGauge(player_mana);

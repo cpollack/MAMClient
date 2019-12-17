@@ -66,7 +66,7 @@ private:
 	int introStartTime;
 
 	/* Login */
-	FormLogin *formLogin = nullptr;
+	//FormLogin *formLogin = nullptr;
 
 	/* Main */
 	/* - Game Area */

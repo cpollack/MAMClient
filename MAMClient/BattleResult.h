@@ -8,7 +8,7 @@
 
 class BattleResult {
 public:
-	BattleResult(bool victory, int money, int exp, int petExp, int centerX, int centerY);
+	BattleResult(SDL_Renderer* r, bool victory, int money, int exp, int petExp, int centerX, int centerY);
 	~BattleResult();
 
 	void BattleResult::render();

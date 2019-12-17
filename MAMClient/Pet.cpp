@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Pet.h"
+#include "Define.h"
 #include "Client.h"
 #include "MainWindow.h"
 
@@ -75,6 +76,10 @@ std::string Pet::getElement() {
 
 int Pet::getId() {
 	return id;
+}
+
+int Pet::getBattleId() {
+	return (id + _IDMSK_PET);
 }
 
 int Pet::getLook() {

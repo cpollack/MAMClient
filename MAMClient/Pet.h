@@ -11,6 +11,7 @@ public:
 	~Pet();
 
 	int Pet::getId();
+	int Pet::getBattleId();
 	int Pet::getLook();
 	std::string Pet::getElement();
 	std::string Pet::getName();
