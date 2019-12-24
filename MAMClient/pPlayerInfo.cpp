@@ -76,15 +76,15 @@ pPlayerInfo::pPlayerInfo(int size, char* buf, char* encBuf) {
 		}
 	}
 	if (strings.size() < 6) {
-		for (int i = 0; i <= 6 - strings.size(); i++)
+		while (strings.size() < 6)
 			strings.push_back(nullptr);
 	}
-	name = (BYTE*)strings[0];
-	nickName = (BYTE*)strings[1];
-	spouse = (BYTE*)strings[2];
-	syndicate = (BYTE*)strings[3];
-	branch = (BYTE*)strings[4];
-	position = (BYTE*)strings[5];
+	if (strings[0]) name = (BYTE*)strings[0];
+	if (strings[1]) nickName = (BYTE*)strings[1];
+	if (strings[2]) spouse = (BYTE*)strings[2];
+	if (strings[3]) syndicate = (BYTE*)strings[3];
+	if (strings[4]) branch = (BYTE*)strings[4];
+	if (strings[5]) position = (BYTE*)strings[5];
 }
 
 

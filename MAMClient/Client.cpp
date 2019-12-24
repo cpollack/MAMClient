@@ -21,7 +21,7 @@
 #include "pPetShop.h"
 #include "pTick.h"
 #include "pWalk.h"
-#include "pPosition.h"
+#include "pAction.h"
 #include "pDirection.h"
 #include "pColor.h"
 #include "pColosseum.h"
@@ -123,8 +123,16 @@ bool Client::connectAccountServer() {
 	checkGsConnection = false;
 
 	//load host dynamically from config
+#ifndef LOCALSERVER
+#ifndef DEVSERVER
 	const char* host = "40.115.122.28";
-	//const char* host = "127.0.0.1";
+#else
+	const char* host = "127.0.0.1";
+#endif // !DEVSERVER
+#else
+	const char* host = "127.0.0.1";
+#endif // !LOCALSERVER
+
 
 	WSADATA wsa;
 	std::cout << "Initializing Winsock." << std::endl;
@@ -179,8 +187,15 @@ bool Client::connectAccountServer() {
 bool Client::connectGameServer() {
 	bool success = true;
 	//load host dynamically from config
+#ifndef LOCALSERVER
+#ifndef DEVSERVER
 	const char* host = "40.115.122.28";
-	//const char* host = "127.0.0.1";
+#else
+	const char* host = "127.0.0.1";
+#endif // !DEVSERVER
+#else
+	const char* host = "127.0.0.1";
+#endif // !LOCALSERVER
 
 	WSADATA wsa;
 	std::cout << "Initializing Winsock." << std::endl;
@@ -529,11 +544,11 @@ void Client::createPacketByType(int type, int size, char* header, char* buffer) 
 	case ptWalk:
 		packet = new pWalk(fullDecryptBuffer, fullBuffer);
 		break;
-	case ptAction:
+	case ptEmotion:
 		packet = new pAction(fullDecryptBuffer, fullBuffer);
 		break;
-	case ptPosition:
-		packet = new pPosition(fullDecryptBuffer, fullBuffer);
+	case ptAction:
+		packet = new pAction(fullDecryptBuffer, fullBuffer);
 		break;
 	case ptDirection:
 		packet = new pDirection(fullDecryptBuffer, fullBuffer);
@@ -626,16 +641,18 @@ void Client::logPacketError(std::string error) {
 }
 
 void Client::writePacketToLog(Packet* packet) {
+	packetLog << std::dec;
 	packetLog << packet->getDescription() << " - Type: " << packet->getType() << " Size: " << packet->getLength() << std::endl;
 	BYTE* buf = packet->getDecryptedBuffer();
 	if (buf) {
-		for (int i = 0; i < packet->getLength(); i++)
+		//Skip first four bytes, type and size
+		for (int i = 4; i < packet->getLength(); i++)
 		{
 			packetLog << std::setw(2) << std::setfill('0') << std::hex << (int)(unsigned char)buf[i];
 			//packetLog << buf[i];
 		}
 		packetLog << "\n";
-		for (int i = 0; i < packet->getLength(); i++)
+		for (int i = 4; i < packet->getLength(); i++)
 		{
 			//packetLog << (int)(unsigned char)buf[i];
 			packetLog << buf[i];

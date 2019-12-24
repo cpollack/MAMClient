@@ -81,6 +81,12 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{607c9e76-aadd-4d6a-8936-3d4cca18b416}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Packet\User">
+      <UniqueIdentifier>{c2b0035a-a660-423d-b78b-e28412bb8b9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Packet\User">
+      <UniqueIdentifier>{9c0210bd-f5b1-429a-b314-4bbce56b24b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Widget.cpp">
@@ -137,25 +143,13 @@
     <ClCompile Include="RC5.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="pPlayerInfo.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
     <ClCompile Include="pMapInfo.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
     <ClCompile Include="pTick.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="pWalk.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="pPosition.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
     <ClCompile Include="pPetShop.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="pDirection.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
     <ClCompile Include="pNpcInfo.cpp">
@@ -287,9 +281,6 @@
     <ClCompile Include="pFriend.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="pUserInfo.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Core\Entities</Filter>
     </ClCompile>
@@ -307,9 +298,6 @@
     </ClCompile>
     <ClCompile Include="UserManager.cpp">
       <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="pAction.cpp">
-      <Filter>Source Files\Packet</Filter>
     </ClCompile>
     <ClCompile Include="Form.cpp">
       <Filter>Source Files\Forms\Old Forms</Filter>
@@ -374,6 +362,27 @@
     <ClCompile Include="Text.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="pAttributeUpdate.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
+    <ClCompile Include="pAction.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
+    <ClCompile Include="pDirection.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
+    <ClCompile Include="pEmotion.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
+    <ClCompile Include="pPlayerInfo.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
+    <ClCompile Include="pUserInfo.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
+    <ClCompile Include="pWalk.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -427,25 +436,13 @@
     <ClInclude Include="RC5.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="pPlayerInfo.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
     <ClInclude Include="pMapInfo.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
     <ClInclude Include="pTick.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pWalk.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="pPosition.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
     <ClInclude Include="pPetShop.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="pDirection.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
     <ClInclude Include="pNpcInfo.h">
@@ -577,9 +574,6 @@
     <ClInclude Include="pFriend.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pUserInfo.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>Header Files\Core\Entities</Filter>
     </ClInclude>
@@ -597,9 +591,6 @@
     </ClInclude>
     <ClInclude Include="UserManager.h">
       <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="pAction.h">
-      <Filter>Header Files\Packet</Filter>
     </ClInclude>
     <ClInclude Include="Form.h">
       <Filter>Header Files\Forms\Old Forms</Filter>
@@ -672,6 +663,27 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pWalk.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="pUserInfo.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="pPlayerInfo.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="pEmotion.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="pDirection.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="pAttributeUpdate.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="pAction.h">
+      <Filter>Header Files\Packet\User</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

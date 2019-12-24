@@ -587,8 +587,8 @@ void FormMain::shiftPetExpGauge(int val) {
 
 
 void FormMain::setCash(int cash) {
-	Label* lblCash = getLabel("cash_value");
-	if (lblCash) lblCash->setText(std::to_string(cash));
+	//Label* lblCash = getLabel("cash_value");
+	//if (lblCash) lblCash->setText(std::to_string(cash));
 }
 
 

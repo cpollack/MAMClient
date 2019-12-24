@@ -185,7 +185,8 @@
     <ClCompile Include="nNpcDialogue.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Packet.cpp" />
-    <ClCompile Include="pAction.cpp" />
+    <ClCompile Include="pAttributeUpdate.cpp" />
+    <ClCompile Include="pEmotion.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="pBattleAction.cpp" />
     <ClCompile Include="pBattleResponse.cpp" />
@@ -213,7 +214,7 @@
     <ClCompile Include="pPetAction.cpp" />
     <ClCompile Include="pPetInfo.cpp" />
     <ClCompile Include="pPetShop.cpp" />
-    <ClCompile Include="pPosition.cpp" />
+    <ClCompile Include="pAction.cpp" />
     <ClCompile Include="pPlayerInfo.cpp" />
     <ClCompile Include="pRole.cpp" />
     <ClCompile Include="PromptForm.cpp" />
@@ -284,7 +285,8 @@
     <ClInclude Include="MessageManager.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Packet.h" />
-    <ClInclude Include="pAction.h" />
+    <ClInclude Include="pAttributeUpdate.h" />
+    <ClInclude Include="pEmotion.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="pBattleAction.h" />
     <ClInclude Include="pBattleResponse.h" />
@@ -313,7 +315,7 @@
     <ClInclude Include="pPetAction.h" />
     <ClInclude Include="pPetInfo.h" />
     <ClInclude Include="pPetShop.h" />
-    <ClInclude Include="pPosition.h" />
+    <ClInclude Include="pAction.h" />
     <ClInclude Include="pPlayerInfo.h" />
     <ClInclude Include="pRole.h" />
     <ClInclude Include="PromptForm.h" />

@@ -10,7 +10,7 @@
 
 
 #include "pPlayerInfo.h"
-#include "pPosition.h"
+#include "pAction.h"
 #include "pDirection.h"
 #include "pWalk.h"
 
@@ -103,7 +103,7 @@ void Player::step() {
 		DWORD systemTime = timeGetTime();
 		if (systemTime - lastPositionPacket >= 2000) {
 			lastPositionPacket = systemTime;
-			packet = new pPosition(AccountId, ID, Direction, DestCoord.x, DestCoord.y, 0);
+			packet = new pAction(AccountId, ID, Direction, DestCoord.x, DestCoord.y, amNone);
 		}
 		if (packet) gClient.addPacket(packet);
 	}
@@ -121,7 +121,7 @@ void Player::jumpTo(SDL_Point coord) {
 	jumpPackets.push_back(jumpPacket);
 
 	lastPositionPacket = timeGetTime();
-	pPosition* movePacket = new pPosition(AccountId, ID, Direction, coord.x, coord.y, 2);
+	pAction* movePacket = new pAction(AccountId, ID, Direction, coord.x, coord.y, amJump);
 	jumpPackets.push_back(movePacket);
 	gClient.addPacket(jumpPackets);
 }
@@ -140,7 +140,7 @@ void Player::walkTo(SDL_Point coord) {
 		DWORD systemTime = timeGetTime();
 		if (systemTime - lastPositionPacket >= 2000) {
 			lastPositionPacket = systemTime;
-			pPosition* movePacket = new pPosition(AccountId, ID, Direction, DestCoord.x, DestCoord.y, 0);
+			pAction* movePacket = new pAction(AccountId, ID, Direction, DestCoord.x, DestCoord.y, amNone);
 			walkPackets.push_back(movePacket);
 		}
 	}

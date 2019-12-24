@@ -15,7 +15,7 @@
 
 #include "pNpc.h"
 #include "pNpcAction.h"
-#include "pPosition.h"
+#include "pAction.h"
 #include "pDirection.h"
 
 GameMap::GameMap(pMapInfo* packet) {
@@ -469,7 +469,7 @@ void GameMap::checkForMapChange() {
 	int portalId;
 	SDL_Point coord = player->getCoord();
 	if (isCoordAPortal(coord, &portalId)) {
-		pPosition* portalPacket = new pPosition(player->AccountId, player->getID(), portalId, coord.x, coord.y, pmLeave);
+		pAction* portalPacket = new pAction(player->AccountId, player->getID(), portalId, coord.x, coord.y, amLeave);
 		gClient.addPacket(portalPacket);
 		changingMap = true;
 	}

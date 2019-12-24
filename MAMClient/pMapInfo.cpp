@@ -8,7 +8,7 @@
 
 #include "pMapInfo.h"
 #include "pPetShop.h"
-#include "pPosition.h"
+#include "pAction.h"
 
 pMapInfo::pMapInfo(char* buf, char* encBuf) {
 	description = "Map Info (Server)";
@@ -64,7 +64,7 @@ void pMapInfo::process() {
 		pPetShop* petShopPacket = new pPetShop(10);
 		gClient.addPacket(petShopPacket);
 
-		pPosition* movePacket = new pPosition(gClient.accountId, player->getID(), 0, 0, 0, 19);
+		pAction* movePacket = new pAction(gClient.accountId, player->getID(), 0, 0, 0, 19);
 		gClient.addPacket(movePacket);
 	}
 	userManager.clear();

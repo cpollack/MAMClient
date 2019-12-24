@@ -13,7 +13,7 @@ pNpcInfo::pNpcInfo(char *buf, char* encBuf) {
 	memcpy(encryptedBuffer, encBuf, size);
 
 	getInt(0, &id);
-	getWord(4, &hslType);
+	getWord(4, &mode);
 	getWord(6, &npcType);
 	getWord(8, &look);
 	getWord(10, &posX);
@@ -38,7 +38,7 @@ void pNpcInfo::debugPrint() {
 	Packet::debugPrint();
 
 	std::cout << "NPC ID: " << id << " Type: " << type << " Look: " << look << " Position: " << posX << "," << posY << std::endl;
-	std::cout << name << " - HSL Type: " << hslType << " Vals: " << hslSets << std::endl;
+	std::cout << name << " - Mode: " << mode << " Vals: " << hslSets << std::endl;
 
 	std::cout << std::endl;
 }

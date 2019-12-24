@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "LoginForm.h"
 
+#include "Client.h"
 #include "Button.h"
 #include "ImageBox.h"
 #include "Field.h"
@@ -121,8 +122,12 @@ void CLoginForm::handleLogin() {
 	case lsLogin:
 		//server should not be hardcoded
 
+#ifndef DEVSERVER
 		gClient.login(fldAccount->GetText(), fldPassword->GetText(), "MythOfOrient");
-		//gClient.login(fldAccount->GetText(), fldPassword->GetText(), "HeavenAscent");
+#else
+		gClient.login(fldAccount->GetText(), fldPassword->GetText(), "HeavenAscent");
+#endif // !DEVSERVER
+		
 
 		//if (cbMemorize->isChecked()) {
 		gClient.configIni->setEntry("DefaultLogin", fldAccount->GetText());

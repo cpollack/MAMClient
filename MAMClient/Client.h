@@ -1,6 +1,8 @@
 #ifndef __CLIENT_H
 #define __CLIENT_H
 
+//#define DEVSERVER
+//#define LOCALSERVER
 #define DEBUG_PACKET
 
 #include "GUI.h"
