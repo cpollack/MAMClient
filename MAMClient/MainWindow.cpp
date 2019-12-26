@@ -15,6 +15,7 @@
 #include "LogoutForm.h"
 #include "PromptForm.h"
 #include "CharCreateForm.h"
+#include "CharacterForm.h"
 
 #include "Gauge.h"
 #include "VideoFrame.h"
@@ -548,9 +549,11 @@ void CMainWindow::main_init_widgets() {
 	btnJump->SetType(ButtonType::btToggle);
 	registerEvent("btnJump", "Click", std::bind(&CMainWindow::btnJump_Click, this, std::placeholders::_1));
 
-	addMainButton("btnCharacter", surfaceRect.x + 17, surfaceRect.y + 11, 73, 25, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
-	addMainButton("btnPet", surfaceRect.x + 102, surfaceRect.y + 11, 73, 25, "button_pet.jpg", "button_petDown.jpg");
-	
+	CButton *btnCharacter = addMainButton("btnCharacter", surfaceRect.x + 17, surfaceRect.y + 11, 73, 25, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
+	CButton *btnPet = addMainButton("btnPet", surfaceRect.x + 102, surfaceRect.y + 11, 73, 25, "button_pet.jpg", "button_petDown.jpg");
+	registerEvent("btnCharacter", "Click", std::bind(&CMainWindow::btnCharacter_Click, this, std::placeholders::_1));
+	registerEvent("btnPet", "Click", std::bind(&CMainWindow::btnPet_Click, this, std::placeholders::_1));
+
 	addMainButton("btnFight", surfaceRect.x + 290, surfaceRect.y + 5, 38, 38, "fight-2.jpg", "fight-1.jpg");
 	addMainButton("btnChat", surfaceRect.x + 335, surfaceRect.y + 5, 38, 38, "chat-2.jpg", "chat-1.jpg");
 	registerEvent("btnFight", "Click", std::bind(&CMainWindow::btnFight_Click, this, std::placeholders::_1));
@@ -709,6 +712,16 @@ void CMainWindow::btnFight_Click(SDL_Event& e) {
 	int teamSize = 1;
 	pBattleState* battlePacket = new pBattleState(0, teamSize, player->getID(), 0);
 	gClient.addPacket(battlePacket);
+}
+
+void CMainWindow::btnCharacter_Click(SDL_Event& e) {
+	CCharacterForm* charForm = new CCharacterForm();
+	Windows.push_back(charForm);
+}
+
+void CMainWindow::btnPet_Click(SDL_Event& e) {
+	//CPetForm* petForm = new CPetForm();
+	//Windows.push_back(petForm);
 }
 
 /* Main Form - Hooks */

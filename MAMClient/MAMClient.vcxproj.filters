@@ -383,6 +383,12 @@
     <ClCompile Include="pWalk.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
+    <ClCompile Include="TabControl.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -684,6 +690,12 @@
     </ClInclude>
     <ClInclude Include="pAction.h">
       <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="TabControl.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterForm.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

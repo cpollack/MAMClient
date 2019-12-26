@@ -108,6 +108,9 @@ private: // Main
 	void btnJump_Click(SDL_Event& e);
 	void btnFight_Click(SDL_Event& e);
 
+	void btnCharacter_Click(SDL_Event& e);
+	void btnPet_Click(SDL_Event& e);
+
 	SDL_Texture* gameTexture;
 	SDL_Rect gameRect;
 	CPromptForm *dcPromptForm = nullptr;

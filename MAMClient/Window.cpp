@@ -10,6 +10,7 @@
 #include "Field.h"
 #include "ImageBox.h"
 #include "Dropdown.h"
+#include "TabControl.h"
 
 #include "SDL_syswm.h"
 #include "include/rapidjson/filereadstream.h"
@@ -114,6 +115,9 @@ CWidget* CWindow::LoadWidgetByType(rapidjson::Value& vWidget) {
 		break;
 	case wtImageBox:
 		addWidget = new CImageBox(this, widget);
+		break;
+	case wtTabControl:
+		addWidget = new CTabControl(this, widget);
 		break;
 	}
 	if (addWidget) {
@@ -451,6 +455,8 @@ void CWindow::SetUseClose(bool close) {
 		btnClose->SetPressedImage("Close.bmp");
 		btnClose->SetUnPressedImage("Close.bmp");
 		AddWidget(btnClose);
+
+		registerEvent("btnClose", "Click", std::bind(&CWindow::btnClose_Click, this, std::placeholders::_1));
 	}
 }
 
@@ -482,4 +488,8 @@ void CWindow::registerEvent(std::string widgetName, std::string eventName, Event
 
 void CWindow::btnMinimize_Click(SDL_Event& e) {
 	SDL_MinimizeWindow(window);
+}
+
+void CWindow::btnClose_Click(SDL_Event& e) {
+	CloseWindow = true;
 }

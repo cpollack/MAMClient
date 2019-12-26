@@ -39,6 +39,7 @@ CWidget::CWidget(CWindow* window, rapidjson::Value& vWidget) {
 	if (vWidget.HasMember("Y")) Y = vWidget["Y"].GetInt();
 	if (vWidget.HasMember("Width")) Width = vWidget["Width"].GetInt();
 	if (vWidget.HasMember("Height")) Height = vWidget["Height"].GetInt();
+	if (vWidget.HasMember("TabItem")) TabItem = vWidget["TabItem"].GetInt();
 
 	widgetRect = SDL_Rect{ X, Y, Width, Height };
 	font = gui->font;
@@ -186,6 +187,10 @@ void CWidget::SetBackColor(SDL_Color bc) {
 
 CWidget* CWidget::GetParent() {
 	return Parent;
+}
+
+int CWidget::GetTabItem() {
+	return TabItem;
 }
 
 

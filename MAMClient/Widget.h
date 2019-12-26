@@ -47,6 +47,7 @@ protected:
 	CWindow* Window = nullptr;
 	CWidget* Parent = nullptr;
 	std::vector<CWidget*> Children;
+	int TabItem;
 	bool Visible = true;	
 	bool mouseOver;
 	bool held;
@@ -71,6 +72,7 @@ public: //Accessors
 	void SetBackColor(SDL_Color bc);
 
 	CWidget* GetParent();
+	int GetTabItem();
 
 
 public:

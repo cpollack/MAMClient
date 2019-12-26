@@ -144,6 +144,7 @@
     <ClCompile Include="BattleResult.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CharacterForm.cpp" />
     <ClCompile Include="CharCreateForm.cpp" />
     <ClCompile Include="Chat.cpp" />
     <ClCompile Include="CheckBox.cpp" />
@@ -227,6 +228,7 @@
     <ClCompile Include="SpriteView.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="SubForm.cpp" />
+    <ClCompile Include="TabControl.cpp" />
     <ClCompile Include="TestForm.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -244,6 +246,7 @@
     <ClInclude Include="BattleResult.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CharacterForm.h" />
     <ClInclude Include="CharCreateForm.h" />
     <ClInclude Include="Chat.h" />
     <ClInclude Include="CheckBox.h" />
@@ -329,6 +332,7 @@
     <ClInclude Include="SpriteView.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SubForm.h" />
+    <ClInclude Include="TabControl.h" />
     <ClInclude Include="TestForm.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />

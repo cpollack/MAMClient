@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "LogoutForm.h"
 
-#include "Button.h"
-
-#include <functional>
+#include "GameLibrary.h"
 
 CLogoutForm::CLogoutForm() : CWindow("LogoutForm.JSON") {
 	Type = FT_LOGOUT;
