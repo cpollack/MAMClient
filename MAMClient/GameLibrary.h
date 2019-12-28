@@ -11,10 +11,12 @@ std::string getRoleFromLook(int look);
 std::vector<std::string> getSpriteFramesFromAni(std::string role, int animation, int direction);
 std::string animationTypeToString(int animation);
 
+std::string formatInt(int value);
 bool fileExist(std::string file);
 void showErrorMessage(std::string message);
 void applicationClose();
 
+//Prompts
 class CPromptForm;
 CPromptForm* doPrompt(std::string title, std::string message); 
 CPromptForm* doPromptError(std::string title, std::string message);

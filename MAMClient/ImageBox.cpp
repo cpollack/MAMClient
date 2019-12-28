@@ -86,18 +86,36 @@ void CImageBox::SetImage(Texture* image) {
 		vlineRGBA(renderer, Width - 1, 0, Height - 1, 0xFF, 0xFF, 0xFF, 0xFF);
 
 		if (image) {
+			int srcWidth = Width - 2;
+			if (srcWidth < Width - 2) srcWidth = image->width;
+			int srcHeight = Height - 2;
+			if (srcHeight < Height - 2) srcHeight = image->height;
+			int srcX = 0;
+			if (srcWidth < image->width) srcX = (image->width / 2) - (srcWidth / 2);
+			int srcY = 0;
+			if (srcHeight < image->height) srcY = (image->height / 2) - (srcHeight / 2);
+			SDL_Rect srcRect{ srcX, srcY, srcWidth, srcHeight };
 			SDL_Rect renderRect{ 1, 1,
 				image->width > Width - 2 ? Width - 2 : image->width,
 				image->height > Height - 2 ? Height - 2 : image->height };
-			SDL_RenderCopy(renderer, image->texture, NULL, &renderRect);
+			SDL_RenderCopy(renderer, image->texture, &srcRect, &renderRect);
 		}
 	}
 	else {
 		if (image) {
+			int srcWidth = Width;
+			if (srcWidth < Width) srcWidth = image->width;
+			int srcHeight = Height;
+			if (srcHeight < Height) srcHeight = image->height;
+			int srcX = 0;
+			if (srcWidth < image->width) srcX = (image->width / 2) - (srcWidth / 2);
+			int srcY = 0;
+			if (srcHeight < image->height) srcY = (image->height / 2) - (srcHeight / 2);
+			SDL_Rect srcRect{ srcX, srcY, srcWidth, srcHeight };
 			SDL_Rect renderRect{ 1, 1,
 				image->width > Width ? Width : image->width,
 				image->height > Height ? Height : image->height };
-			SDL_RenderCopy(renderer, image->texture, NULL, &renderRect);
+			SDL_RenderCopy(renderer, image->texture, &srcRect, &renderRect);
 		}
 	}
 	SDL_SetRenderTarget(renderer, NULL);

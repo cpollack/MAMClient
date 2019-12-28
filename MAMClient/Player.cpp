@@ -25,8 +25,14 @@ Player::Player(int acctId, int look, int face, char* name):User(mainForm->render
 	   - Set a trimmed Player role for use with Icons and Inventory */
 	if (Role.size() > 0) {
 		PlayerRole = Role;
-		if (PlayerRole[0] == 'M') PlayerRole = Role.substr(0, 5);
-		if (PlayerRole[0] == 'W') PlayerRole = Role.substr(0, 7);
+		if (PlayerRole[0] == 'M') {
+			PlayerRole = Role.substr(0, 5);
+			Face = stoi(Role.substr(4, 1));
+		}
+		if (PlayerRole[0] == 'W') {
+			PlayerRole = Role.substr(0, 7);
+			Face = stoi(Role.substr(6, 1));
+		}
 	}
 
 	setDirection(0);

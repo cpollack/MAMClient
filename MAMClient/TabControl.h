@@ -16,6 +16,7 @@ public:
 	~CTabControl();
 
 	void Render();
+	void HandleEvent(SDL_Event& e);
 
 private:
 	SDL_Texture *tabControlTexture;
@@ -34,6 +35,7 @@ private:
 	void DrawSimpleTab(int index, bool focused);
 	void DrawDetailTab(int index, bool focused);
 	void DrawButtonTab(int index, bool focused);
+	void LoadTabRects();
 
 	int VisibleTab;
 	TabStyle Style;

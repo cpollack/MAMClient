@@ -62,8 +62,10 @@ void CTabControl::Render() {
 	SDL_RenderSetViewport(renderer, &widgetRect);
 
 	//Render tabs
-	if (Style == tsButton) RenderButtonTabs();
-	else RenderTabs();
+	//if (Style == tsButton) RenderButtonTabs();
+	//else RenderTabs();
+	for (auto tab : tabTextures) 
+		SDL_RenderCopy(renderer, tab->texture, NULL, &tab->rect);
 
 	SDL_RenderSetViewport(renderer, &priorViewport);
 
@@ -78,6 +80,7 @@ void CTabControl::RenderTabs() {
 	//Simple and Detail mode are the same
 }
 
+//Deprecate?
 void CTabControl::RenderButtonTabs() {
 	//Button style should try to center the buttons
 	int tabWidthTotal = 0;
@@ -95,6 +98,32 @@ void CTabControl::RenderButtonTabs() {
 		SDL_RenderCopy(renderer, tab->texture, NULL, &tabRect);
 
 		tx += tab->width + tabSpacer;
+	}
+}
+
+void CTabControl::HandleEvent(SDL_Event& e) {
+	if (e.type == SDL_MOUSEBUTTONDOWN) {
+		int mx, my;
+		SDL_GetMouseState(&mx, &my);
+
+		if (doesPointIntersect(widgetRect, mx, my)) {
+			for (int i = 0; i < tabTextures.size(); i++) {
+				Texture* tab = tabTextures[i];
+				SDL_Rect tabRect = tab->rect;
+				tabRect.x += X;
+				tabRect.y += Y;
+				if (doesPointIntersect(tabRect, mx, my)) {
+					if (VisibleTab != i) {
+						int priorTab = VisibleTab;
+						VisibleTab = i;
+						CreateTabTexture(priorTab);
+						CreateTabTexture(VisibleTab);
+						LoadTabRects();
+					}
+					break;
+				}
+			}
+		}
 	}
 }
 
@@ -126,6 +155,7 @@ void CTabControl::CreateTabControlTexture() {
 	SDL_SetRenderTarget(renderer, priorTarget);
 
 	CreateTabTextures();
+	LoadTabRects();
 }
 
 void CTabControl::DrawSimpleBorder() {
@@ -179,8 +209,8 @@ void CTabControl::DrawButtonTab(int index, bool vTab) {
 
 	Texture* tabTexture = new Texture(renderer);
 	tabTexture->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, tabWidth, TAB_BUTTON_HEIGHT);
-	tabTexture->width = tabWidth;
-	tabTexture->height = TAB_BUTTON_HEIGHT;
+	tabTexture->width = tabWidth;			tabTexture->rect.w = tabWidth;
+	tabTexture->height = TAB_BUTTON_HEIGHT;	tabTexture->rect.h = TAB_BUTTON_HEIGHT;
 	SDL_Rect textRect = { (tabWidth / 2) - (tabText->width / 2),  (TAB_BUTTON_HEIGHT / 2) - (tabText->height / 2), tabText->width, tabText->height };
 
 	SDL_Texture * priorTarget = SDL_GetRenderTarget(renderer);
@@ -212,5 +242,28 @@ void CTabControl::DrawButtonTab(int index, bool vTab) {
 		delete tabTextures[index];
 		tabTextures.erase(tabTextures.begin() + index);
 		tabTextures.insert(tabTextures.begin() + index, tabTexture);
+	}
+}
+
+void CTabControl::LoadTabRects() {
+	//Temp, add standard handling
+	if (Style != tsButton) return;
+
+	//Button style should try to center the buttons
+	int tabWidthTotal = 0;
+	for (auto tab : tabTextures) tabWidthTotal += tab->width;
+
+	int remWidth = Width - tabWidthTotal;
+	int tabSpacer = (remWidth / tabTextures.size()) / 2;
+
+	int tx = 0;
+	for (auto tab : tabTextures) {
+		tx += tabSpacer;
+
+		tab->rect.x = tx;
+		if (TabsOnBottom) tab->rect.y = Height - TAB_BUTTON_HEIGHT - 1;
+		else tab->rect.y = 0;
+
+		tx += tab->width + tabSpacer;
 	}
 }

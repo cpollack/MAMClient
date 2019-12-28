@@ -25,14 +25,15 @@ protected:
 	BYTE colorSets[35];
 	int lastSpriteAnimation = -1, lastSpriteDirection = -1;
 
-protected:
-	virtual std::string getRole(int look);
-	virtual void setRole(int look);
-	
 public: 
 	int getID();
 	std::string getName();
 	SDL_Rect getRenderRect();
+
+	virtual std::string getRole(int look);
+	virtual void setRole(int look);
+	int GetLook() { return Look;  }
+	int GetFace() { return Face;  }
 
 	virtual void setCoord(SDL_Point coord);
 	SDL_Point getCoord();

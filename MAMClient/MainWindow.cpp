@@ -509,7 +509,7 @@ void CMainWindow::details_step() {
 /* Main Form - Main Begin */
 
 void CMainWindow::main_init() {
-	SetTitle("Monster & Me - [ServerName] - " + std::string(version));
+	SetTitle("Monster & Me - [ServerName] - " + std::string(version) + " ("  + versionDate + ")");
 	SetUseClose(true);
 	SetUseMinimize(true);
 

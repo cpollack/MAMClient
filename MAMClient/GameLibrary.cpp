@@ -87,6 +87,16 @@ std::string animationTypeToString(int animation) {
 	}
 }
 
+std::string formatInt(int value) {
+	std::string numWithCommas = std::to_string(value);
+	int insertPosition = numWithCommas.length() - 3;
+	while (insertPosition > 0) {
+		numWithCommas.insert(insertPosition, ",");
+		insertPosition -= 3;
+	}
+	return numWithCommas;
+}
+
 bool fileExist(std::string file) {
 	if (!file.length()) return false;
 	struct stat buffer;

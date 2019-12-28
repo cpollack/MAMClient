@@ -274,6 +274,12 @@ int User::getLevel() {
 	return Level;
 }
 
+std::string User::GetRankText() {
+	std::string rankText = "";
+
+	return rankText;
+}
+
 std::string User::getGuild() {
 	return Guild;
 }

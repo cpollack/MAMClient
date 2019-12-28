@@ -5,6 +5,8 @@
 class pUserInfo;
 class Sprite;
 
+enum { MALE, FEMALE };
+
 class User : public Entity {
 public:
 	User(pUserInfo *packet);
@@ -50,12 +52,16 @@ protected:
 	int pkEnabled;
 	int SyndicateId, SubGroudId, SyndicateRank;
 	std::string Guild, SubGroup, GuildTitle;
+	int Gender;
 
 public:
 	std::string getNickName();
 	std::string getSpouse();
 	
 	int getLevel();
+	int GetRank() { return Rank;  }
+	std::string GetRankText();
+	int GetGender() { return Gender;  }
 
 	std::string getGuild();
 	std::string getGuildTitle();

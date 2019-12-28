@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Widget.h"
+
 class Sprite;
 
 class CImageBox : public CWidget {
