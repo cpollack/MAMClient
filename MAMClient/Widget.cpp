@@ -40,6 +40,7 @@ CWidget::CWidget(CWindow* window, rapidjson::Value& vWidget) {
 	if (vWidget.HasMember("Width")) Width = vWidget["Width"].GetInt();
 	if (vWidget.HasMember("Height")) Height = vWidget["Height"].GetInt();
 	if (vWidget.HasMember("TabItem")) TabItem = vWidget["TabItem"].GetInt();
+	if (vWidget.HasMember("ReadOnly")) ReadOnly = vWidget["ReadOnly"].GetBool();
 
 	widgetRect = SDL_Rect{ X, Y, Width, Height };
 	font = gui->font;

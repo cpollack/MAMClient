@@ -119,6 +119,7 @@ void CTabControl::HandleEvent(SDL_Event& e) {
 						CreateTabTexture(priorTab);
 						CreateTabTexture(VisibleTab);
 						LoadTabRects();
+						OnTabChange(e);
 					}
 					break;
 				}
@@ -266,4 +267,9 @@ void CTabControl::LoadTabRects() {
 
 		tx += tab->width + tabSpacer;
 	}
+}
+
+void CTabControl::OnTabChange(SDL_Event& e) {
+	auto iter = eventMap.find("OnTabChange");
+	if (iter != eventMap.end()) iter->second(e);
 }

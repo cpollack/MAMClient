@@ -69,7 +69,7 @@ void CField::Render() {
 }
 
 void CField::HandleEvent(SDL_Event& e) {
-	if (e.type == SDL_MOUSEBUTTONDOWN) {
+	if (e.type == SDL_MOUSEBUTTONDOWN && !ReadOnly) {
 		int mx, my;
 		SDL_GetMouseState(&mx, &my);
 
@@ -240,6 +240,8 @@ void CField::OnFocus() {
 void CField::OnFocusLost() {
 	Focused = false;
 	SDL_StopTextInput();
+	SDL_Event e;
+	OnChange(e);
 }
 
 
@@ -296,6 +298,15 @@ void CField::OnTextInput(SDL_Event& e) {
 
 void CField::OnSubmit(SDL_Event& e) {
 	auto iter = eventMap.find("Submit");
+	if (iter != eventMap.end()) iter->second(e);
+	OnChange(e);
+}
+
+void CField::OnChange(SDL_Event& e) {
+	if (Text.compare(lastValue) == 0) return;
+	lastValue = Text;
+
+	auto iter = eventMap.find("OnChange");
 	if (iter != eventMap.end()) iter->second(e);
 }
 

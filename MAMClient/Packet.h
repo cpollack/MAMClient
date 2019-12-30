@@ -18,8 +18,8 @@ enum PacketType {
 	ptPetInfo = 1034,
 	//pt1035 = 1035,
 	ptWeather = 1038,
-	//pt1040 = 1040, ptUserAttribute?
-	ptAttributeUpdate = 1043,
+	//pt1040 = 1040, update user info?
+	ptAttributeUpdate = 1041,
 	ptPetCatalog = 1042,
 	ptColor = 1043,
 	ptRole = 1050,

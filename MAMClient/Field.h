@@ -21,6 +21,7 @@ public:
 protected:
 	bool IsPassword = false;
 	std::string passwordText;
+	std::string lastValue;
 	bool ThickBorder = false;
 	int MaxLength = 0;
 
@@ -54,6 +55,7 @@ protected:
 	void OnKeyDown(SDL_Event& e);
 	void OnTextInput(SDL_Event& e);
 	void OnSubmit(SDL_Event& e);
+	void OnChange(SDL_Event& e);
 };
 
 //Old implementation, to be deprecated

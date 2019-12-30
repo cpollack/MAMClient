@@ -15,9 +15,10 @@ User::User(pUserInfo *packet):Entity(mainForm->renderer, packet->userId, packet-
 	Level = packet->level;
 	Rank = packet->rank;
 	Reborns = packet->reborns;
-	RankType = packet->rankType;
-	MasterType = packet->masterType;
+	RankType = packet->rankType; //Needed?
+	MasterRank = packet->masterType;
 	Alignment = packet->alignment;
+	FullRank = (MasterRank * 10000) + (Rank * 1000) + (Reborns * 10) + Alignment;
 	
 	pkEnabled = packet->pkEnabled;
 	SyndicateId = packet->syndicateId;
@@ -275,7 +276,54 @@ int User::getLevel() {
 }
 
 std::string User::GetRankText() {
-	std::string rankText = "";
+	std::string rankText;
+
+	switch (Rank) {
+	case 0: //Mortal
+		break;
+	case 1: 
+		rankText = "Basic God";
+		break;
+	case 2:
+		rankText = "Junior "; 
+		break;
+	case 3:
+		rankText = "Senior ";
+		break;
+	case 4:
+		rankText = "Super ";
+		break;
+	case 5:
+		switch (MasterRank) {
+		case 1:
+			rankText += "Pet Raising Master ";
+			break;
+		case 2:
+			rankText += "Cultivation Master ";
+			break;
+		case 3:
+			rankText += "Virtue Master ";
+			break;
+		case 4:
+			rankText += "Wuxing Master ";
+			break;
+		case 5:
+			rankText += "Kugnfu Master ";
+			break;
+		case 6:
+			rankText += "Thievery Master ";
+			break;
+		case 7:
+			rankText += "Reputation Master ";
+			break;
+		}
+		break;
+	}
+
+	if (Alignment > 0) {
+		if (Alignment == 1) rankText += "God";
+		if (Alignment == 2) rankText += "Devil";
+	}
 
 	return rankText;
 }

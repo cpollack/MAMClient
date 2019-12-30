@@ -534,7 +534,7 @@ void CMainWindow::main_init() {
 	setPlayerDetailsLabels();
 	setPlayerHealthGauge(player->life_current, player->life_max);
 	setPlayerManaGauge(player->mana_current, player->mana_max);
-	setPlayerExpGauge(player->experience, player->getLevelUpExperience());
+	setPlayerExpGauge(player->experience, player->GetLevelUpExperience());
 
 	Pet* activePet = player->getActivePet();
 	if (activePet) {

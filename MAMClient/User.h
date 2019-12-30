@@ -46,7 +46,7 @@ protected:
 	int Rank;
 	int Reborns;
 	int RankType;
-	int MasterType;
+	int MasterRank;
 	int Alignment;
 
 	int pkEnabled;

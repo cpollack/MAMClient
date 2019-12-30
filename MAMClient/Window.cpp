@@ -11,6 +11,7 @@
 #include "ImageBox.h"
 #include "Dropdown.h"
 #include "TabControl.h"
+#include "Gauge.h"
 
 #include "SDL_syswm.h"
 #include "include/rapidjson/filereadstream.h"
@@ -118,6 +119,9 @@ CWidget* CWindow::LoadWidgetByType(rapidjson::Value& vWidget) {
 		break;
 	case wtTabControl:
 		addWidget = new CTabControl(this, widget);
+		break;
+	case wtGauge:
+		addWidget = new CGauge(this, widget);
 		break;
 	}
 	if (addWidget) {

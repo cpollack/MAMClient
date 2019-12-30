@@ -60,9 +60,9 @@ void Player::setPlayerInfo(pPlayerInfo* packet) {
 
 	Rank = packet->rank;
 	Reborns = packet->reborns;
-	MasterType = packet->masterType;
+	MasterRank = packet->masterType;
 	Alignment = packet->alignment;
-	FullRank = (MasterType * 10000) + (Rank * 1000) + (Reborns * 10) + Alignment;
+	FullRank = (MasterRank * 10000) + (Rank * 1000) + (Reborns * 10) + Alignment;
 	//get rankDesc from above
 
 	pkEnabled = packet->pkEnabled;
@@ -164,10 +164,72 @@ void Player::takeNextStep() {
 }
 
 
-int Player::getLevelUpExperience() {
+int Player::GetLevelUpExperience() {
 	int levelUp;
 	levelUp = Level * (Level + 1);
 	return levelUp;
+}
+
+void Player::SetUnusedPoints(int point) {
+	point_unused = point;
+}
+
+void Player::SetLifePoint(int point) {
+	life = point;
+
+	int max = (3 * life) + 30;
+	max += (attack + defence + dexterity) / 4;
+	max += (5 * attack) / 100;
+	max += (5 * defence) / 100;
+	max += (5 * dexterity) / 100;
+	life_max = max;
+}
+
+void Player::SetManaPoint(int point) {
+	mana = point;
+	mana_max = (3 * mana) + 20;
+}
+
+int Player::GetAttack() {
+	int atk = attack;
+
+	for (int i = 0; i < EQUIPMENT_SLOTS; i++) {
+		if (equipment[i]) atk += equipment[i]->getAttack();
+	}
+
+	return atk;
+}
+
+void Player::SetAttackPoint(int point) {
+	attack = point;
+}
+
+void Player::SetDefencePoint(int point) {
+	defence = point;
+}
+
+int Player::GetDefence() {
+	int def = defence;
+
+	for (int i = 0; i < EQUIPMENT_SLOTS; i++) {
+		if (equipment[i]) def += equipment[i]->getDefence();
+	}
+
+	return def;
+}
+
+void Player::SetDexterityPoint(int point) {
+	dexterity = point;
+}
+
+int Player::GetDexterity() {
+	int dex = dexterity;
+
+	for (int i = 0; i < EQUIPMENT_SLOTS; i++) {
+		if (equipment[i]) dex += equipment[i]->getDexterity();
+	}
+
+	return dex;
 }
 
 

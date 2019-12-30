@@ -49,6 +49,7 @@ protected:
 	std::vector<CWidget*> Children;
 	int TabItem;
 	bool Visible = true;	
+	bool ReadOnly;
 	bool mouseOver;
 	bool held;
 

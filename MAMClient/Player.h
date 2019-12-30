@@ -10,6 +10,7 @@ class Pet;
 class Inventory;
 class Item;
 
+const int EQUIPMENT_SLOTS = 5;
 
 class Player : public User {
 public:
@@ -49,8 +50,37 @@ protected:
 public:
 	void setPlayerInfo(pPlayerInfo* packet);
 	
-	int getLevelUpExperience();
+	int GetExperience() { return experience; }
+	int GetLevelUpExperience();
 
+	int GetUnusedPoints()	{ return point_unused; }
+	void SetUnusedPoints(int point);
+
+	int GetCultivation()	{ return cultivation + Level; }
+
+	int GetCurrentLife()	{ return life_current; }
+	int GetMaxLife()		{ return life_max; }
+	int GetLifePoint()		{ return life; }
+	void SetLifePoint(int point);
+
+	int GetCurrentMana()	{ return mana_current; }
+	int GetMaxMana()		{ return mana_max; }
+	int GetManaPoint()		{ return mana; }
+	void SetManaPoint(int point);
+
+	int GetAttack();
+	int GetAttackPoint()	{ return attack; }
+	void SetAttackPoint(int point);
+
+	int GetDefence();
+	int GetDefencePoint()	{ return defence; }
+	void SetDefencePoint(int point);
+
+	int GetDexterity();
+	int GetDexterityPoint()	{ return dexterity; }
+	void SetDexterityPoint(int point);
+
+public: // Pets
 	void Player::addPet(Pet* newPet);
 	Pet* Player::setActivePet(int id);
 	Pet* Player::getActivePet();
@@ -58,6 +88,7 @@ public:
 	std::vector<Pet*> Player::getPetList();
 	void Player::removePet(int petId);
 
+public: // Items
 	void addItem(pItem* packet);
 	void Player::useItem(int itemId);
 	void Player::useMedicine(Item* item);

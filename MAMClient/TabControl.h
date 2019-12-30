@@ -45,4 +45,10 @@ private:
 	const int TAB_HEADER_HEIGHT = 16;
 	const int TAB_BUTTON_HEIGHT = 24;
 	std::vector<std::string> tabs;
+
+public: //Accessors
+	int GetVisibleTab() { return VisibleTab; }
+
+protected:
+	void OnTabChange(SDL_Event& e);
 };
