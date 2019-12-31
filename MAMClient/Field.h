@@ -20,6 +20,7 @@ public:
 
 protected:
 	bool IsPassword = false;
+	bool Numeric = false;
 	std::string passwordText;
 	std::string lastValue;
 	bool ThickBorder = false;

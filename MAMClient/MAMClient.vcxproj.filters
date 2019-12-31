@@ -389,6 +389,12 @@
     <ClCompile Include="CharacterForm.cpp">
       <Filter>Source Files\Forms</Filter>
     </ClCompile>
+    <ClCompile Include="pRename.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomEvents.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -696,6 +702,12 @@
     </ClInclude>
     <ClInclude Include="CharacterForm.h">
       <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="pRename.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomEvents.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

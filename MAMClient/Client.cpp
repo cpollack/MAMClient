@@ -29,6 +29,7 @@
 #include "pFriend.h"
 #include "pUserInfo.h"
 #include "pAction.h"
+#include "pRename.h"
 
 #include "pNpcInfo.h"
 #include "pNpc.h"
@@ -555,6 +556,9 @@ void Client::createPacketByType(int type, int size, char* header, char* buffer) 
 		break;
 	case ptUserInfo:
 		packet = new pUserInfo(size, fullDecryptBuffer, fullBuffer);
+		break;
+	case ptRename:
+		packet = new pRename(fullDecryptBuffer, fullBuffer);
 		break;
 	case ptRole:
 		packet = new pRole(fullDecryptBuffer, fullBuffer);

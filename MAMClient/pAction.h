@@ -10,6 +10,7 @@ enum ActionMode {
 	amDisguise = 4, //Updates a player's look, followed by color packet
 	//5 - after setting battle formation
 	//6 - restricted to GM or PM?
+	amReallot = 6, // reallocate distributed stats. action defines 50% or otherwise, but how is it calced it px/py for packet?
 	//7?
 	amLeave = 8, //Leave map, to be confirmed since xy may not always be 0
 	//9 - something you cant do while a teammate

@@ -17,6 +17,7 @@ enum PacketType {
 	ptPetAction = 1033,
 	ptPetInfo = 1034,
 	//pt1035 = 1035,
+	ptRename = 1037,
 	ptWeather = 1038,
 	//pt1040 = 1040, update user info?
 	ptAttributeUpdate = 1041,

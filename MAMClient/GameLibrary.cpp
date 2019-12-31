@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameLibrary.h"
+#include "CustomEvents.h"
 
 #include "INI.h"
 #include "Sprite.h"

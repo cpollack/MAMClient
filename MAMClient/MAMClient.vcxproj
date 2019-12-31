@@ -151,6 +151,7 @@
     <ClCompile Include="Cipher.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Colosseum.cpp" />
+    <ClCompile Include="CustomEvents.cpp" />
     <ClCompile Include="Define.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="Dropdown.cpp" />
@@ -217,6 +218,7 @@
     <ClCompile Include="pPetShop.cpp" />
     <ClCompile Include="pAction.cpp" />
     <ClCompile Include="pPlayerInfo.cpp" />
+    <ClCompile Include="pRename.cpp" />
     <ClCompile Include="pRole.cpp" />
     <ClCompile Include="PromptForm.cpp" />
     <ClCompile Include="pTick.cpp" />
@@ -253,6 +255,7 @@
     <ClInclude Include="Cipher.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Colosseum.h" />
+    <ClInclude Include="CustomEvents.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="Dropdown.h" />
@@ -320,6 +323,7 @@
     <ClInclude Include="pPetShop.h" />
     <ClInclude Include="pAction.h" />
     <ClInclude Include="pPlayerInfo.h" />
+    <ClInclude Include="pRename.h" />
     <ClInclude Include="pRole.h" />
     <ClInclude Include="PromptForm.h" />
     <ClInclude Include="pTick.h" />

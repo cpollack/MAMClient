@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Field.h"
+#include "CustomEvents.h"
 
 CField::CField(CWindow* window, std::string name, int x, int y) : CWidget(window) {
 	Name = name;
@@ -17,6 +18,7 @@ CField::CField(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 	if (vWidget.HasMember("MaxLength")) MaxLength = vWidget["MaxLength"].GetInt();
 	if (vWidget.HasMember("ThickBorder")) ThickBorder = vWidget["ThickBorder"].GetBool();
 	if (vWidget.HasMember("IsPassword")) IsPassword = vWidget["IsPassword"].GetBool();
+	if (vWidget.HasMember("Numeric")) Numeric = vWidget["Numeric"].GetBool();
 }
 
 CField::~CField() {
@@ -291,6 +293,17 @@ void CField::OnTextInput(SDL_Event& e) {
 		for (int i = 0; i < passwordText.length(); i++) Text.push_back('*');
 	}
 	else Text += newText;
+
+	if (MaxLength > 0 && Text.length() > MaxLength) {
+		Text = Text.substr(0, MaxLength);
+	}
+	if (Numeric) {
+		for (int i = Text.length(); i > 0; i--) {
+			char c = Text[i - 1];
+			if (!(c >= '0' && c <= '9')) Text.erase(Text.begin() + i - 1);
+		}
+	}
+
 	RenderText();
 	cursorPos += newText.length();
 }

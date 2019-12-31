@@ -80,6 +80,24 @@ public:
 	int GetDexterityPoint()	{ return dexterity; }
 	void SetDexterityPoint(int point);
 
+	int GetCash() { return cash; }
+
+	int GetReputation() { return reputation; }
+
+	int GetVirtue() { return virtue; }
+
+	int GetWuxing() { return wuxing; }
+	std::string GetWuxingTitle();
+
+	int GetKungfu() { return kungfu; }
+	std::string GetKungfuTitle();
+
+	int GetPetRaising() { return petRaising; }
+	std::string GetPetRaisingTitle();
+
+	int GetThievery() { return thievery; }
+	std::string GetThieveryTitle();
+
 public: // Pets
 	void Player::addPet(Pet* newPet);
 	Pet* Player::setActivePet(int id);

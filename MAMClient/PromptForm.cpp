@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PromptForm.h"
 
+#include "CustomEvents.h"
 #include "MainWindow.h"
 #include "Label.h"
 #include "Button.h"

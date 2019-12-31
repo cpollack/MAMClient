@@ -123,14 +123,4 @@ protected: //GUI textures
 	CButton *btnMinimize;
 };
 
-//Custom SDL User Events
-extern Uint32 CUSTOMEVENT_WINDOW;
-enum {
-	WINDOW_CLOSE,
-	WINDOW_CLOSE_OK,
-	WINDOW_CLOSE_BACK,
-	WINDOW_CLOSE_PROMPT_OK,
-	WINDOW_CLOSE_PROMPT_ERROR
-};
-
 extern std::vector<CWindow*> Windows;

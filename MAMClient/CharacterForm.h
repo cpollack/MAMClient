@@ -12,6 +12,8 @@ class CCharacterForm : public CWindow {
 public:
 	CCharacterForm();
 
+	void handleEvent(SDL_Event& e);
+
 private:
 	void HookWidgets();
 	void LoadPortrait();
@@ -54,6 +56,8 @@ public: //Event Hooks
 	void btnReset_Click(SDL_Event& e);
 	void btnApply_Click(SDL_Event& e);
 
+	void btnUpdateNickname_Click(SDL_Event& e);
+
 private: //Widgets
 	CTabControl *tabMain;
 	CImageBox *imgPortrait;
@@ -73,4 +77,8 @@ private: //Widgets
 	CButton *btnReset, *btnApply;
 
 	//Additional tab
+	CField *fldNickname;
+	CButton *btnUpdateNickname;
+	CLabel *lblGuild, *lblGuildRank, *lblReputation, *lblVirtue;
+	CLabel *lblThievery, *lblThieveryTitle, *lblKungfu, *lblKungfuTitle, *lblWuxing, *lblWuxingTitle, *lblPetRaising, *lblPetRaisingTitle;
 };

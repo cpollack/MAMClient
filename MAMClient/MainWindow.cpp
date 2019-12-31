@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MainWindow.h"
 #include "Global.h"
+#include "CustomEvents.h"
 
 #include "Client.h"
 #include "GUI.h"
@@ -655,6 +656,12 @@ void CMainWindow::main_render_ui() {
 }
 
 void CMainWindow::main_handleEvent(SDL_Event& e) {
+	if (e.type == CUSTOMEVENT_PLAYER) {
+		if (e.user.code == PLAYER_RENAME) {
+			lblNickName->SetText(player->getNickName());
+		}
+	}
+
 	if (battle && battle->getMode() != bmInit) {
 		if (battle->handleEvent(e)) return;
 	}

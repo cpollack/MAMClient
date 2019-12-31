@@ -56,6 +56,8 @@ protected:
 
 public:
 	std::string getNickName();
+	void SetNickName(std::string newName) { NickName = newName; }
+
 	std::string getSpouse();
 	
 	int getLevel();

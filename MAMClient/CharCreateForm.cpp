@@ -4,6 +4,7 @@
 #include "PromptForm.h"
 
 #include "GameLibrary.h"
+#include "CustomEvents.h"
 #include "INI.h"
 #include "MessageManager.h"
 

@@ -233,6 +233,31 @@ int Player::GetDexterity() {
 }
 
 
+std::string Player::GetWuxingTitle() {
+	std::string title;
+
+	return title;
+}
+
+std::string Player::GetKungfuTitle() {
+	std::string title;
+
+	return title;
+}
+
+std::string Player::GetPetRaisingTitle() {
+	std::string title;
+
+	return title;
+}
+
+std::string Player::GetThieveryTitle() {
+	std::string title;
+
+	return title;
+}
+
+
 /*void Player::loadEffects() {
 	INI commonIni("INI\\Common.ini", "FlashDown");
 	std::vector<std::string> frames;

@@ -156,9 +156,3 @@ protected:
 };
 
 bool operator<(const Widget &s1, const Widget &s2);
-
-extern Uint32 CUSTOMEVENT_WIDGET;
-enum {
-	WIDGET_FOCUS_GAINED,
-	WIDGET_FOCUS_LOST
-};

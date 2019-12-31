@@ -2,8 +2,6 @@
 #include "Widget.h"
 #include "Window.h"
 
-Uint32 CUSTOMEVENT_WIDGET = SDL_RegisterEvents(1);
-
 CWidget::CWidget(CWindow* window) {
 	Window = window;
 	renderer = Window->renderer;
@@ -75,6 +73,7 @@ void CWidget::RenderText() {
 
 	TTF_SetFontStyle(font, fontStyle);
 
+	if (Text.length() == 0) Text = " ";
 	if (TextWrapWidth > 0) lSurface = TTF_RenderText_Blended_Wrapped(font, Text.c_str(), fontColor, TextWrapWidth);
 	else lSurface = TTF_RenderText_Blended(font, Text.c_str(), fontColor);
 

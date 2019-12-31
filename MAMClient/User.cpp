@@ -280,6 +280,14 @@ std::string User::GetRankText() {
 
 	switch (Rank) {
 	case 0: //Mortal
+		if (Level > 1100) rankText = "Senior Master";
+		else if (Level > 900) rankText = "Junior Master";
+		else if (Level > 750) rankText = "Senior Knight";
+		else if (Level > 500) rankText = "Junior Knight";
+		else if (Level > 300) rankText = "Basic Knight";
+		else if (Level > 150) rankText = "Senior Warrior";
+		else if (Level > 50) rankText = "Junior Warrior";
+		else rankText = "Basic Warrior";
 		break;
 	case 1: 
 		rankText = "Basic God";
@@ -294,27 +302,28 @@ std::string User::GetRankText() {
 		rankText = "Super ";
 		break;
 	case 5:
+		rankText = "Master ";
 		switch (MasterRank) {
 		case 1:
-			rankText += "Pet Raising Master ";
+			rankText += "Pet Raising ";
 			break;
 		case 2:
-			rankText += "Cultivation Master ";
+			rankText += "Cultivation ";
 			break;
 		case 3:
-			rankText += "Virtue Master ";
+			rankText += "Virtue ";
 			break;
 		case 4:
-			rankText += "Wuxing Master ";
+			rankText += "Wuxing ";
 			break;
 		case 5:
-			rankText += "Kugnfu Master ";
+			rankText += "Kugnfu ";
 			break;
 		case 6:
-			rankText += "Thievery Master ";
+			rankText += "Thievery ";
 			break;
 		case 7:
-			rankText += "Reputation Master ";
+			rankText += "Reputation ";
 			break;
 		}
 		break;

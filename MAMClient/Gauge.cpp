@@ -36,7 +36,7 @@ CGauge::CGauge(CWindow* window, std::string name, int x, int y) : CWidget(window
 CGauge::CGauge(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWidget) {
 	if (!vWidget.IsObject()) return;
 
-	//if (vWidget.HasMember("Text")) SetText(vWidget["Text"].GetString());
+	if (vWidget.HasMember("ShowLabel")) ShowLabel = vWidget["ShowLabel"].GetBool();
 }
 
 
@@ -50,14 +50,6 @@ void CGauge::Render() {
 
 	if (usingImages) Render_Textures();
 	else Render_Draw();
-
-	//render text?
-	//SDL_Rect textRect = { x, y, fontRect.w, fontRect.h };
-	//SDL_RenderCopy(renderer, fontTexture, NULL, &textRect);
-	//if (lblGauge) {
-	//	lblGauge->setPosition(x + (width / 2), y + (height / 2) - (lblGauge->fontRect.h / 2));
-	//	lblGauge->render();
-	//}
 }
 
 void CGauge::Render_Textures() {
@@ -103,7 +95,19 @@ void CGauge::Render_Textures() {
 }
 
 void CGauge::Render_Draw() {
-	//
+	// BG > FG > Text
+	SDL_RenderCopy(renderer, backgroundTexture, NULL, &widgetRect);
+
+	SDL_Rect fgRect_src = { 0, 0, ((Width - 4) * fillPerc), Height - 4 };
+	SDL_Rect fgRect_dest = { X + 2, Y + 2, fgRect_src.w, fgRect_src.h };
+	SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
+
+	if (ShowLabel) {
+		SDL_Rect textRect = { X, Y, fontRect.w, fontRect.h };
+		textRect.x += (Width / 2) - (fontRect.w / 2);
+		textRect.y += (Height / 2) - (fontRect.h / 2);
+		SDL_RenderCopy(renderer, fontTexture, NULL, &textRect);
+	}
 }
 
 void CGauge::HandleEvent(SDL_Event& e) {
@@ -147,6 +151,7 @@ void CGauge::CreateGaugeTexture() {
 	if (increaseTexture) SDL_DestroyTexture(increaseTexture);
 	if (decreaseTexture) SDL_DestroyTexture(decreaseTexture);
 
+	SDL_Texture* priorTarget = SDL_GetRenderTarget(renderer);
 	SDL_Color buttonColor = gui->buttonColor;
 	/*
 	outer: 004080
@@ -158,11 +163,12 @@ void CGauge::CreateGaugeTexture() {
 	SDL_SetRenderDrawColor(renderer, buttonColor.r, buttonColor.g, buttonColor.b, buttonColor.a);
 	SDL_RenderClear(renderer);
 
-	if (!fontTexture) RenderText();
+	if (ShowLabel && !fontTexture) RenderText();
 
 	SDL_SetRenderTarget(renderer, NULL);
 
-	SDL_Color bbColor = gui->buttonBorderColor;
+	SDL_Color bbColor = { 0x00, 0x40, 0x80, 0xFF };
+	SDL_Color fillColor = { 0x33, 0x66, 0x99, 0xFF };
 	SDL_Rect renderRect = { 0, 0, Width, Height };
 
 	//Background Texture
@@ -177,13 +183,9 @@ void CGauge::CreateGaugeTexture() {
 	}
 	else {
 		backgroundTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, Width, Height);
+		SDL_SetTextureBlendMode(backgroundTexture, SDL_BLENDMODE_BLEND);
 		SDL_SetRenderTarget(renderer, backgroundTexture);
-		/*SDL_RenderCopy(renderer, mainTexture, NULL, &renderRect);
-		hlineRGBA(renderer, 0, Width - 1, 0, bbColor.r, bbColor.g, bbColor.b, bbColor.a);
-		hlineRGBA(renderer, 0, Width - 1, Height - 1, bbColor.r, bbColor.g, bbColor.b, bbColor.a);
-		vlineRGBA(renderer, 0, 0, Height - 1, bbColor.r, bbColor.g, bbColor.b, bbColor.a);
-		vlineRGBA(renderer, Width - 1, 0, Height - 1, bbColor.r, bbColor.g, bbColor.b, bbColor.a);
-		SDL_SetRenderTarget(renderer, NULL);*/
+		rectangleRGBA(renderer, 0, 0, Width - 1, Height - 1, bbColor.r, bbColor.g, bbColor.b, bbColor.a);
 	}
 
 	//Foreground Texture
@@ -197,12 +199,11 @@ void CGauge::CreateGaugeTexture() {
 		}
 	}
 	else {
-		foregroundTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, Width, Height);
+		foregroundTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, Width-4, Height-4);
+		SDL_SetTextureBlendMode(foregroundTexture, SDL_BLENDMODE_BLEND);
 		SDL_SetRenderTarget(renderer, foregroundTexture);
-		/*SDL_RenderCopy(renderer, mainTexture, NULL, &renderRect);
-		hlineRGBA(renderer, 0, Width - 1, 0, bbColor.r, bbColor.g, bbColor.b, bbColor.a);
-		vlineRGBA(renderer, 0, 0, Height - 1, bbColor.r, bbColor.g, bbColor.b, bbColor.a);
-		SDL_SetRenderTarget(renderer, NULL);*/
+		SDL_SetRenderDrawColor(renderer, fillColor.r, fillColor.g, fillColor.b, fillColor.a);
+		SDL_RenderClear(renderer);
 	}
 
 	//Increase and Decrease Textures - specific to when using images
@@ -230,6 +231,7 @@ void CGauge::CreateGaugeTexture() {
 
 	SDL_DestroyTexture(mainTexture);
 
+	SDL_SetRenderTarget(renderer, priorTarget);
 	Loaded = true;
 }
 

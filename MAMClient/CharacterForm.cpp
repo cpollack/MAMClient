@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "CharacterForm.h"
 #include "GameLibrary.h"
+#include "CustomEvents.h"
+
+#include "PromptForm.h"
 
 #include "Client.h"
 #include "Player.h"
 #include "pAttributeUpdate.h"
+#include "pRename.h"
 
 #include "Texture.h"
 #include "Sprite.h"
@@ -41,6 +45,23 @@ CCharacterForm::CCharacterForm() : CWindow("CharacterForm.JSON") {
 	registerEvent("fldPointDexterity", "OnChange", std::bind(&CCharacterForm::fldPointDexterity_OnChange, this, std::placeholders::_1));
 	registerEvent("btnReset", "Click", std::bind(&CCharacterForm::btnReset_Click, this, std::placeholders::_1));
 	registerEvent("btnApply", "Click", std::bind(&CCharacterForm::btnApply_Click, this, std::placeholders::_1));
+
+	registerEvent("btnUpdateNickname", "Click", std::bind(&CCharacterForm::btnUpdateNickname_Click, this, std::placeholders::_1));
+}
+
+void CCharacterForm::handleEvent(SDL_Event& e) {
+	CWindow::handleEvent(e);
+
+	//Events not bound by a window ID
+	if (e.type == CUSTOMEVENT_PLAYER) {
+		if (e.user.code == PLAYER_RENAME) {
+			//Server rename response confirmation received
+			LoadAdditionalTab();
+			doPrompt("Confirm", "Nickname has been updated successfully!");
+		}
+	}
+
+	if (e.window.windowID != windowID) return;
 }
 
 void CCharacterForm::HookWidgets() {
@@ -92,6 +113,24 @@ void CCharacterForm::HookWidgets() {
 	btnSubDexterity = (CButton*)GetWidget("btnSubDexterity");
 	btnReset = (CButton*)GetWidget("btnReset");
 	btnApply = (CButton*)GetWidget("btnApply");
+
+	//Additional Tab
+	fldNickname = (CField*)GetWidget("fldNickname");
+	btnUpdateNickname = (CButton*)GetWidget("btnUpdateNickname");
+
+	lblGuild = (CLabel*)GetWidget("lblGuild");
+	lblGuildRank = (CLabel*)GetWidget("lblGuildRank");
+	lblReputation = (CLabel*)GetWidget("lblReputation");
+	lblVirtue = (CLabel*)GetWidget("lblVirtue");
+
+	lblThievery = (CLabel*)GetWidget("lblThievery");
+	lblThieveryTitle = (CLabel*)GetWidget("lblThieveryTitle");
+	lblKungfu = (CLabel*)GetWidget("lblKungfu");
+	lblKungfuTitle = (CLabel*)GetWidget("lblKungfuTitle");
+	lblWuxing = (CLabel*)GetWidget("lblWuxing");
+	lblWuxingTitle = (CLabel*)GetWidget("lblWuxingTitle");
+	lblPetRaising = (CLabel*)GetWidget("lblPetRaising");
+	lblPetRaisingTitle = (CLabel*)GetWidget("lblPetRaisingTitle");
 }
 
 void CCharacterForm::LoadPortrait() {
@@ -156,7 +195,21 @@ void CCharacterForm::LoadAttributeTab() {
 }
 
 void CCharacterForm::LoadAdditionalTab() {
+	fldNickname->SetText(player->getNickName());
 
+	lblGuild->SetText(player->getGuild());
+	lblGuildRank->SetText(player->getGuildTitle());
+	lblReputation->SetText(formatInt(player->GetReputation()));
+	lblVirtue->SetText(formatInt(player->GetVirtue()));
+
+	lblThievery->SetText(formatInt(player->GetThievery()));
+	lblThieveryTitle->SetText(player->GetThieveryTitle());
+	lblKungfu->SetText(formatInt(player->GetKungfu()));
+	lblKungfuTitle->SetText(player->GetKungfuTitle());
+	lblWuxing->SetText(formatInt(player->GetWuxing()));
+	lblWuxingTitle->SetText(player->GetWuxingTitle());
+	lblPetRaising->SetText(formatInt(player->GetPetRaising()));
+	lblPetRaisingTitle->SetText(player->GetPetRaisingTitle());
 }
 
 void CCharacterForm::ResetPoints() {
@@ -196,6 +249,7 @@ void CCharacterForm::btnAddLife_Click(SDL_Event& e) {
 
 void CCharacterForm::btnSubLife_Click(SDL_Event& e) {
 	if (points_rem >= points) return;
+	if (point_life <= 0) return;
 	fldPoints->SetText(std::to_string(++points_rem));
 	fldPointLife->SetText(std::to_string(--point_life));
 }
@@ -222,6 +276,7 @@ void CCharacterForm::btnAddMana_Click(SDL_Event& e) {
 
 void CCharacterForm::btnSubMana_Click(SDL_Event& e) {
 	if (points_rem >= points) return;
+	if (point_mana <= 0) return;
 	fldPoints->SetText(std::to_string(++points_rem));
 	fldPointMana->SetText(std::to_string(--point_mana));
 }
@@ -248,6 +303,7 @@ void CCharacterForm::btnAddAttack_Click(SDL_Event& e) {
 
 void CCharacterForm::btnSubAttack_Click(SDL_Event& e) {
 	if (points_rem >= points) return;
+	if (point_attack <= 0) return;
 	fldPoints->SetText(std::to_string(++points_rem));
 	fldPointAttack->SetText(std::to_string(--point_attack));
 }
@@ -274,6 +330,7 @@ void CCharacterForm::btnAddDefence_Click(SDL_Event& e) {
 
 void CCharacterForm::btnSubDefence_Click(SDL_Event& e) {
 	if (points_rem >= points) return;
+	if (point_defence <= 0) return;
 	fldPoints->SetText(std::to_string(++points_rem));
 	fldPointDefence->SetText(std::to_string(--point_defence));
 }
@@ -300,6 +357,7 @@ void CCharacterForm::btnAddDexterity_Click(SDL_Event& e) {
 
 void CCharacterForm::btnSubDexterity_Click(SDL_Event& e) {
 	if (points_rem >= points) return;
+	if (point_dexterity <= 0) return;
 	fldPoints->SetText(std::to_string(++points_rem));
 	fldPointDexterity->SetText(std::to_string(--point_dexterity));
 }
@@ -348,3 +406,21 @@ void CCharacterForm::btnApply_Click(SDL_Event& e) {
 	LoadAttributeTab();
 }
 
+void CCharacterForm::btnUpdateNickname_Click(SDL_Event& e) {
+	std::string nickname = fldNickname->GetText();
+	if (nickname.length() == 0) {
+		doPromptError("Error", "Nickname cannot be blank.");
+		return;
+	}
+	if (nickname.length() > 16) {
+		doPromptError("Error", "Nickname cannot be more than 16 characters.");
+		return;
+	}
+
+	//Nickname has changed
+	if (nickname.compare(player->getNickName()) == 0) return;
+
+	//send nickname update
+	pRename *rename = new pRename(player->getID(), rmNickname, nickname);
+	gClient.addPacket(rename);
+}

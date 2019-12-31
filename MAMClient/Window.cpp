@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Window.h"
 #include "GUI.h"
+#include "CustomEvents.h"
 
 #include "Widget.h"
 #include "Label.h"
@@ -17,8 +18,6 @@
 #include "include/rapidjson/filereadstream.h"
 
 using namespace rapidjson;
-
-Uint32 CUSTOMEVENT_WINDOW = SDL_RegisterEvents(1);
 
 CWindow::CWindow() {
 	Type = FT_DEFAULT;

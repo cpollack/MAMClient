@@ -15,6 +15,7 @@
 #include "MessageManager.h"
 
 #include "Global.h"
+#include "CustomEvents.h"
 
 //Temp
 #include "TestForm.h"
@@ -125,7 +126,7 @@ int main(int argc, char *args[]) {
 				}
 
 				//Process user events for all windows in reverse
-				if (e.type == SDL_USEREVENT) {
+				if (e.type == SDL_USEREVENT || e.type >= FIRSTCUSTOMEVENT) {
 					for (int i = Windows.size() - 1; i >= 0; i--) {
 						Windows[i]->handleEvent(e);
 					}
