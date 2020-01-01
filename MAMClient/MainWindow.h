@@ -116,6 +116,7 @@ private: // Main
 	SDL_Rect gameRect;
 	CPromptForm *dcPromptForm = nullptr;
 
+	CLabel *lblCoordX, *lblCoordY;
 	CLabel *lblName, *lblNickName, *lblLevel;
 	CLabel *lblSpouse, *lblCash, *lblReputation;
 	CLabel *lblRank, *lblGuild, *lblGuildRank;

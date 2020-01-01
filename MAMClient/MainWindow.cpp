@@ -582,6 +582,9 @@ void CMainWindow::main_init_widgets() {
 	addMainButton("btnFriendList", surfaceRect.x + 717, surfaceRect.y + 1, 41, 39, "email-1.jpg", "email-2.jpg");
 
 	//Labels
+	lblCoordX = addMainLabel("lblCoordX", surfaceRect.x + 220, surfaceRect.y + 10, 20, 14, "", true);
+	lblCoordY = addMainLabel("lblCoordY", surfaceRect.x + 250, surfaceRect.y + 10, 20, 14, "", true);
+
 	int col1 = 382, col2 = 518, col3 = 660;
 	int row1 = 52, row2 = 76, row3 = 100;
 	addMainLabel("lblStaticName", surfaceRect.x + col1, surfaceRect.y + row1, 40, 14, "Name", true);
@@ -781,8 +784,8 @@ void CMainWindow::setUserDetailsLabels(User* user) {
 }
 
 void CMainWindow::setMapCoordLabels(SDL_Point coord) {
-	//labels["lblCoordX"]->renderText(std::to_string(coord.x));
-	//labels["lblCoordY"]->renderText(std::to_string(coord.y));
+	lblCoordX->SetText(std::to_string(coord.x));
+	lblCoordY->SetText(std::to_string(coord.y));
 }
 
 void CMainWindow::setPlayerHealthGauge(int val) {

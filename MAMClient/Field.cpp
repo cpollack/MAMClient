@@ -7,13 +7,13 @@ CField::CField(CWindow* window, std::string name, int x, int y) : CWidget(window
 	X = x;
 	Y = y;
 
-	fontColor = gui->buttonFontColor;
+	fontColor = gui->fontColor;
 }
 
 CField::CField(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWidget) {
 	if (!vWidget.IsObject()) return;
 
-	fontColor = gui->buttonFontColor;
+	fontColor = gui->fontColor;
 	if (vWidget.HasMember("Text")) SetText(vWidget["Text"].GetString());
 	if (vWidget.HasMember("MaxLength")) MaxLength = vWidget["MaxLength"].GetInt();
 	if (vWidget.HasMember("ThickBorder")) ThickBorder = vWidget["ThickBorder"].GetBool();
