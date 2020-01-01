@@ -261,6 +261,42 @@ void CWindow::handleEvent(SDL_Event& e)
 		}
 	}
 
+	if (Draggable) {
+		int x, y;
+		if (e.type == SDL_MOUSEBUTTONDOWN) {
+			SDL_GetMouseState(&x, &y);
+			//Initiate Drag
+			SDL_Rect dragRect{ 0, 0, Width, 20 };
+			if (doesPointIntersect(dragRect, x, y)) {
+				if (!dragging) {
+					dragging = true;
+					SDL_CaptureMouse(SDL_TRUE);
+					int tX, tY;
+					SDL_GetWindowPosition(window, &tX, &tY);
+					SDL_GetGlobalMouseState(&drag_start_x, &drag_start_y);
+					drag_start_x -= tX;
+					drag_start_y -= tY;
+				}
+			}
+		}
+
+		if (dragging && e.type == SDL_MOUSEBUTTONUP) {
+			dragging = false;
+			SDL_CaptureMouse(SDL_FALSE);
+		}
+
+		if (dragging && e.type == SDL_MOUSEMOTION) {
+			//Dragging above window doesn't register mouse motion as it isn't in window area. Fix?
+			SDL_GetGlobalMouseState(&x, &y);
+
+			int newX, newY;
+			newX = x - drag_start_x;
+			newY = y - drag_start_y;
+			SDL_SetWindowPosition(window, newX, newY);
+			return;
+		}
+	}
+
 	//If an event was detected for this window
 	if (e.type == SDL_WINDOWEVENT) {
 		//Caption update flag
@@ -429,6 +465,10 @@ int CWindow::GetHeight() {
 	return Height;
 }
 
+void CWindow::SetParent(CWindow* wParent) {
+	parent = wParent;
+}
+
 void CWindow::SetTitle(std::string title) {
 	CLabel *lblTitle = (CLabel*)GetWidget("lblTitle");
 	Title = title;
@@ -495,4 +535,15 @@ void CWindow::btnMinimize_Click(SDL_Event& e) {
 
 void CWindow::btnClose_Click(SDL_Event& e) {
 	CloseWindow = true;
+
+	if (CUSTOMEVENT_WINDOW != ((Uint32)-1)) {
+		SDL_Event event;
+		SDL_zero(event);
+		event.type = CUSTOMEVENT_WINDOW;
+		if (parent) event.window.windowID = parent->GetWindowID();
+		event.user.code = WINDOW_CLOSE;
+		event.user.data1 = this;
+		event.user.data2 = nullptr;
+		SDL_PushEvent(&event);
+	}
 }

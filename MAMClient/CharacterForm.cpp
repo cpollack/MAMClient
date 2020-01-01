@@ -169,7 +169,7 @@ void CCharacterForm::LoadSprite() {
 
 void CCharacterForm::LoadOverviewTab() {
 	lblName->SetText(player->getName());
-	std::string sLevRank = "Level " + formatInt(player->getLevel()) + " " + player->GetRankText();
+	std::string sLevRank = "Level " + formatInt(player->GetLevel()) + " " + player->GetRankText();
 	lblLevelRank->SetText(sLevRank);
 	lblMainCult->SetText(formatInt(player->GetCultivation()));
 
@@ -181,7 +181,7 @@ void CCharacterForm::LoadOverviewTab() {
 }
 
 void CCharacterForm::LoadAttributeTab() {
-	lblLevel->SetText(formatInt(player->getLevel()));
+	lblLevel->SetText(formatInt(player->GetLevel()));
 	gaugeExp->set(player->GetExperience(), player->GetLevelUpExperience());
 
 	gaugeLife->set(player->GetCurrentLife(), player->GetMaxLife());

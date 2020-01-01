@@ -26,6 +26,7 @@ public:
 	CLoginForm();
 	~CLoginForm();
 
+	void handleEvent(SDL_Event &e);
 	void step();
 
 private: //Login Handling

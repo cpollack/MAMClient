@@ -16,7 +16,7 @@ CMessageForm::CMessageForm() : CWindow(400, 100) {
 	newPos.y = pos.y + (size.y / 2) - (Height / 2);
 	SDL_SetWindowPosition(window, newPos.x, newPos.y);
 
-	Dragable = false;
+	Draggable = false;
 
 	lblMessage = new CLabel(this, "lblMessage", 20, 35);
 	//lblMessage->SetRenderer(renderer);

@@ -271,10 +271,6 @@ std::string User::getSpouse() {
 	return Spouse;
 }
 
-int User::getLevel() {
-	return Level;
-}
-
 std::string User::GetRankText() {
 	std::string rankText;
 

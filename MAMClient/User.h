@@ -60,7 +60,7 @@ public:
 
 	std::string getSpouse();
 	
-	int getLevel();
+	int GetLevel() { return Level; }
 	int GetRank() { return Rank;  }
 	std::string GetRankText();
 	int GetGender() { return Gender;  }

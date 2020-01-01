@@ -393,7 +393,7 @@
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
     <ClCompile Include="CustomEvents.cpp">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -707,7 +707,7 @@
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
     <ClInclude Include="CustomEvents.h">
-      <Filter>Header Files\Core</Filter>
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

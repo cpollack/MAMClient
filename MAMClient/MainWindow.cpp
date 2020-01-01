@@ -112,6 +112,7 @@ void CMainWindow::render() {
 void CMainWindow::handleEvent(SDL_Event& e) {
 	CWindow::handleEvent(e);
 	switch (Mode) {
+	case MFM_LOGIN: login_handleEvent(e); break;
 	case MFM_CREATE_SELECT: select_handleEvent(e); break;
 	case MFM_CREATE_DETAILS: details_handleEvent(e); break;
 	case MFM_MAIN: main_handleEvent(e); break;
@@ -259,6 +260,14 @@ void CMainWindow::login_render() {
 	SDL_RenderCopy(renderer, logo->texture, NULL, &logo->rect);
 }
 
+void CMainWindow::login_handleEvent(SDL_Event& e) {
+	if (e.type == CUSTOMEVENT_WINDOW) {
+		if (e.user.code == WINDOW_CLOSE_PROMPT_OK && e.user.data1 == loginForm) {
+			applicationClose();
+		}
+	}
+}
+
 void CMainWindow::login_step() {
 	//Login successful, do main or character creation
 	if (gClient.mainReady) {
@@ -267,6 +276,8 @@ void CMainWindow::login_step() {
 		if (player) changeMode(MFM_MAIN);
 		else changeMode(MFM_CREATE_SELECT);
 	}
+
+	//
 }
 
 void CMainWindow::login_cleanup() {
@@ -510,7 +521,7 @@ void CMainWindow::details_step() {
 /* Main Form - Main Begin */
 
 void CMainWindow::main_init() {
-	SetTitle("Monster & Me - [ServerName] - " + std::string(version) + " ("  + versionDate + ")");
+	SetTitle("Monster & Me - " + strServer + " - " + std::string(version) + " (" + versionDate + ")");
 	SetUseClose(true);
 	SetUseMinimize(true);
 
@@ -587,7 +598,7 @@ void CMainWindow::main_init_widgets() {
 	lblCash = addMainLabel("lblCash", surfaceRect.x + col2 + 38, surfaceRect.y + row2, 105, 14, "1");
 	lblReputation = addMainLabel("lblReputation", surfaceRect.x + col2 + 73, surfaceRect.y + row3, 75, 14, "2");
 	
-	lblRank = addMainLabel("lblRank", surfaceRect.x + col3, surfaceRect.y + row1, 120, 14, "Mortal", true);
+	lblRank = addMainLabel("lblRank", surfaceRect.x + col3, surfaceRect.y + row1, 118, 14, "Mortal", false);
 	addMainLabel("lblStaticGuild", surfaceRect.x + col3, surfaceRect.y + row2, 32, 14, "Guild", true);
 	addMainLabel("lblStaticGuildRank", surfaceRect.x + col3, surfaceRect.y + row3, 50, 14, "Position", true);
 	lblGuild = addMainLabel("lblGuild", surfaceRect.x + col3 + 37, surfaceRect.y + row2, 90, 14, "");
@@ -662,6 +673,14 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		}
 	}
 
+	//After Discharge Prompt
+	if (e.type == CUSTOMEVENT_WINDOW) {
+		if (e.user.code == WINDOW_CLOSE_PROMPT_OK && e.user.data1 == dcPromptForm) {
+			dcPromptForm = nullptr;
+			changeMode(MFM_LOGIN);
+		}
+	}
+
 	if (battle && battle->getMode() != bmInit) {
 		if (battle->handleEvent(e)) return;
 	}
@@ -674,6 +693,7 @@ void CMainWindow::main_step() {
 		if (!dcPromptForm) {
 			dcPromptForm = new CPromptForm();
 			dcPromptForm->SetMessage("Error: Connection to the server has been interrupted. Please re-log in.");
+			dcPromptForm->SetParent(this);
 			Windows.push_back(dcPromptForm);
 		}
 	}
@@ -743,14 +763,13 @@ void CMainWindow::setPlayerDetailsLabels() {
 	lblNickName->SetText(player->getNickName());
 	lblSpouse->SetText(player->getSpouse());
 
-	int level, cultivation;
-	level = player->getLevel();
-	//cultivation = player->cultivation;
-	lblLevel->SetText(std::to_string(level));
+	std::string strLevelCult = formatInt(player->GetLevel()) + "/" + formatInt(player->GetCultivation());
+	lblLevel->SetText(strLevelCult);
 
-	lblCash->SetText(std::to_string(player->cash));
+	lblCash->SetText(formatInt(player->GetCash()));
+	lblReputation->SetText(formatInt(player->GetReputation()));
 
-	lblRank->SetText(player->rankDesc);
+	lblRank->SetText(player->GetRankText());
 	lblGuild->SetText(player->getGuild());
 	lblGuildRank->SetText(player->getGuildTitle());
 }

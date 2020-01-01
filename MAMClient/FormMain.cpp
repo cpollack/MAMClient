@@ -127,7 +127,7 @@ void FormMain::initMain() {
 	createLabel("nickname", "Nickname", surfacePosX + 382, surfacePosY + 76, true);
 	createLabel("nickname_value", player->getNickName(), surfacePosX + 455, surfacePosY + 76, false);
 	createLabel("level", "Level", surfacePosX + 382, surfacePosY + 100, true);
-	createLabel("level_value", std::to_string(player->getLevel()), surfacePosX + 427, surfacePosY + 100, false);
+	createLabel("level_value", std::to_string(player->GetLevel()), surfacePosX + 427, surfacePosY + 100, false);
 
 	createLabel("spouse", "Spouse", surfacePosX + 520, surfacePosY + 52, true);
 	createLabel("spouse_value", player->getSpouse(), surfacePosX + 580, surfacePosY + 52, false);

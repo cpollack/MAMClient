@@ -52,9 +52,11 @@ public:
 	//bool Minimized();
 	//bool Shown();
 
-protected:
-	//Window data
+protected: //Window Properties
 	SDL_Window* window;
+	CWindow* parent = nullptr;
+	void SetParentFromStack();
+
 public:	SDL_Renderer* renderer;
 protected:	int windowID;
 	int Type;
@@ -71,9 +73,12 @@ protected:	int windowID;
 	bool shown;
 
 	//Window properties
-	bool Dragable;
 	bool ShowClose = true;
 	bool ShowMinimize = false;
+
+	bool Draggable = true;
+	bool dragging;
+	int drag_start_x, drag_start_y;
 
 	SDL_Rect getDstRect(Texture* texture, int x, int y);
 	
@@ -84,6 +89,7 @@ public: //Accessors
 	int GetWidth();
 	int GetHeight();
 
+	void SetParent(CWindow* wParent);
 	void SetTitle(std::string title);
 	void SetUseClose(bool close);
 	void SetUseMinimize(bool min);

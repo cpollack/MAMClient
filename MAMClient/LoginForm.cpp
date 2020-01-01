@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LoginForm.h"
+#include "CustomEvents.h"
 
 #include "Client.h"
 #include "Button.h"
@@ -32,16 +33,23 @@ CLoginForm::CLoginForm() : CWindow("LoginForm.JSON") {
 		fldAccount->SetText(defaultLogin);
 		SetFocus("fldPassword");
 	}
-
-	// TEMP - REMOVE
-	/*CField * fldPassword = (CField *)GetWidget("fldPassword");
-	fldPassword->SetText("Mznxbcv123");
-	loginState = lsStart;*/
 }
 
 CLoginForm::~CLoginForm() {
 	//Update config with changes to remember account settings
 	gClient.configIni->writeToFile();
+}
+
+void CLoginForm::handleEvent(SDL_Event &e) {
+	CWindow::handleEvent(e);
+
+	if (e.window.windowID != windowID) return;
+	if (e.type == CUSTOMEVENT_WINDOW) {
+		if (e.user.code == WINDOW_CLOSE && e.user.data1 == messageForm) {
+			messageForm = nullptr;
+			loginState = lsNone;
+		}
+	}
 }
 
 void CLoginForm::step() {
@@ -102,6 +110,7 @@ void CLoginForm::handleLogin() {
 		messageForm = new CMessageForm();
 		messageForm->SetTitle("Logging In");
 		messageForm->SetMessage("Connecting to the Account Server.");
+		messageForm->SetUseClose(true);
 		Windows.push_back(messageForm);
 
 		loginState = lsConnectAccount;
@@ -200,7 +209,9 @@ void CLoginForm::handleLogin() {
 }
 
 void CLoginForm::closeMessage() {
-	if (messageForm) messageForm->CloseWindow = true;
+	if (messageForm) {
+		messageForm->CloseWindow = true;
+	}
 }
 
 
@@ -208,6 +219,7 @@ void CLoginForm::promptError(std::string errorText) {
 	CPromptForm *prompt = new CPromptForm();
 	prompt->SetTitle("Login Error");
 	prompt->SetMessage(errorText);
+	prompt->SetParent(this);
 	Windows.push_back(prompt);
 }
 

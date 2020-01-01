@@ -100,5 +100,6 @@ private:
 };
 
 extern Client gClient;
+extern std::string strServer;
 
 #endif

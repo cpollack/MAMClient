@@ -53,6 +53,7 @@ private: // Login
 	void login_init();
 	void login_cleanup();
 	void login_render();
+	void login_handleEvent(SDL_Event& e);
 	void login_step();
 
 public:

@@ -44,6 +44,8 @@
 #include "pBattleRound.h"
 #include "pBattleResult.h"
 
+std::string strServer = "";
+
 Client::Client() {
 	if (!fileExist("data.wdf")) {
 		showErrorMessage("Data.wdf is missing. The application will now shutdown.");
@@ -667,7 +669,7 @@ void Client::writePacketToLog(Packet* packet) {
 
 void Client::login(std::string user, std::string password, std::string server) {
 	//connectAccountServer();
-
+	strServer = server;
 	pLoginRequest* packet = new pLoginRequest((char*)user.c_str(), (char*)password.c_str(), (char*)server.c_str());
 	
 	packet->encrypt();
