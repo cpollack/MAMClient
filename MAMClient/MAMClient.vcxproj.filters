@@ -395,6 +395,9 @@
     <ClCompile Include="CustomEvents.cpp">
       <Filter>Source Files\Forms</Filter>
     </ClCompile>
+    <ClCompile Include="PetListForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -709,11 +712,19 @@
     <ClInclude Include="CustomEvents.h">
       <Filter>Header Files\Forms</Filter>
     </ClInclude>
+    <ClInclude Include="PetListForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MAMClient.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
 </Project>

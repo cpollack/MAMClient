@@ -42,6 +42,8 @@ pMapInfo::~pMapInfo() {
 
 
 void pMapInfo::process() {
+	std::string msg = "Loading Map " + std::string(mapName);
+	gClient.addToDebugLog(msg);
 	bool firstMap = true;
 	bool jumpMode = false;
 	SDL_Rect mapUiRect;
@@ -58,6 +60,7 @@ void pMapInfo::process() {
 	player->setCoord(SDL_Point{ mapX, mapY });
 
 	if (firstMap) {
+		gClient.addToDebugLog("First Map Loaded");
 		gClient.mainReady = true;
 
 		//On initial login, a petshop packet is always sent

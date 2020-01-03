@@ -26,6 +26,13 @@ public:
 	WdfHeader() : id('WDFP') {};
 };
 
+class DataBuffer {
+public:
+	DataBuffer(int size) { this->buffer = new BYTE[size]; this->size = size; }
+	~DataBuffer() { delete[] buffer; }
+	BYTE *buffer = nullptr;
+	int size = 0;
+};
 
 class WDF {
 public:
@@ -35,7 +42,7 @@ public:
 	int WDF::load();
 	void WDF::sortList();
 	WDF_Entry* WDF::findEntry(std::string entry);
-	void WDF::getFileData(std::string fileName, std::shared_ptr<byte> &buffer, int &size);
+	void WDF::getFileData(std::string fileName, std::shared_ptr<DataBuffer> &buffer, int &size);
 
 	bool WDF::isSorted();
 

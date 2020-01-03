@@ -60,31 +60,14 @@ pPlayerInfo::pPlayerInfo(int size, char* buf, char* encBuf) {
 
 	int pos = 86;
 	int stringCount = 0;
-	std::vector<char*> strings;
-	getByte(pos++, &stringCount);
-	if (stringCount > 0) {
-		for (int i = 0; i < stringCount; i++) {
-			int strSize = 0;
-			getByte(pos++, &strSize);
-			if (strSize > 0) {
-				char* newStr = new char[strSize+1]{ 0 };
-				getString(pos, newStr, strSize);
-				strings.push_back(newStr);
-				pos += strSize;
-			}
-			else strings.push_back(nullptr);
-		}
-	}
-	if (strings.size() < 6) {
-		while (strings.size() < 6)
-			strings.push_back(nullptr);
-	}
-	if (strings[0]) name = (BYTE*)strings[0];
-	if (strings[1]) nickName = (BYTE*)strings[1];
-	if (strings[2]) spouse = (BYTE*)strings[2];
-	if (strings[3]) syndicate = (BYTE*)strings[3];
-	if (strings[4]) branch = (BYTE*)strings[4];
-	if (strings[5]) position = (BYTE*)strings[5];
+	std::vector<std::string> strings = getStringPack(86);
+
+	if (strings.size() >= 0) strcpy(name,strings[0].c_str());
+	if (strings.size() >= 1) strcpy(nickName, strings[1].c_str());
+	if (strings.size() >= 2) strcpy(spouse, strings[2].c_str());
+	if (strings.size() >= 3) strcpy(syndicate, strings[3].c_str());
+	if (strings.size() >= 4) strcpy(branch, strings[4].c_str());
+	if (strings.size() >= 5) strcpy(position, strings[5].c_str());
 }
 
 
@@ -99,6 +82,7 @@ pPlayerInfo::~pPlayerInfo() {
 
 
 void pPlayerInfo::process() {
+	gClient.addToDebugLog("Loading player data from packet");
 	player->setPlayerInfo(this);
 	mainForm->setPlayerDetailsLabels();
 }

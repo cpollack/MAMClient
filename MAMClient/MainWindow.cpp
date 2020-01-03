@@ -17,6 +17,7 @@
 #include "PromptForm.h"
 #include "CharCreateForm.h"
 #include "CharacterForm.h"
+#include "PetListForm.h"
 
 #include "Gauge.h"
 #include "VideoFrame.h"
@@ -29,6 +30,8 @@ CMainWindow::CMainWindow() :CWindow() {
 	Height = 600;
 	init();
 	initUI();
+
+	SDL_SetWindowTitle(window, "Monster & Me: Reborn");
 
 	//Load Config
 	gClient.configIni = new INI("INI\\config.ini");
@@ -47,6 +50,7 @@ CMainWindow::CMainWindow() :CWindow() {
 
 CMainWindow::~CMainWindow() {
 	//
+	if (map) delete map;
 }
 
 bool CMainWindow::init()
@@ -253,6 +257,7 @@ void CMainWindow::init_cleanup() {
 
 void CMainWindow::login_init() {
 	loginForm = new CLoginForm();
+	loginForm->SetParent(this);
 	Windows.push_back(loginForm);
 }
 
@@ -262,7 +267,7 @@ void CMainWindow::login_render() {
 
 void CMainWindow::login_handleEvent(SDL_Event& e) {
 	if (e.type == CUSTOMEVENT_WINDOW) {
-		if (e.user.code == WINDOW_CLOSE_PROMPT_OK && e.user.data1 == loginForm) {
+		if (e.user.code == WINDOW_CLOSE && e.user.data1 == loginForm) {
 			applicationClose();
 		}
 	}
@@ -521,6 +526,9 @@ void CMainWindow::details_step() {
 /* Main Form - Main Begin */
 
 void CMainWindow::main_init() {
+	gClient.addToDebugLog("Initializing Main");
+	assert(map != nullptr);
+
 	SetTitle("Monster & Me - " + strServer + " - " + std::string(version) + " (" + versionDate + ")");
 	SetUseClose(true);
 	SetUseMinimize(true);
@@ -617,6 +625,7 @@ void CMainWindow::main_init_widgets() {
 
 void CMainWindow::main_cleanup() {
 	dcPromptForm = nullptr;
+	if (map) delete map;
 }
 
 void CMainWindow::main_render() {
@@ -750,8 +759,8 @@ void CMainWindow::btnCharacter_Click(SDL_Event& e) {
 }
 
 void CMainWindow::btnPet_Click(SDL_Event& e) {
-	//CPetForm* petForm = new CPetForm();
-	//Windows.push_back(petForm);
+	CPetListForm* petForm = new CPetListForm();
+	Windows.push_back(petForm);
 }
 
 /* Main Form - Hooks */

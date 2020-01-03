@@ -44,6 +44,8 @@ private:
 
 private: //Event handlers
 	void lblNewAccount_Click(SDL_Event& e);
+	void fldAccount_Submit(SDL_Event &e);
+	void fldAccount_OnTab(SDL_Event &e);
 	void fldPassword_Submit(SDL_Event &e);
 	void btnOk_Click(SDL_Event& e);
 	void btnCancel_Click(SDL_Event& e);

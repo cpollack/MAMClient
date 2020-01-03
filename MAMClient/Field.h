@@ -56,6 +56,7 @@ protected:
 	void OnKeyDown(SDL_Event& e);
 	void OnTextInput(SDL_Event& e);
 	void OnSubmit(SDL_Event& e);
+	void OnTab(SDL_Event &e);
 	void OnChange(SDL_Event& e);
 };
 

@@ -58,7 +58,7 @@ void Texture::Render(SDL_Point p) {
 
 
 void Texture::Load() {
-	if (skip) return;
+	if (skip || texture) return;
 
 	if (!file.length()) {
 		loadFailed = true;
@@ -135,7 +135,7 @@ void Texture::loadSurface(std::string filePath) {
 }
 
 void Texture::loadSurface() {
-	if (skip) return;
+	if (skip || loaded) return;
 	if (!file.length()) {
 		loadFailed = true;
 		skip = true;
@@ -154,14 +154,14 @@ void Texture::loadSurface() {
 	}
 
 	int fileSize;
-	std::shared_ptr<byte> fileBuffer;
+	std::shared_ptr<DataBuffer> fileBuffer;
 	gClient.getFileFromWDF(file, fileBuffer, fileSize);
 
 	transform(ext.begin(), ext.end(), ext.begin(), ::toupper);
 
 	if (ext == "RLE") {
 		if (!rle) {
-			if (fileBuffer) rle = new RLE(file, fileBuffer.get());
+			if (fileBuffer) rle = new RLE(file, fileBuffer.get()->buffer);
 			else rle = new RLE(file);
 			if (rle->load()) {
 				if (hsbSetId > 0) {
@@ -189,21 +189,21 @@ void Texture::loadSurface() {
 	}
 	else if (ext == "BMP") {
 		if (fileBuffer) {
-			SDL_RWops* rwop = SDL_RWFromMem(fileBuffer.get(), fileSize);
+			SDL_RWops* rwop = SDL_RWFromMem(fileBuffer.get()->buffer, fileSize);
 			surface = SDL_LoadBMP_RW(rwop, 0);
 			SDL_RWclose(rwop);
 		}
 	}
 	else if (ext == "JPG" || ext == "PNG") {
 		if (fileBuffer) {
-			SDL_RWops* rwop = SDL_RWFromMem(fileBuffer.get(), fileSize);
+			SDL_RWops* rwop = SDL_RWFromMem(fileBuffer.get()->buffer, fileSize);
 			surface = IMG_Load_RW(rwop,1);
 			SDL_RWclose(rwop);
 		}
 	}
 	else if (ext == "TGA") {
 		if (fileBuffer.get()) {
-			TGA* tga = new TGA(file, fileBuffer.get(), fileSize);
+			TGA* tga = new TGA(file, fileBuffer.get()->buffer, fileSize);
 			SDL_RWops* rwop = SDL_RWFromMem(tga->getBitmap(), tga->getBitmapSize());
 			surface = SDL_LoadBMP_RW(rwop, 0);
 			SDL_RWclose(rwop);

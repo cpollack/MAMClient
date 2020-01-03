@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "pFriend.h"
 
+#include "Client.h"
+
 pFriend::pFriend(int pSize, char* buf, char* encBuf) {
 	description = "Friend (Server)";
 	type = ptFriend;

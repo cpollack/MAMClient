@@ -47,6 +47,8 @@
 std::string strServer = "";
 
 Client::Client() {
+	debugLog.open("DebugLog.txt");
+
 	if (!fileExist("data.wdf")) {
 		showErrorMessage("Data.wdf is missing. The application will now shutdown.");
 		applicationClose();
@@ -80,6 +82,8 @@ Client::Client() {
 	pwdfMutex = SDL_CreateMutex();
 	dwdfMutex = SDL_CreateMutex();
 
+	dbgMutex = SDL_CreateMutex();
+
 	wdfData = nullptr;
 	wdfCharacter = nullptr;
 	wdfPet = nullptr;
@@ -108,6 +112,7 @@ Client::~Client() {
 	delete itemIni;
 
 	shutdownSocket();
+	debugLog.close();
 	packetLog.close();
 }
 
@@ -367,7 +372,7 @@ void Client::loadINI() {
 }
 
 
-void Client::getFileFromWDF(std::string filePath, std::shared_ptr<byte> &buffer, int &size) {
+void Client::getFileFromWDF(std::string filePath, std::shared_ptr<DataBuffer> &buffer, int &size) {
 	std::string rootDir;
 	std::string searchFile = filePath;
 
@@ -757,3 +762,12 @@ Packet* Client::getNextPacket() {
 	return packet;
 }
 
+void Client::addToDebugLog(std::string message) {
+#ifdef DEBUG_LOG
+	SDL_LockMutex(dbgMutex);
+		std::time_t t = std::time(0);
+		std::tm* now = std::localtime(&t);
+		debugLog << now->tm_hour << ":" << now->tm_min << ":" << now->tm_sec << " " << message << std::endl;
+	SDL_UnlockMutex(dbgMutex);
+#endif
+}

@@ -6,8 +6,8 @@
 NPC::NPC(pNpcInfo* packet) {
 	renderer = map->renderer;
 	name = packet->name;
-	nameLabel = new Label(name, x, y, true);
-	nameLabel->setFontColor(SDL_Color{ 255,255,255,255 });
+	//nameLabel = new Label(name, x, y, true);
+	//nameLabel->setFontColor(SDL_Color{ 255,255,255,255 });
 
 	id = packet->id;
 	type = packet->npcType;
@@ -29,7 +29,8 @@ NPC::~NPC() {
 	for (int i = 0; i < 8; i++) {
 		if (animations[i]) delete animations[i];
 	}
-	delete nameLabel;
+
+	//delete nameLabel;
 }
 
 

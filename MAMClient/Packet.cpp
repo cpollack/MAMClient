@@ -20,6 +20,8 @@ Packet::Packet(int type, int size, char* buf, char* encBuf) {
 
 
 Packet::~Packet() {
+	if (buffer) delete[] buffer;
+	if (encryptedBuffer) delete[] encryptedBuffer;
 	if (strPack) delete[] strPack;
 }
 
@@ -108,6 +110,10 @@ void Packet::getWord(int pos, WORD *val) {
 	*val = (v1 | v2);
 }
 
+
+void Packet::getWord(int pos, short *val) {
+	getWord(pos, (WORD*)val);
+}
 
 void Packet::getWord(int pos, int *val) {
 	getWord(pos, (WORD*)val);

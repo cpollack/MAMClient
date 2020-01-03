@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LoginForm.h"
+#include "Global.h"
 #include "CustomEvents.h"
 
 #include "Client.h"
@@ -13,12 +14,15 @@
 
 CLoginForm::CLoginForm() : CWindow("LoginForm.JSON") {
 	Type = FT_LOGIN;
+	SetTitle("Login - " + std::string(version) + " " + std::string(versionDate));
 	std::string randPic = "login_minpic0" + std::to_string((rand() % 4) + 1) + ".jpg";
 	CImageBox *imgFace = (CImageBox *)GetWidget("imgFace");
 	if (imgFace) imgFace->SetImageFromSkin(randPic);
 
 	registerEvent("lblNewAccount", "Click", std::bind(&CLoginForm::lblNewAccount_Click, this, std::placeholders::_1));
-	registerEvent("fldPassword", "Submit", std::bind(&CLoginForm::btnOk_Click, this, std::placeholders::_1));
+	registerEvent("fldAccount", "Submit", std::bind(&CLoginForm::fldAccount_Submit, this, std::placeholders::_1));
+	registerEvent("fldAccount", "OnTab", std::bind(&CLoginForm::fldAccount_OnTab, this, std::placeholders::_1));
+	registerEvent("fldPassword", "Submit", std::bind(&CLoginForm::fldPassword_Submit, this, std::placeholders::_1));
 	registerEvent("btnOK", "Click", std::bind(&CLoginForm::btnOk_Click, this, std::placeholders::_1));
 	registerEvent("btnCancel", "Click", std::bind(&CLoginForm::btnCancel_Click, this, std::placeholders::_1));
 
@@ -33,6 +37,7 @@ CLoginForm::CLoginForm() : CWindow("LoginForm.JSON") {
 		fldAccount->SetText(defaultLogin);
 		SetFocus("fldPassword");
 	}
+	else SetFocus("fldAccount");
 }
 
 CLoginForm::~CLoginForm() {
@@ -65,6 +70,15 @@ void CLoginForm::lblNewAccount_Click(SDL_Event& e) {
 	//ShellExecute(0, 0, "http://www.google.com", 0, 0, SW_SHOW);
 }
 
+
+void CLoginForm::fldAccount_Submit(SDL_Event &e) {
+	if (fldPassword->GetText().length() == 0) SetFocus("fldPassword");
+	else btnOk_Click(e);
+}
+
+void CLoginForm::fldAccount_OnTab(SDL_Event &e) {
+	SetFocus("fldPassword");
+}
 
 void CLoginForm::fldPassword_Submit(SDL_Event &e) {
 	btnOk_Click(e);
@@ -114,12 +128,15 @@ void CLoginForm::handleLogin() {
 		Windows.push_back(messageForm);
 
 		loginState = lsConnectAccount;
+
+		gClient.addToDebugLog("Beginning Login");
 		break;
 
 	case lsConnectAccount:
 		if (gClient.connectAccountServer()) {
 			loginState = lsLogin;
 			messageForm->SetMessage("Logging in...");
+			gClient.addToDebugLog("Connected to Account Server");
 		}
 		else {
 			loginState = lsNone;
@@ -184,6 +201,8 @@ void CLoginForm::handleLogin() {
 
 			clientResp = new pLoginResponse(loginAccount, loginSeed);
 			gClient.addPacket(clientResp);
+
+			gClient.addToDebugLog("Connected to the Game Server");
 		}
 		else {
 			loginState = lsNone;
@@ -225,4 +244,5 @@ void CLoginForm::promptError(std::string errorText) {
 
 void CLoginForm::loginSuccess() {
 	loginState = lsLoggedIn;
+	gClient.addToDebugLog("Login Success, loading game");
 }

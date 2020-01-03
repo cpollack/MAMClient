@@ -18,6 +18,7 @@
 #include "pAction.h"
 #include "pDirection.h"
 
+
 GameMap::GameMap(pMapInfo* packet) {
 	renderer = mainForm->renderer;
 
@@ -49,14 +50,12 @@ GameMap::~GameMap() {
 	}
 	masks.clear();*/
 
-	for (int i = objects.size(); i > 0; i--) {
-		delete objects.at(i - 1);
-	}
+	for (auto obj : objects)
+		delete obj;
 	objects.clear();
 
-	for (int i = npcs.size(); i > 0; i--) {
-		delete npcs[i - 1];
-	}
+	for (auto npc : npcs)
+		delete npc;
 	npcs.clear();
 
 	assetManager.releaseAssets(this);
@@ -125,6 +124,8 @@ void GameMap::loadMapFile(int mapDoc) {
 		filledPolygonColor(renderer, tX, tY, 4, (Uint32)0x40FFFFFF);
 		SDL_SetRenderTarget(renderer, NULL);
 	}
+
+
 
 	//This sometimes results in a hanging operation. 
 	//loaded is true, but it never triggers the break

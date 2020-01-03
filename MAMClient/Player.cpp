@@ -197,7 +197,7 @@ int Player::GetAttack() {
 		if (equipment[i]) atk += equipment[i]->getAttack();
 	}
 
-	return atk;
+	return atk < 0 ? 0 : atk;
 }
 
 void Player::SetAttackPoint(int point) {
@@ -215,7 +215,7 @@ int Player::GetDefence() {
 		if (equipment[i]) def += equipment[i]->getDefence();
 	}
 
-	return def;
+	return def < 0 ? 0 : def;
 }
 
 void Player::SetDexterityPoint(int point) {
@@ -229,7 +229,7 @@ int Player::GetDexterity() {
 		if (equipment[i]) dex += equipment[i]->getDexterity();
 	}
 
-	return dex;
+	return dex < 0 ? 0 : dex;
 }
 
 

@@ -306,7 +306,7 @@ void FormPetList::setActivePet(int itr) {
 	fldId->setValue(std::to_string(activePet->getId()));
 
 	svPet->setLook(activePet->getLook());
-	lblCategory->setText("Category " + activePet->getElement());
+	lblCategory->setText("Category " + activePet->GetElement());
 }
 
 

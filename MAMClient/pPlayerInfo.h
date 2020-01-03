@@ -17,12 +17,12 @@ public:
 	int mapId, mapX, mapY;
 	int syndicateId, syndicateSubId, syndicateRank;
 
-	BYTE* name;
-	BYTE* nickName;
-	BYTE* spouse;
-	BYTE* syndicate;
-	BYTE* branch;
-	BYTE* position;
+	char name[16];
+	char nickName[16];
+	char spouse[16];
+	char syndicate[16];
+	char branch[16];
+	char position[16];
 
 	pPlayerInfo(int size,  char *buf, char* encBuf);
 	pPlayerInfo();

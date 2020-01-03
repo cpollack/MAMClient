@@ -28,7 +28,10 @@ MapFile::MapFile(int mapId) {
 
 	unsigned int filetype;
 	mapFile.read((char*)&filetype, 4);
-	if (filetype != 2022144135) return;
+	if (filetype != 2022144135) {
+		mapFile.close();
+		return;
+	}
 
 	mapFile.read((char*)&width, 4); width ^= cipher;
 	mapFile.read((char*)&height, 4); height ^= cipher;
@@ -105,6 +108,8 @@ MapFile::MapFile(int mapId) {
 			}
 		}
 	}
+
+	mapFile.close();
 }
 
 

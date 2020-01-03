@@ -1,0 +1,12 @@
+
+Todo:
+Add Gen to pet and pet form
+Add pet accessory
+
+Fix:
+(!)Major memory leaks addressed
+Window did not have a title
+
+Feature:
+Login Form now defaults focus to account if it is not filled.
+Pet button now opens the (under construction) new Pet List.

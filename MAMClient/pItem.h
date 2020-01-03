@@ -18,7 +18,7 @@ public:
 	int ownerId;
 	int itemId, cost;
 	int look, itemSort, levelRequired;
-	int life, power, attack, defence, dexterity;
+	short life, power, attack, defence, dexterity;
 
 	int v1, v2, v3, v4;
 	int v5, v6, v7, v8;

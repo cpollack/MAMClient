@@ -36,6 +36,7 @@ RLE::~RLE() {
 	delete[] colorMap;
 	delete[] bufferZone;
 	delete[] image;
+	if (bitmap) delete[] bitmap;
 	//buffer is a smart pointer which is deallocated automatically
 }
 

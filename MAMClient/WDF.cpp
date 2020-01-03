@@ -189,16 +189,16 @@ unsigned long WDF::stringToId(const char *str) {
 }
 
 
-void WDF::getFileData(std::string fileName, std::shared_ptr<byte> &buffer, int &size) {
+void WDF::getFileData(std::string fileName, std::shared_ptr<DataBuffer> &buffer, int &size) {
 	WDF_Entry* wdfEntry = findEntry(fileName);
 	if (!wdfEntry) return;
 
-	buffer.reset(new byte[wdfEntry->size]);
+	buffer.reset(new DataBuffer(wdfEntry->size));
 	size = wdfEntry->size;
 
 	std::ifstream wdf_ifs(path, std::ios::binary | std::ios::ate);
 	wdf_ifs.seekg(wdfEntry->offset, std::ios::beg);
-	wdf_ifs.read((char*)buffer.get(), wdfEntry->size);
+	wdf_ifs.read((char*)buffer.get()->buffer, wdfEntry->size);
 	wdf_ifs.close();
 }
 

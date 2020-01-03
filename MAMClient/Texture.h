@@ -17,7 +17,6 @@ public:
 	SDL_Texture* texture = nullptr;
 	RLE* rle = nullptr;
 	std::string file;
-	unsigned char* fileBuffer = nullptr;
 	bool loaded = false, loadFailed = false;
 	bool skip = false;
 	bool managedAsset = false;

@@ -313,7 +313,7 @@ std::string User::GetRankText() {
 			rankText += "Wuxing ";
 			break;
 		case 5:
-			rankText += "Kugnfu ";
+			rankText += "Kungfu ";
 			break;
 		case 6:
 			rankText += "Thievery ";
@@ -328,6 +328,10 @@ std::string User::GetRankText() {
 	if (Alignment > 0) {
 		if (Alignment == 1) rankText += "God";
 		if (Alignment == 2) rankText += "Devil";
+	}
+
+	if (Reborns > 0) {
+		rankText += " [" + std::to_string(Reborns) + "]";
 	}
 
 	return rankText;

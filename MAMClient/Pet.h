@@ -13,7 +13,6 @@ public:
 	int Pet::getId();
 	int Pet::getBattleId();
 	int Pet::getLook();
-	std::string Pet::getElement();
 	std::string Pet::getName();
 	int Pet::getLevel();
 	int Pet::getExperience();
@@ -24,6 +23,9 @@ public:
 	int Pet::getAttack();
 	int Pet::getDefence();
 	int Pet::getDexterity();
+
+	int GetElement();
+	std::string GetElementText();
 
 	int Pet::getMedalAttack();
 	int Pet::getMedalDefence();
@@ -37,8 +39,7 @@ private:
 	int id, owner;
 	std::string name;
 
-	int type;
-	std::string element;
+	int Element;
 
 	int monsterClass, look;
 	int level, experience, nextLevelExp, generation, loyalty;

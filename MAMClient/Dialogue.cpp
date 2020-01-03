@@ -176,7 +176,7 @@ void Dialogue::render() {
 		}
 		else {
 			//Response 1+
-			Texture* tResp = createDialogueText(responses[focusedOption -1], 0, yellow);
+			Texture* tResp = createDialogueText(responses[focusedOption -1], RESPONSE_WRAP, yellow);
 			SDL_RenderCopy(renderer, tResp->texture, NULL, &respRect[focusedOption-1]);
 			delete tResp;
 		}

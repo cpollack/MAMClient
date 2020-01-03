@@ -112,7 +112,6 @@ private:
 	ColorMap *colorMap = nullptr;
 	DWORD *bufferZone = nullptr;
 	ImageData *image = nullptr;
-	BYTE *pixels = nullptr;
 	BYTE hueShift;
 
 	const int bytesPerpixel = 2;

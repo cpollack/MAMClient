@@ -3,6 +3,7 @@
 
 //#define DEVSERVER
 //#define LOCALSERVER
+#define DEBUG_LOG
 #define DEBUG_PACKET
 
 #include "GUI.h"
@@ -32,7 +33,7 @@ private:
 	WDF *wdfData, *wdfCharacter, *wdfPet;
 
 	//For Socket Communication
-	std::ofstream packetLog;
+	std::ofstream debugLog, packetLog;
 	bool socketDebug = true;
 	SOCKADDR_IN accountAddr, gameAddr;
 	SOCKET accountSocket, gameSocket;
@@ -69,7 +70,7 @@ public:
 	void Client::initializeGUI();
 	void Client::shutdownThread();
 
-	void Client::getFileFromWDF(std::string wdfFile, std::shared_ptr<byte> &buffer, int &size);
+	void Client::getFileFromWDF(std::string wdfFile, std::shared_ptr<DataBuffer> &buffer, int &size);
 	int Client::stringToWdf(std::string wdfFile);
 
 	void Client::encryptPacket(BYTE* encryptedBuffer, BYTE* buffer, int len);
@@ -97,6 +98,10 @@ private:
 	bool loginResponseReceived = false;
 	int loginSeed;
 	std::string loginMessage;
+
+public: //Debugging
+	SDL_mutex *dbgMutex = NULL;
+	void addToDebugLog(std::string message);
 };
 
 extern Client gClient;

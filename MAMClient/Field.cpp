@@ -283,6 +283,12 @@ void CField::OnKeyDown(SDL_Event& e) {
 		OnSubmit(e);
 		return;
 	}
+
+	//'Tab'
+	if (e.key.keysym.sym == SDLK_TAB) {
+		OnTab(e);
+		return;
+	}
 }
 
 void CField::OnTextInput(SDL_Event& e) {
@@ -313,6 +319,11 @@ void CField::OnSubmit(SDL_Event& e) {
 	auto iter = eventMap.find("Submit");
 	if (iter != eventMap.end()) iter->second(e);
 	OnChange(e);
+}
+
+void CField::OnTab(SDL_Event &e) {
+	auto iter = eventMap.find("OnTab");
+	if (iter != eventMap.end()) iter->second(e);
 }
 
 void CField::OnChange(SDL_Event& e) {

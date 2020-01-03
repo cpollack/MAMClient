@@ -65,6 +65,7 @@ protected:
 	void Packet::getByte(int pos, BYTE *val);
 	void Packet::getByte(int pos, int *val);
 	void Packet::getWord(int pos, WORD *val);
+	void Packet::getWord(int pos, short *val);
 	void Packet::getWord(int pos, int *val);
 	void Packet::getDWord(int pos, DWORD *val);
 	void Packet::getInt(int pos, int *val);
@@ -80,7 +81,7 @@ protected:
 public:
 	Packet();
 	Packet(int type, int size, char* buf, char* encBuf);
-	~Packet();
+	virtual ~Packet();
 
 	virtual void process();
 

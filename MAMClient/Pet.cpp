@@ -44,33 +44,37 @@ Pet::~Pet() {
 
 
 void Pet::setElement() {
-	type = monsterClass / 10000;
-	if (type == 1 || type == 7) {
-		type = (monsterClass % 10000) / 1000;
-	}
-
-	switch (type) {
-	case 2:
-		element = "Water";
-		break;
-	case 3:
-		element = "Fire";
-		break;
-	case 4:
-		element = "Metal";
-		break;
-	case 5:
-		element = "Wood";
-		break;
-	case 6:
-		element = "Earth";
-		break;
+	Element = monsterClass / 10000;
+	if (Element == 1 || Element == 7) {
+		Element = (monsterClass % 10000) / 1000;
 	}
 }
 
 
-std::string Pet::getElement() {
-	return element;
+int Pet::GetElement() {
+	return Element;
+}
+
+std::string Pet::GetElementText() {
+	std::string strElement;
+	switch (Element) {
+	case 2:
+		strElement = "Water";
+		break;
+	case 3:
+		strElement = "Fire";
+		break;
+	case 4:
+		strElement = "Metal";
+		break;
+	case 5:
+		strElement = "Wood";
+		break;
+	case 6:
+		strElement = "Earth";
+		break;
+	}
+	return strElement;
 }
 
 

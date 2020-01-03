@@ -200,6 +200,7 @@
     <ClCompile Include="pDirection.cpp" />
     <ClCompile Include="pEnemyInfo.cpp" />
     <ClCompile Include="Pet.cpp" />
+    <ClCompile Include="PetListForm.cpp" />
     <ClCompile Include="pFighterInfo.cpp" />
     <ClCompile Include="pFriend.cpp" />
     <ClCompile Include="pGSConnect.cpp" />
@@ -304,6 +305,7 @@
     <ClInclude Include="pDirection.h" />
     <ClInclude Include="pEnemyInfo.h" />
     <ClInclude Include="Pet.h" />
+    <ClInclude Include="PetListForm.h" />
     <ClInclude Include="pFighterInfo.h" />
     <ClInclude Include="pFriend.h" />
     <ClInclude Include="pGSConnect.h" />
@@ -353,6 +355,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
