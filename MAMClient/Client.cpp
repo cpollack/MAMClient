@@ -321,6 +321,8 @@ int Client::asyncClient(void *ptr) {
 		if (!client->loadingSurface.empty()) {
 			client->loadSurface(client->loadingSurface);
 		}*/
+
+		SDL_Delay(10);
 	}
 	return 0;
 }
@@ -444,6 +446,7 @@ int Client::receivePacket(void *ptr) {
 			printf("Game Server is disconnected!\n");
 			continue;
 		}
+		SDL_Delay(10);
 	}
 	return 0;
 }

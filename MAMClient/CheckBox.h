@@ -8,6 +8,7 @@ public:
 	CCheckBox(CWindow* window, rapidjson::Value& vWidget);
 	~CCheckBox();
 
+	void ReloadAssets();
 	void Render();
 	void HandleEvent(SDL_Event& e);
 

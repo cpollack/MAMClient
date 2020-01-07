@@ -35,8 +35,10 @@ public:
 	GameMap(pMapInfo* packet);
 	~GameMap();
 
+	void ReloadAssets();
 	void render();
 	bool handleEvent(SDL_Event& e);
+	void handleCustomEvent(SDL_Event& e);
 	void step();
 
 private: // Events
@@ -131,11 +133,6 @@ private:
 	NPC* dialogueNpc = nullptr;
 	int shopId = 0;
 	Dialogue* dialogue = nullptr;
-
-	void handleNpcClick(NPC* npc, SDL_Point coord);
-	void setDialogueNpc(NPC* dNpc);
-	int getShopData(int npcType, int mapId);
-	std::string npcTypeToDesc(int npcType);
 
 private: BattleResult* battleResult;
 public: 

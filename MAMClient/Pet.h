@@ -13,7 +13,10 @@ public:
 	int Pet::getId();
 	int Pet::getBattleId();
 	int Pet::getLook();
-	std::string Pet::getName();
+
+	std::string GetName() { return name; }
+	void SetName(std::string newName) { name = newName; }
+
 	int Pet::getLevel();
 	int Pet::getExperience();
 	int Pet::getLevelUpExperience();
@@ -23,6 +26,7 @@ public:
 	int Pet::getAttack();
 	int Pet::getDefence();
 	int Pet::getDexterity();
+	int GetGeneration() { return generation; }
 
 	int GetElement();
 	std::string GetElementText();

@@ -20,6 +20,12 @@ CCheckBox::~CCheckBox() {
 	if (pressedTexture) SDL_DestroyTexture(unpressedTexture);
 }
 
+void CCheckBox::ReloadAssets() {
+	if (cbTexture) {
+		CreateCheckBoxTexture();
+	}
+}
+
 void CCheckBox::Render() {
 	if (!Visible) return;
 	if (!cbTexture) CreateCheckBoxTexture();

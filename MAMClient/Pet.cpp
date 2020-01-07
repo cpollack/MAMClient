@@ -90,10 +90,6 @@ int Pet::getLook() {
 	return look;
 }
 
-std::string Pet::getName() {
-	return std::string(name);
-}
-
 int Pet::getLevel() {
 	return level;
 

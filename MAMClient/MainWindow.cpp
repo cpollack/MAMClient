@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MainWindow.h"
 #include "Global.h"
+#include "Define.h"
 #include "CustomEvents.h"
 
 #include "Client.h"
@@ -89,18 +90,23 @@ bool CMainWindow::init()
 
 void CMainWindow::initUI() {
 	CWindow::initUI();
-	topCenter = gui->getSkinTexture(renderer, "TopCenter.bmp", Anchor::TOP_LEFT);
-	topLeft = gui->getSkinTexture(renderer, "TopLeft.bmp", Anchor::TOP_LEFT);
-	topRight = gui->getSkinTexture(renderer, "TopRight.bmp", Anchor::TOP_RIGHT);
+	topCenter = gui->getSkinTexture(renderer, "TopCenter.bmp", Anchor::aTopLeft);
+	topLeft = gui->getSkinTexture(renderer, "TopLeft.bmp", Anchor::aTopLeft);
+	topRight = gui->getSkinTexture(renderer, "TopRight.bmp", Anchor::aTopRight);
 
-	mainWindow = gui->getSkinTexture(renderer, "mainwindow.jpg", Anchor::TOP_LEFT);
+	mainWindow = gui->getSkinTexture(renderer, "mainwindow.jpg", Anchor::aTopLeft);
 
-	surface = gui->getSkinTexture(renderer, "surface.jpg", Anchor::TOP_LEFT);
+	surface = gui->getSkinTexture(renderer, "surface.jpg", Anchor::aTopLeft);
 	surfaceRect = surface->rect;
 	surfaceRect.x = left->width;
 	surfaceRect.y = (Height - surface->height - bottomCenter->height);
 	
 	//minimize = gui->getSkinTexture(renderer, "Min.bmp", Anchor::TOP_LEFT);
+}
+
+void CMainWindow::ReloadAssets() {
+	CWindow::ReloadAssets();
+	if (map) map->ReloadAssets();
 }
 
 void CMainWindow::render() {
@@ -312,8 +318,8 @@ void CMainWindow::select_init() {
 		portaitPath = "GUI/player_icon/Man0" + std::to_string(i+1) + ".bmp";
 		portraits[i] = new Texture(renderer, portaitPath, true);
 	}
-	selectedCharacter = gui->getSkinTexture(renderer, "BoxFocus.bmp", TOP_LEFT);
-	unselectedCharacter = gui->getSkinTexture(renderer, "BoxNormal.bmp", TOP_LEFT);
+	selectedCharacter = gui->getSkinTexture(renderer, "BoxFocus.bmp", aTopLeft);
+	unselectedCharacter = gui->getSkinTexture(renderer, "BoxNormal.bmp", aTopLeft);
 
 	videoFrame = new CVideoFrame(this, "videoFrame", 20, 33);
 	videoFrame->SetWidth(500);
@@ -682,6 +688,16 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 	if (e.type == CUSTOMEVENT_PLAYER) {
 		if (e.user.code == PLAYER_RENAME) {
 			lblNickName->SetText(player->getNickName());
+		}
+	}
+
+	if (e.type == CUSTOMEVENT_PET) {
+		if (e.user.code == PET_MARCHING) {
+			Pet* pet = player->getActivePet();
+			if (pet) {
+				setPetHealthGauge(pet->getCurrentHealth(), pet->getMaxHealth());
+				setPetExpGauge(pet->getExperience(), pet->getLevelUpExperience());
+			}
 		}
 	}
 

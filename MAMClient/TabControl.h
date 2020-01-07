@@ -15,6 +15,7 @@ public:
 	CTabControl(CWindow* window, rapidjson::Value& vWidget);
 	~CTabControl();
 
+	void ReloadAssets();
 	void Render();
 	void HandleEvent(SDL_Event& e);
 

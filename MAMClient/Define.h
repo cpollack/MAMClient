@@ -12,6 +12,18 @@ enum VerticalAlignment {
 	vaBottom
 };
 
+enum Anchor {
+	aTopLeft,
+	aCenterLeft,
+	aBottomLeft,
+	aTopMiddle,
+	aCenter,
+	aBottomMiddle,
+	aTopRight,
+	aCenterRight,
+	aBottomRight
+};
+
 //Battle Info
 const DWORD	_IDMSK_PET = 0x80000000;
 const DWORD _IDMSK_MONSTER = 0xc0000000;

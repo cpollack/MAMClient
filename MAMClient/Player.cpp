@@ -283,6 +283,7 @@ void Player::addPet(Pet* newPet) {
 
 
 Pet* Player::setActivePet(int petId) {
+	activePet = nullptr;
 	for (auto nextPet : petList) {
 		if (nextPet && nextPet->getId() == petId) {
 			activePet = nextPet;

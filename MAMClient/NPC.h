@@ -1,5 +1,6 @@
-#ifndef __NPC_H
-#define __NPC_H
+#pragma once
+
+#include "Entity.h"
 
 #include "Sprite.h"
 #include "RLE.h"
@@ -7,7 +8,6 @@
 #include "Label.h"
 
 class pNpcInfo;
-class GameMap;
 
 /*
 Types:
@@ -19,29 +19,36 @@ PetFeeder - 103
 Pawnshop - 106
 */
 
-class NPC {
-private:
-	SDL_Renderer* renderer;
-	Label* nameLabel;
-	int id, type, look;
-	int x, y;
-
-	Sprite* animations[8] = { nullptr };
-	HSBSet hslSets[3] = { 0 };
-	int direction, animDir;
-	SDL_Point real_position;
-
+class NPC : public Entity {
 public:
-	std::string name;
-
 	NPC(pNpcInfo* packet);
 	~NPC();
 
-	void NPC::render(int offsetX, int offsetY, bool showName);
-	void NPC::loadAnimation(int dir);
-	Sprite* NPC::getCurrentSprite();
-	int NPC::getId();
-	int NPC::getType();
-};
+	void render();
+	void handleEvent(SDL_Event& e);
 
-#endif
+private:
+	void loadSprite();
+
+	int Type;
+
+private:
+	SDL_Renderer* renderer;
+	Texture* nameLabel;
+	//int id, type, look;
+	//int x, y;
+
+	//Sprite* animations[8] = { nullptr };
+	HSBSet hslSets[3] = { 0 };
+	//int direction, animDir;
+	//SDL_Point real_position;
+
+	int GetShopID();
+
+public:
+	//std::string name;
+
+	//Sprite* getCurrentSprite();
+	int GetType() { return Type; }
+	std::string GetTypeText();
+};

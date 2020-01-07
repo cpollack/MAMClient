@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "Texture.h"
+#include "Define.h"
 #include "Client.h"
 
 Texture::Texture(SDL_Renderer* aRenderer) {
 	renderer = aRenderer;
-	setAnchor(TOP_LEFT);
+	setAnchor(aTopLeft);
 }
 
 
@@ -13,14 +14,14 @@ Texture::Texture(SDL_Renderer* aRenderer, SDL_Texture* txtr, int w, int h) {
 	texture = txtr;
 	width = w;
 	height = h;
-	setAnchor(TOP_LEFT);
+	setAnchor(aTopLeft);
 }
 
 
 Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, bool load) {
 	renderer = aRenderer;
 	file = filePath;
-	setAnchor(TOP_LEFT);
+	setAnchor(aTopLeft);
 	if (load) Load();
 }
 
@@ -28,7 +29,7 @@ Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, bool load) {
 Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, SDL_Color aColorKey, bool load) {
 	renderer = aRenderer;
 	file = filePath;
-	setAnchor(TOP_LEFT);
+	setAnchor(aTopLeft);
 	useColorKey = true;
 	colorKey = aColorKey;
 	if (load) Load();
@@ -70,6 +71,16 @@ void Texture::Load() {
 }
 
 
+void Texture::Reload() {
+	if (surface) SDL_FreeSurface(surface);
+	surface = NULL;
+	if (texture) SDL_DestroyTexture(texture);
+	texture = NULL;
+	loaded = false;
+	Load();
+}
+
+
 void Texture::loadResource(std::string filePath) {
 	loadTexture(filePath);
 }
@@ -100,11 +111,11 @@ void Texture::loadResource(std::string filePath, int anchor) {
 		height = surface->h;
 
 		int x;
-		if (anchor == Anchor::TOP_RIGHT || anchor == Anchor::BOTTOM_RIGHT) x = -width;
+		if (anchor == Anchor::aTopRight || anchor == Anchor::aBottomRight) x = -width;
 		else x = 0;
 
 		int y;
-		if (anchor == Anchor::BOTTOM_LEFT || anchor == Anchor::BOTTOM_RIGHT) y = -height;
+		if (anchor == Anchor::aBottomLeft || anchor == Anchor::aBottomRight) y = -height;
 		else y = 0;
 
 		rect = { x, y, width, height };
@@ -308,11 +319,11 @@ void Texture::setAnchor(int aAnchor) {
 	anchor = aAnchor;
 
 	int x;
-	if (anchor == Anchor::TOP_RIGHT || anchor == Anchor::BOTTOM_RIGHT) x = -width;
+	if (anchor == Anchor::aTopRight || anchor == Anchor::aBottomRight) x = -width;
 	else x = 0;
 
 	int y;
-	if (anchor == Anchor::BOTTOM_LEFT || anchor == Anchor::BOTTOM_RIGHT) y = -height;
+	if (anchor == Anchor::aBottomLeft || anchor == Anchor::aBottomRight) y = -height;
 	else y = 0;
 
 	rect = { x, y, width, height };

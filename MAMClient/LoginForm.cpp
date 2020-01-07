@@ -35,9 +35,9 @@ CLoginForm::CLoginForm() : CWindow("LoginForm.JSON") {
 	if (defaultLogin.length()) {
 		CField * fldAccount = (CField *)GetWidget("fldAccount");
 		fldAccount->SetText(defaultLogin);
-		SetFocus("fldPassword");
+		FocusWidget("fldPassword");
 	}
-	else SetFocus("fldAccount");
+	else FocusWidget("fldAccount");
 }
 
 CLoginForm::~CLoginForm() {
@@ -72,12 +72,12 @@ void CLoginForm::lblNewAccount_Click(SDL_Event& e) {
 
 
 void CLoginForm::fldAccount_Submit(SDL_Event &e) {
-	if (fldPassword->GetText().length() == 0) SetFocus("fldPassword");
+	if (fldPassword->GetText().length() == 0) FocusWidget("fldPassword");
 	else btnOk_Click(e);
 }
 
 void CLoginForm::fldAccount_OnTab(SDL_Event &e) {
-	SetFocus("fldPassword");
+	FocusWidget("fldPassword");
 }
 
 void CLoginForm::fldPassword_Submit(SDL_Event &e) {

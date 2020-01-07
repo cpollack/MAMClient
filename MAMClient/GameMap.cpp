@@ -6,6 +6,7 @@
 #include "Battle.h"
 #include "BattleResult.h"
 #include "GameLibrary.h"
+#include "CustomEvents.h"
 
 #include "Player.h"
 #include "User.h"
@@ -126,7 +127,6 @@ void GameMap::loadMapFile(int mapDoc) {
 	}
 
 
-
 	//This sometimes results in a hanging operation. 
 	//loaded is true, but it never triggers the break
 	//to ivnestigate, set to default load instead
@@ -201,6 +201,9 @@ void GameMap::loadMapFile(int mapDoc) {
 	}*/
 }
 
+void GameMap::ReloadAssets() {
+	tMap->Reload();
+}
 
 void GameMap::addNpc(pNpcInfo* packet) {
 	NPC* newNpc = new NPC(packet);
@@ -229,19 +232,36 @@ bool GameMap::handleEvent(SDL_Event& e) {
 	}
 
 	if (e.type == SDL_MOUSEBUTTONUP) {
-		mapClicked_left = false;
-		mapClicked_right = false;
+		//mapClicked_left = false;
+		//mapClicked_right = false;
 
 		if (doesPointIntersect(uiRect, mx, my)) {
-			OnClick(e);
+			//OnClick(e);
 		}
 	}
 
 	if (e.type == SDL_MOUSEBUTTONDOWN) {
 		if (doesPointIntersect(uiRect, mx, my)) {
-			if (e.button.button == SDL_BUTTON_LEFT) mapClicked_left = true;
-			if (e.button.button == SDL_BUTTON_RIGHT) mapClicked_right = true;
+			//if (e.button.button == SDL_BUTTON_LEFT) mapClicked_left = true;
+			//if (e.button.button == SDL_BUTTON_RIGHT) mapClicked_right = true;
+			OnClick(e);
 		}
+	}
+
+	// CUstom Events
+
+	if (e.type == CUSTOMEVENT_NPC) {
+		int npcId = *(int*)e.user.data1;
+		delete e.user.data1;
+
+		NPC* sourceNPC = nullptr;
+		for (auto npc : npcs) {
+			if (npc->getID() == npcId) {
+				sourceNPC = npc;
+				break;
+			}
+		}
+		if (e.user.code == NPC_INTERACT) dialogueNpc = sourceNPC;
 	}
 
 	return false;
@@ -257,14 +277,16 @@ void GameMap::OnClick(SDL_Event& e) {
 	cy = my + cameraY;
 
 	if (e.button.button == SDL_BUTTON_LEFT) {
-		if (jumpMode) {
-			//Jump
-			player->jumpTo(SDL_Point{ mouseX, mouseY });
-			checkPortal = true;
-		}
-		else {
-			//Walk
-			player->walkTo(SDL_Point{ mouseX, mouseY });
+		if (!changingMap) {
+			if (jumpMode) {
+				//Jump
+				player->jumpTo(SDL_Point{ mouseX, mouseY });
+				checkPortal = true;
+			}
+			else {
+				//Walk
+				player->walkTo(SDL_Point{ mouseX, mouseY });
+			}
 		}
 
 		//Update mouse coordinates based on new positions
@@ -273,12 +295,20 @@ void GameMap::OnClick(SDL_Event& e) {
 	}
 
 	if (e.button.button == SDL_BUTTON_RIGHT) {
-		player->setDirectionToCoord(SDL_Point{ mouseX, mouseY });
+		SDL_Point toCoord{ mouseX, mouseY };
+		int rcDir = player->getDirectionToCoord(toCoord);
+		player->setDirectionToCoord(toCoord);
 		player->loadSprite();
+
+		pDirection *dirPacket = new pDirection(player->getID(), player->getCoord().x, player->getCoord().y, rcDir);
+		gClient.addPacket(dirPacket);
+
 		//add pDirection and new packet 2031(npc action?) 
-		if (focusedNPC) {
-			handleNpcClick(focusedNPC, SDL_Point{ cx, cy });
-		}
+
+		SDL_Event e2 = e;
+		e2.motion.x = cx;
+		e2.motion.y = cy;
+		for (auto npc : npcs) npc->handleEvent(e2);
 	}
 }
 
@@ -294,30 +324,11 @@ void GameMap::OnMouseMove(SDL_Event& e) {
 	setMouseCoordinates(mx, my);
 	mainForm->setMapCoordLabels(SDL_Point{ mouseX, mouseY });
 
-	//Check for NPC Mouseover
-	NPC *newFocus = nullptr;
-	for (auto npc : npcs) {
-		Sprite* curSprite = npc->getCurrentSprite();
-		SDL_Rect sprRect = curSprite->getRenderRect();
-
-		if (doesPointIntersect(sprRect, cx, cy)) {
-			//Only focus a npc when its 'solid' pixels are moused over
-			SDL_Point getPixel = { cx - sprRect.x, cy - sprRect.y };
-
-			Asset currentTexture = curSprite->getCurrentTexture();
-			Uint32 pixel = currentTexture->getPixel(getPixel);
-			Uint8 alpha = currentTexture->getPixelAlpha(pixel);
-
-			if (alpha >= 64) {
-				newFocus = npc;
-				break;
-			}
-		}
-	}
-
-	if (focusedNPC != newFocus) {
-		focusedNPC = newFocus;
-	}
+	//Process NPCs for mouseover
+	SDL_Event e2 = e;
+	e2.motion.x = cx;
+	e2.motion.y = cy;
+	for (auto npc : npcs) npc->handleEvent(e2);
 }
 
 
@@ -391,17 +402,13 @@ void GameMap::render() {
 	}
 
 	//NPCs
-	for (int i = 0; i < npcs.size(); i++) {
-		Sprite* nextSprite = npcs.at(i)->getCurrentSprite();
-		if (nextSprite->subimages.size() == 0) continue;
-
-		if (doRectIntersect(nextSprite->getRenderRect(), mapRect)) {
-			//only render visible objects
-			nextSprite->resume();
-			nextSprite->render(-cameraX, -cameraY);
-			//npcs.at(i)->render(-posX, -posY, (focusedNPC == npcs.at(i)) ? true : false);
+	for (auto npc : npcs) {
+		if (doRectIntersect(npc->getRenderRect(), mapRect)) {
+			npc->render();
 		}
-		else nextSprite->stop();
+		else {
+			if (npc->GetSprite()) npc->GetSprite()->stop();
+		}
 	}
 
 	if (colosseum) {
@@ -854,9 +861,11 @@ std::vector<PathTile*> GameMap::getAdjacentTiles(PathTile sourceTile, SDL_Point 
 
 	//Check if destination is adjacent
 	if (((int)std::round(changeX) == 1 || (int)std::round(changeX) == 0) && ((int)std::round(changeY) == 1 || (int)std::round(changeY) == 0)) {
-		PathTile* dest = new PathTile;
-		dest->coord = destCoord;
-		adjacentTiles.push_back(dest);
+		if (isCoordWalkable(destCoord)) {
+			PathTile* dest = new PathTile;
+			dest->coord = destCoord;
+			adjacentTiles.push_back(dest);
+		}
 		return adjacentTiles;
 	}
 
@@ -968,75 +977,14 @@ int GameMap::getDirectionToCoord(SDL_Point fromCoord, SDL_Point toCoord) {
 }
 
 
-void GameMap::handleNpcClick(NPC* npc, SDL_Point coord) {
-	setDialogueNpc(npc);
-
-	//Always send right-click packet
-	std::vector<Packet*> sendPackets;
-	pDirection* rcPack = new pDirection(player->getID(), coord.x, coord.y, player->getDirection());
-	sendPackets.push_back(rcPack);
-
-	if (npc->getType() >= 100 && npc->getType() <= 102) {
-		int shopId = getShopData(npc->getType(), id);
-		mainForm->openShop(shopId);
-	}
-	else {
-		pNpc* npcPack = new pNpc(npc->getId(), 0, 0, 0);
-		sendPackets.push_back(npcPack);
-	}
-	gClient.addPacket(sendPackets);
-}
-
-void GameMap::setDialogueNpc(NPC* dNpc) {
-	dialogueNpc = dNpc;
-}
-
-
 void GameMap::createDialogue(pNpcDialogue* packet) {
 	if (dialogue) delete dialogue;
 
-	dialogue = new Dialogue(packet, dialogueNpc->name, (map->uiRect.w / 2), 10);
+	std::string name = "";
+	if (dialogueNpc) name = dialogueNpc->getName();
+
+	dialogue = new Dialogue(packet, name, (map->uiRect.w / 2), 10);
 	dialogue->setWindowOffset(SDL_Point{ uiRect.x, uiRect.y });
-}
-
-
-int GameMap::getShopData(int npcType, int mapId) {
-	std::ifstream ifs("INI\\Shop.Data");
-
-	char* buffer = new char[24];
-	ifs.read(buffer, 4);
-	int entryCount = *(int*)buffer;
-
-	std::string shopDesc = npcTypeToDesc(npcType);
-	int shopId = 0;
-	for (int i = 0; i < entryCount; i++) {
-		ifs.read(buffer, 24);
-		char nextShop[16];
-		memcpy(nextShop, buffer, 16);
-		int nextMap = *(int*)(buffer + 16);
-		if (strcmp(nextShop, shopDesc.c_str()) == 0 && mapId == nextMap) {
-			shopId = *(int*)(buffer + 20);
-			break;
-		}
-	}
-
-	delete buffer;
-	ifs.close();
-	return shopId;
-}
-
-
-std::string GameMap::npcTypeToDesc(int npcType) {
-	switch (npcType) {
-	case 100:
-		return "Blacksmith";
-	case 101:
-		return "Drugstore";
-	case 102:
-		return "Boutique";
-	}
-
-	return "";
 }
 
 void GameMap::addBattleResult(BattleResult* br) {

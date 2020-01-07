@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Button.h"
+#include "Define.h"
 
 CButton::CButton(CWindow* window, std::string name, int x, int y) : CWidget(window) {
 	Name = name;
@@ -20,6 +21,12 @@ CButton::~CButton() {
 	if (unpressedTexture) SDL_DestroyTexture(unpressedTexture);
 	if (pressedTexture) SDL_DestroyTexture(unpressedTexture);
 	if (mouseoverTexture) SDL_DestroyTexture(unpressedTexture);
+}
+
+void CButton::ReloadAssets() {
+	if (buttonTexture) {
+		CreateButtonTexture();
+	}
 }
 
 void CButton::Render() {
@@ -100,9 +107,8 @@ void CButton::CreateButtonTexture() {
 	int ampPos = Text.find('&');
 	if (ampPos != std::string::npos) {
 		Text.erase(Text.begin() + ampPos);
-		RenderText();
 	}
-	if (!fontTexture) RenderText();
+	RenderText();
 	if (fontTexture) {
 		SDL_SetRenderTarget(renderer, mainTexture);
 		fontRect.x = (Width / 2) - (fontRect.w / 2);
@@ -134,7 +140,7 @@ void CButton::CreateButtonTexture() {
 	//Unpressed Texture
 	if (usingImages) {
 		if (UseGUI) {
-			unpressedImage = gui->getSkinTexture(renderer, UnPressedImagePath, Anchor::TOP_LEFT);
+			unpressedImage = gui->getSkinTexture(renderer, UnPressedImagePath, Anchor::aTopLeft);
 			unpressedTexture = unpressedImage->texture;
 		}
 		else {
@@ -156,7 +162,7 @@ void CButton::CreateButtonTexture() {
 	//Pressed Texture
 	if (usingImages) {
 		if (UseGUI) {
-			pressedImage = gui->getSkinTexture(renderer, PressedImagePath, Anchor::TOP_LEFT);
+			pressedImage = gui->getSkinTexture(renderer, PressedImagePath, Anchor::aTopLeft);
 			pressedTexture = pressedImage->texture;
 		}
 		else {

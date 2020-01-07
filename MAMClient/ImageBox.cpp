@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Widget.h"
 #include "ImageBox.h"
+#include "Define.h"
 #include "Sprite.h"
 
 CImageBox::CImageBox(CWindow* window, std::string name, int x, int y) : CWidget(window) {
@@ -17,10 +18,19 @@ CImageBox::CImageBox(CWindow* window, rapidjson::Value& vWidget) : CWidget(windo
 
 	if (vWidget.HasMember("Bordered")) Bordered = vWidget["Bordered"].GetBool();
 	if (vWidget.HasMember("BlackBackground")) BlackBackground = vWidget["BlackBackground"].GetBool();
+
+	if (vWidget.HasMember("Anchor")) Anchor = vWidget["Anchor"].GetInt();
 }
 
 CImageBox::~CImageBox() {
 	if (ImageBox) SDL_DestroyTexture(ImageBox);
+}
+
+void CImageBox::ReloadAssets() {
+	if (ImageBox) {
+		if (SkinImage.length() > 0) SetImageFromSkin(SkinImage);
+		else SetImage(nullptr);
+	}
 }
 
 void CImageBox::Render() {
@@ -51,11 +61,18 @@ void CImageBox::Render() {
 }
 
 void CImageBox::HandleEvent(SDL_Event& e) {
-	//
+	if (!Visible) return;
+	if (e.type == SDL_MOUSEBUTTONDOWN) {
+		int mx, my;
+		SDL_GetMouseState(&mx, &my);
+		if (doesPointIntersect(widgetRect, mx, my)) {
+			OnClick(e);
+		}
+	}
 }
 
 void CImageBox::SetImageFromSkin(std::string skinImage) {
-	Texture* sImage = gui->getSkinTexture(renderer, skinImage, Anchor::TOP_LEFT);
+	Texture* sImage = gui->getSkinTexture(renderer, skinImage, Anchor::aTopLeft);
 	if (sImage) {
 		SetImage(sImage);
 		SkinImage = skinImage;
@@ -78,6 +95,8 @@ void CImageBox::SetImage(Texture* image) {
 
 	SDL_RenderClear(renderer);
 
+	SDL_Rect viewPortRect = { 0, 0,widgetRect.w, widgetRect.h };
+
 	if (Bordered) {
 		hlineRGBA(renderer, 0, Width - 1, 0, 0xA0, 0xA0, 0xA0, 0xFF);
 		vlineRGBA(renderer, 0, 0, Height - 1, 0xA0, 0xA0, 0xA0, 0xFF);
@@ -85,42 +104,56 @@ void CImageBox::SetImage(Texture* image) {
 		hlineRGBA(renderer, 0, Width - 1, Height - 1, 0xFF, 0xFF, 0xFF, 0xFF);
 		vlineRGBA(renderer, Width - 1, 0, Height - 1, 0xFF, 0xFF, 0xFF, 0xFF);
 
-		if (image) {
-			int srcWidth = Width - 2;
-			if (srcWidth < Width - 2) srcWidth = image->width;
-			int srcHeight = Height - 2;
-			if (srcHeight < Height - 2) srcHeight = image->height;
-			int srcX = 0;
-			if (srcWidth < image->width) srcX = (image->width / 2) - (srcWidth / 2);
-			int srcY = 0;
-			if (srcHeight < image->height) srcY = (image->height / 2) - (srcHeight / 2);
-			SDL_Rect srcRect{ srcX, srcY, srcWidth, srcHeight };
-			SDL_Rect renderRect{ 1, 1,
-				image->width > Width - 2 ? Width - 2 : image->width,
-				image->height > Height - 2 ? Height - 2 : image->height };
-			SDL_RenderCopy(renderer, image->texture, &srcRect, &renderRect);
-		}
+		viewPortRect.x = 1;
+		viewPortRect.y = 1;
+		viewPortRect.w -= 2;
+		viewPortRect.h -= 2;
 	}
-	else {
-		if (image) {
-			int srcWidth = Width;
-			if (srcWidth < Width) srcWidth = image->width;
-			int srcHeight = Height;
-			if (srcHeight < Height) srcHeight = image->height;
-			int srcX = 0;
-			if (srcWidth < image->width) srcX = (image->width / 2) - (srcWidth / 2);
-			int srcY = 0;
-			if (srcHeight < image->height) srcY = (image->height / 2) - (srcHeight / 2);
-			SDL_Rect srcRect{ srcX, srcY, srcWidth, srcHeight };
-			SDL_Rect renderRect{ 1, 1,
-				image->width > Width ? Width : image->width,
-				image->height > Height ? Height : image->height };
-			SDL_RenderCopy(renderer, image->texture, &srcRect, &renderRect);
+
+	SDL_Rect oldViewport;
+	SDL_RenderGetViewport(renderer, &oldViewport);
+	SDL_RenderSetViewport(renderer, &viewPortRect);
+
+	SDL_Rect srcRect;
+	SDL_Rect destRect;
+
+	int maxWidth = viewPortRect.w;
+	int maxHeight = viewPortRect.h;
+	if (image) {
+		//Source Rectangle
+		switch (Anchor) {
+		case aTopLeft:
+			srcRect.x = 0;
+			srcRect.y = 0;
+			srcRect.w = image->width > maxWidth ? maxWidth : image->width;
+			srcRect.h = image->height > maxHeight ? maxHeight : image->height;
+			break;
+		case aCenter:
+			srcRect.w = image->width > maxWidth ? maxWidth : image->width;
+			srcRect.h = image->height > maxHeight ? maxHeight : image->height;
+			srcRect.x = (image->width / 2) - (srcRect.w / 2);
+			srcRect.y = (image->height / 2) - (srcRect.h / 2);
+			break;
 		}
+
+		//Destination Rectangle, for now we always center
+		destRect.w = srcRect.w;
+		destRect.h = srcRect.h;
+		destRect.x = (viewPortRect.w / 2) - (destRect.w / 2);
+		destRect.y = (viewPortRect.h / 2) - (destRect.h / 2);
+
+		SDL_RenderCopy(renderer, image->texture, &srcRect, &destRect);
 	}
+
+	SDL_RenderSetViewport(renderer, &oldViewport);
 	SDL_SetRenderTarget(renderer, NULL);
 }
 
 void CImageBox::BindSprite(Sprite* sprite) {
 	this->sprite = sprite;
+}
+
+void CImageBox::OnClick(SDL_Event& e) {
+	auto iter = eventMap.find("Click");
+	if (iter != eventMap.end()) iter->second(e);
 }

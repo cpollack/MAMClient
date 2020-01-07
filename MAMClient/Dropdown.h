@@ -25,6 +25,7 @@ public:
 	CDropDown(CWindow* window, rapidjson::Value& vWidget);
 	~CDropDown();
 
+	void ReloadAssets();
 	void Render();
 	void HandleEvent(SDL_Event& e);
 

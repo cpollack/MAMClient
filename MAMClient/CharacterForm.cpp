@@ -49,6 +49,11 @@ CCharacterForm::CCharacterForm() : CWindow("CharacterForm.JSON") {
 	registerEvent("btnUpdateNickname", "Click", std::bind(&CCharacterForm::btnUpdateNickname_Click, this, std::placeholders::_1));
 }
 
+void CCharacterForm::ReloadAssets() {
+	CWindow::ReloadAssets();
+	LoadPortrait();
+}
+
 void CCharacterForm::handleEvent(SDL_Event& e) {
 	CWindow::handleEvent(e);
 

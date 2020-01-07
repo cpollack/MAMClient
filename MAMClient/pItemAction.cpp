@@ -3,6 +3,7 @@
 #include "pItemAction.h"
 
 #include "Player.h"
+#include "Inventory.h"
 #include "FormMain.h"
 
 

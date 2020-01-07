@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Gauge.h"
+#include "Define.h"
 
 CGauge::CGauge(CWindow* window, std::string name, int x, int y) : CWidget(window) {
 	Name = name;
@@ -43,6 +44,9 @@ CGauge::CGauge(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 CGauge::~CGauge() {
 }
 
+void CGauge::ReloadAssets() {
+	CreateGaugeTexture();
+}
 
 void CGauge::Render() {
 	if (!Visible) return;
@@ -174,7 +178,7 @@ void CGauge::CreateGaugeTexture() {
 	//Background Texture
 	if (usingImages) {
 		if (UseGUI) {
-			backgroundImage = gui->getSkinTexture(renderer, backgroundImagePath, Anchor::TOP_LEFT);
+			backgroundImage = gui->getSkinTexture(renderer, backgroundImagePath, Anchor::aTopLeft);
 			backgroundTexture = backgroundImage->texture;
 		}
 		else {
@@ -191,7 +195,7 @@ void CGauge::CreateGaugeTexture() {
 	//Foreground Texture
 	if (usingImages) {
 		if (UseGUI) {
-			foregroundImage = gui->getSkinTexture(renderer, foregroundImagePath, Anchor::TOP_LEFT);
+			foregroundImage = gui->getSkinTexture(renderer, foregroundImagePath, Anchor::aTopLeft);
 			foregroundTexture = foregroundImage->texture;
 		}
 		else {
@@ -209,9 +213,9 @@ void CGauge::CreateGaugeTexture() {
 	//Increase and Decrease Textures - specific to when using images
 	if (usingImages) {
 		if (UseGUI) {
-			increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::TOP_LEFT);
+			increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::aTopLeft);
 			increaseTexture = increaseImage->texture;
-			decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::TOP_LEFT);
+			decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::aTopLeft);
 			decreaseTexture = decreaseImage->texture;
 		}
 		else {

@@ -52,6 +52,15 @@ CTabControl::~CTabControl() {
 	for (auto texture : tabTextures) delete texture;
 }
 
+void CTabControl::ReloadAssets() {
+	if (tabControlTexture) {
+		CreateTabControlTexture();
+		for (auto widget : Children) {
+			widget->ReloadAssets();
+		}
+	}
+}
+
 void CTabControl::Render() {
 	if (!Visible) return;
 	if (!tabControlTexture) CreateTabControlTexture();

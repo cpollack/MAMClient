@@ -32,6 +32,15 @@ CPanel::~CPanel() {
 	//
 }
 
+void CPanel::ReloadAssets() {
+	if (panelTexture) {
+		CreatePanelTexture();
+		for (auto widget : Children) {
+			widget->ReloadAssets();
+		}
+	}
+}
+
 void CPanel::Render() {
 	if (!Visible) return;
 	if (!panelTexture) CreatePanelTexture();
@@ -59,10 +68,10 @@ void CPanel::CreatePanelTexture() {
 		//Header, draw complex border
 		int captionOffset = 7;
 
-		rectangleRGBA(renderer, 1, captionOffset + 1, Width - 2, Height - captionOffset - 2, white.r, white.g, white.b, white.a);
-		rectangleRGBA(renderer, 0, captionOffset, Width - 3, Height - captionOffset - 3, dark.r, dark.g, dark.b, dark.a);
+		rectangleRGBA(renderer, 1, captionOffset + 1, Width, Height, white.r, white.g, white.b, white.a);
+		rectangleRGBA(renderer, 0, captionOffset, Width - 1, Height - 1, dark.r, dark.g, dark.b, dark.a);
 
-		if (!fontTexture) RenderText();
+		RenderText();
 
 		fontRect.x = 5;
 		fontRect.y = 1;

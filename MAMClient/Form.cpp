@@ -278,11 +278,11 @@ SubForm* Form::getSubform(std::string name) {
 
 
 SDL_Rect Form::getDstRect(Texture* aTexture, int x, int y) {
-	if (aTexture->anchor == Anchor::TOP_RIGHT || aTexture->anchor == Anchor::BOTTOM_RIGHT) aTexture->rect.x = x - aTexture->width;
-	else aTexture->rect.x = x;
+	//if (aTexture->anchor == Anchor::TOP_RIGHT || aTexture->anchor == Anchor::BOTTOM_RIGHT) aTexture->rect.x = x - aTexture->width;
+	//else aTexture->rect.x = x;
 
-	if (aTexture->anchor == Anchor::BOTTOM_LEFT || aTexture->anchor == Anchor::BOTTOM_RIGHT) aTexture->rect.y = y - aTexture->height;
-	else aTexture->rect.y = y;
+	//if (aTexture->anchor == Anchor::BOTTOM_LEFT || aTexture->anchor == Anchor::BOTTOM_RIGHT) aTexture->rect.y = y - aTexture->height;
+	//else aTexture->rect.y = y;
 
 	aTexture->rect.w = aTexture->width;
 	aTexture->rect.h = aTexture->height;

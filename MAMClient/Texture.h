@@ -4,12 +4,12 @@
 #include "RLE.h"
 #include "TGA.h"
 
-typedef enum Anchor {
+/*typedef enum Anchor {
 	TOP_LEFT,
 	TOP_RIGHT,
 	BOTTOM_LEFT,
 	BOTTOM_RIGHT
-}Anchor;
+}Anchor;*/
 
 class Texture {
 public:
@@ -46,6 +46,7 @@ public:
 	void Render(SDL_Point p);
 
 	void Load();
+	void Reload();
 	void Texture::loadResource(std::string filePath);
 	void Texture::loadResource(std::string filePath, int anchor);
 	void Texture::setTextureOffset(int x, int y);

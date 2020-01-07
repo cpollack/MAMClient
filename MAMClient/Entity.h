@@ -5,9 +5,10 @@ class Sprite;
 class Entity {
 public:
 	Entity(SDL_Renderer* r, int id, std::string name, int look);
-	~Entity();
+	virtual ~Entity();
 
 	virtual void render();
+	virtual void renderNameplate();
 	virtual void step();
 	virtual void handleEvent(SDL_Event& e);
 
@@ -25,9 +26,12 @@ protected:
 	BYTE colorSets[35];
 	int lastSpriteAnimation = -1, lastSpriteDirection = -1;
 
+	bool MouseOver = false;
+
 public: 
 	int getID();
 	std::string getName();
+	Sprite* GetSprite() { return sprite; }
 	SDL_Rect getRenderRect();
 
 	virtual std::string getRole(int look);

@@ -23,6 +23,7 @@ public:
 	CLabel(CWindow* window, rapidjson::Value& vWidget);
 	~CLabel();
 
+	void ReloadAssets();
 	void Render();
 	void HandleEvent(SDL_Event& e);
 

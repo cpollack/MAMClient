@@ -1,6 +1,8 @@
 #include "stdafx.h"
+#include "resource.h"
 #include "Window.h"
 #include "GUI.h"
+#include "Define.h"
 #include "CustomEvents.h"
 
 #include "Widget.h"
@@ -19,6 +21,16 @@
 
 using namespace rapidjson;
 
+void LoadJSONResource(int jsonName, DWORD& size, const char*& data)
+{
+	HMODULE handle = ::GetModuleHandle(NULL);
+	HRSRC rc = ::FindResource(handle, MAKEINTRESOURCE(jsonName),
+		MAKEINTRESOURCE(JSONFILE));
+	HGLOBAL rcData = ::LoadResource(handle, rc);
+	size = ::SizeofResource(handle, rc);
+	data = static_cast<const char*>(::LockResource(rcData));
+}
+
 CWindow::CWindow() {
 	Type = FT_DEFAULT;
 }
@@ -36,14 +48,22 @@ CWindow::CWindow(int w, int h) {
 CWindow::CWindow(std::string jsonFile) {
 	Type = FT_DEFAULT;
 	std::string path = "JSON/" + jsonFile;
-	
-	char readBuffer[65536];
-	Document document;
 
-	FILE* fp = fopen(path.c_str(), "rb");
-	FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-	document.ParseStream<0, UTF8<>, FileReadStream>(is);
-	fclose(fp);
+	Document document;
+	if (jsonFile.compare("LoginForm.JSON") == 0) {
+		DWORD size = 0;
+		const char* data = NULL;
+		LoadJSONResource(IDR_LOGINFORM, size, data);
+		document.Parse(data);
+	}
+	else {
+		char readBuffer[65536];
+
+		FILE* fp = fopen(path.c_str(), "rb");
+		FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+		document.ParseStream<0, UTF8<>, FileReadStream>(is);
+		fclose(fp);
+	}
 
 	loadDocument(document);
 }
@@ -161,7 +181,7 @@ CWidget* CWindow::GetWidget(std::string widgetName) {
 	return nullptr;
 }
 
-void CWindow::SetFocus(std::string widgetName) {
+void CWindow::FocusWidget(std::string widgetName) {
 	CWidget *widget = GetWidget(widgetName);
 	if (widget && CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
 		SDL_Event event;
@@ -188,7 +208,7 @@ bool CWindow::init() {
 		SDL_SysWMinfo info;
 		SDL_VERSION(&info.version); /* initialize info structure with SDL version info */
 		if (SDL_GetWindowWMInfo(window, &info)) {
-			HWND hwnd = info.info.win.window; //pull hwnd from sdl version info
+			hwnd = info.info.win.window; //pull hwnd from sdl version info
 			long style = GetWindowLong(hwnd, GWL_EXSTYLE);
 			style |= WS_EX_TOOLWINDOW; //change window style to toolwindow - not shown in switcher
 			ShowWindow(hwnd, SW_HIDE); // hide the window
@@ -223,19 +243,25 @@ void CWindow::initUI() {
 	//Deprecate or move?
 	if (!gui) gClient.initializeGUI();
 
-	topCenter_s = gui->getSkinTexture(renderer, "TopCenter_s.bmp", Anchor::TOP_LEFT);
-	bottomCenter = gui->getSkinTexture(renderer, "BottomCenter.bmp", Anchor::BOTTOM_LEFT);
-	left = gui->getSkinTexture(renderer, "Left.bmp", Anchor::TOP_LEFT);
-	right = gui->getSkinTexture(renderer, "Right.bmp", Anchor::TOP_RIGHT);
-	topLeft_s = gui->getSkinTexture(renderer, "TopLeft_s.bmp", Anchor::TOP_LEFT);
-	topRight_s = gui->getSkinTexture(renderer, "TopRight_s.bmp", Anchor::TOP_RIGHT);
-	bottomLeft = gui->getSkinTexture(renderer, "BottomLeft.bmp", Anchor::BOTTOM_LEFT);
-	bottomRight = gui->getSkinTexture(renderer, "BottomRight.bmp", Anchor::BOTTOM_RIGHT);
+	topCenter_s = gui->getSkinTexture(renderer, "TopCenter_s.bmp", Anchor::aTopLeft);
+	bottomCenter = gui->getSkinTexture(renderer, "BottomCenter.bmp", Anchor::aBottomLeft);
+	left = gui->getSkinTexture(renderer, "Left.bmp", Anchor::aTopLeft);
+	right = gui->getSkinTexture(renderer, "Right.bmp", Anchor::aTopRight);
+	topLeft_s = gui->getSkinTexture(renderer, "TopLeft_s.bmp", Anchor::aTopLeft);
+	topRight_s = gui->getSkinTexture(renderer, "TopRight_s.bmp", Anchor::aTopRight);
+	bottomLeft = gui->getSkinTexture(renderer, "BottomLeft.bmp", Anchor::aBottomLeft);
+	bottomRight = gui->getSkinTexture(renderer, "BottomRight.bmp", Anchor::aBottomRight);
 
 	//close = gui->getSkinTexture(renderer, "Close.bmp", Anchor::TOP_LEFT);
 	//minimize = gui->getSkinTexture(renderer, "Min.bmp", Anchor::TOP_LEFT);
 
 	focusedWidget = nullptr;
+}
+
+void CWindow::ReloadAssets() {
+	for (auto widget : widgets) {
+		widget.second->ReloadAssets();
+	}
 }
 
 void CWindow::handleEvent(SDL_Event& e)
@@ -307,7 +333,7 @@ void CWindow::handleEvent(SDL_Event& e)
 			//Window appeared
 		case SDL_WINDOWEVENT_SHOWN:
 			shown = true;
-			//std::cout << "Subwindow shown\n";
+			//std::cout << "Subwindow shown " << windowID << "\n";
 			break;
 			//Window disappeared
 		case SDL_WINDOWEVENT_HIDDEN:
@@ -325,7 +351,7 @@ void CWindow::handleEvent(SDL_Event& e)
 			//Repaint on expose
 		case SDL_WINDOWEVENT_EXPOSED:
 			SDL_RenderPresent(renderer);
-			//std::cout << "Subwindow exposed\n";
+			//std::cout << "Subwindow exposed " << windowID << "\n";
 			break;
 
 			//Mouse enter
@@ -345,17 +371,24 @@ void CWindow::handleEvent(SDL_Event& e)
 		case SDL_WINDOWEVENT_FOCUS_GAINED:
 			keyboardFocus = true;
 			updateCaption = true;
-			//std::cout << "Subwindow keyboard focus gained\n";
+
+			//Restore text input
+			if (focusedWidget && focusedWidget->WidgetType == wtField) {
+				SDL_StartTextInput();
+				//std::cout << "Subwindow Keyboard input restarted." << std::endl;
+			}
+			//std::cout << "Subwindow keyboard focus gained " << windowID << "\n";
+
 			break;
 			//Keyboard focus lost
 		case SDL_WINDOWEVENT_FOCUS_LOST:
 			keyboardFocus = false;
 			updateCaption = true;
-			//std::cout << "Subwindow keyboard focus lost\n";
+			//std::cout << "Subwindow keyboard focus lost " << windowID << "\n";
 			break;
 
 		case SDL_WINDOWEVENT_TAKE_FOCUS:
-			//std::cout << "Subwindow take focus\n";
+			//std::cout << "Subwindow take focus " << windowID << "\n";
 			break;
 
 			//Window minimized
@@ -393,6 +426,7 @@ void CWindow::step() {
 void CWindow::focus() {
 	if (!shown) SDL_ShowWindow(window);
 	SDL_RaiseWindow(window);
+	SetFocus(hwnd);
 }
 
 void CWindow::raise() {
@@ -434,10 +468,10 @@ void CWindow::renderPresent() {
 }
 
 SDL_Rect CWindow::getDstRect(Texture* texture, int x, int y) {
-	if (texture->anchor == Anchor::TOP_RIGHT || texture->anchor == Anchor::BOTTOM_RIGHT) texture->rect.x = x - texture->width;
+	if (texture->anchor == Anchor::aTopRight || texture->anchor == Anchor::aBottomRight) texture->rect.x = x - texture->width;
 	else texture->rect.x = x;
 
-	if (texture->anchor == Anchor::BOTTOM_LEFT || texture->anchor == Anchor::BOTTOM_RIGHT) texture->rect.y = y - texture->height;
+	if (texture->anchor == Anchor::aBottomLeft || texture->anchor == Anchor::aBottomRight) texture->rect.y = y - texture->height;
 	else texture->rect.y = y;
 
 	texture->rect.w = texture->width;

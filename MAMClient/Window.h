@@ -37,6 +37,7 @@ public:
 
 	virtual bool init();
 	virtual void initUI();
+	virtual void ReloadAssets();
 	virtual void handleEvent(SDL_Event& e);
 	virtual void step();
 
@@ -58,7 +59,9 @@ protected: //Window Properties
 	void SetParentFromStack();
 
 public:	SDL_Renderer* renderer;
-protected:	int windowID;
+protected:	
+	HWND hwnd;
+	int windowID;
 	int Type;
 	//Window dimensions
 	int Width;
@@ -111,7 +114,7 @@ public:
 	void RemoveWidget(std::string widgetName);
 	void ClearWidgets();
 	CWidget* GetWidget(std::string widgetName);
-	void SetFocus(std::string widgetName);
+	void FocusWidget(std::string widgetName);
 
 protected: //GUI textures
 	Texture* topCenter_s;

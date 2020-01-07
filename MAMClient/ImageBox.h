@@ -10,6 +10,7 @@ public:
 	CImageBox(CWindow* window, rapidjson::Value& vWidget);
 	~CImageBox();
 
+	void ReloadAssets();
 	void Render();
 	void HandleEvent(SDL_Event& e);
 
@@ -24,5 +25,7 @@ private:
 
 	bool Bordered;
 	bool BlackBackground;
-	
+	int Anchor;
+
+	void OnClick(SDL_Event& e);
 };

@@ -87,6 +87,9 @@
     <Filter Include="Header Files\Packet\User">
       <UniqueIdentifier>{9c0210bd-f5b1-429a-b314-4bbce56b24b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="JSON">
+      <UniqueIdentifier>{3439b48b-7024-4147-b102-10cee52ada13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Widget.cpp">
@@ -314,9 +317,6 @@
     <ClCompile Include="FormMessage.cpp">
       <Filter>Source Files\Forms\Old Forms</Filter>
     </ClCompile>
-    <ClCompile Include="FormPetList.cpp">
-      <Filter>Source Files\Forms\Old Forms</Filter>
-    </ClCompile>
     <ClCompile Include="FormPrompt.cpp">
       <Filter>Source Files\Forms\Old Forms</Filter>
     </ClCompile>
@@ -392,11 +392,11 @@
     <ClCompile Include="pRename.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="CustomEvents.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
     <ClCompile Include="PetListForm.cpp">
       <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomEvents.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -610,9 +610,6 @@
     <ClInclude Include="Form.h">
       <Filter>Header Files\Forms\Old Forms</Filter>
     </ClInclude>
-    <ClInclude Include="FormClasses.h">
-      <Filter>Header Files\Forms\Old Forms</Filter>
-    </ClInclude>
     <ClInclude Include="FormError.h">
       <Filter>Header Files\Forms\Old Forms</Filter>
     </ClInclude>
@@ -623,9 +620,6 @@
       <Filter>Header Files\Forms\Old Forms</Filter>
     </ClInclude>
     <ClInclude Include="FormMessage.h">
-      <Filter>Header Files\Forms\Old Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="FormPetList.h">
       <Filter>Header Files\Forms\Old Forms</Filter>
     </ClInclude>
     <ClInclude Include="FormPrompt.h">
@@ -709,11 +703,11 @@
     <ClInclude Include="pRename.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="CustomEvents.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
     <ClInclude Include="PetListForm.h">
       <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomEvents.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -726,5 +720,10 @@
     <Text Include="Notes.txt">
       <Filter>Notes</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="JSON\LoginForm.JSON">
+      <Filter>JSON</Filter>
+    </None>
   </ItemGroup>
 </Project>

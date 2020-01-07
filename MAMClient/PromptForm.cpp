@@ -5,7 +5,6 @@
 #include "MainWindow.h"
 #include "Label.h"
 #include "Button.h"
-
 CPromptForm::CPromptForm() : CWindow(400, 125) {
 	Type = FT_PROMPT;
 
@@ -34,7 +33,50 @@ CPromptForm::CPromptForm() : CWindow(400, 125) {
 	btnOK->SetHeight(24);
 	btnOK->SetText("OK(&O)");
 	AddWidget(btnOK);
+
 	registerEvent("btnOK", "Click", std::bind(&CPromptForm::btnOk_Click, this, std::placeholders::_1));
+}
+
+CPromptForm::CPromptForm(bool allowCancel) : CWindow(400, 125) {
+	Type = FT_PROMPT;
+
+	parent = mainForm;
+	if (Windows.size() > 1) parent = Windows[Windows.size() - 2];
+
+	//Center window over main form
+	SDL_Rect pos, size;
+	SDL_GetWindowPosition(parent->GetWindow(), &pos.x, &pos.y);
+	SDL_GetWindowSize(parent->GetWindow(), &size.x, &size.y);
+
+	SDL_Rect newPos;
+	newPos.x = pos.x + (size.x / 2) - (Width / 2);
+	newPos.y = pos.y + (size.y / 2) - (Height / 2);
+	SDL_SetWindowPosition(window, newPos.x, newPos.y);
+
+	Draggable = false;
+
+	lblMessage = new CLabel(this, "lblMessage", 20, 35);
+	lblMessage->SetWidth(350);
+	lblMessage->SetWrapLength(350);
+	AddWidget(lblMessage);
+
+	CButton *btnOK = new CButton(this, "btnOK", 164, 80);
+	btnOK->SetWidth(72);
+	btnOK->SetHeight(24);
+	btnOK->SetText("OK(&O)");
+	AddWidget(btnOK);
+	
+	registerEvent("btnOK", "Click", std::bind(&CPromptForm::btnOk_Click, this, std::placeholders::_1));
+
+	if (allowCancel) {
+		CButton *btnCancel = new CButton(this, "btnCancel", 245, 80);
+		btnCancel->SetWidth(72);
+		btnCancel->SetHeight(24);
+		btnCancel->SetText("Cancel(&C)");
+		AddWidget(btnCancel);
+
+		registerEvent("btnCancel", "Click", std::bind(&CPromptForm::btnCancel_Click, this, std::placeholders::_1));
+	}
 }
 
 void CPromptForm::SetMessage(std::string message) {
@@ -66,4 +108,8 @@ void CPromptForm::btnOk_Click(SDL_Event& e) {
 		event.user.data2 = nullptr;
 		SDL_PushEvent(&event);
 	}
+}
+
+void CPromptForm::btnCancel_Click(SDL_Event& e) {
+	CWindow::btnClose_Click(e);
 }

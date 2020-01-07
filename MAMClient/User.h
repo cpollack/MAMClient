@@ -14,7 +14,6 @@ public:
 	~User();
 
 	virtual void render();
-	virtual void renderNameplate();
 	virtual void step();
 	virtual void handleEvent(SDL_Event& e);
 

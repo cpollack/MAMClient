@@ -29,7 +29,7 @@ public:
 	CWidget(CWindow* window);
 	CWidget(CWindow* window, std::string name, int x, int y);
 	CWidget(CWindow* window, rapidjson::Value& vWidget);
-	~CWidget();
+	virtual ~CWidget();
 	//virtual void SetRenderer(SDL_Renderer* rend);
 
 protected:
@@ -79,6 +79,7 @@ public: //Accessors
 public:
 	virtual void Render();
 	virtual void HandleEvent(SDL_Event& e);	
+	virtual void ReloadAssets() {}
 
 	virtual bool DoesPointIntersect(SDL_Point point);
 

@@ -9,6 +9,7 @@ public:
 	CPanel(CWindow* window, rapidjson::Value& vWidget);
 	~CPanel();
 
+	void ReloadAssets();
 	void Render();
 
 private:

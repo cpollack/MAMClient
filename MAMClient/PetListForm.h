@@ -7,6 +7,8 @@ class CGauge;
 class CField;
 class Sprite;
 
+class CPromptForm;
+
 class CPetListForm : public CWindow {
 public:
 	CPetListForm();
@@ -23,7 +25,17 @@ private:
 	int GetMarchingPetIndex();
 	int selection = -1;
 
+	CPromptForm *promptForm = nullptr;
+	void DropPet();
+	bool Dropping = false;
+
 public: //Event Hooks
+	void imgPet1_Click(SDL_Event& e);
+	void imgPet2_Click(SDL_Event& e);
+	void imgPet3_Click(SDL_Event& e);
+	void imgPet4_Click(SDL_Event& e);
+	void imgPet5_Click(SDL_Event& e);
+
 	void btnChangeName_Click(SDL_Event& e);
 	void btnEvolve_Click(SDL_Event& e);
 	void btnSkills_Click(SDL_Event& e);

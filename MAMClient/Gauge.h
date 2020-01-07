@@ -8,6 +8,7 @@ public:
 	CGauge(CWindow* window, rapidjson::Value& vWidget);
 	~CGauge();
 
+	void ReloadAssets();
 	void Render();
 	void HandleEvent(SDL_Event& e);
 

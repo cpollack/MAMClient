@@ -11,6 +11,7 @@ public:
 	CField(CWindow* window, rapidjson::Value& vWidget);
 	~CField();
 
+	void ReloadAssets();
 	virtual void Render();
 	virtual void HandleEvent(SDL_Event& e);
 	virtual void RegisterEvent(std::string eventName, EventFunc evf);

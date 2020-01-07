@@ -26,6 +26,12 @@ CDropDown::~CDropDown() {
 	if (arrowUpTexture) SDL_DestroyTexture(arrowUpTexture);
 }
 
+void CDropDown::ReloadAssets() {
+	if (dropdownTexture) {
+		CreateDropdownTexture();
+	}
+}
+
 void CDropDown::Render() {
 	if (!Visible) return;
 	if (!dropdownTexture) CreateDropdownTexture();
@@ -82,6 +88,20 @@ void CDropDown::HandleEvent(SDL_Event& e) {
 		if (doesPointIntersect(downRect, mx, my)) {
 			held = true;
 		}
+		else {
+			//fire focus lost event
+			if (CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
+				SDL_Event event;
+				SDL_zero(event);
+				event.type = CUSTOMEVENT_WIDGET;
+				event.window.windowID = e.window.windowID;
+				event.user.code = WIDGET_FOCUS_LOST;
+				event.user.data1 = this;
+				event.user.data2 = Window;
+				SDL_PushEvent(&event);
+			}
+			expanded = false;
+		}
 	}
 
 	if (e.type == SDL_MOUSEBUTTONUP) {
@@ -98,22 +118,8 @@ void CDropDown::HandleEvent(SDL_Event& e) {
 				pressed = !pressed;
 				OnClick(e);
 			}
-
 		}
-		else {
-			//fire focus lost event
-			if (CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
-				SDL_Event event;
-				SDL_zero(event);
-				event.type = CUSTOMEVENT_WIDGET;
-				event.window.windowID = e.window.windowID;
-				event.user.code = WIDGET_FOCUS_LOST;
-				event.user.data1 = this;
-				event.user.data2 = Window;
-				SDL_PushEvent(&event);
-			}
-			expanded = false;
-		}
+		
 		held = false;
 	}
 }

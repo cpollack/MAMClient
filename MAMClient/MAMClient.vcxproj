@@ -120,6 +120,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_gfx.lib;ws2_32.lib;winmm.lib;FreeImage.lib;FreeImagePlus.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
+      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <EnableUAC>false</EnableUAC>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -160,7 +162,6 @@
     <ClCompile Include="FormError.cpp" />
     <ClCompile Include="FormInventory.cpp" />
     <ClCompile Include="FormMessage.cpp" />
-    <ClCompile Include="FormPetList.cpp" />
     <ClCompile Include="FormPrompt.cpp" />
     <ClCompile Include="FormShop.cpp" />
     <ClCompile Include="Global.cpp" />
@@ -263,12 +264,10 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Form.h" />
-    <ClInclude Include="FormClasses.h" />
     <ClInclude Include="FormError.h" />
     <ClInclude Include="FormInventory.h" />
     <ClInclude Include="FormMain.h" />
     <ClInclude Include="FormMessage.h" />
-    <ClInclude Include="FormPetList.h" />
     <ClInclude Include="FormPrompt.h" />
     <ClInclude Include="FormShop.h" />
     <ClInclude Include="FormStruct.h" />
@@ -358,6 +357,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="JSON\LoginForm.JSON" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

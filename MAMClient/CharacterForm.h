@@ -12,6 +12,7 @@ class CCharacterForm : public CWindow {
 public:
 	CCharacterForm();
 
+	void ReloadAssets();
 	void handleEvent(SDL_Event& e);
 
 private:

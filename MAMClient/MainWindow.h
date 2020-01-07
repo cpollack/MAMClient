@@ -28,6 +28,7 @@ public:
 
 	bool init() override;
 	void initUI() override;
+	void ReloadAssets();
 	void render();
 	void handleEvent(SDL_Event& e);
 	void step();

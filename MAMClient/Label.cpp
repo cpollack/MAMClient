@@ -20,6 +20,14 @@ CLabel::~CLabel() {
 	//
 }
 
+void CLabel::ReloadAssets() {
+	if (fontTexture) {
+		SDL_DestroyTexture(fontTexture);
+		fontTexture = NULL;
+		RenderText();
+	}
+}
+
 void CLabel::Render() {
 	if (!Visible) return;
 	if (!fontTexture) RenderText();

@@ -2,6 +2,8 @@
 #include "Client.h"
 #include "pPetAction.h"
 
+#include "CustomEvents.h"
+
 #include "Player.h"
 #include "Pet.h"
 #include "MainWindow.h"
@@ -46,17 +48,13 @@ void pPetAction::process() {
 	switch (action) {
 	case paSetActive:
 		activePet = player->setActivePet(petId);
-		if (mainForm->getMode() == MFM_MAIN) {
-			mainForm->setPetHealthGauge(activePet->getCurrentHealth(), activePet->getMaxHealth());
-			mainForm->setPetExpGauge(activePet->getExperience(), activePet->getLevelUpExperience());
 
-			for (auto form : Windows) {
-				if (form->GetType() == FT_PET) {
-					//((CPetForm*)form)->setMarchingPet(petId);
-					break;
-				}
-			}
-		}
+		SDL_Event e;
+		SDL_zero(e);
+		e.type = CUSTOMEVENT_PET;
+		e.user.code = PET_MARCHING;
+		SDL_PushEvent(&e);
+
 		break;
 	case paUseItem:
 		activePet = player->getPet(petId);

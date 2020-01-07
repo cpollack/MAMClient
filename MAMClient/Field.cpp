@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Field.h"
+#include "Window.h"
 #include "CustomEvents.h"
 
 CField::CField(CWindow* window, std::string name, int x, int y) : CWidget(window) {
@@ -23,6 +24,13 @@ CField::CField(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 
 CField::~CField() {
 	//
+}
+
+void CField::ReloadAssets() {
+	if (fieldTexture) {
+		RenderFieldTexture();
+		RenderText();
+	}
 }
 
 void CField::Render() {
@@ -78,18 +86,6 @@ void CField::HandleEvent(SDL_Event& e) {
 		if (DoesPointIntersect(SDL_Point{ mx, my })) {
 			held = true;
 		}
-	}
-
-	if (e.type == SDL_MOUSEBUTTONUP) {
-		int mx, my;
-		SDL_GetMouseState(&mx, &my);
-
-		if (DoesPointIntersect(SDL_Point{ mx, my })) {
-			if (held) {
-				OnClick(e);
-				return;
-			}
-		}
 		else {
 			if (Focused) {
 				if (CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
@@ -102,6 +98,18 @@ void CField::HandleEvent(SDL_Event& e) {
 					event.user.data2 = Window;
 					SDL_PushEvent(&event);
 				}
+			}
+		}
+	}
+
+	if (e.type == SDL_MOUSEBUTTONUP) {
+		int mx, my;
+		SDL_GetMouseState(&mx, &my);
+
+		if (DoesPointIntersect(SDL_Point{ mx, my })) {
+			if (held) {
+				OnClick(e);
+				return;
 			}
 		}
 		held = false;
@@ -218,6 +226,7 @@ void CField::SetHint(std::string h) {
 
 std::string CField::GetText() {
 	if (IsPassword) return passwordText;
+	if (Numeric && Text.length() == 0) return "0";
 	return Text;
 }
 
@@ -228,11 +237,20 @@ void CField::SetText(std::string text) {
 		for (int i = 0; i < passwordText.length(); i++) Text.push_back('*');
 	}
 	else Text = text;
+	if (Numeric) {
+		for (int i = Text.length(); i > 0; i--) {
+			char c = Text[i - 1];
+			if (!(c >= '0' && c <= '9')) Text.erase(Text.begin() + i - 1);
+		}
+		if (Text.length() == 0) Text = "0";
+	}
 	RenderText();
 }
 
 void CField::OnFocus() {
+	std::cout << "Field " << Name << " start text input." << std::endl;
 	Focused = true;
+	Window->focus();
 	SDL_StartTextInput();
 	cursorPos = Text.size();
 	cursorFrame = 0;
@@ -327,6 +345,10 @@ void CField::OnTab(SDL_Event &e) {
 }
 
 void CField::OnChange(SDL_Event& e) {
+	if (Numeric && Text.length() == 0) {
+		Text = "0";
+		RenderText();
+	}
 	if (Text.compare(lastValue) == 0) return;
 	lastValue = Text;
 

@@ -495,9 +495,9 @@ void FormMain::openShop(int sId) {
 	}
 
 	//create shopform
-	FormShop* shopForm = new FormShop("Shop", width / 2, height / 2);
-	shopForm->addShopInventory(shopItems);
-	Form::addSubform("Shop", shopForm);
+	//FormShop* shopForm = new FormShop("Shop", width / 2, height / 2);
+	//shopForm->addShopInventory(shopItems);
+	//Form::addSubform("Shop", shopForm);
 }
 
 

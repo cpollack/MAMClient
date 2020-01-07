@@ -21,6 +21,7 @@ public:
 	CButton(CWindow* window, rapidjson::Value& vWidget);
 	~CButton();
 
+	void ReloadAssets();
 	void Render();
 	void HandleEvent(SDL_Event& e);
 	void HandleEvent(SDL_Event& e, int mx, int my);

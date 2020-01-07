@@ -89,19 +89,19 @@ SDL_Rect SubForm::getDstRect(Texture* guiTexture, int atX, int atY) {
 	atX += x;
 	atY += y;
 
-	SDL_Rect dstRect;
+	SDL_Rect dstRect{ 0,0,0,0 };
 
-	if (guiTexture->anchor == Anchor::TOP_RIGHT || guiTexture->anchor == Anchor::BOTTOM_RIGHT) dstRect.x = atX - guiTexture->width;
-	else dstRect.x = atX;
+	//if (guiTexture->anchor == Anchor::TOP_RIGHT || guiTexture->anchor == Anchor::BOTTOM_RIGHT) dstRect.x = atX - guiTexture->width;
+	//else dstRect.x = atX;
 
-	if (guiTexture->anchor == Anchor::BOTTOM_LEFT || guiTexture->anchor == Anchor::BOTTOM_RIGHT) dstRect.y = atY - guiTexture->height;
-	else dstRect.y = atY;
+	//if (guiTexture->anchor == Anchor::BOTTOM_LEFT || guiTexture->anchor == Anchor::BOTTOM_RIGHT) dstRect.y = atY - guiTexture->height;
+	//else dstRect.y = atY;
 
-	dstRect.w = guiTexture->width;
-	if (dstRect.x + dstRect.w > dstRect.x + width) dstRect.w = width;
+	//dstRect.w = guiTexture->width;
+	//if (dstRect.x + dstRect.w > dstRect.x + width) dstRect.w = width;
 
-	dstRect.h = guiTexture->height;
-	if (dstRect.y + dstRect.h > dstRect.y + height) dstRect.h = height;
+	//dstRect.h = guiTexture->height;
+	//if (dstRect.y + dstRect.h > dstRect.y + height) dstRect.h = height;
 	return dstRect;
 }
 

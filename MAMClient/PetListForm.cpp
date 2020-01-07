@@ -11,6 +11,7 @@
 #include "INI.h"
 
 #include "pRename.h"
+#include "pPetAction.h"
 
 #include "Texture.h"
 #include "Sprite.h"
@@ -29,6 +30,12 @@ CPetListForm::CPetListForm() : CWindow("PetListForm.JSON") {
 	SetMarching(selection);
 	LoadPet(selection);
 
+	registerEvent("imgPet1", "Click", std::bind(&CPetListForm::imgPet1_Click, this, std::placeholders::_1));
+	registerEvent("imgPet2", "Click", std::bind(&CPetListForm::imgPet2_Click, this, std::placeholders::_1));
+	registerEvent("imgPet3", "Click", std::bind(&CPetListForm::imgPet3_Click, this, std::placeholders::_1));
+	registerEvent("imgPet4", "Click", std::bind(&CPetListForm::imgPet4_Click, this, std::placeholders::_1));
+	registerEvent("imgPet5", "Click", std::bind(&CPetListForm::imgPet5_Click, this, std::placeholders::_1));
+
 	registerEvent("btnChangeName", "Click", std::bind(&CPetListForm::btnChangeName_Click, this, std::placeholders::_1));
 	registerEvent("btnEvolve", "Click", std::bind(&CPetListForm::btnEvolve_Click, this, std::placeholders::_1));
 	registerEvent("btnSkills", "Click", std::bind(&CPetListForm::btnSkills_Click, this, std::placeholders::_1));
@@ -45,6 +52,13 @@ void CPetListForm::handleEvent(SDL_Event& e) {
 	CWindow::handleEvent(e);
 
 	if (e.window.windowID != windowID) return;
+
+	if (e.type = CUSTOMEVENT_WINDOW && e.user.data1 == promptForm) {
+		if (e.user.code == WINDOW_CLOSE_PROMPT_OK) {
+			if (Dropping) DropPet();
+		}
+		Dropping = false;
+	}
 }
 
 void CPetListForm::HookWidgets() {
@@ -114,7 +128,7 @@ void CPetListForm::LoadPortraits() {
 			std::string iconPath = ini.getEntry("Frame0");
 
 			portrait = new Texture(renderer, iconPath);
-			petName = pet->getName();
+			petName = pet->GetName();
 		}
 
 		switch (i) {
@@ -179,6 +193,8 @@ void CPetListForm::LoadPortraits() {
 			}
 			break;
 		}
+
+		if (portrait) delete portrait;
 	}
 }
 
@@ -199,7 +215,7 @@ void CPetListForm::LoadPet(int index) {
 	LoadSprite();
 
 	Pet *pet = player->getPetList()[index];
-	fldName->SetText(pet->getName());
+	fldName->SetText(pet->GetName());
 	lblSpecies->SetText("N/A");
 	lblElement->SetText(pet->GetElementText());
 	lblRegistered->SetText("");
@@ -211,7 +227,7 @@ void CPetListForm::LoadPet(int index) {
 
 	lblLevel->SetText(formatInt(pet->getLevel()));
 	gaugeExperience->set(pet->getExperience(), pet->getLevelUpExperience());
-	lblGeneration->SetText("0");
+	lblGeneration->SetText(std::to_string(pet->GetGeneration()));
 	gaugeLife->set(pet->getCurrentHealth(), pet->getMaxHealth());
 	lblAccessory->SetText("");
 
@@ -224,10 +240,63 @@ void CPetListForm::LoadPet(int index) {
 	fldDexterity->SetText(dexterity);
 
 	//medals?
+	
+}
+
+void CPetListForm::imgPet1_Click(SDL_Event& e) {
+	if (selection == 0) return;
+	selection = 0;
+	LoadPet(selection);
+}
+
+void CPetListForm::imgPet2_Click(SDL_Event& e) {
+	if (selection == 1) return;
+	selection = 1;
+	LoadPet(selection);
+}
+
+void CPetListForm::imgPet3_Click(SDL_Event& e) {
+	if (selection == 2) return;
+	selection = 2;
+	LoadPet(selection);
+}
+
+void CPetListForm::imgPet4_Click(SDL_Event& e) {
+	if (selection == 3) return;
+	selection = 3;
+	LoadPet(selection);
+}
+
+void CPetListForm::imgPet5_Click(SDL_Event& e) {
+	if (selection == 4) return;
+	selection = 4;
+	LoadPet(selection);
 }
 
 void CPetListForm::btnChangeName_Click(SDL_Event& e) {
+	std::string name = fldName->GetText();
+	if (name.length() == 0) {
+		doPromptError("Error", "Nickname cannot be blank.");
+		return;
+	}
+	if (name.length() > 16) {
+		doPromptError("Error", "Nickname cannot be more than 16 characters.");
+		return;
+	}
 
+	Pet *pet = player->getPetList()[selection];
+	if (!pet) return;
+
+	//Nickname has changed
+	if (name.compare(pet->GetName()) == 0) return;
+
+	//send nickname update
+	pRename *rename = new pRename(pet->getId(), rmPet, name);
+	gClient.addPacket(rename);
+
+	pet->SetName(name);
+	doPrompt("Confirm", "Pet name has been updated successfully!");
+	LoadPortraits();
 }
 
 void CPetListForm::btnEvolve_Click(SDL_Event& e) {
@@ -255,11 +324,63 @@ void CPetListForm::btnPetStall_Click(SDL_Event& e) {
 }
 
 void CPetListForm::btnDrop_Click(SDL_Event& e) {
+	if (selection == -1) return;
+	int marching = GetMarchingPetIndex();
+	if (selection == marching) {
+		doPromptError("Error", "You cannot drop your marching pet.");
+		return;
+	}
 
+	Pet *pet = player->getPetList()[selection];
+	if (!pet) return;
+
+	promptForm = new CPromptForm(true);
+	promptForm->SetTitle("Are you sure?");
+	std::string message = "You are about to drop ";
+	message += pet->GetName();
+	message += "\n\nLevel " + formatInt(pet->getLevel());
+	message += "\n\nAre you sure you want to continue?";
+	promptForm->SetMessage(message);
+	promptForm->SetParent(this);
+	Windows.push_back(promptForm);
+
+	Dropping = true;
+}
+
+void CPetListForm::DropPet() {
+	Pet *pet = player->getPetList()[selection];
+	pPetAction *dropPacket = new pPetAction(pet->getId(), 0, paDrop);
+	gClient.addPacket(dropPacket);
+
+	player->removePet(pet->getId());
+
+	LoadPortraits();
+	selection = GetMarchingPetIndex();
+	LoadPet(selection);
 }
 
 void CPetListForm::btnMarch_Click(SDL_Event& e) {
+	int currentIndex = GetMarchingPetIndex();
+	int petId = 0;
+	if (selection == currentIndex) {
+		//SetMarching(-1);
 
+		//send change active pet packet
+		//pPetAction* pAction = new pPetAction(petId, 0, paSetActive);
+		//gClient.addPacket(pAction);
+		//You cannot unmarch a pet currently
+	}
+	else {
+		Pet *pet = player->getPetList()[selection];
+		petId = pet->getId();
+		SetMarching(selection);
+
+		//send change active pet packet
+		pPetAction* pAction = new pPetAction(petId, 0, paSetActive);
+		gClient.addPacket(pAction);
+	}
+
+	player->setActivePet(selection);
 }
 
 void CPetListForm::btnChangeAccessory_Click(SDL_Event& e) {
@@ -280,5 +401,7 @@ int CPetListForm::GetMarchingPetIndex() {
 }
 
 void CPetListForm::SetMarching(int index) {
+	if (index == -1) imgStar->SetVisible(false);
+	else imgStar->SetVisible(true);
 	imgStar->SetX(20 + (100 * index - 1));
 }

@@ -77,40 +77,6 @@ void User::render() {
 }
 
 
-void User::renderNameplate() {
-	SDL_Color nameColor = { 255, 255, 0, 255 };
-	SDL_Color guildColor = { 255, 255, 0, 255 };
-	SDL_Color shadow = { 32, 32, 32, 192 };
-
-	SDL_Surface *nameSurface = TTF_RenderText_Blended(gui->chatFont, Name.c_str(), nameColor);
-	SDL_Surface *shadowSurface = TTF_RenderText_Blended(gui->chatShadowFont, Name.c_str(), shadow);
-	SDL_Texture *nameTexture = SDL_CreateTextureFromSurface(renderer, nameSurface);
-	SDL_Texture *shadowTexture = SDL_CreateTextureFromSurface(renderer, shadowSurface);
-
-	int w = nameSurface->w;
-	int h = nameSurface->h;
-	SDL_FreeSurface(nameSurface);
-	SDL_FreeSurface(shadowSurface);
-
-	if (nameTexture) {
-		SDL_Rect srcRect = { 0, 0, w, h };
-		SDL_Rect destRect = { RenderPos.x - (w / 2), RenderPos.y - 82 - h, w, h };
-
-		SDL_SetTextureBlendMode(nameTexture, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-		SDL_SetTextureBlendMode(shadowTexture, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-
-		SDL_RenderCopy(renderer, shadowTexture, &srcRect, &destRect);
-		destRect.x -= 1;
-		destRect.y -= 1;
-		SDL_RenderCopy(renderer, nameTexture, &srcRect, &destRect);
-		SDL_RenderCopy(renderer, nameTexture, &srcRect, &destRect);
-
-		SDL_DestroyTexture(nameTexture);
-		SDL_DestroyTexture(shadowTexture);
-	}
-}
-
-
 void User::step() {
 	if (jumping) {
 		if (effect && effect->finished()) {

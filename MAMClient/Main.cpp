@@ -20,6 +20,8 @@
 //Temp
 #include "TestForm.h"
 
+#define FRAMES_PER_SEC 60;
+
 bool init();
 void close();
 CWindow* getTopmost();
@@ -57,10 +59,12 @@ int main(int argc, char *args[]) {
 	//CTestForm* testForm = new CTestForm();
 	//Windows.push_back(testForm);
 
+
 	bool quit = false;
 	CWindow *topmost;
 	bool lastFocusLost = false;
 	int lastFocus = -1;
+	Uint32 lastTick = 0;
 	SDL_Event e;
 	while (!quit) {
 		gClient.handlePackets();
@@ -123,6 +127,8 @@ int main(int argc, char *args[]) {
 			else {
 				if (e.type == SDL_RENDER_TARGETS_RESET || e.type == SDL_RENDER_DEVICE_RESET) {
 					int a = 1;
+					mainForm->ReloadAssets();
+					for (auto window : Windows) window->ReloadAssets();
 				}
 
 				//Process user events for all windows in reverse
@@ -155,6 +161,12 @@ int main(int argc, char *args[]) {
 			Windows[i]->step();
 		}
 
+		Uint32 thisTick = SDL_GetTicks();	
+		double FPS = (thisTick - lastTick) / 1000.0;
+		double timeNeeded = 1000 / FRAMES_PER_SEC;
+		int rem = timeNeeded - FPS;
+		//if (rem > 0) SDL_Delay(rem);
+
 		//Render texture to screen
 		//formMain->render();
 		mainForm->render();
@@ -163,6 +175,7 @@ int main(int argc, char *args[]) {
 			window->render();
 			window->renderPresent();
 		}
+		lastTick = thisTick;
 	}
 
 	//Free resources and close SDL
@@ -189,7 +202,6 @@ bool init() {
 	}
 	else
 	{
-		//SDL_SetHint("SDL_HINT_GRAB_KEYBOARD", "1");
 		SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
 		//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
