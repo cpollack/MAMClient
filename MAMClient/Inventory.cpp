@@ -54,6 +54,7 @@ Item* Inventory::getItem(int itemId) {
 
 
 Item* Inventory::getItemInSlot(int pos) {
+	if (inventory.size() < pos + 1) return nullptr;
 	if (inventory.size() >= pos && inventory[pos]) return inventory[pos];
 	return nullptr;
 }

@@ -276,6 +276,7 @@ void GameMap::OnClick(SDL_Event& e) {
 	cx = mx + cameraX;
 	cy = my + cameraY;
 
+	setMouseCoordinates(mx, my);
 	if (e.button.button == SDL_BUTTON_LEFT) {
 		if (!changingMap) {
 			if (jumpMode) {

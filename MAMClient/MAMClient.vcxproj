@@ -168,6 +168,7 @@
     <ClCompile Include="ImageBox.cpp" />
     <ClCompile Include="ImageView.cpp" />
     <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="InventoryForm.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ListView.cpp" />
     <ClCompile Include="LoginForm.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="ImageView.h" />
     <ClInclude Include="INI.h" />
     <ClInclude Include="Inventory.h" />
+    <ClInclude Include="InventoryForm.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ListView.h" />

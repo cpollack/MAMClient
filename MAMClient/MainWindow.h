@@ -113,9 +113,12 @@ private: // Main
 	void btnCharacter_Click(SDL_Event& e);
 	void btnPet_Click(SDL_Event& e);
 
+	void btnInventory_Click(SDL_Event& e);
+
 	SDL_Texture* gameTexture;
 	SDL_Rect gameRect;
 	CPromptForm *dcPromptForm = nullptr;
+	bool Disconnected = false, RelogReady = false;
 
 	CLabel *lblCoordX, *lblCoordY;
 	CLabel *lblName, *lblNickName, *lblLevel;

@@ -24,6 +24,8 @@ class CWidget;
 class CLabel;
 class CButton;
 
+class CPromptForm;
+
 class CWindow {
 public:
 	CWindow();
@@ -57,6 +59,7 @@ protected: //Window Properties
 	SDL_Window* window;
 	CWindow* parent = nullptr;
 	void SetParentFromStack();
+	CPromptForm* promptForm = nullptr;
 
 public:	SDL_Renderer* renderer;
 protected:	
@@ -102,6 +105,7 @@ public:
 
 protected: // Widgets and Events
 	std::map<std::string, CWidget*> widgets;
+	CWidget* eventWidget = nullptr; //The current widget being processed for events
 public: CWidget *focusedWidget = nullptr;
 protected: typedef std::function<void(SDL_Event&)> EventFunc;
 	void registerEvent(std::string widgetName, std::string eventName, EventFunc evf);
@@ -115,6 +119,9 @@ public:
 	void ClearWidgets();
 	CWidget* GetWidget(std::string widgetName);
 	void FocusWidget(std::string widgetName);
+
+private:
+	std::list<CWidget*> widgetsByDepth;
 
 protected: //GUI textures
 	Texture* topCenter_s;
@@ -133,3 +140,4 @@ protected: //GUI textures
 };
 
 extern std::vector<CWindow*> Windows;
+extern std::vector<CWindow*> QueueWindows;

@@ -19,6 +19,7 @@
 #include "CharCreateForm.h"
 #include "CharacterForm.h"
 #include "PetListForm.h"
+#include "InventoryForm.h"
 
 #include "Gauge.h"
 #include "VideoFrame.h"
@@ -43,10 +44,6 @@ CMainWindow::CMainWindow() :CWindow() {
 
 	Mode = MFM_INIT;
 	init_init();
-
-	chat = new CChat(this);
-	chat->SetRenderer(renderer);
-	chat->SetFont(gui->font);
 }
 
 CMainWindow::~CMainWindow() {
@@ -262,9 +259,10 @@ void CMainWindow::init_cleanup() {
 /* Main Form - Login Begin */
 
 void CMainWindow::login_init() {
+	gClient.mainReady = false;
 	loginForm = new CLoginForm();
 	loginForm->SetParent(this);
-	Windows.push_back(loginForm);
+	QueueWindows.push_back(loginForm);
 }
 
 void CMainWindow::login_render() {
@@ -355,6 +353,7 @@ void CMainWindow::select_cleanup() {
 	selectedCharacter = nullptr;
 	delete unselectedCharacter;
 	unselectedCharacter = nullptr;
+	ClearWidgets();
 }
 
 void CMainWindow::select_render() {
@@ -538,6 +537,8 @@ void CMainWindow::main_init() {
 	SetTitle("Monster & Me - " + strServer + " - " + std::string(version) + " (" + versionDate + ")");
 	SetUseClose(true);
 	SetUseMinimize(true);
+	Disconnected = false;
+	RelogReady = false;
 
 	registerEvent("btnClose", "Click", std::bind(&CMainWindow::btnClose_Click, this, std::placeholders::_1));
 	registerEvent("btnMinimize", "Click", std::bind(&CMainWindow::btnMinimize_Click, this, std::placeholders::_1));
@@ -546,6 +547,9 @@ void CMainWindow::main_init() {
 	gameRect = { gui->left->width + 20, gui->topCenter->height + 9, 740, 410 };
 	gameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, gameRect.w, gameRect.h);
 
+	chat = new CChat(this);
+	chat->SetRenderer(renderer);
+	chat->SetFont(gui->font);
 	chat->SetWidth(gameRect.w);
 	chat->SetHeightInLines(10);
 	chat->SetPos(SDL_Point{ 0, gameRect.h - chat->GetHeight() });
@@ -594,6 +598,7 @@ void CMainWindow::main_init_widgets() {
 	addMainButton("btnPK", surfaceRect.x + 635, surfaceRect.y + 1, 41, 39, "PK-1.jpg", "PK-2.jpg");
 	addMainButton("btnChatHistory", surfaceRect.x + 676, surfaceRect.y + 1, 41, 39, "record-1.jpg", "record-2.jpg");
 	addMainButton("btnFriendList", surfaceRect.x + 717, surfaceRect.y + 1, 41, 39, "email-1.jpg", "email-2.jpg");
+	registerEvent("btnInventory", "Click", std::bind(&CMainWindow::btnInventory_Click, this, std::placeholders::_1));
 
 	//Labels
 	lblCoordX = addMainLabel("lblCoordX", surfaceRect.x + 220, surfaceRect.y + 10, 20, 14, "", true);
@@ -630,8 +635,24 @@ void CMainWindow::main_init_widgets() {
 }
 
 void CMainWindow::main_cleanup() {
+	ClearWidgets();
 	dcPromptForm = nullptr;
-	if (map) delete map;
+	if (map) {
+		delete map;
+		map = nullptr;
+	}
+	if (battle) {
+		delete battle;
+		battle = nullptr;
+	}
+	if (chat) {
+		delete chat;
+		chat = nullptr;
+	}
+	if (player) {
+		delete player;
+		player = nullptr;
+	}
 }
 
 void CMainWindow::main_render() {
@@ -701,11 +722,12 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		}
 	}
 
-	//After Discharge Prompt
+	//After Disconnect Prompt
 	if (e.type == CUSTOMEVENT_WINDOW) {
 		if (e.user.code == WINDOW_CLOSE_PROMPT_OK && e.user.data1 == dcPromptForm) {
 			dcPromptForm = nullptr;
-			changeMode(MFM_LOGIN);
+			RelogReady = true;
+			return;
 		}
 	}
 
@@ -718,12 +740,19 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 
 void CMainWindow::main_step() {
 	if (gClient.wasDisconnected()) {
+		Disconnected = true;
+		RelogReady = false;
 		if (!dcPromptForm) {
+			for (auto window : Windows) window->CloseWindow = true;
 			dcPromptForm = new CPromptForm();
 			dcPromptForm->SetMessage("Error: Connection to the server has been interrupted. Please re-log in.");
 			dcPromptForm->SetParent(this);
 			Windows.push_back(dcPromptForm);
 		}
+	}
+	if (RelogReady) {
+		RelogReady = false;
+		changeMode(MFM_LOGIN);
 	}
 
 	if (battle) {
@@ -770,13 +799,21 @@ void CMainWindow::btnFight_Click(SDL_Event& e) {
 }
 
 void CMainWindow::btnCharacter_Click(SDL_Event& e) {
+	if (battle) return;
 	CCharacterForm* charForm = new CCharacterForm();
 	Windows.push_back(charForm);
 }
 
 void CMainWindow::btnPet_Click(SDL_Event& e) {
+	if (battle) return;
 	CPetListForm* petForm = new CPetListForm();
 	Windows.push_back(petForm);
+}
+
+void CMainWindow::btnInventory_Click(SDL_Event& e) {
+	if (battle) return;
+	CInventoryForm* invForm = new CInventoryForm();
+	Windows.push_back(invForm);
 }
 
 /* Main Form - Hooks */

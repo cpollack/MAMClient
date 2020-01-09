@@ -398,6 +398,9 @@
     <ClCompile Include="CustomEvents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InventoryForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -708,6 +711,9 @@
     </ClInclude>
     <ClInclude Include="CustomEvents.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryForm.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

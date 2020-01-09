@@ -22,13 +22,19 @@ enum {
 	PLAYER_RENAME,
 };
 
+extern Uint32 CUSTOMEVENT_PET;
+enum {
+	PET_MARCHING
+};
+
 extern Uint32 CUSTOMEVENT_NPC;
 enum {
 	NPC_INTERACT,
 	NPC_SHOP
 };
 
-extern Uint32 CUSTOMEVENT_PET;
+extern Uint32 CUSTOMEVENT_ITEM;
 enum {
-	PET_MARCHING
+	ITEM_USE,
+	ITEM_DROP
 };

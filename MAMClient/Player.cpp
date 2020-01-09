@@ -174,6 +174,11 @@ void Player::SetUnusedPoints(int point) {
 	point_unused = point;
 }
 
+void Player::SetLife(int iLife) {
+	life_current = iLife;
+	if (life_current < 0) life_current = 0;
+}
+
 void Player::SetLifePoint(int point) {
 	life = point;
 
@@ -183,6 +188,11 @@ void Player::SetLifePoint(int point) {
 	max += (5 * defence) / 100;
 	max += (5 * dexterity) / 100;
 	life_max = max;
+}
+
+void Player::SetMana(int iMana) {
+	mana_current = iMana;
+	if (mana_current < 0) mana_current = 0;
 }
 
 void Player::SetManaPoint(int point) {
@@ -358,6 +368,7 @@ void Player::useItem(int itemId) {
 		equipItem(usedItem);
 		break;
 
+	case itPoison:
 	case itMedicine:
 		//implement usage of item. medicine heals
 		useMedicine(usedItem);
@@ -369,13 +380,13 @@ void Player::useItem(int itemId) {
 void Player::useMedicine(Item* item) {
 	int life = item->getLife();
 	if (life != 0) {
-		life_current += life;
+		SetLife(life_current + life);
 		mainForm->shiftPlayerHealthGauge(life);
 	}
 
 	int mana = item->getMana();
 	if (mana != 0) {
-		mana_current += mana;
+		SetMana(mana_current + mana);
 		mainForm->shiftPlayerManaGauge(mana);
 	}
 
@@ -447,4 +458,24 @@ void Player::buyItem(int itemId) {
 
 	int cost = bItem->getCost();
 	cash -= cost;
+}
+
+Item* Player::GetWeapon() { 
+	return equipment[SLOT_WEAPON]; 
+}
+
+Item* Player::GetArmor() { 
+	return equipment[SLOT_ARMOR]; 
+}
+
+Item* Player::GetShoe() { 
+	return equipment[SLOT_SHOE]; 
+}
+
+Item* Player::GetBodyAccessory() { 
+	return equipment[SLOT_BODY]; 
+}
+
+Item* Player::GetHeadAccessory() { 
+	return equipment[SLOT_HEAD]; 
 }

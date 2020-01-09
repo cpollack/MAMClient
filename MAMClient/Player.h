@@ -11,6 +11,13 @@ class Inventory;
 class Item;
 
 const int EQUIPMENT_SLOTS = 5;
+enum {
+	SLOT_WEAPON,
+	SLOT_ARMOR,
+	SLOT_SHOE,
+	SLOT_BODY,
+	SLOT_HEAD
+};
 
 class Player : public User {
 public:
@@ -59,11 +66,13 @@ public:
 	int GetCultivation()	{ return cultivation + Level; }
 
 	int GetCurrentLife()	{ return life_current; }
+	void SetLife(int iLife);
 	int GetMaxLife()		{ return life_max; }
 	int GetLifePoint()		{ return life; }
 	void SetLifePoint(int point);
 
 	int GetCurrentMana()	{ return mana_current; }
+	void SetMana(int iMana);
 	int GetMaxMana()		{ return mana_max; }
 	int GetManaPoint()		{ return mana; }
 	void SetManaPoint(int point);
@@ -116,6 +125,12 @@ public: // Items
 	void Player::unequipItem(Item* item);
 	void Player::sellItem(int itemId);
 	void Player::buyItem(int itemId);
+
+	Item* GetWeapon();
+	Item* GetArmor();
+	Item* GetShoe();
+	Item* GetBodyAccessory();
+	Item* GetHeadAccessory();
 
 private:
 	SDL_Renderer* renderer;

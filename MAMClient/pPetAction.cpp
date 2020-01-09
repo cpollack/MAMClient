@@ -6,6 +6,7 @@
 
 #include "Player.h"
 #include "Pet.h"
+#include "Inventory.h"
 #include "MainWindow.h"
 
 
@@ -45,6 +46,8 @@ pPetAction::~pPetAction() {
 void pPetAction::process() {
 	Pet* activePet;
 
+	SDL_Event e;
+	SDL_zero(e);
 	switch (action) {
 	case paSetActive:
 		activePet = player->setActivePet(petId);
@@ -57,6 +60,11 @@ void pPetAction::process() {
 
 		break;
 	case paUseItem:
+		e.type = CUSTOMEVENT_ITEM;
+		e.user.code = ITEM_USE;
+		e.user.data1 = player->inventory->getItem(targetId);
+		SDL_PushEvent(&e);
+
 		activePet = player->getPet(petId);
 		activePet->useItem(targetId);
 		break;

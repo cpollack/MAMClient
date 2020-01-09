@@ -14,6 +14,9 @@ CLabel::CLabel(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 	if (vWidget.HasMember("Alignment")) alignment = (LabelAlignment)vWidget["Alignment"].GetInt();
 	if (vWidget.HasMember("VAlignment")) valignment = (LabelVAlignment)vWidget["VAlignment"].GetInt();
 	if (vWidget.HasMember("Underlined")) Underlined = vWidget["Underlined"].GetBool();
+	if (vWidget.HasMember("Multiline")) Multiline = vWidget["Multiline"].GetBool();
+
+	if (Multiline) TextWrapWidth = Width;
 }
 
 CLabel::~CLabel() {

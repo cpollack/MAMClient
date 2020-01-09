@@ -48,22 +48,29 @@ protected:
 	CWidget* Parent = nullptr;
 	std::vector<CWidget*> Children;
 	int TabItem;
+	int Depth;
 	bool Visible = true;	
 	bool ReadOnly;
 	bool mouseOver;
 	bool held;
 
 	//Text related properties
-	bool Underlined, Bold;
+	bool Underlined, Bold, Multiline;
 	int TextWrapWidth;
 	std::string Text;
 
 public: //Accessors
+	int GetX() { return X; }
+	int GetY() { return Y; }
 	void SetX(int x);
 	void SetY(int y);
+
+	void SetPosition(int toX, int toY);
 	void SetPosition(SDL_Point p);
+
 	void SetWidth(int w);
 	void SetHeight(int h);
+
 	void SetWindow(CWindow* win);
 	void SetParent(CWidget* widget);
 	void AddChild(CWidget* widget);
@@ -73,7 +80,9 @@ public: //Accessors
 	void SetBackColor(SDL_Color bc);
 
 	CWidget* GetParent();
+
 	int GetTabItem();
+	int GetDepth() { return Depth; }
 
 
 public:

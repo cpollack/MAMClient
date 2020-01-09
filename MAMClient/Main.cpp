@@ -40,6 +40,7 @@ CChat* chat;
 MessageManager messageManager;
 
 std::vector<CWindow*> Windows;
+std::vector<CWindow*> QueueWindows;
 void *focusedWindow;
 
 int main(int argc, char *args[]) {
@@ -78,6 +79,10 @@ int main(int argc, char *args[]) {
 				lastFocusLost = true;
 			}
 			else break;
+		}
+		while (QueueWindows.size() > 0) {
+			Windows.push_back(QueueWindows.front());
+			QueueWindows.erase(QueueWindows.begin());
 		}
 
 		topmost = getTopmost();

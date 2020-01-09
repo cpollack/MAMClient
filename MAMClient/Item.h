@@ -25,7 +25,7 @@ private:
 	int life, mana, attack, defence, dexterity;
 
 	std::string bigPath, smallPath;
-	Texture* smallTexture = nullptr, *bigTexture = nullptr;
+	//Texture* smallTexture = nullptr, *bigTexture = nullptr;
 
 	void Item::setType();
 
@@ -38,7 +38,7 @@ public:
 	int Item::getType();
 	int Item::getSort();
 	int Item::getCost();
-	Texture* Item::getTexture(int size);
+	std::string getTexturePath(int size);
 	std::string Item::getName();
 	std::string Item::getDetails();
 	std::string Item::getShopDetails();

@@ -38,6 +38,7 @@ CWidget::CWidget(CWindow* window, rapidjson::Value& vWidget) {
 	if (vWidget.HasMember("Width")) Width = vWidget["Width"].GetInt();
 	if (vWidget.HasMember("Height")) Height = vWidget["Height"].GetInt();
 	if (vWidget.HasMember("TabItem")) TabItem = vWidget["TabItem"].GetInt();
+	if (vWidget.HasMember("Depth")) Depth = vWidget["Depth"].GetInt();
 	if (vWidget.HasMember("ReadOnly")) ReadOnly = vWidget["ReadOnly"].GetBool();
 
 	widgetRect = SDL_Rect{ X, Y, Width, Height };
@@ -141,6 +142,10 @@ void CWidget::SetX(int x) {
 void CWidget::SetY(int y) {
 	Y = y;
 	widgetRect.y = Y;
+}
+
+void CWidget::SetPosition(int toX, int toY) {
+	SetPosition(SDL_Point{ toX, toY });
 }
 
 void CWidget::SetPosition(SDL_Point p) {

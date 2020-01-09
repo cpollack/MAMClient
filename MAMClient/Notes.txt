@@ -1,29 +1,20 @@
 
 Todo:
-Disconnected client results in a stuck window
 NPCs do not 'turn' when clicked
 Pet accessory info
 Pet Evolve
 Pet Change Accessory
 
+Bugs:
+
 
 Fix:
-- Widgets reload their assets on Target Reset
-- Panel lower boundings now properly draw
-- Numeric Fields did not revert to '0' when empty, which caused issues with Getters
-- Field/Dropdown did not fire change event before losing focus, (Character attributes did not seem to always update when clicking Apply)
-- You can no longer jump to invalid coordinates by clicking quickly during map change
-- Restructured NPC class as a derivative of Entity, and moved associated events into NPC class
-- Sometimes clicking UI elements would result in the character walking/jumping
+- You can no longer open certain windows while in battle (character, pet, inventory)
+- Fixed a petlist crash that would try to load a nonexistent pet
+- Map clicks reload coordinates before jumping to prevent jumping to invalid coordiantes during map change via npc/action.
 
 Feature:
-- NPCs now display their nameplates on mouseover
-- Pet Form:
-- - You can change viewed pet by clicking the portrait.
-- - Pet generations properly fills now.
-- - You can change marching pets. Main UI gauges update accordingly.
-- - You can drop pets that are not marching.
-- - You can rename your pet
+
 
 
 -------------------------------

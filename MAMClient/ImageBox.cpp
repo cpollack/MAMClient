@@ -150,10 +150,19 @@ void CImageBox::SetImage(Texture* image) {
 }
 
 void CImageBox::BindSprite(Sprite* sprite) {
+	if (this->sprite) {
+		delete this->sprite;
+	}
 	this->sprite = sprite;
 }
 
 void CImageBox::OnClick(SDL_Event& e) {
 	auto iter = eventMap.find("Click");
 	if (iter != eventMap.end()) iter->second(e);
+}
+
+void CImageBox::UseBlackBackground(bool use) {
+	BlackBackground = use;
+	if (SkinImage.length() > 0) SetImageFromSkin(SkinImage);
+	else SetImage(nullptr);
 }

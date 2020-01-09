@@ -18,6 +18,8 @@ public:
 	void SetImage(Texture* image);
 	void BindSprite(Sprite* sprite);
 
+	void UseBlackBackground(bool use);
+
 private:
 	SDL_Texture* ImageBox = NULL;
 	std::string SkinImage;

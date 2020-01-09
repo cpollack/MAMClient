@@ -199,7 +199,10 @@ void CPetListForm::LoadPortraits() {
 }
 
 void CPetListForm::LoadSprite() {
-	if (selection == -1) return;
+	if (selection == -1) {
+		imgSprite->BindSprite(nullptr);
+		return;
+	}
 	Pet *pet = player->getPetList()[selection];
 
 	std::string role = getRoleFromLook(pet->getLook());
@@ -213,6 +216,24 @@ void CPetListForm::LoadSprite() {
 
 void CPetListForm::LoadPet(int index) {
 	LoadSprite();
+
+	if (selection == -1) {
+		fldName->SetText("");
+		lblSpecies->SetText("");
+		lblElement->SetText("");
+		lblRegistered->SetText("");
+		fldID->SetText("");
+		gaugeLoyalty->set(0, 100);
+		lblLevel->SetText("");
+		gaugeExperience->set(0, 0);
+		lblGeneration->SetText("");
+		gaugeLife->set(0, 0);
+		lblAccessory->SetText("");
+		fldAttack->SetText("");
+		fldDefence->SetText("");
+		fldDexterity->SetText("");
+		return;
+	}
 
 	Pet *pet = player->getPetList()[index];
 	fldName->SetText(pet->GetName());
@@ -238,9 +259,6 @@ void CPetListForm::LoadPet(int index) {
 	fldAttack->SetText(attack);
 	fldDefence->SetText(defence);
 	fldDexterity->SetText(dexterity);
-
-	//medals?
-	
 }
 
 void CPetListForm::imgPet1_Click(SDL_Event& e) {
@@ -360,6 +378,7 @@ void CPetListForm::DropPet() {
 }
 
 void CPetListForm::btnMarch_Click(SDL_Event& e) {
+	if (selection == -1) return;
 	int currentIndex = GetMarchingPetIndex();
 	int petId = 0;
 	if (selection == currentIndex) {

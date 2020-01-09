@@ -88,7 +88,7 @@ void FormInventory::render() {
 	for (int i = 0; i < 5; i++) {
 		if (player->equipment[i]) {
 			SDL_Rect itemRect = { equipBgRect.x + eqSlots[i].x, equipBgRect.y + eqSlots[i].y, 36, 36 };
-			SDL_RenderCopy(renderer, player->equipment[i]->getTexture(40)->texture, NULL, &itemRect);
+			//SDL_RenderCopy(renderer, player->equipment[i]->getTexture(40)->texture, NULL, &itemRect);
 		}
 	}
 
@@ -98,7 +98,7 @@ void FormInventory::render() {
 	int itemPosCount = 0;
 	for (int i = 0; i < inventory->getItemCount(); i++) {
 		Item* curItem = inventory->getItemInSlot(i);
-		Texture* itemTexture = curItem->getTexture(40);
+		Texture* itemTexture = nullptr; // curItem->getTexture(40);
 		//ItemTextureType ittSmall=40 ittLarge85
 		
 		SDL_Rect itemRect = { x + firstItemPos.x + ((itemPosCount % rowSize) * cellWidth) , y + firstItemPos.y + ((itemPosCount / rowSize) * cellHeight), itemTexture->width, itemTexture->height };
@@ -163,7 +163,7 @@ bool FormInventory::handleEvent(SDL_Event* e) {
 			if (doesPointIntersect(clickItemRect, mx, my)) {
 				if (focusedItem != clickedItem) {
 					focusedItem = clickedItem;
-					ivItem->setTexture(focusedItem->getTexture(85));
+					//ivItem->setTexture(focusedItem->getTexture(85));
 					lblItemInfo->setText(focusedItem->getDetails());
 				}
 

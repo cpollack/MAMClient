@@ -33,11 +33,6 @@ Item::Item(pItem* packet) {
 	itemLookINI = new INI("INI/itemlook.ini", smallSection);
 	smallPath = itemLookINI->getEntry("Frame0");
 	delete itemLookINI;
-		
-	bigTexture = new Texture(gClient.renderer);
-	bigTexture->loadTexture(bigPath);
-	smallTexture = new Texture(gClient.renderer);
-	smallTexture->loadTexture(smallPath);
 }
 
 
@@ -77,11 +72,6 @@ Item::Item(int itemId) {
 	itemLookINI = new INI("INI/itemlook.ini", smallSection);
 	smallPath = itemLookINI->getEntry("Frame0");
 	delete itemLookINI;
-
-	bigTexture = new Texture(gClient.renderer);
-	bigTexture->loadTexture(bigPath);
-	smallTexture = new Texture(gClient.renderer);
-	smallTexture->loadTexture(smallPath);
 }
 
 
@@ -142,9 +132,9 @@ int Item::getCost() {
 }
 
 
-Texture* Item::getTexture(int size) {
-	if (size == 40) return smallTexture;
-	if (size == 85) return bigTexture;
+std::string Item::getTexturePath(int size) {
+	if (size == 40) return smallPath;
+	if (size == 85) return bigPath;
 
 	return nullptr;
 }

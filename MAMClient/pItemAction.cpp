@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "pItemAction.h"
+#include "CustomEvents.h"
 
 #include "Player.h"
 #include "Inventory.h"
@@ -38,8 +39,15 @@ pItemAction::~pItemAction() {
 
 
 void pItemAction::process() {
+	SDL_Event e;
+	SDL_zero(e);
 	switch (action) {
 	case iaUse:
+		e.type = CUSTOMEVENT_ITEM;
+		e.user.code = ITEM_USE;
+		e.user.data1 = player->inventory->getItem(itemId);
+		SDL_PushEvent(&e);
+
 		player->useItem(itemId);
 		break;
 	case iaBuy:
@@ -51,6 +59,11 @@ void pItemAction::process() {
 		formMain->setCash(player->cash);
 		break;
 	case iaDrop:
+		e.type = CUSTOMEVENT_ITEM;
+		e.user.code = ITEM_DROP;
+		e.user.data1 = player->inventory->getItem(itemId);
+		SDL_PushEvent(&e);
+
 		player->inventory->removeItem(itemId, true);
 		break;
 	}

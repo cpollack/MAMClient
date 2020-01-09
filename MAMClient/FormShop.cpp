@@ -84,7 +84,7 @@ void FormShop::render() {
 	int itemPosCount = 0;
 	for (int i = 0; i < inventory->getItemCount(); i++) {
 		Item* curItem = inventory->getItemInSlot(i);
-		Texture* itemTexture = curItem->getTexture(40);
+		Texture* itemTexture = nullptr; // curItem->getTexture(40);
 
 		SDL_Rect itemRect = { x + firstItemPos.x + ((itemPosCount % rowSize) * cellWidth) , y + firstItemPos.y + ((itemPosCount / rowSize) * cellHeight), itemTexture->width, itemTexture->height };
 		SDL_RenderCopy(renderer, itemTexture->texture, NULL, &itemRect);
@@ -127,7 +127,7 @@ bool FormShop::handleEvent(SDL_Event* e) {
 			if (doesPointIntersect(clickItemRect, mx, my)) {
 				if (focusedItem != clickedItem) {
 					focusedItem = clickedItem;
-					ivItem->setTexture(focusedItem->getTexture(85));
+					//ivItem->setTexture(focusedItem->getTexture(85));
 					lblItemInfo->setText(focusedItem->getShopDetails());
 					setBuyButtonLabel(false);
 				}
@@ -165,7 +165,7 @@ void FormShop::handleWidgetEvent() {
 			shopInventory[itemId] = shopitem;
 		}
 		focusedItem = shopInventory[itemId];
-		ivItem->setTexture(focusedItem->getTexture(85));
+		//textureItemivItem->setTexture(focusedItem->getTexture(85));
 		lblItemInfo->setText(focusedItem->getShopDetails());
 		setBuyButtonLabel(true);
 	}

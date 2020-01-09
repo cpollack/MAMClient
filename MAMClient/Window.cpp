@@ -145,7 +145,7 @@ CWidget* CWindow::LoadWidgetByType(rapidjson::Value& vWidget) {
 	}
 	if (addWidget) {
 		addWidget->SetWindow(this);
-		widgets[name] = addWidget;
+		AddWidget(addWidget);
 	}
 	return addWidget;
 }
@@ -154,6 +154,8 @@ void CWindow::AddWidget(CWidget* widget) {
 	if (!widget) return;
 	
 	widgets[widget->Name] = widget;
+	widgetsByDepth.push_back(widget);
+	widgetsByDepth.sort([](CWidget* f, CWidget* s) { return f->GetDepth() > s->GetDepth(); });
 }
 
 void CWindow::RemoveWidget(std::string widgetName) {
@@ -166,11 +168,24 @@ void CWindow::RemoveWidget(std::string widgetName) {
 		}
 		else ++it;
 	}
+
+	std::list<CWidget*>::iterator it2 = widgetsByDepth.begin();
+	while (it2 != widgetsByDepth.end()) {
+		if ((*it2)->Name.compare(widgetName) == 0) {
+			it2 = widgetsByDepth.erase(it2);
+			break;
+		}
+		else ++it2;
+	}
 }
 
 void CWindow::ClearWidgets() {
 	for (auto widget : widgets) delete widget.second;
 	widgets.clear();
+	widgetsByDepth.clear();
+
+	btnClose = nullptr;
+	btnMinimize = nullptr;
 }
 
 CWidget* CWindow::GetWidget(std::string widgetName) {
@@ -415,8 +430,10 @@ void CWindow::handleEvent(SDL_Event& e)
 	}
 
 	for (auto widget : widgets) {
-		widget.second->HandleEvent(e);
+		eventWidget = widget.second;
+		eventWidget->HandleEvent(e);
 	}
+	eventWidget = nullptr;
 }
 
 void CWindow::step() {
@@ -456,8 +473,8 @@ void CWindow::render() {
 }
 
 void CWindow::renderWidgets() {
-	for (auto widget : widgets) {
-		if (!widget.second->GetParent() && widget.second != focusedWidget) widget.second->Render();
+	for (auto widget : widgetsByDepth) {
+		if (!widget->GetParent() && widget != focusedWidget) widget->Render();
 	}
 
 	if (focusedWidget && !focusedWidget->GetParent()) focusedWidget->Render();
