@@ -10,6 +10,7 @@
 
 #include "Player.h"
 #include "User.h"
+#include "NPC.h"
 
 #include "UserManager.h"
 #include "AssetManager.h"
@@ -18,6 +19,8 @@
 #include "pNpcAction.h"
 #include "pAction.h"
 #include "pDirection.h"
+
+#include "ShopForm.h"
 
 
 GameMap::GameMap(pMapInfo* packet) {
@@ -77,19 +80,21 @@ void GameMap::loadMapFile(int mapDoc) {
 			masks.push_back(mapFile.masks.at(i).file);
 			std::vector<Asset> assetVector;
 			INI aniIni("INI\\ani.ini", mapFile.masks.at(i).file);
-			Texture* aMask;
+			if (aniIni.currentSection >= 0) {
+				Texture* aMask;
 
-			int frameCount = std::stoi(aniIni.getEntry("FrameAmount"));
-			for (int j = 0; j < frameCount; j++) {
-				std::string nextFrame = "Frame" + std::to_string(j);
-				std::string aFrame = aniIni.getEntry(nextFrame);
+				int frameCount = std::stoi(aniIni.getEntry("FrameAmount"));
+				for (int j = 0; j < frameCount; j++) {
+					std::string nextFrame = "Frame" + std::to_string(j);
+					std::string aFrame = aniIni.getEntry(nextFrame);
 
-				aMask = new Texture(renderer, aFrame, false);
-				aMask->setPosition(SDL_Point{ -mapFile.masks.at(i).xOffset, -mapFile.masks.at(i).yOffset });
-				Asset mAsset(aMask);
+					aMask = new Texture(renderer, aFrame, false);
+					aMask->setPosition(SDL_Point{ -mapFile.masks.at(i).xOffset, -mapFile.masks.at(i).yOffset });
+					Asset mAsset(aMask);
 
-				assetManager.addAndQueueAsset(this, mAsset);
-				assetVector.push_back(mAsset);
+					assetManager.addAndQueueAsset(this, mAsset);
+					assetVector.push_back(mAsset);
+				}
 			}
 			mapAssets.push_back(assetVector);
 		}
@@ -167,20 +172,21 @@ void GameMap::loadMapFile(int mapDoc) {
 			Sprite* mSprite;
 
 			vMask = mapAssets[maskId];
+			if (vMask.size() > 0) {
+				int sType;
+				if (vMask.size() > 1) sType = stObject;
+				else sType = stStatic;
+				SDL_Point pPoint = CenterOfCoord(mapFile.objects.at(i).x, mapFile.objects.at(i).y);
 
-			int sType;
-			if (vMask.size() > 1) sType = stObject;
-			else sType = stStatic;
-			SDL_Point pPoint = CenterOfCoord(mapFile.objects.at(i).x, mapFile.objects.at(i).y);
+				mSprite = new Sprite(renderer, vMask, sType);
+				mSprite->setLocation(pPoint);
+				mSprite->start();
+				objects.push_back(mSprite);
 
-			mSprite = new Sprite(renderer, vMask, sType);
-			mSprite->setLocation(pPoint);
-			mSprite->start();
-			objects.push_back(mSprite);
-
-			mSprite->LoadFirst();
-			if (vMask.size() == 1) {
-				mSprite->render();
+				mSprite->LoadFirst();
+				if (vMask.size() == 1) {
+					mSprite->render();
+				}
 			}
 		}
 		SDL_SetRenderTarget(renderer, NULL);
@@ -251,17 +257,19 @@ bool GameMap::handleEvent(SDL_Event& e) {
 	// CUstom Events
 
 	if (e.type == CUSTOMEVENT_NPC) {
-		int npcId = *(int*)e.user.data1;
-		delete e.user.data1;
+		NPC* sourceNPC = (NPC*)e.user.data1;
 
-		NPC* sourceNPC = nullptr;
-		for (auto npc : npcs) {
-			if (npc->getID() == npcId) {
-				sourceNPC = npc;
-				break;
-			}
-		}
 		if (e.user.code == NPC_INTERACT) dialogueNpc = sourceNPC;
+		if (e.user.code == NPC_SHOP) {
+			CShopForm *shopForm = new CShopForm();
+
+			CShop *shop = (CShop*)e.user.data2;
+			if (shop) {
+				shopForm->SetShop(shop);
+				delete shop;
+			}
+			Windows.push_back(shopForm);
+		}
 	}
 
 	return false;
@@ -301,7 +309,7 @@ void GameMap::OnClick(SDL_Event& e) {
 		player->setDirectionToCoord(toCoord);
 		player->loadSprite();
 
-		pDirection *dirPacket = new pDirection(player->getID(), player->getCoord().x, player->getCoord().y, rcDir);
+		pDirection *dirPacket = new pDirection(player->GetID(), player->getCoord().x, player->getCoord().y, rcDir);
 		gClient.addPacket(dirPacket);
 
 		//add pDirection and new packet 2031(npc action?) 
@@ -478,7 +486,7 @@ void GameMap::checkForMapChange() {
 	int portalId;
 	SDL_Point coord = player->getCoord();
 	if (isCoordAPortal(coord, &portalId)) {
-		pAction* portalPacket = new pAction(player->AccountId, player->getID(), portalId, coord.x, coord.y, amLeave);
+		pAction* portalPacket = new pAction(player->AccountId, player->GetID(), portalId, coord.x, coord.y, amLeave);
 		gClient.addPacket(portalPacket);
 		changingMap = true;
 	}
@@ -982,7 +990,7 @@ void GameMap::createDialogue(pNpcDialogue* packet) {
 	if (dialogue) delete dialogue;
 
 	std::string name = "";
-	if (dialogueNpc) name = dialogueNpc->getName();
+	if (dialogueNpc) name = dialogueNpc->GetName();
 
 	dialogue = new Dialogue(packet, name, (map->uiRect.w / 2), 10);
 	dialogue->setWindowOffset(SDL_Point{ uiRect.x, uiRect.y });

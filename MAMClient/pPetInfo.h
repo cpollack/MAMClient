@@ -3,9 +3,19 @@
 
 #include "Packet.h"
 
+enum PetInfoMode {
+	pimAdd = 0,
+	pimUpdate = 1,
+	//2 - retrieve from storage?
+	//3 - trading?
+	//4 - related to pet shop
+	//6 - cpacknpc checkin
+	//9 - move to storage or query storaged pet
+};
+
 class pPetInfo : public Packet {
 public:
-	int val1;
+	int mode;
 
 	int petId, ownerId;
 	char name[16];

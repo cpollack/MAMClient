@@ -76,6 +76,7 @@ public:
 	SDL_Color buttonFontColor;
 
 	TTF_Font *font = nullptr;
+	TTF_Font *fontUni = nullptr;
 	TTF_Font *chatFont = nullptr;
 	TTF_Font *chatShadowFont = nullptr;
 	TTF_Font *font_bold = nullptr;

@@ -15,9 +15,11 @@
 #include "Dropdown.h"
 #include "TabControl.h"
 #include "Gauge.h"
+#include "ListBox.h"
 
 #include "SDL_syswm.h"
 #include "include/rapidjson/filereadstream.h"
+#include <d3d9.h>
 
 using namespace rapidjson;
 
@@ -142,6 +144,9 @@ CWidget* CWindow::LoadWidgetByType(rapidjson::Value& vWidget) {
 	case wtGauge:
 		addWidget = new CGauge(this, widget);
 		break;
+	case wtListBox:
+		addWidget = new CListBox(this, widget);
+		break;
 	}
 	if (addWidget) {
 		addWidget->SetWindow(this);
@@ -232,13 +237,15 @@ bool CWindow::init() {
 		}
 
 		//Create renderer for window
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		//renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 		if (renderer == NULL) {
 			printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
 			SDL_DestroyWindow(window);
 			window = NULL;
 		}
 		else {
+			d3dDevice = SDL_RenderGetD3D9Device(renderer); //NULL if not a d3d9 device
 			//Initialize renderer color
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
@@ -570,6 +577,23 @@ void CWindow::SetUseMinimize(bool min) {
 		btnMinimize->SetPressedImage("Min.bmp");
 		btnMinimize->SetUnPressedImage("Min.bmp");
 		AddWidget(btnMinimize);
+	}
+}
+
+void CWindow::SetRendererD3D9Mode(int d3d9Mode) {
+	if (!d3dDevice) return;
+	switch (d3d9Mode) {
+	case D3D9_PRIMITIVE:
+		d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTSS_COLORARG1);
+		d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+		break;
+	case D3D9_TEXTURE:
+		d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTSS_COLORARG1);
+		d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+		break;
+	default:
+		d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTSS_COLORARG1);
+		d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_SPECULAR);
 	}
 }
 

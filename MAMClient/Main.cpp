@@ -44,6 +44,8 @@ std::vector<CWindow*> QueueWindows;
 void *focusedWindow;
 
 int main(int argc, char *args[]) {
+	setlocale(LC_ALL, "");
+
 	//Start up SDL and create window
 	if (!init()) {
 		printf("Failed to initialize!\n");
@@ -66,127 +68,168 @@ int main(int argc, char *args[]) {
 	bool lastFocusLost = false;
 	int lastFocus = -1;
 	Uint32 lastTick = 0;
+	Uint32 tickLength = 0;
+	Uint32 tenSec = 0;
+	std::vector<Uint32> ticks;
 	SDL_Event e;
-	while (!quit) {
-		gClient.handlePackets();
 
-		// Check for window close at the top of the stack
-		while (Windows.size() > 0) {
-			CWindow *nextWindow = Windows.back();
-			if (nextWindow->CloseWindow) {
-				delete nextWindow;
-				Windows.pop_back();
-				lastFocusLost = true;
-			}
-			else break;
-		}
-		while (QueueWindows.size() > 0) {
-			Windows.push_back(QueueWindows.front());
-			QueueWindows.erase(QueueWindows.begin());
-		}
+	//try {
+		while (!quit) {
+			tickLength = SDL_GetTicks();
+			gClient.handlePackets();
 
-		topmost = getTopmost();
-
-		//Handle events on queue
-		while (SDL_PollEvent(&e) != 0)
-		{
-			//User requests quit
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-
-			//Process Window Events for all Forms
-			if (e.type == SDL_WINDOWEVENT) {
-				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
-					//std::cout << "GAINED " << e.window.windowID << std::endl;
-					if (lastFocusLost && e.window.windowID != getTopmost()->GetWindowID()) {
-						lastFocus = e.window.windowID;
-
-						//raise static window references here
-						//ChatForm->raise(); etc
-
-						//Window stack should be raised in order
-						for (auto window : Windows) {
-							window->raise();
-							lastFocus = window->GetWindowID();
-						}
-					}
-					lastFocusLost = false;
-				}
-				
-				if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST && e.window.windowID == getTopmost()->GetWindowID()) {
-					std::cout << "LOST " << e.window.windowID << std::endl;
+			// Check for window close at the top of the stack
+			while (Windows.size() > 0) {
+				CWindow *nextWindow = Windows.back();
+				if (nextWindow->CloseWindow) {
+					delete nextWindow;
+					Windows.pop_back();
 					lastFocusLost = true;
 				}
-				else {
-					//formMain->handleEvent(e);
-					mainForm->handleEvent(e);
-					if (Windows.size()) getTopmost()->handleEvent(e);
-					/*for (auto window : Windows) {
-						window->handleEvent(e);
-					}*/
-				}
+				else break;
 			}
-			//Non-Window events
-			else {
-				if (e.type == SDL_RENDER_TARGETS_RESET || e.type == SDL_RENDER_DEVICE_RESET) {
-					int a = 1;
-					mainForm->ReloadAssets();
-					for (auto window : Windows) window->ReloadAssets();
+			while (QueueWindows.size() > 0) {
+				Windows.push_back(QueueWindows.front());
+				QueueWindows.erase(QueueWindows.begin());
+			}
+
+			topmost = getTopmost();
+
+			//Handle events on queue
+			while (SDL_PollEvent(&e) != 0)
+			{
+				//User requests quit
+				if (e.type == SDL_QUIT)
+				{
+					quit = true;
 				}
 
-				//Process user events for all windows in reverse
-				if (e.type == SDL_USEREVENT || e.type >= FIRSTCUSTOMEVENT) {
-					for (int i = Windows.size() - 1; i >= 0; i--) {
-						Windows[i]->handleEvent(e);
+				//Process Window Events for all Forms
+				if (e.type == SDL_WINDOWEVENT) {
+					if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+						//std::cout << "GAINED " << e.window.windowID << std::endl;
+						if (lastFocusLost && e.window.windowID != getTopmost()->GetWindowID()) {
+							lastFocus = e.window.windowID;
+
+							//raise static window references here
+							//ChatForm->raise(); etc
+
+							//Window stack should be raised in order
+							for (auto window : Windows) {
+								window->raise();
+								lastFocus = window->GetWindowID();
+							}
+						}
+						lastFocusLost = false;
 					}
-					mainForm->handleEvent(e);
-				}
-				else {
-					//Windows in stack disable all other events for all windows except topmost
-					if (Windows.size() > 0) {
-						Windows[Windows.size() - 1]->handleEvent(e); //only the last window in the stack gets focus
+
+					if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST && e.window.windowID == getTopmost()->GetWindowID()) {
+						std::cout << "LOST " << e.window.windowID << std::endl;
+						lastFocusLost = true;
 					}
 					else {
-						//Nothing is in the stack, so handle static windows as appropriate
-						if (focusedWindow == mainForm) mainForm->handleEvent(e);
+						//formMain->handleEvent(e);
+						mainForm->handleEvent(e);
+						if (Windows.size()) getTopmost()->handleEvent(e);
+						/*for (auto window : Windows) {
+							window->handleEvent(e);
+						}*/
+					}
+				}
+				//Non-Window events
+				else {
+					if (e.type == SDL_RENDER_TARGETS_RESET || e.type == SDL_RENDER_DEVICE_RESET) {
+						int a = 1;
+						mainForm->ReloadAssets();
+						for (auto window : Windows) window->ReloadAssets();
+					}
+
+					//Process user events for all windows in reverse
+					if (e.type == SDL_USEREVENT || e.type >= FIRSTCUSTOMEVENT) {
+						for (int i = Windows.size() - 1; i >= 0; i--) {
+							Windows[i]->handleEvent(e);
+						}
+						mainForm->handleEvent(e);
+					}
+					else {
+						//Windows in stack disable all other events for all windows except topmost
+						if (Windows.size() > 0) {
+							Windows[Windows.size() - 1]->handleEvent(e); //only the last window in the stack gets focus
+						}
 						else {
-							//Process only hotkeys for the main form and process full events for focused form
-							((CWindow*)focusedWindow)->handleEvent(e);
+							//Nothing is in the stack, so handle static windows as appropriate
+							if (focusedWindow == mainForm) mainForm->handleEvent(e);
+							else {
+								//Process only hotkeys for the main form and process full events for focused form
+								((CWindow*)focusedWindow)->handleEvent(e);
+							}
 						}
 					}
 				}
-			}			
-		}
-		//formMain->handleWidgetEvent();
-		mainForm->step();
-		int size = Windows.size();
-		for (int i = 0; i < size; i++) {
-			Windows[i]->step();
-		}
+			}
+			//formMain->handleWidgetEvent();
+			mainForm->step();
+			int size = Windows.size();
+			for (int i = 0; i < size; i++) {
+				Windows[i]->step();
+			}
 
-		Uint32 thisTick = SDL_GetTicks();	
-		double FPS = (thisTick - lastTick) / 1000.0;
-		double timeNeeded = 1000 / FRAMES_PER_SEC;
-		int rem = timeNeeded - FPS;
-		//if (rem > 0) SDL_Delay(rem);
+			Uint32 thisTick = SDL_GetTicks();
+			double FPS = (thisTick - lastTick) / 1000.0;
+			double timeNeeded = 1000 / FRAMES_PER_SEC;
+			int rem = timeNeeded - FPS;
+			if (rem > 0) SDL_Delay(rem);
 
-		//Render texture to screen
-		//formMain->render();
-		mainForm->render();
-		mainForm->renderPresent();
-		for (auto window : Windows) {
-			window->render();
-			window->renderPresent();
+			//Render texture to screen
+			//formMain->render();
+			mainForm->render();
+			mainForm->renderPresent();
+			for (auto window : Windows) {
+				window->render();
+				window->renderPresent();
+			}
+			lastTick = thisTick;
+
+			tickLength = SDL_GetTicks() - tickLength;
+			ticks.push_back(tickLength);
+			if (ticks.size() > 100) ticks.erase(ticks.begin());
+			double avgTicks = 0;
+			for (int i = 0; i < ticks.size(); i++) avgTicks += ticks[i];
+			avgTicks *= 1.0;
+			avgTicks /= ticks.size();
+			if (thisTick - tenSec >= 5000) {
+				gClient.addToDebugLog("Average Ticks: " + std::to_string(avgTicks));
+				tenSec = thisTick;
+			}
 		}
-		lastTick = thisTick;
+	/*}
+	catch (std::bad_alloc) {
+		showErrorMessage("The application has experience a Bad Alloc Error in an unknown location, and will now shut down.");
 	}
+	catch (std::out_of_range) {
+		showErrorMessage("The application has experience an Out of Range Error in an unknown location, and will now shut down.");
+	}
+	catch (std::logic_error) {
+		showErrorMessage("The application has experience a Logic Error in an unknown location, and will now shut down.");
+	}
+	catch (std::range_error) {
+		showErrorMessage("The application has experience an Invalid Range Access Error in an unknown location, and will now shut down.");
+	}
+	catch (std::runtime_error) {
+		showErrorMessage("The application has experience a Runtime in an unknown location, and will now shut down.");
+	}
+	catch (...) {
+		showErrorMessage("The application has experience an unknown fault, and will now shut down.");
+	}*/
 
 	//Free resources and close SDL
 	gClient.shutdownThread();
-	//delete formMain;
+	
+	for (auto window : Windows) {
+		delete window;
+	}
 	delete mainForm;
+
 	close();
 
 	return 1;

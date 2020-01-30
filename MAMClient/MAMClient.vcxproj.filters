@@ -90,6 +90,12 @@
     <Filter Include="JSON">
       <UniqueIdentifier>{3439b48b-7024-4147-b102-10cee52ada13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Packet\Pet">
+      <UniqueIdentifier>{6d04093e-06c0-4ae0-8298-68c635a51d83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Packet\Pet">
+      <UniqueIdentifier>{f7ae32d7-9712-4042-806c-03e2dc3464d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Widget.cpp">
@@ -152,9 +158,6 @@
     <ClCompile Include="pTick.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="pPetShop.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
     <ClCompile Include="pNpcInfo.cpp">
       <Filter>Source Files\Packet\NPC</Filter>
     </ClCompile>
@@ -169,9 +172,6 @@
     </ClCompile>
     <ClCompile Include="pNpcAction.cpp">
       <Filter>Source Files\Packet\NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="pPetInfo.cpp">
-      <Filter>Source Files\Packet</Filter>
     </ClCompile>
     <ClCompile Include="pGSConnect.cpp">
       <Filter>Source Files\Packet\Login</Filter>
@@ -197,9 +197,6 @@
     <ClCompile Include="MapFile.cpp">
       <Filter>Source Files\Core\Files</Filter>
     </ClCompile>
-    <ClCompile Include="pPetAction.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -213,9 +210,6 @@
       <Filter>Source Files\Packet\Battle</Filter>
     </ClCompile>
     <ClCompile Include="pBattleAction.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="pBattleResponse.cpp">
       <Filter>Source Files\Packet\Battle</Filter>
     </ClCompile>
     <ClCompile Include="pBattleRound.cpp">
@@ -308,9 +302,6 @@
     <ClCompile Include="FormError.cpp">
       <Filter>Source Files\Forms\Old Forms</Filter>
     </ClCompile>
-    <ClCompile Include="FormInventory.cpp">
-      <Filter>Source Files\Forms\Old Forms</Filter>
-    </ClCompile>
     <ClCompile Include="FormMain.cpp">
       <Filter>Source Files\Forms\Old Forms</Filter>
     </ClCompile>
@@ -362,9 +353,6 @@
     <ClCompile Include="Text.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="pAttributeUpdate.cpp">
-      <Filter>Source Files\Packet\User</Filter>
-    </ClCompile>
     <ClCompile Include="pAction.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
@@ -400,6 +388,51 @@
     </ClCompile>
     <ClCompile Include="InventoryForm.cpp">
       <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="pUserPoint.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
+    <ClCompile Include="pUserAttribute.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="pPetAction.cpp">
+      <Filter>Source Files\Packet\Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="pPetShop.cpp">
+      <Filter>Source Files\Packet\Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="pPetInfo.cpp">
+      <Filter>Source Files\Packet\Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="pPetLevelUp.cpp">
+      <Filter>Source Files\Packet\Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="pUserLevelUp.cpp">
+      <Filter>Source Files\Packet\User</Filter>
+    </ClCompile>
+    <ClCompile Include="ListBox.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="ShopForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="ShopDataFile.cpp">
+      <Filter>Source Files\Core\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDataFile.cpp">
+      <Filter>Source Files\Core\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pNormalAct.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="pItemAct.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Source Files\Core\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -460,9 +493,6 @@
     <ClInclude Include="pTick.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pPetShop.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
     <ClInclude Include="pNpcInfo.h">
       <Filter>Header Files\Packet\NPC</Filter>
     </ClInclude>
@@ -477,9 +507,6 @@
     </ClInclude>
     <ClInclude Include="pNpcAction.h">
       <Filter>Header Files\Packet\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="pPetInfo.h">
-      <Filter>Header Files\Packet</Filter>
     </ClInclude>
     <ClInclude Include="pLoginRequest.h">
       <Filter>Header Files\Packet\Login</Filter>
@@ -505,9 +532,6 @@
     <ClInclude Include="MapFile.h">
       <Filter>Header Files\Core\Files</Filter>
     </ClInclude>
-    <ClInclude Include="pPetAction.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -521,9 +545,6 @@
       <Filter>Header Files\Packet\Battle</Filter>
     </ClInclude>
     <ClInclude Include="pBattleAction.h">
-      <Filter>Header Files\Packet\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="pBattleResponse.h">
       <Filter>Header Files\Packet\Battle</Filter>
     </ClInclude>
     <ClInclude Include="pBattleRound.h">
@@ -616,9 +637,6 @@
     <ClInclude Include="FormError.h">
       <Filter>Header Files\Forms\Old Forms</Filter>
     </ClInclude>
-    <ClInclude Include="FormInventory.h">
-      <Filter>Header Files\Forms\Old Forms</Filter>
-    </ClInclude>
     <ClInclude Include="FormMain.h">
       <Filter>Header Files\Forms\Old Forms</Filter>
     </ClInclude>
@@ -691,9 +709,6 @@
     <ClInclude Include="pDirection.h">
       <Filter>Header Files\Packet\User</Filter>
     </ClInclude>
-    <ClInclude Include="pAttributeUpdate.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
     <ClInclude Include="pAction.h">
       <Filter>Header Files\Packet\User</Filter>
     </ClInclude>
@@ -714,6 +729,54 @@
     </ClInclude>
     <ClInclude Include="InventoryForm.h">
       <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="pUserPoint.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="pUserAttribute.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="pPetAction.h">
+      <Filter>Header Files\Packet\Pet</Filter>
+    </ClInclude>
+    <ClInclude Include="pPetInfo.h">
+      <Filter>Header Files\Packet\Pet</Filter>
+    </ClInclude>
+    <ClInclude Include="pPetShop.h">
+      <Filter>Header Files\Packet\Pet</Filter>
+    </ClInclude>
+    <ClInclude Include="pPetLevelUp.h">
+      <Filter>Header Files\Packet\Pet</Filter>
+    </ClInclude>
+    <ClInclude Include="pUserLevelUp.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="ListBox.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ShopForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="ShopDataFile.h">
+      <Filter>Header Files\Core\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDataFile.h">
+      <Filter>Header Files\Core\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pNormalAct.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="pItemAct.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Header Files\Core\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatingLabel.h">
+      <Filter>Header Files\Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

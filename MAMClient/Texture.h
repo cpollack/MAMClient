@@ -1,6 +1,6 @@
-#ifndef __TEXTURE_H
-#define __TEXTURE_H
+#pragma once
 
+#include "AssetManager.h"
 #include "RLE.h"
 #include "TGA.h"
 
@@ -15,7 +15,7 @@ class Texture {
 public:
 	SDL_Surface* surface = nullptr;
 	SDL_Texture* texture = nullptr;
-	RLE* rle = nullptr;
+	RLEAsset rle;
 	std::string file;
 	bool loaded = false, loadFailed = false;
 	bool skip = false;
@@ -31,10 +31,9 @@ public:
 	bool useBlend = false;
 	SDL_BlendMode blendMode;
 
-	HSBSet hsbSets[7] = { 0 };
-	int hsbSetCount = 0;
-	int hsbSetId = 0;
+	ColorShifts colorShifts;
 	bool reloadColorMap = false;
+	int lastReloadKey = -1;
 
 	Texture(SDL_Renderer* aRenderer);
 	Texture(SDL_Renderer* aRenderer, SDL_Texture* txtr, int w, int h);
@@ -65,13 +64,11 @@ public:
 	void setPosition(SDL_Point p);
 	void setAnchor(int aAnchor);
 
-	void Texture::setHsbShifts(HSBSet* sets, int count, int id);
-	void Texture::reloadWithHsbShifts(std::map<int, ColorShift> shifts);
+	void Texture::setHsbShifts(ColorShifts shifts);
+	void Texture::reloadWithHsbShifts(ColorShifts shifts);
 
 private:
 	SDL_Renderer* renderer;
 	bool useColorKey = false;
 	SDL_Color colorKey;
 };
-
-#endif

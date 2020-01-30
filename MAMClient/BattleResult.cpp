@@ -2,6 +2,10 @@
 #include "BattleResult.h"
 #include "Text.h"
 
+BattleResult* battleResult = nullptr;
+bool PlayerLeveled = false;
+bool PetLeveled = false;
+
 BattleResult::BattleResult(SDL_Renderer* r, bool victory, int money, int exp, int petExp, int centerX, int centerY) {
 	renderer = r;
 	int width = 240;

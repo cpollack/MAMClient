@@ -31,6 +31,7 @@ protected:
 	SDL_Point DestCoord;
 	int lastMoveTick;
 	const int WALK_SPEED = 200;
+	const int JUMP_SPEED = 350;
 
 	bool atDestCoord();
 	void getNextDestCoord();
@@ -39,7 +40,6 @@ protected:
 protected:
 	std::string NickName;
 	std::string Spouse;
-	int Level;
 
 	int FullRank;
 	int Rank;
@@ -58,18 +58,26 @@ public:
 	void SetNickName(std::string newName) { NickName = newName; }
 
 	std::string getSpouse();
-	
-	int GetLevel() { return Level; }
+
 	int GetRank() { return Rank;  }
+	void SetRank(int iRank) { Rank = iRank; }
 	std::string GetRankText();
+
+	int GetReborns() { return Reborns; }
+	void SetReborns(int iReborns) { Reborns = iReborns; }
+
+	int GetAlignment() { return Alignment; }
+	void SetAlignment(int iAlign) { Alignment = iAlign; }
+
 	int GetGender() { return Gender;  }
+
+	int GetPK() { return pkEnabled; }
+	void SetPK(int iPK) { pkEnabled = iPK; }
 
 	std::string getGuild();
 	std::string getGuildTitle();
 
 protected: /* Effects */
-	Sprite *effect = nullptr, *aura = nullptr;
-	std::string effectName;
-	void loadEffect(std::string _effectName);
+	Sprite *aura = nullptr;
 	void loadAura();
 };

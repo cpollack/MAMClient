@@ -88,11 +88,11 @@ void CLoginForm::fldPassword_Submit(SDL_Event &e) {
 void CLoginForm::btnOk_Click(SDL_Event& e) {
 	//validate
 	if (fldAccount->GetText().length() == 0) {
-		doPromptError("Login Error", "Account cannot be empty.");
+		doPromptError(this, "Login Error", "Account cannot be empty.");
 		return;
 	}
 	if (fldPassword->GetText().length() == 0) {
-		doPromptError("Login Error", "Password cannot be empty.");
+		doPromptError(this, "Login Error", "Password cannot be empty.");
 		return;
 	}
 

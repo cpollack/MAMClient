@@ -120,7 +120,7 @@ void CPetListForm::LoadPortraits() {
 		Texture* portrait = nullptr;
 		std::string petName;
 		if (pet) {
-			std::string look = std::to_string(pet->getLook());
+			std::string look = std::to_string(pet->GetLook());
 			while (look.size() < 4) look.insert(look.begin(), '0');
 			look = "peticon" + look;
 
@@ -205,7 +205,7 @@ void CPetListForm::LoadSprite() {
 	}
 	Pet *pet = player->getPetList()[selection];
 
-	std::string role = getRoleFromLook(pet->getLook());
+	std::string role = getRoleFromLook(pet->GetLook());
 	int animation = Walk;
 	int direction = 1;
 	std::string animString = animationTypeToString(animation) + std::to_string(direction);
@@ -240,16 +240,16 @@ void CPetListForm::LoadPet(int index) {
 	lblSpecies->SetText("N/A");
 	lblElement->SetText(pet->GetElementText());
 	lblRegistered->SetText("");
-	fldID->SetText(std::to_string(pet->getId()));
+	fldID->SetText(std::to_string(pet->GetID()));
 
 	int loyalty = pet->getLoyalty();
 	if (loyalty > 100) loyalty = 100;
 	gaugeLoyalty->set(loyalty, 100);
 
-	lblLevel->SetText(formatInt(pet->getLevel()));
+	lblLevel->SetText(formatInt(pet->GetLevel()));
 	gaugeExperience->set(pet->getExperience(), pet->getLevelUpExperience());
 	lblGeneration->SetText(std::to_string(pet->GetGeneration()));
-	gaugeLife->set(pet->getCurrentHealth(), pet->getMaxHealth());
+	gaugeLife->set(pet->GetCurrentLife(), pet->GetMaxLife());
 	lblAccessory->SetText("");
 
 	//last 0 is placeholder for petitem
@@ -294,11 +294,11 @@ void CPetListForm::imgPet5_Click(SDL_Event& e) {
 void CPetListForm::btnChangeName_Click(SDL_Event& e) {
 	std::string name = fldName->GetText();
 	if (name.length() == 0) {
-		doPromptError("Error", "Nickname cannot be blank.");
+		doPromptError(this, "Error", "Nickname cannot be blank.");
 		return;
 	}
 	if (name.length() > 16) {
-		doPromptError("Error", "Nickname cannot be more than 16 characters.");
+		doPromptError(this, "Error", "Nickname cannot be more than 16 characters.");
 		return;
 	}
 
@@ -309,11 +309,11 @@ void CPetListForm::btnChangeName_Click(SDL_Event& e) {
 	if (name.compare(pet->GetName()) == 0) return;
 
 	//send nickname update
-	pRename *rename = new pRename(pet->getId(), rmPet, name);
+	pRename *rename = new pRename(pet->GetID(), rmPet, name);
 	gClient.addPacket(rename);
 
 	pet->SetName(name);
-	doPrompt("Confirm", "Pet name has been updated successfully!");
+	doPrompt(this, "Confirm", "Pet name has been updated successfully!");
 	LoadPortraits();
 }
 
@@ -345,7 +345,7 @@ void CPetListForm::btnDrop_Click(SDL_Event& e) {
 	if (selection == -1) return;
 	int marching = GetMarchingPetIndex();
 	if (selection == marching) {
-		doPromptError("Error", "You cannot drop your marching pet.");
+		doPromptError(this, "Error", "You cannot drop your marching pet.");
 		return;
 	}
 
@@ -356,7 +356,7 @@ void CPetListForm::btnDrop_Click(SDL_Event& e) {
 	promptForm->SetTitle("Are you sure?");
 	std::string message = "You are about to drop ";
 	message += pet->GetName();
-	message += "\n\nLevel " + formatInt(pet->getLevel());
+	message += "\n\nLevel " + formatInt(pet->GetLevel());
 	message += "\n\nAre you sure you want to continue?";
 	promptForm->SetMessage(message);
 	promptForm->SetParent(this);
@@ -367,10 +367,10 @@ void CPetListForm::btnDrop_Click(SDL_Event& e) {
 
 void CPetListForm::DropPet() {
 	Pet *pet = player->getPetList()[selection];
-	pPetAction *dropPacket = new pPetAction(pet->getId(), 0, paDrop);
+	pPetAction *dropPacket = new pPetAction(pet->GetID(), 0, paDrop);
 	gClient.addPacket(dropPacket);
 
-	player->removePet(pet->getId());
+	player->removePet(pet->GetID());
 
 	LoadPortraits();
 	selection = GetMarchingPetIndex();
@@ -391,7 +391,7 @@ void CPetListForm::btnMarch_Click(SDL_Event& e) {
 	}
 	else {
 		Pet *pet = player->getPetList()[selection];
-		petId = pet->getId();
+		petId = pet->GetID();
 		SetMarching(selection);
 
 		//send change active pet packet

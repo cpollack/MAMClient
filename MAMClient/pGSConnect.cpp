@@ -48,7 +48,7 @@ pGsConnect::~pGsConnect() {
 
 void pGsConnect::process() {
 	if (player) { // Character exists, Send connection response
-		pGsConnect* connectResponse = new pGsConnect(accountId, 0, 4010, (char*)player->getName().c_str());
+		pGsConnect* connectResponse = new pGsConnect(accountId, 0, 4010, (char*)player->GetName().c_str());
 		gClient.addPacket(connectResponse);
 	}
 	else {

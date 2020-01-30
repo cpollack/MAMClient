@@ -2,6 +2,9 @@
 #include "pColor.h"
 
 #include "Battle.h"
+#include "UserManager.h"
+#include "Player.h"
+#include "Pet.h"
 
 pColor::pColor(char* buf, char* encBuf) {
 	description = "Color (Server)";
@@ -29,6 +32,20 @@ void pColor::process() {
 	}
 	else {
 		//packet applies to a map object
+		Entity* entity = nullptr;
+		if (player->GetID() == sourceId) entity = player;
+		if (!entity && player->getActivePet() && player->getActivePet()->GetID() == sourceId) entity = player->getActivePet();
+		if (!entity) entity = userManager.getUserById(sourceId);
+		if (entity) {
+			ColorShifts colorShifts;
+			for (int i = 0; i < 25; i += 5) {
+				ColorShift shift;
+				memcpy(&shift, hslSets + i, 5);
+				colorShifts.push_back(shift);
+			}
+			if (colorShifts.size() > 0) entity->setColorShifts(colorShifts);
+			entity->loadSprite();
+		}
 	}
 }
 

@@ -7,16 +7,31 @@
 #include "Player.h"
 #include "Inventory.h"
 
-Pet::Pet(pPetInfo* packet) {
-	id = packet->petId;
+Pet::Pet(SDL_Renderer *renderer, int id, std::string name, int look) : Monster(renderer, id, name, look) {
+	ID = BattleID | _IDMSK_PET;
+	Type = OBJ_PET;
+}
+
+Pet::Pet(pPetInfo* packet) : Monster(NULL, packet->petId, packet->name, packet->look) {
+	updateInfo(packet);
+}
+
+
+Pet::~Pet() {
+
+}
+
+void Pet::updateInfo(pPetInfo* packet) {
+	ID = packet->petId;
+	BattleID = ID | _IDMSK_PET;
 	owner = packet->ownerId;
 
-	name = packet->name;
-	monsterClass = packet->monsterClass;
-	look = packet->look;
+	Name = packet->name;
+	Class = packet->monsterClass;
+	Look = packet->look;
 	setElement();
 
-	level = packet->level;
+	Level = packet->level;
 	experience = packet->experience;
 	nextLevelExp = getLevelUpExperience();
 	generation = packet->generation;
@@ -33,20 +48,17 @@ Pet::Pet(pPetInfo* packet) {
 	medal_dexterity = packet->medal_dexterity;
 
 	skillCount = packet->skillCount;
-	for (int i = 0; i < skillCount; i++)
-		skills[i] = packet->skills[i];
-}
-
-
-Pet::~Pet() {
-
+	for (int i = 0; i < MAX_PET_SKILLS; i++) {
+		if (i < skillCount) skills[i] = packet->skills[i];
+		else skills[i] = 0;
+	}
 }
 
 
 void Pet::setElement() {
-	Element = monsterClass / 10000;
+	Element = Class / 10000;
 	if (Element == 1 || Element == 7) {
-		Element = (monsterClass % 10000) / 1000;
+		Element = (Class % 10000) / 1000;
 	}
 }
 
@@ -77,42 +89,17 @@ std::string Pet::GetElementText() {
 	return strElement;
 }
 
-
-int Pet::getId() {
-	return id;
-}
-
-int Pet::getBattleId() {
-	return (id + _IDMSK_PET);
-}
-
-int Pet::getLook() {
-	return look;
-}
-
-int Pet::getLevel() {
-	return level;
-
-}
 int Pet::getExperience() {
 	return experience;
 }
 
 int Pet::getLevelUpExperience() {
-	int nextLevel = level * (level + 1) * 0.75;
+	int nextLevel = Level * (Level + 1) * 0.75;
 	return nextLevel;
 }
 
 int Pet::getLoyalty() {
 	return loyalty;
-}
-
-int Pet::getCurrentHealth() {
-	return life_current;
-}
-
-int Pet::getMaxHealth() {
-	return life_max;
 }
 
 int Pet::getAttack() {
@@ -174,5 +161,5 @@ void Pet::useMedicine(Item* item) {
 		mainForm->shiftPetHealthGauge(life);
 	}
 
-	player->inventory->removeItem(item->getId());
+	player->inventory->removeItem(item->GetID());
 }

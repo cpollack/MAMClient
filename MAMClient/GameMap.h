@@ -5,13 +5,13 @@
 #include "Sprite.h"
 #include "MapFile.h"
 #include "pMapInfo.h"
-#include "NPC.h"
 #include "Dialogue.h"
 #include "Colosseum.h"
 
 using Asset = std::shared_ptr<Texture>;
 
 class BattleResult;
+class NPC;
 
 typedef enum TileZone {
 	CENTER,
@@ -78,6 +78,7 @@ public:
 	NPC* focusedNPC = nullptr;
 	
 	void checkForMapChange();
+	bool IsChangingMap() { return changingMap; }
 
 	void GameMap::addNpc(pNpcInfo* packet);
 	void createDialogue(pNpcDialogue* packet);
@@ -134,7 +135,6 @@ private:
 	int shopId = 0;
 	Dialogue* dialogue = nullptr;
 
-private: BattleResult* battleResult;
 public: 
 	void addBattleResult(BattleResult* br);
 	void deleteBattleResult();

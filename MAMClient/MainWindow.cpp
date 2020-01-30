@@ -63,7 +63,8 @@ bool CMainWindow::init()
 		keyboardFocus = true;
 
 		//Create renderer for window
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		//renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 		if (renderer == NULL) {
 			printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
 			SDL_DestroyWindow(window);
@@ -562,13 +563,13 @@ void CMainWindow::main_init() {
 
 	//Set Default widget values
 	setPlayerDetailsLabels();
-	setPlayerHealthGauge(player->life_current, player->life_max);
-	setPlayerManaGauge(player->mana_current, player->mana_max);
+	setPlayerHealthGauge(player->GetCurrentLife(), player->GetMaxLife());
+	setPlayerManaGauge(player->GetCurrentMana(), player->GetMaxMana());
 	setPlayerExpGauge(player->experience, player->GetLevelUpExperience());
 
 	Pet* activePet = player->getActivePet();
 	if (activePet) {
-		setPetHealthGauge(activePet->getCurrentHealth(), activePet->getMaxHealth());
+		setPetHealthGauge(activePet->GetCurrentLife(), activePet->GetMaxLife());
 		setPetExpGauge(activePet->getExperience(), activePet->getLevelUpExperience());
 	}
 }
@@ -710,14 +711,66 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		if (e.user.code == PLAYER_RENAME) {
 			lblNickName->SetText(player->getNickName());
 		}
+
+		if (e.user.code == PLAYER_UPDATE) {
+			setPlayerDetailsLabels();
+		}
+
+		if (e.user.code == PLAYER_LIFE) {
+			gaugePlayerHealth->AdjustTo(player->GetCurrentLife());
+		}
+		if (e.user.code == PLAYER_LIFEMAX) {
+			gaugePlayerHealth->set(player->GetCurrentLife(), player->GetMaxLife());
+		}
+		if (e.user.code == PLAYER_MANA) {
+			gaugePlayerMana->AdjustTo(player->GetCurrentMana());
+		}
+		if (e.user.code == PLAYER_MANAMAX) {
+			gaugePlayerMana->set(player->GetCurrentMana(), player->GetMaxMana());
+		}
+		if (e.user.code == PLAYER_LIFEMANA) {
+			gaugePlayerHealth->AdjustTo(player->GetCurrentLife());
+			gaugePlayerMana->AdjustTo(player->GetCurrentMana());
+		}
+		if (e.user.code == PLAYER_EXP) {
+			gaugePlayerExp->AdjustTo(player->GetExperience());
+		}
+
+		if (e.user.code == PLAYER_LEVEL) {
+			setPlayerDetailsLabels();
+			gaugePlayerExp->set(player->GetExperience(), player->GetLevelUpExperience());
+		}
+
+		if (e.user.code == PLAYER_MONEY) {
+			lblCash->SetText(formatInt(player->GetCash()));
+		}
+		if (e.user.code == PLAYER_REPUTATION) {
+			lblReputation->SetText(formatInt(player->GetReputation()));
+		}
 	}
 
 	if (e.type == CUSTOMEVENT_PET) {
 		if (e.user.code == PET_MARCHING) {
 			Pet* pet = player->getActivePet();
 			if (pet) {
-				setPetHealthGauge(pet->getCurrentHealth(), pet->getMaxHealth());
+				setPetHealthGauge(pet->GetCurrentLife(), pet->GetMaxLife());
 				setPetExpGauge(pet->getExperience(), pet->getLevelUpExperience());
+			}
+		}
+
+		if (e.user.code == PET_LIFE) {
+			Pet* pet = player->getActivePet();
+			if (pet) gaugePetHealth->AdjustTo(pet->GetCurrentLife());
+		}
+		if (e.user.code == PET_EXP) {
+			Pet* pet = player->getActivePet();
+			if (pet) gaugePetExp->AdjustTo(pet->getExperience());
+		}
+		if (e.user.code == PET_LEVEL) {
+			Pet* pet = player->getActivePet();
+			if (pet) {
+				gaugePetHealth->set(pet->GetCurrentLife(), pet->GetMaxLife());
+				gaugePetExp->set(pet->getExperience(), pet->getLevelUpExperience());
 			}
 		}
 	}
@@ -792,9 +845,10 @@ void CMainWindow::btnJump_Click(SDL_Event& e) {
 
 void CMainWindow::btnFight_Click(SDL_Event& e) {
 	if (battle) return;
+	if (!map || map->IsChangingMap()) return;
 
 	int teamSize = 1;
-	pBattleState* battlePacket = new pBattleState(0, teamSize, player->getID(), 0);
+	pBattleState* battlePacket = new pBattleState(0, teamSize, player->GetID(), 0);
 	gClient.addPacket(battlePacket);
 }
 
@@ -824,9 +878,9 @@ void CMainWindow::setPlayerDetailsLabels() {
 	lastMouseoverUser = nullptr;
 	userDetailsStartTime = 0;
 
-	lblName->SetText(player->getName());
-	lblNickName->SetText(player->getNickName());
-	lblSpouse->SetText(player->getSpouse());
+	lblName->SetText(StringToWString(player->GetName()));
+	lblNickName->SetText(StringToWString(player->getNickName()));
+	lblSpouse->SetText(StringToWString(player->getSpouse()));
 
 	std::string strLevelCult = formatInt(player->GetLevel()) + "/" + formatInt(player->GetCultivation());
 	lblLevel->SetText(strLevelCult);
@@ -835,8 +889,8 @@ void CMainWindow::setPlayerDetailsLabels() {
 	lblReputation->SetText(formatInt(player->GetReputation()));
 
 	lblRank->SetText(player->GetRankText());
-	lblGuild->SetText(player->getGuild());
-	lblGuildRank->SetText(player->getGuildTitle());
+	lblGuild->SetText(StringToWString(player->getGuild()));
+	lblGuildRank->SetText(StringToWString(player->getGuildTitle()));
 }
 
 void CMainWindow::setUserDetailsLabels(User* user) {

@@ -31,7 +31,7 @@ void Inventory::removeItem(int itemId, bool destroy) {
 	for (itr = inventory.begin(); itr != inventory.end(); itr++)
 	{
 		Item* item = *itr;
-		if (item->getId() == itemId) {
+		if (item->GetID() == itemId) {
 			inventory.erase(itr);
 			if (destroy) delete item;
 			break;
@@ -47,7 +47,7 @@ int Inventory::getItemCount() {
 
 Item* Inventory::getItem(int itemId) {
 	for (auto item : inventory) {
-		if (item->getId() == itemId) return item;
+		if (item->GetID() == itemId) return item;
 	}
 	return nullptr;
 }

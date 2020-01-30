@@ -7,23 +7,23 @@ enum PetAction {
 	paDrop = 3,
 	paLearnSkill = 4,
 	paForgetSkill = 5,
-	paUseItem = 7
+	paUseItem = 7,
 	//12 - checkout pet ?
 	//15 - related to wrestle
 	//16 - wrestle
 	//17 - wrestle ?
-	//18 - next 3 related pet update info
+	paFullHeal = 18,
 	//19
 	//20
-	//21 - checkin pet ?
-	//22
+	paRemove = 21,
+	//22 ?
 	//25
 	//35 - pet treasure ?
 };
 
 class pPetAction : public Packet {
 public:
-	int petId, targetId, action;
+	int petId, action, value;
 
 	pPetAction(char *buf, char* encBuf);
 	pPetAction(int pId, int tId, int act);

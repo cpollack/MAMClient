@@ -54,7 +54,9 @@ public:
 	void Label::initTextRect();
 	void Label::setPosition(int px, int py);
 	void Label::setText(std::string sText);
+	//void Label::setText(std::wstring sText);
 	void Label::renderText(std::string sText);
+	//void Label::renderText(std::wstring sText);
 
 	void Label::render();
 	void Label::offsetPosition(SDL_Point offset);

@@ -6,8 +6,7 @@
 #include <queue>
 #include <string>
 
-class bMonster;
-class bAlly;
+class Entity;
 enum AnimType;
 
 enum bsType {
@@ -22,48 +21,41 @@ enum bsType {
 	bsCaptureSuccess,
 	bsCaptureAngry,
 	bsCaptureFail,
+	bsUseItem,
 	bsVictory
 };
 
 class Texture;
-struct FloatingLabel {
-	~FloatingLabel() {
-		if (top) delete top;
-		if (bottom) delete bottom;
-	}
-	Texture* top = NULL;
-	Texture* bottom = NULL;
-	SDL_Point target;
-	SDL_Point position;
-	bool started = false;
-	int startTime;
-};
 
 struct bsPerform {
-	bMonster* actor;
+	bsPerform() { SDL_zero(boundEvent); }
+
+	Entity* actor;
 	int animation;
+	int effect = 0;
 	int direction;
 	SDL_Point targetPoint;
 	SDL_Point startPoint;
 	bsType type;
-	FloatingLabel *triggerLabel;
+	std::vector<std::string> floatingLabels;
 	std::string battleYell;
 
 	bool started = false;
 	int startTime;
 	int playTime;
+	SDL_Event boundEvent;
 };
 
 struct bsActor {
-	bMonster* actor;
+	Entity* actor;
 	std::queue<bsPerform*> performances;
 };
 
 class BattleScene {
 private:
-	std::vector<bMonster*> cast;
+	std::vector<Entity*> cast;
 	std::vector<bsActor*> actors, newActors;
-	bMonster* reactor;
+	Entity* reactor;
 	int reaction;
 	SDL_Point lookTo;
 
@@ -71,15 +63,14 @@ private:
 	const int default_monster_dir = 1;
 
 	bool started = false, finished = false;
-	std::vector<FloatingLabel*> *floatingLabels;
 
 public:
-	BattleScene(std::vector<bAlly*> allies, std::vector<bMonster*> monsters, std::vector<FloatingLabel*> *fLabels);
+	BattleScene(std::vector<Entity*> allies, std::vector<Entity*> enemies);
 	~BattleScene();
 
-	void BattleScene::setReactor(bMonster* target, int action);
-	void BattleScene::addAction(bMonster* source, bsType type, AnimType action, SDL_Point target, FloatingLabel *triggerLabel = nullptr);
-	void BattleScene::addAction(bMonster* source, bsType type, AnimType action, SDL_Point target, std::string battleYell);
+	void BattleScene::setReactor(Entity* target, int action);
+	bsPerform* BattleScene::addAction(Entity* source, bsType type, AnimType action, SDL_Point target, std::vector<std::string> floatingLabels);
+	bsPerform* BattleScene::addAction(Entity* source, bsType type, AnimType action, SDL_Point target);
 
 	void BattleScene::start();
 	bool BattleScene::isStarted();
@@ -98,6 +89,7 @@ public:
 	bool BattleScene::perform_captureSuccess(bsPerform* perform);
 	bool BattleScene::perform_captureAngry(bsPerform* perform);
 	bool BattleScene::perform_captureFail(bsPerform* perform);
+	bool BattleScene::perform_useItem(bsPerform* perform);
 	bool BattleScene::perform_victory(bsPerform* perform);
 
 	void BattleScene::startReaction();

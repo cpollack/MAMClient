@@ -12,13 +12,14 @@ UserManager::~UserManager() {
 }
 
 void UserManager::addUser(User* pUser) {
-	Users[pUser->getID()] = pUser;
+	Users[pUser->GetID()] = pUser;
 }
 
 User* UserManager::getUserById(int id) {
 	for (auto user : Users) {
-		if (user.second->getID() == id) return user.second;
+		if (user.second->GetID() == id) return user.second;
 	}
+	return nullptr;
 }
 
 std::vector<User*> UserManager::getUsers() {

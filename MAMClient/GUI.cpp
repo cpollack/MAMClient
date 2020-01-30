@@ -19,6 +19,7 @@ GUI::GUI(SDL_Renderer* aRenderer, std::string sName) {
 
 GUI::~GUI() {
 	TTF_CloseFont(font);
+	TTF_CloseFont(fontUni);
 
 	//delete textures
 	for (int i = textures.size() - 1; i >= 0; i--) {
@@ -106,6 +107,7 @@ void GUI::loadGUI() {
 	loadResource(line2, guiPath + "line2.jpg", Anchor::aTopLeft);
 
 	font = TTF_OpenFont("font\\Arial.ttf", 12);
+	fontUni = TTF_OpenFont("font\\ARIALUNI.ttf", 12);
 	chatFont = TTF_OpenFont("font\\Arial.ttf", 12);
 	chatShadowFont = TTF_OpenFont("font\\Arial.ttf", 12);
 	//TTF_SetFontOutline(chatShadowFont, 1);

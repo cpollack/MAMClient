@@ -4,6 +4,7 @@
 
 #include "GameMap.h"
 #include "Battle.h"
+#include "Player.h"
 #include "MainWindow.h"
 
 pBattleState::pBattleState(char* buf, char* encBuf) {
@@ -45,7 +46,7 @@ pBattleState::~pBattleState() {
 
 void pBattleState::process() {
 	if (state == bsConfirmStart) {
-		if (userId == player->getID()) {
+		if (userId == player->GetID()) {
 			if (map->doesBattleResultExist()) map->deleteBattleResult();
 
 			if (battle) delete battle;

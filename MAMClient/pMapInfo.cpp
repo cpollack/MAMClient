@@ -67,7 +67,7 @@ void pMapInfo::process() {
 		pPetShop* petShopPacket = new pPetShop(10);
 		gClient.addPacket(petShopPacket);
 
-		pAction* movePacket = new pAction(gClient.accountId, player->getID(), 0, 0, 0, 19);
+		pAction* movePacket = new pAction(gClient.accountId, player->GetID(), 0, 0, 0, 19);
 		gClient.addPacket(movePacket);
 	}
 	userManager.clear();

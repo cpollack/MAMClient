@@ -94,12 +94,12 @@ void CInventoryForm::handleEvent(SDL_Event& e) {
 	if (e.type = CUSTOMEVENT_WINDOW && e.user.data1 == promptForm) {
 		if (e.user.code == WINDOW_CLOSE_PROMPT_OK) {
 			if (UsingItem) {
-				pItemAction *itemAction = new pItemAction(viewItem->getId(), iaUse);
+				pItemAction *itemAction = new pItemAction(viewItem->GetID(), iaUse);
 				gClient.addPacket(itemAction);
 				LoadViewItem(nullptr);
 			}
 			if (DropItem) {
-				pItemAction *itemAction = new pItemAction(viewItem->getId(), iaDrop);
+				pItemAction *itemAction = new pItemAction(viewItem->GetID(), iaDrop);
 				gClient.addPacket(itemAction);
 				LoadViewItem(nullptr);
 			}
@@ -120,7 +120,9 @@ CImageBox* CInventoryForm::createImageBox(std::string name) {
 }
 
 void CInventoryForm::LoadEquipment() {
-	std::string equipBgPath = "GUI/main/" + player->PlayerRole + ".bmp";
+	std::string strRole = player->PlayerRole;
+	if (strRole.length() == 0 || (strRole[0] != 'M' && strRole[0] != 'M')) strRole = "Man01";
+	std::string equipBgPath = "GUI/main/" + strRole + ".bmp";
 	SDL_Color colorKey = { 49, 66, 107, 255 };
 	Texture *equipmentBg = new Texture(renderer, equipBgPath, colorKey, true);
 	imgEquipment->SetImage(equipmentBg);
@@ -138,9 +140,12 @@ void CInventoryForm::LoadEquipment() {
 }
 
 std::vector<SDL_Point> CInventoryForm::GetEquipmentSlots() {
+	std::string strRole = player->PlayerRole;
+	if (strRole.length() == 0 || (strRole[0] != 'M' && strRole[0] != 'M')) strRole = "Man01";
+
 	SDL_Point weapon, armor, shoe, head, body;
 	if (player->GetGender() == MALE) {
-		int idx = player->PlayerRole.at(4) - '0';
+		int idx = strRole.at(4) - '0';
 		switch (idx) {
 		case 1:
 			weapon = {27,131};
@@ -201,7 +206,7 @@ std::vector<SDL_Point> CInventoryForm::GetEquipmentSlots() {
 		}
 	}
 	else {
-		int idx = player->PlayerRole.at(6) - '0';
+		int idx = strRole.at(6) - '0';
 		switch (idx) {
 		case 1:
 			weapon = { 142,125 };
@@ -315,7 +320,7 @@ void CInventoryForm::SetItemToImageBox(CImageBox* imgBox, Item* item) {
 }
 
 void CInventoryForm::btnUse_Click(SDL_Event& e) {
-	pItemAction *itemAction = new pItemAction(viewItem->getId(), iaUse);
+	pItemAction *itemAction = new pItemAction(viewItem->GetID(), iaUse);
 	gClient.addPacket(itemAction);
 	LoadViewItem(nullptr);
 }
@@ -324,7 +329,7 @@ void CInventoryForm::btnPetUse_Click(SDL_Event& e) {
 	if (!viewItem) return;
 
 	if (viewItem->getType() == itMedicine) {
-		pPetAction* itemAction = new pPetAction(player->getActivePet()->getId(), viewItem->getId(), paUseItem);
+		pPetAction* itemAction = new pPetAction(player->getActivePet()->GetID(), viewItem->GetID(), paUseItem);
 		gClient.addPacket(itemAction);
 		LoadViewItem(nullptr);
 	}
@@ -335,8 +340,7 @@ void CInventoryForm::btnDrop_Click(SDL_Event& e) {
 
 	std::string message = "Are you sure you wish to Drop ";
 	message += "[" + viewItem->getName() + "]?";
-	promptForm = doPrompt("Confirm", message);
-	promptForm->SetParent(this);
+	promptForm = doPrompt(this, "Confirm", message, true);
 
 	DropItem = true;
 }
@@ -404,11 +408,11 @@ void CInventoryForm::imgBodyAccessory_Click(SDL_Event& e) {
 void CInventoryForm::UnequipItem(Item* item) {
 	if (!item) return;
 	if (player->inventory->getItemCount() >= 15) {
-		doPromptError("Error", "You cannot unequip your item because your inventory is full!");
+		doPromptError(this, "Error", "You cannot unequip your item because your inventory is full!");
 		return;
 	}
 
-	pItemAction *itemAction = new pItemAction(item->getId(), iaUnequip);
+	pItemAction *itemAction = new pItemAction(item->GetID(), iaUnequip);
 	gClient.addPacket(itemAction);
 
 	player->unequipItem(item);
@@ -437,6 +441,5 @@ void CInventoryForm::UseItem(Item* item) {
 	if (item->getType() <= 4) message += "Equip ";
 	else message += "Use ";
 	message += "[" + item->getName() + "]?";
-	promptForm = doPrompt("Confirm", message);
-	promptForm->SetParent(this);
+	promptForm = doPrompt(this, "Confirm", message, true);
 }

@@ -65,7 +65,7 @@ private: //Widgets
 
 	//Overview tab
 	CImageBox *imgSprite;
-	CLabel *lblName, *lblLevelRank, *lblMainCult, *lblMainLife, *lblMainMana, *lblMainAttack, *lblMainDefence, *lblMainDexterity;
+	CLabel *lblName, *lblLevelOverview, *lblRank, *lblMainCult, *lblMainLife, *lblMainMana, *lblMainAttack, *lblMainDefence, *lblMainDexterity;
 	Sprite* sprite;
 
 	//Attribute tab

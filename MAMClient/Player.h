@@ -32,7 +32,6 @@ public:
 
 	int AccountId;
 	int experience, cultivation;
-	int life_current, life_max, mana_current, mana_max;
 	int point_unused, life, mana, attack, defence, dexterity;
 	
 	int cash, reputation, virtue;
@@ -58,22 +57,18 @@ public:
 	void setPlayerInfo(pPlayerInfo* packet);
 	
 	int GetExperience() { return experience; }
-	int GetLevelUpExperience();
+	void SetExperience(int iExp) { experience = iExp; }
+	int GetLevelUpExperience();	
 
 	int GetUnusedPoints()	{ return point_unused; }
 	void SetUnusedPoints(int point);
 
 	int GetCultivation()	{ return cultivation + Level; }
+	void SetCultivation(int iCult) { cultivation = iCult; }
 
-	int GetCurrentLife()	{ return life_current; }
-	void SetLife(int iLife);
-	int GetMaxLife()		{ return life_max; }
 	int GetLifePoint()		{ return life; }
 	void SetLifePoint(int point);
 
-	int GetCurrentMana()	{ return mana_current; }
-	void SetMana(int iMana);
-	int GetMaxMana()		{ return mana_max; }
 	int GetManaPoint()		{ return mana; }
 	void SetManaPoint(int point);
 
@@ -90,21 +85,28 @@ public:
 	void SetDexterityPoint(int point);
 
 	int GetCash() { return cash; }
+	void SetCash(int iCash) { cash = iCash; }
 
 	int GetReputation() { return reputation; }
+	void SetReputation(int iRep) { reputation = iRep; }
 
 	int GetVirtue() { return virtue; }
+	void SetVirtue(int iVirtue) { virtue = iVirtue; }
 
 	int GetWuxing() { return wuxing; }
+	void SetWuxing(int iWux) { wuxing = iWux; }
 	std::string GetWuxingTitle();
 
 	int GetKungfu() { return kungfu; }
+	void SetKungfu(int iKungfu) { kungfu = iKungfu; }
 	std::string GetKungfuTitle();
 
 	int GetPetRaising() { return petRaising; }
+	void SetPetRaising(int iPetRaising) { petRaising = iPetRaising; }
 	std::string GetPetRaisingTitle();
 
 	int GetThievery() { return thievery; }
+	void SetThievery(int iThievery) { thievery = iThievery; }
 	std::string GetThieveryTitle();
 
 public: // Pets
@@ -117,6 +119,7 @@ public: // Pets
 
 public: // Items
 	void addItem(pItem* packet);
+	void removeItem(Item* item);
 	void Player::useItem(int itemId);
 	void Player::useMedicine(Item* item);
 	void Player::setEquipment(pItem* packet);

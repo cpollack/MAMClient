@@ -2,6 +2,7 @@
 #include "Client.h"
 #include "Item.h"
 
+#include "ItemDataFile.h"
 
 Item::Item(pItem* packet) {
 	id = packet->itemId;
@@ -35,6 +36,39 @@ Item::Item(pItem* packet) {
 	delete itemLookINI;
 }
 
+Item::Item(ItemData itemData) {
+	//item loads from INI
+	id = itemData.itemID;
+
+	ownerId = -1;
+
+	name = itemData.name;
+	creator = itemData.inventor;
+
+	look = itemData.look;
+	sort = itemData.itemSort;
+	setType();
+
+	cost = itemData.cost;
+	level = itemData.levelReq;
+
+	life = itemData.life;
+	mana = itemData.power;
+	attack = itemData.attack;
+	defence = itemData.defence;
+	dexterity = itemData.dexterity;
+
+	INI* itemLookINI;
+	std::string bigSection = "Big_item" + std::to_string(look);
+	itemLookINI = new INI("INI/itemlook.ini", bigSection);
+	bigPath = itemLookINI->getEntry("Frame0");
+	delete itemLookINI;
+
+	std::string smallSection = "Small_item" + std::to_string(look);
+	itemLookINI = new INI("INI/itemlook.ini", smallSection);
+	smallPath = itemLookINI->getEntry("Frame0");
+	delete itemLookINI;
+}
 
 Item::Item(int itemId) {
 	//item loads from INI
@@ -111,12 +145,6 @@ void Item::setType() {
 	}
 }
 
-
-int Item::getId() {
-	return id;
-}
-
-
 int Item::getType() {
 	return type;
 }
@@ -145,7 +173,7 @@ std::string Item::getName() {
 }
 
 
-std::string Item::getDetails() {
+std::wstring Item::getDetails() {
 	std::string details;
 
 	details = name + "\n";
@@ -172,13 +200,13 @@ std::string Item::getDetails() {
 	details += "Maker " + creator + "\n";
 	details += "Lvl Required " + std::to_string(level);
 	
-	return details;
+	return StringToWString(details);
 }
 
 
-std::string Item::getShopDetails() {
+std::wstring Item::getShopDetails() {
 	std::string details;
-
+	
 	details = name + "\n";
 	details += "Type " + typeText + "\n";
 
@@ -193,7 +221,7 @@ std::string Item::getShopDetails() {
 	details += "Price $ " + std::to_string(cost) + "\n";
 	details += "Maker " + creator + "\n";
 
-	return details;
+	return StringToWString(details);
 }
 
 

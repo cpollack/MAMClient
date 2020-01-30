@@ -5,12 +5,16 @@
 
 #include "Texture.h"
 #include "Sprite.h"
-#include "Player.h"
 #include "Button.h"
 #include "Label.h"
 
 class Battle;
 class BattleScene;
+
+class Entity;
+class Player;
+class Pet;
+
 enum bsType;
 struct FloatingLabel;
 
@@ -40,22 +44,6 @@ enum BattleMenu {
 	pet_defend
 };
 
-enum bActorType {
-	PLAYER,
-	PET,
-	ENEMY,
-	ALLY_PLAYER,
-	ALLY_PET
-};
-
-enum bEffect {
-	beNone,
-	beFaint,
-	beReady,
-	beMirror,
-	beSphere
-};
-
 typedef struct BattleArray {
 	BYTE arrayData[348];
 	bool visible = false;
@@ -76,92 +64,35 @@ typedef struct BattleArray {
 
 class pEnemyInfo;
 class pFighterInfo;
-class pBattleResponse;
+class pNormalAct;
+class pItemAct;
 class pBattleRound;
 class pBattleResult;
 class pColor;
-
-class bMonster {
-public:
-	SDL_Renderer *renderer;
-	Battle* battle;
-	std::map<std::string, Sprite*> animation;
-	std::vector<std::string> animation_names;
-	bEffect effect = beNone;
-	bEffect secEffect = beNone;
-	Sprite *effectSprite = nullptr;
-	Sprite *secEffectSprite = nullptr;
-	std::string current_animation_name;
-	int current_animation;
-	int next_animation;
-	int direction;
-	int next_direction;
-	SDL_Point basePos;
-	SDL_Point pos;
-	HSBSet hslSets[7] = { 0 };
-	int hslSetCount = 0;
-
-	unsigned int id;
-	int battleId;
-	std::string name;
-	int look;
-	int level;
-	int type;
-
-	bool alive = true;
-	bool defending = false;
-	std::string battleYell = "";
-	SDL_Rect* focusRect = nullptr;
-
-	bMonster(Battle* thisBattle) { 
-		type = bActorType::ENEMY;
-		battle = thisBattle;
-	}
-	~bMonster() { 
-		for (auto &iter : animation_names) {
-			delete animation[iter];
-		}
-		delete effectSprite; 
-		delete secEffectSprite;
-	}
-
-	void setAnimation(int animType, int animDir);
-	void loadAnimationSprite(int animType, int animDir);
-	std::string getAniFileName(int aLook);
-	void render();
-	void setEffect(bEffect ef);
-	void setSecondaryEffect(bEffect ef);
-	void setHslShifts(int count, BYTE* shifts);
-};
-
-class bAlly :public bMonster {
-public:
-	int life_current;
-	int life_max;
-	int mana_current;
-	int mana_max;
-
-	bAlly(Battle* thisBattle) : bMonster(thisBattle) {
-		type = bActorType::PLAYER;
-	}
-};
+class Item;
 
 struct bAction {
-	bMonster* source;
-	bMonster* target;
+	Entity* source;
+	Entity* target;
 	int action;
 	SDL_Point target_position;
 };
 
-struct LessThanByY
-{
-	bool operator()(const bMonster* lhs, const bMonster* rhs) const
-	{
-		return lhs->pos.y > rhs->pos.y;
-	}
+struct LessThanByY {
+	bool operator()(Entity* lhs, Entity* rhs);
 };
 
 class Battle {
+public:
+	Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount);
+	Battle::~Battle();
+	void render();
+	void render_battleArray(BattleArray* battleArray);
+	void render_focusBox(Entity* entity);
+	void render_items();
+	bool handleEvent(SDL_Event& e);
+	void step();
+
 private:
 	SDL_Renderer *renderer;
 	int mode;
@@ -178,32 +109,34 @@ private:
 	SDL_Rect renderRect;
 	Texture *bgTexture = nullptr;
 
-	std::priority_queue<bMonster*, std::vector<bMonster*>, LessThanByY> drawActors;
-	std::vector<bAlly*>ally;
+	std::priority_queue<Entity*, std::vector<Entity*>, LessThanByY> drawActors;
+	std::vector<Entity*> allies;
 	int allyCount = 0;
-	std::vector<bMonster*>monster;
-	bMonster* captureTarget = nullptr;
-	int monsterCount = 0;
-	bMonster *focusedActor = nullptr; //used with mouseover
+	std::vector<Entity*> enemies;
+	Entity* captureTarget = nullptr;
+	int enemyCount = 0;
+	Entity *focusedActor = nullptr; //used with mouseover
 	int actorCount = 0;
 
 	BattleArray* allyArray = nullptr;
 	BattleArray* enemyArray = nullptr;
-	std::map<bEffect,Sprite*> effects;
 	std::vector<FloatingLabel*> floatingLabels; //for showing float labels: damage, actions, etc
 
 	//30 second countdown
 	int countDown, countDown_last;
 	int countDown_start = 0;
-	std::vector<Texture*> numbers;
+	std::vector<Asset> numbers;
 	SDL_Rect tensRect, onesRect;
 
 	//battle buttons are 48x48
 	std::map<int, CButton*> battleButtons;
 	int playerAction = -1, petAction = -1;
-	bool selectTarget = false, playerButton_pressed = false, petButton_pressed = false;
-	bMonster *selectedTarget = nullptr;
-	std::vector<bMonster*> animateActors, currentlyAnimating;
+	bool playerButton_pressed = false, petButton_pressed = false;
+	bool selectTarget = false, selectItem = false;
+	Pet* pet = nullptr;
+	Entity *selectedTarget = nullptr;
+	Item* selectedItem = nullptr;
+	std::vector<Entity*> animateActors, currentlyAnimating;
 	
 	Sprite *crow = nullptr; //Used to show autobattle delay
 	SDL_Texture* chatBubble = NULL;
@@ -216,34 +149,39 @@ private:
 	BattleScene* responseScene = nullptr;
 	int lastActionGroup = 0;
 
-public:
-	Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount);
-	Battle::~Battle();
-	void Battle::render();
-	void Battle::render_battleArray(BattleArray* battleArray);
-	void Battle::render_focusBox(bMonster* monster);
-	bool Battle::handleEvent(SDL_Event& e);
-	void Battle::step();
+	//Items
+	Asset itemBox;
+	std::vector<Asset> itemAssets;
+	std::vector<Item*> itemList;
+	const SDL_Point itemBoxOffset = { 230,100 };
+	Item* focusedItem = nullptr;
+private:
+	void LoadItemBox();
+	void LoadItemList();
+	Asset CreateItemMouseover(Item* item);
 
+public:
 	void Battle::setAllyFormation(int formation);
 	void Battle::setEnemyFormation(int formation);
 	void Battle::handlePacket(Packet* packet);
 	void Battle::handleEnemyInfoPacket(pEnemyInfo* packet);
 	void Battle::handleFighterInfoPacket(pFighterInfo* packet);
-	void Battle::handleResponsePacket(pBattleResponse* packet);
+	void Battle::handleNormalActPacket(pNormalAct* packet);
+	void Battle::handleItemActPacket(pItemAct* packet);
 	void Battle::handleRoundPacket(pBattleRound* packet);
 	void Battle::handleResultPacket(pBattleResult* packet);
 	void Battle::handleColorPacket(pColor* packet);
-	void Battle::createAttackResponse(pBattleResponse* packet, BattleScene* scene);
-	void Battle::createDefendResponse(pBattleResponse* packet);
-	void Battle::createCaptureResponse(pBattleResponse* packet);
+	void Battle::createAttackResponse(pNormalAct* packet, BattleScene* scene);
+	void Battle::createDefendResponse(pNormalAct* packet);
+	void Battle::createCaptureResponse(pNormalAct* packet);
 	void Battle::addAlly(int id, std::string name, int look, int level, int life_current, int life_max, int mana_current, int mana_max);
-	void Battle::addMonster(int id, std::string name, int look, int level);
+	void Battle::addEnemy(int id, std::string name, int look, int level);
 
 	void Battle::start();
 	bool Battle::isOver();
 	int Battle::getMode();
-	bMonster* Battle::getActorById(int actorId);
+	bool IsReady() { return mode != BattleMode::bmInit; }
+	Entity* Battle::getActorById(int actorId);
 
 	void Battle::loadBattleArray(BattleArray** bArray, int arrayId, int type);
 	SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, bool isSource);
@@ -252,16 +190,12 @@ public:
 	//bsType Battle::getSceneTypeFromAction(int action);
 
 	void Battle::makeChatBubbleTexture();
-	void Battle::loadEffect(bEffect effect);
-	std::string Battle::effectTypeToString(int effectType);
-	Sprite* Battle::getEffect(bEffect effect);
-	FloatingLabel* Battle::createFloatingLabel(std::string top, std::string bottom, bMonster* target);
-	FloatingLabel* Battle::createFloatingLabel(int damage, std::string bottom, bMonster* target);
 
 public:
 	void btnPlayerAttack_Click(SDL_Event& e);
 	void btnPlayerDefend_Click(SDL_Event& e);
 	void btnPlayerCapture_Click(SDL_Event& e);
+	void btnPlayerItem_Click(SDL_Event& e);
 	void btnPlayerRun_Click(SDL_Event& e);
 	void btnPetAttack_Click(SDL_Event& e);
 	void btnPetDefend_Click(SDL_Event& e);

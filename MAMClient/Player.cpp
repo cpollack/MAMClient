@@ -51,6 +51,7 @@ void Player::setPlayerInfo(pPlayerInfo* packet) {
 	Spouse = (char*)packet->spouse;
 
 	ID = packet->userId;
+	BattleID = ID;
 	Level = packet->level;
 	experience = packet->experience;
 	life_current = packet->life_current;
@@ -163,6 +164,14 @@ void Player::takeNextStep() {
 	map->setMapPos(Position.x, Position.y);
 }
 
+/*int Player::GetExperience() { 
+	return experience; 
+}
+
+void Player::SetExperience(int iExp) { 
+	experience = iExp; 
+}*/
+
 
 int Player::GetLevelUpExperience() {
 	int levelUp;
@@ -174,11 +183,6 @@ void Player::SetUnusedPoints(int point) {
 	point_unused = point;
 }
 
-void Player::SetLife(int iLife) {
-	life_current = iLife;
-	if (life_current < 0) life_current = 0;
-}
-
 void Player::SetLifePoint(int point) {
 	life = point;
 
@@ -188,11 +192,6 @@ void Player::SetLifePoint(int point) {
 	max += (5 * defence) / 100;
 	max += (5 * dexterity) / 100;
 	life_max = max;
-}
-
-void Player::SetMana(int iMana) {
-	mana_current = iMana;
-	if (mana_current < 0) mana_current = 0;
 }
 
 void Player::SetManaPoint(int point) {
@@ -267,26 +266,6 @@ std::string Player::GetThieveryTitle() {
 	return title;
 }
 
-
-/*void Player::loadEffects() {
-	INI commonIni("INI\\Common.ini", "FlashDown");
-	std::vector<std::string> frames;
-
-	//Flash-down Jump Animation
-	for (int i = 0; i < stoi(commonIni.getEntry("FrameAmount")); i++) {
-		std::string nextFrame = "Frame" + std::to_string(i);
-		std::string path = commonIni.getEntry(nextFrame);
-		path = "data\\" + path.substr(2);
-		frames.push_back(path);
-	}
-	Sprite* flashdown = new Sprite(renderer, frames, stEffect);
-	flashdown->speed = 2;
-	//for (int i = 0; i < stoi(commonIni.getEntry("FrameAmount")); i++) SDL_SetTextureBlendMode(flashdown->subimages.at(i)->texture, SDL_BLENDMODE_ADD);
-	for (int i = 0; i < stoi(commonIni.getEntry("FrameAmount")); i++) flashdown->subimages.at(i)->setBlendMode(SDL_BLENDMODE_ADD);
-	effects["FlashDown"] = flashdown;
-}*/
-
-
 void Player::addPet(Pet* newPet) {
 	petList[petCount++] = newPet;
 }
@@ -295,7 +274,7 @@ void Player::addPet(Pet* newPet) {
 Pet* Player::setActivePet(int petId) {
 	activePet = nullptr;
 	for (auto nextPet : petList) {
-		if (nextPet && nextPet->getId() == petId) {
+		if (nextPet && nextPet->GetID() == petId) {
 			activePet = nextPet;
 			break;
 		}
@@ -311,7 +290,7 @@ Pet* Player::getActivePet() {
 
 Pet* Player::getPet(int petId) {
 	for (auto nextPet : petList) {
-		if (nextPet->getId() == petId) {
+		if (nextPet->GetID() == petId) {
 			return nextPet;
 		}
 	}
@@ -333,7 +312,7 @@ std::vector<Pet*> Player::getPetList() {
 void Player::removePet(int petId) {
 	int petPos = -1;
 	for (int i = 0; i < 5; i++) {
-		if (petList[i] && petList[i]->getId() == petId) {
+		if (petList[i] && petList[i]->GetID() == petId) {
 			delete petList[i];
 			petList[i] = nullptr;
 			petPos = i;
@@ -351,6 +330,12 @@ void Player::removePet(int petId) {
 void Player::addItem(pItem* packet) {
 	inventory->addItem(packet);
 }
+
+
+void Player::removeItem(Item* item) {
+	inventory->removeItem(item->GetID());
+}
+
 
 void Player::useItem(int itemId) {
 	Item* usedItem = inventory->getItem(itemId);
@@ -390,7 +375,7 @@ void Player::useMedicine(Item* item) {
 		mainForm->shiftPlayerManaGauge(mana);
 	}
 
-	inventory->removeItem(item->getId());
+	inventory->removeItem(item->GetID());
 }
 
 
@@ -408,7 +393,7 @@ void Player::setEquipment(pItem* packet) {
 void Player::equipItem(Item* item) {
 	int slot = item->getType();
 	Item* itemInSlot = equipment[slot];
-	inventory->removeItem(item->getId(), false);
+	inventory->removeItem(item->GetID(), false);
 	equipment[slot] = item;
 
 	if (itemInSlot) {
@@ -444,7 +429,7 @@ void Player::sellItem(int itemId) {
 	}
 
 	int cost = sItem->getCost();
-	cash += cost;
+	cash += (cost / 2);
 	inventory->removeItem(itemId, true);
 }
 

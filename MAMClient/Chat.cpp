@@ -167,7 +167,7 @@ void CChat::chatField_Submit(SDL_Event& e) {
 	if (chatText.length() == 0) return;
 
 	int iColor = ((chatColor.r & 0xFF) << 16) | ((chatColor.g & 0xFF) << 8) | (chatColor.b & 0xFF);
-	pMessage *sendMessage = new pMessage(channel, player->getName(), target, chatText, iColor, effect, emotion);
+	pMessage *sendMessage = new pMessage(channel, player->GetName(), target, chatText, iColor, effect, emotion);
 	AddMessage(sendMessage);
 	gClient.addPacket(sendMessage);
 	chatField->SetText("");

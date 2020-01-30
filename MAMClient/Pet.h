@@ -1,31 +1,37 @@
-#ifndef __PET_H
-#define __PET_H
+#pragma once
 
+#include "Monster.h"
 #include "pPetInfo.h"
 
 class Item;
 
-class Pet {
+#define MAX_PET_SKILLS 5
+
+class Pet : public Monster {
 public:
+	Pet(SDL_Renderer *renderer, int id, std::string name, int look);
 	Pet(pPetInfo* packet);
 	~Pet();
 
-	int Pet::getId();
-	int Pet::getBattleId();
-	int Pet::getLook();
+	void updateInfo(pPetInfo* packet);
 
-	std::string GetName() { return name; }
-	void SetName(std::string newName) { name = newName; }
-
-	int Pet::getLevel();
 	int Pet::getExperience();
+	void SetExperience(int iExp) { experience = iExp; }
+
 	int Pet::getLevelUpExperience();
+
 	int Pet::getLoyalty();
-	int Pet::getCurrentHealth();
-	int Pet::getMaxHealth();
+	void SetLoyalty(int iLoy) { loyalty = iLoy; }
+
 	int Pet::getAttack();
+	void SetAttack(int iAttack) { attack = iAttack; }
+
 	int Pet::getDefence();
+	void SetDefence(int iDef) { defence = iDef; }
+
 	int Pet::getDexterity();
+	void SetDexterity(int iDex) { dexterity = iDex; }
+	
 	int GetGeneration() { return generation; }
 
 	int GetElement();
@@ -40,15 +46,13 @@ public:
 	void Pet::useMedicine(Item* item);
 
 private:
-	int id, owner;
-	std::string name;
+	int owner;
 
 	int Element;
 
-	int monsterClass, look;
-	int level, experience, nextLevelExp, generation, loyalty;
+	int Class;
+	int experience, nextLevelExp, generation, loyalty;
 
-	int life_current, life_max;
 	int attack, defence, dexterity;
 	int medal_attack, medal_defence, medal_dexterity;
 
@@ -58,5 +62,3 @@ private:
 
 	void Pet::setElement();
 };
-
-#endif

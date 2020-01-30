@@ -17,6 +17,13 @@ enum FormType {
 	FT_CHARACTER,
 	FT_PET,
 	FT_INVENTORY,
+	FT_SHOP,
+};
+
+enum RendererD3D9Mode {
+	D3D9_NONE,
+	D3D9_PRIMITIVE,
+	D3D9_TEXTURE,
 };
 
 class Texture;
@@ -63,6 +70,7 @@ protected: //Window Properties
 
 public:	SDL_Renderer* renderer;
 protected:	
+	IDirect3DDevice9* d3dDevice;
 	HWND hwnd;
 	int windowID;
 	int Type;
@@ -99,6 +107,9 @@ public: //Accessors
 	void SetTitle(std::string title);
 	void SetUseClose(bool close);
 	void SetUseMinimize(bool min);
+
+	IDirect3DDevice9* GetD3DDevice() { return d3dDevice; }
+	void SetRendererD3D9Mode(int d3d9Mode);
 
 public:
 	bool CloseWindow = false;

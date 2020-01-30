@@ -2,19 +2,33 @@
 #include "Battle.h"
 #include "BattleScene.h"
 
+#include "CustomEvents.h"
+#include "Define.h"
+
 #include "GUI.h"
+#include "Texture.h"
+#include "AssetManager.h"
 #include "MainWindow.h"
+
+#include "UserManager.h"
 #include "Player.h"
 #include "Pet.h"
-#include "Texture.h"
+#include "Monster.h"
+#include "Inventory.h"
+#include "Item.h"
 
 #include "pBattleAction.h"
 #include "pEnemyInfo.h"
 #include "pFighterInfo.h"
-#include "pBattleResponse.h"
+#include "pNormalAct.h"
+#include "pItemAct.h"
 #include "pBattleRound.h"
 #include "pBattleResult.h"
 #include "pColor.h"
+
+bool LessThanByY::operator()(Entity* lhs, Entity* rhs) {
+	return (lhs->GetBattlePos().y > rhs->GetBattlePos().y);
+}
 
 Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	renderer = r;
@@ -33,11 +47,6 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	std::string btnPetPath = "fight\\petbutton\\";
 	int y = battleRect.h - 48 - 6;
 	for (int i = 0; i <= 9; i++) {
-		//Texture *offTexture = new Texture(renderer, btnPath + std::to_string(i) + ".bmp");
-		//offTexture->setAnchor(Anchor::BOTTOM_LEFT);
-		//Texture *onTexture = new Texture(renderer, btnPath + std::to_string(i) + "-1.bmp");
-		//onTexture->setAnchor(Anchor::BOTTOM_LEFT);
-
 		std::string btnName;
 		switch (i) {
 		case 0: btnName = "btnPlayerAttack"; break;
@@ -77,6 +86,7 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	battleButtons[BattleMenu::player_attack]->RegisterEvent("Click", std::bind(&Battle::btnPlayerAttack_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::player_defend]->RegisterEvent("Click", std::bind(&Battle::btnPlayerDefend_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::player_capture]->RegisterEvent("Click", std::bind(&Battle::btnPlayerCapture_Click, this, std::placeholders::_1));
+	battleButtons[BattleMenu::player_item]->RegisterEvent("Click", std::bind(&Battle::btnPlayerItem_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::player_run]->RegisterEvent("Click", std::bind(&Battle::btnPlayerRun_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::pet_attack]->RegisterEvent("Click", std::bind(&Battle::btnPetAttack_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::pet_defend]->RegisterEvent("Click", std::bind(&Battle::btnPetDefend_Click, this, std::placeholders::_1));
@@ -86,9 +96,9 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	colorKey.r = 255; colorKey.g = 0; colorKey.b = 255;
 	std::string numPath = "data\\effect\\num\\";
 	for (int i = 0; i < 10; i++) {
-		Texture *tempNum = new Texture(renderer, numPath + std::to_string(i) + ".bmp", colorKey);
-		SDL_SetTextureAlphaMod(tempNum->texture, 150);
-		numbers.push_back(tempNum);
+		Asset numAsset(new Texture(renderer, numPath + std::to_string(i) + ".bmp", colorKey));
+		SDL_SetTextureAlphaMod(numAsset->texture, 150);
+		numbers.push_back(numAsset);
 	}
 	int midX = battleRect.w / 2;
 	int midY = battleRect.h / 2;
@@ -97,24 +107,31 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	tensRect = { midX - numW, midY - (numH / 2), numW, numH };
 	onesRect = { midX, midY - (numH / 2), numW, numH };
 
-	loadEffect(beFaint);
-	loadEffect(beReady);
+	//Rework asset manager cache for battle scene optimization?
+	//loadEffect(EFFECT_FAINT);
+	//loadEffect(EFFECT_READY);
 	makeChatBubbleTexture();
 }
 
 
 Battle::~Battle() {
-	//what is deleted versus what is kept in cache?
 	delete allyArray;
 	delete enemyArray;
 
 	delete bgTexture;
-	for (auto num : numbers) {
-		delete num;
-	}
+	numbers.clear(); //Not required, but explicitly freeing numbers
 
-	for (auto actor : ally) delete actor;
-	for (auto actor : monster) delete actor;
+	for (auto ally : allies) ally->CleanupBattle();
+	for (auto enemy : enemies) enemy->CleanupBattle();
+
+	for (auto ally : allies) {
+		if (ally->GetID() != player->GetID()
+			&& ally->GetID() != player->getActivePet()->GetID()
+			&& !userManager.getUserById(ally->GetID())) delete ally;
+	}
+	for (auto enemy : enemies) {
+		if (!userManager.getUserById(enemy->GetID())) delete enemy;
+	}
 
 	std::map<int, CButton*>::iterator it;
 	for (it = battleButtons.begin(); it != battleButtons.end(); it++)
@@ -159,14 +176,14 @@ void Battle::render() {
 	}
 
 	// Add all allies and monsters to sorted queue for drawing order
-	for (int i = 0; i < ally.size(); i++) 
-		drawActors.push(ally.at(i));
-	for (int i = 0; i < monster.size(); i++) 
-		drawActors.push(monster.at(i));
+	for (int i = 0; i < allies.size(); i++) 
+		drawActors.push(allies.at(i));
+	for (int i = 0; i < enemies.size(); i++) 
+		drawActors.push(enemies.at(i));
 	if (captureTarget) drawActors.push(captureTarget);
 	while (!drawActors.empty()) {
-		bMonster *curMon = drawActors.top();
-		curMon->render();
+		Entity *actor = drawActors.top();
+		actor->render_battle();
 		drawActors.pop();
 	}
 
@@ -176,13 +193,18 @@ void Battle::render() {
 	}
 
 	//Draw Battle Buttons
-	if (mode == bmTurnPlayer && !selectTarget) {
-		battleButtons[BattleMenu::player_attack]->Render();
-		battleButtons[BattleMenu::player_skill]->Render();
-		battleButtons[BattleMenu::player_capture]->Render();
-		battleButtons[BattleMenu::player_item]->Render();
-		battleButtons[BattleMenu::player_defend]->Render();
-		battleButtons[BattleMenu::player_run]->Render();
+	if (mode == bmTurnPlayer) {
+		if (!selectTarget && !selectItem) {
+			battleButtons[BattleMenu::player_attack]->Render();
+			battleButtons[BattleMenu::player_skill]->Render();
+			battleButtons[BattleMenu::player_capture]->Render();
+			battleButtons[BattleMenu::player_item]->Render();
+			battleButtons[BattleMenu::player_defend]->Render();
+			battleButtons[BattleMenu::player_run]->Render();
+		}
+		if (selectItem) {
+			render_items();
+		}
 	}
 
 	if (mode == bmTurnPet && !selectTarget) {
@@ -192,66 +214,26 @@ void Battle::render() {
 	}
 
 	//Display battle dialogue
-	for (int i = 0; i < ally.size(); i++) {
-		if (ally[i]->battleYell != "") {
-			SDL_Rect chatBubbleRect = { ally[i]->pos.x - 118, ally[i]->pos.y - 50, 118, 62 };
+	for (int i = 0; i < allies.size(); i++) {
+		if (allies[i]->GetBattleYell() != "") {
+			SDL_Rect chatBubbleRect = { allies[i]->GetBattlePos().x - 118, allies[i]->GetBattlePos().y - 50, 118, 62 };
 			SDL_RenderCopy(renderer, chatBubble, NULL, &chatBubbleRect);
 
 			SDL_Point p = { chatBubbleRect.x + 10, chatBubbleRect.y + 5 };
-			Texture *tYell = stringToTexture(renderer, ally[i]->battleYell, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
-			tYell->setPosition(p);
-			tYell->Render();
-			delete tYell;
+			Asset aYell(stringToTexture(renderer, allies[i]->GetBattleYell(), gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0));
+			aYell->setPosition(p);
+			aYell->Render();
 		}
 	}
-	for (int i = 0; i < monster.size(); i++) {
-		if (monster[i]->battleYell != "") {
-			SDL_Rect chatBubbleRect = { monster[i]->pos.x - 118, monster[i]->pos.y - 50, 118, 62 };
+	for (int i = 0; i < enemies.size(); i++) {
+		if (enemies[i]->GetBattleYell() != "") {
+			SDL_Rect chatBubbleRect = { enemies[i]->GetBattlePos().x - 118, enemies[i]->GetBattlePos().y - 50, 118, 62 };
 			SDL_RenderCopy(renderer, chatBubble, NULL, &chatBubbleRect);
 
 			SDL_Point p = { chatBubbleRect.x + 10, chatBubbleRect.y + 5 };
-			Texture *tYell = stringToTexture(renderer, monster[i]->battleYell, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
-			tYell->setPosition(p);
-			tYell->Render();
-			delete tYell;
-		}
-	}
-
-
-	//Draw floating labels
-	if (floatingLabels.size() > 0) {
-		for (auto fLbl : floatingLabels) {
-			if (!fLbl->started) {
-				fLbl->started = true;
-				fLbl->startTime = SDL_GetTicks();
-			}
-			else {
-				SDL_Point p;
-				p = fLbl->top->getPosition();
-				p.x -= 1; p.y -= 1;
-				fLbl->top->setPosition(p);
-				if (fLbl->bottom) {
-					p = fLbl->bottom->getPosition();
-					p.x -= 1; p.y -= 1;
-					fLbl->bottom->setPosition(p);
-				}
-			}
-			fLbl->top->Render();
-			if (fLbl->bottom) fLbl->bottom->Render();
-		}
-
-		//Remove expired labels
-		std::vector<FloatingLabel*>::iterator itr;
-		for (itr = floatingLabels.begin(); itr != floatingLabels.end();)
-		{
-			FloatingLabel* fLbl = *itr;
-			int timeElapsed = (SDL_GetTicks() - fLbl->startTime) / 1000;
-			if (timeElapsed >= 2)
-			{
-				delete fLbl;
-				itr = floatingLabels.erase(itr);
-			}
-			else ++itr;
+			Asset aYell(stringToTexture(renderer, enemies[i]->GetBattleYell(), gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0));
+			aYell->setPosition(p);
+			aYell->Render();
 		}
 	}
 }
@@ -292,8 +274,8 @@ void Battle::render_battleArray(BattleArray* battleArray) {
 }
 
 
-void Battle::render_focusBox(bMonster* monster) {
-	SDL_Rect rect = *monster->focusRect;
+void Battle::render_focusBox(Entity* entity) {
+	SDL_Rect rect = entity->getRenderRect(0, true);
 	//each is 4 pixel width
 	//255,255,128,128
 
@@ -315,8 +297,7 @@ void Battle::render_focusBox(bMonster* monster) {
 
 	SDL_Point p;
 	int heightOffset;
-	if (monster->type != bActorType::ENEMY) {
-		bAlly* ally = (bAlly*)monster;
+	if (entity->GetBattleType() != OBJTYPE_MONSTER && entity->GetBattleType() != OBJTYPE_VSPLAYER && entity->GetBattleType() != OBJTYPE_VSPET) {
 		//render ally specific details: life, mana, life/mana bars
 
 		int barW = 51;
@@ -324,60 +305,60 @@ void Battle::render_focusBox(bMonster* monster) {
 		SDL_Color yellow = { 255,255,0,255 };
 		SDL_Color red = { 255,0,0,255 };
 
-		int barX = monster->pos.x - (barW / 2);
-		int barY = monster->pos.y - 80;
+		int barX = entity->GetBattlePos().x - (barW / 2);
+		int barY = entity->GetBattlePos().y - 80;
 
 		//Life Bar
 		lineRGBA(renderer, barX, barY, barX + barW - 1, barY, 255, 255, 0, 255);
 		lineRGBA(renderer, barX, barY + barH - 1, barX + barW - 2, barY + barH - 1, 255, 255, 0, 255);
 		lineRGBA(renderer, barX, barY, barX, barY + barH - 1, 255, 255, 0, 255);
 		lineRGBA(renderer, barX + barW - 1, barY, barX + barW - 1, barY + barH - 2, 255, 255, 0, 255);
-		if (ally->life_current > 0) {
-			float fillW = ((float)ally->life_current / ally->life_max) * barW;
+		if (entity->GetCurrentLife() > 0) {
+			float fillW = ((float)entity->GetCurrentLife() / entity->GetMaxLife()) * barW;
 			boxRGBA(renderer, barX + 1, barY + 1, barX + (int)fillW, barY + 3, 255, 0, 0, 255);
 		}
 
 		//Mana Bar
-		if (ally->mana_max > 0) {
+		if (entity->GetMaxMana() > 0) {
 			barY += 7;
 			lineRGBA(renderer, barX, barY, barX + barW - 1, barY, 0, 0, 255, 255);
 			lineRGBA(renderer, barX, barY + barH - 1, barX + barW - 2, barY + barH - 1, 0, 0, 255, 255);
 			lineRGBA(renderer, barX, barY, barX, barY + barH - 1, 0, 0, 255, 255);
 			lineRGBA(renderer, barX + barW - 1, barY, barX + barW - 1, barY + barH - 2, 0, 0, 255, 255);
 
-			if (ally->mana_current > 0) {
-				float fillW = ((float)ally->mana_current / ally->mana_max) * barW;
+			if (entity->GetCurrentMana() > 0) {
+				float fillW = ((float)entity->GetCurrentMana() / entity->GetMaxMana()) * barW;
 				boxRGBA(renderer, barX + 1, barY + 1, barX + (int)fillW, barY + 3, 255, 255, 255, 255);
 			}
 		}
 
-		std::string name = "Name: " + monster->name;
-		p = { monster->pos.x - 30, monster->pos.y - 45 };
+		std::string name = "Name: " + entity->GetName();
+		p = { entity->GetBattlePos().x - 30, entity->GetBattlePos().y - 45 };
 		Texture *tName = stringToTexture(renderer, name, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
 		tName->setPosition(p);
 		tName->Render();
 		heightOffset = tName->rect.h;
 		delete tName;
 
-		std::string level = "Level: " + std::to_string(monster->level);
-		p = { monster->pos.x - 30, monster->pos.y - 45 + heightOffset };
+		std::string level = "Level: " + formatInt(entity->GetLevel());
+		p = { entity->GetBattlePos().x - 30, entity->GetBattlePos().y - 45 + heightOffset };
 		Texture *tLevel = stringToTexture(renderer, level, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
 		tLevel->setPosition(p);
 		tLevel->Render();
 		heightOffset = tLevel->rect.h;
 		delete tLevel;
 
-		std::string life = "Life: " + std::to_string(ally->life_current) + "/" + std::to_string(ally->life_max);
-		p = { monster->pos.x - 30, p.y + heightOffset };
+		std::string life = "Life: " + formatInt(entity->GetCurrentLife()) + "/" + formatInt(entity->GetMaxLife());
+		p = { entity->GetBattlePos().x - 30, p.y + heightOffset };
 		Texture *tLife = stringToTexture(renderer, life, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
 		tLife->setPosition(p);
 		tLife->Render();
 		heightOffset = tLife->rect.h;
 		delete tLife;
 
-		if (ally->mana_max > 0) {
-			std::string mana = "Mana: " + std::to_string(ally->mana_current) + "/" + std::to_string(ally->mana_max);
-			p = { monster->pos.x - 30, p.y + heightOffset };
+		if (entity->GetMaxMana() > 0) {
+			std::string mana = "Mana: " + formatInt(entity->GetCurrentMana()) + "/" + formatInt(entity->GetMaxMana());
+			p = { entity->GetBattlePos().x - 30, p.y + heightOffset };
 			Texture *tMana = stringToTexture(renderer, mana, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
 			tMana->setPosition(p);
 			tMana->Render();
@@ -385,20 +366,59 @@ void Battle::render_focusBox(bMonster* monster) {
 		}
 	}
 	else {
-		std::string name = "Name: " + monster->name;
-		p = { monster->pos.x - 40, monster->pos.y - 45 };
-		Texture *tName = stringToTexture(renderer, name, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
-		tName->setPosition(p);
-		tName->Render();
-		heightOffset = tName->rect.h;
-		delete tName;
+		std::string name = "Name: " + entity->GetName();
+		p = { entity->GetBattlePos().x - 40, entity->GetBattlePos().y - 45 };
+		Asset aName(stringToTexture(renderer, name, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0));
+		aName->setPosition(p);
+		aName->Render();
+		heightOffset = aName->rect.h;
 
-		std::string level = "Level: " + std::to_string(monster->level);
-		p = { monster->pos.x - 40, monster->pos.y - 45 + heightOffset };
-		Texture *tLevel = stringToTexture(renderer, level, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0);
-		tLevel->setPosition(p);
-		tLevel->Render();
-		delete tLevel;
+		std::string level = "Level: " + formatInt(entity->GetLevel());
+		p = { entity->GetBattlePos().x - 40, entity->GetBattlePos().y - 45 + heightOffset };
+		Asset aLevel(stringToTexture(renderer, level, gui->font_battleResult, 0, SDL_Color{ 255,255,255,255 }, 0));
+		aLevel->setPosition(p);
+		aLevel->Render();
+	}
+}
+
+void Battle::render_items() {
+	int iW, iH;
+	SDL_GetRendererOutputSize(renderer, &iW, &iH);
+
+	int rows = ceil(itemList.size() / 4.0);
+	int x = iW - itemBoxOffset.x;
+	int y = iH - itemBoxOffset.y;
+	for (int i = 0; i < rows; i++) {
+		SDL_Point p;
+
+		for (int j = 0; j < 4; j++) {
+			SDL_Rect dest = { x + (j * itemBox->width), y - ((rows - i - 1) * itemBox->height), itemBox->width, itemBox->height };
+
+			SDL_RenderCopy(renderer, itemBox->texture, NULL, &dest);
+			int itemIndex = (i * 4) + j;
+			if (itemIndex < itemList.size()) {
+				dest.x += 8;
+				dest.y += 6;
+				dest.w = itemAssets[itemIndex]->width;
+				dest.h = itemAssets[itemIndex]->height;
+				SDL_RenderCopy(renderer, itemAssets[itemIndex]->texture, NULL, &dest);
+			}
+		}
+	}
+
+	if (focusedItem) {
+		Asset aItem = CreateItemMouseover(focusedItem);
+		if (aItem) {
+			int mx, my;
+			SDL_GetMouseState(&mx, &my);
+			mx -= (gui->left->width + 20);
+			my -= (gui->topCenter->height + 9);
+			SDL_Rect destRect = aItem->rect;
+			destRect.x = mx - battleRect.x - destRect.w;
+			destRect.y = my - (destRect.h / 2);
+			boxRGBA(renderer, destRect.x, destRect.y, destRect.x + destRect.w - 1, destRect.y + destRect.h - 1, 0, 0, 0, 96);
+			SDL_RenderCopy(renderer, aItem->texture, NULL, &destRect);
+		}
 	}
 }
 
@@ -410,6 +430,7 @@ bool Battle::handleEvent(SDL_Event& e) {
 	int mx, my;
 	mx = x - (gui->left->width + 20);
 	my = y - (gui->topCenter->height + 9);
+
 	if (mode == bmTurnPlayer) {
 		battleButtons[BattleMenu::player_attack]->HandleEvent(e, mx, my);
 		battleButtons[BattleMenu::player_skill]->HandleEvent(e, mx, my);
@@ -426,80 +447,88 @@ bool Battle::handleEvent(SDL_Event& e) {
 	}
 
 	if (e.type == SDL_MOUSEMOTION) {
-		bMonster *newFocus = nullptr;
-		//focusedActor = nullptr;
-		for (auto actor : monster) {
-			Sprite* curSprite = actor->animation[animationTypeToString(actor->current_animation) + std::to_string(actor->direction)];
-			SDL_Rect renderRect = curSprite->getRenderRect();
-			if (doesMouseIntersect(renderRect, mx, my)) {
-				//Only focus a monster when its 'solid' pixels are moused over
-				SDL_Point getPixel = { mx - renderRect.x, my - renderRect.y };
-				
-				Asset currentTexture = curSprite->getCurrentTexture();
-				Uint32 pixel = currentTexture->getPixel(getPixel);
-				Uint8 alpha = currentTexture->getPixelAlpha(pixel);
+		SDL_Event e2 = e;
+		e2.motion.x = mx;
+		e2.motion.y = my;
+		for (auto entity : enemies) entity->handleEvent_battle(e2);
+		for (auto entity : allies) entity->handleEvent_battle(e2);
 
-				//std::cout << "Alpha: " << std::to_string(alpha) << "\n";
-				
-				if (alpha >= 64) {
-					newFocus = actor;
-					//std::cout << "Mousing over: " << actor->name << "\n";
+		Entity *newFocus = nullptr;
+		for (auto entity : enemies) {
+			if (entity->IsMousedOver()) {
+				newFocus = entity;
+				break;
+			}
+		}
+		if (!newFocus) {
+			for (auto entity : allies) {
+				if (entity->IsMousedOver()) {
+					newFocus = entity;
 					break;
 				}
 			}
 		}
+		if (focusedActor != newFocus) focusedActor = newFocus;
 
-		if (!newFocus) {
-			for (auto actor : ally) {
-				Sprite* curSprite = actor->animation[animationTypeToString(actor->current_animation) + std::to_string(actor->direction)];
-				SDL_Rect renderRect = curSprite->getRenderRect();
-				if (doesMouseIntersect(renderRect, mx, my)) {
-					SDL_Point getPixel = { mx - renderRect.x, my - renderRect.y };
+		//Items
+		if (selectItem) {
+			int iW, iH;
+			SDL_GetRendererOutputSize(renderer, &iW, &iH);
 
-					Asset currentTexture = curSprite->getCurrentTexture();
-					Uint32 pixel = currentTexture->getPixel(getPixel);
-					Uint8 alpha = currentTexture->getPixelAlpha(pixel);
-					
-					if (alpha >= 64) {
-						newFocus = actor;
-						//std::cout << "Mousing over: " << actor->name << "\n";
+			focusedItem = nullptr;
+			int rows = ceil(itemList.size() / 4.0);
+			int x = battleRect.x + battleRect.w - itemBoxOffset.x;
+			int y = battleRect.y + battleRect.h - itemBoxOffset.y;
+			for (int i = 0; i < rows; i++) {
+				SDL_Point p;
+
+				for (int j = 0; j < 4; j++) {
+					SDL_Rect boxRect = { x + (j * itemBox->width), y - ((rows - i - 1) * itemBox->height), itemBox->width, itemBox->height };
+					if (doesPointIntersect(boxRect, SDL_Point{ mx,my })) {
+						int itemIndex = (i * 4) + j;
+						if (itemList.size() > itemIndex) focusedItem = itemList[itemIndex];
 						break;
 					}
 				}
+				if (focusedItem) break;
 			}
-		}
-		if (focusedActor != newFocus) {
-			//trigger update of drawable data for focus. Ie: rectangle, name, lvl etc
-			//if (newFocus) 
-
-			focusedActor = newFocus;
 		}
 	}
 
-	if (e.type == SDL_MOUSEBUTTONUP) {
+	if (e.type == SDL_MOUSEBUTTONDOWN) {
 		if (e.button.button == SDL_BUTTON_RIGHT) {
 			playerButton_pressed = false;
 			petButton_pressed = false;
 			selectTarget = false;
+			selectItem = false;
 		}
 
 		if (e.button.button == SDL_BUTTON_LEFT) {
-			//Temporarily restrict all target clicks to enemies
-			//Later, allies can be healed
-			if (focusedActor && focusedActor->alive && focusedActor->type == ENEMY) {
-				if (selectTarget) {
+			if (selectItem) {
+				if (focusedItem) {
+					selectedItem = focusedItem;
+					selectItem = false;
+					selectTarget = true;
+					focusedItem = nullptr;
+				}
+			}
+			else if (selectTarget) {
+				if (focusedActor && focusedActor->IsAlive() && (focusedActor->IsEnemy() || selectedItem)) {
 					selectedTarget = focusedActor;
 					selectTarget = false;
 				}
+			}
+			else {
+				if (focusedActor && focusedActor->IsAlive() && focusedActor->IsEnemy()) {
+					if (mode == bmTurnPlayer && !playerButton_pressed) {
+						selectedTarget = focusedActor;
+						if (playerAction == -1) clickToAttack = true;
+					}
 
-				if (mode == bmTurnPlayer && !playerButton_pressed) {
-					selectedTarget = focusedActor;
-					if (playerAction == -1) clickToAttack = true;
-				}
-
-				if (mode == bmTurnPet && !petButton_pressed) {
-					selectedTarget = focusedActor;
-					clickToAttack = true;
+					if (mode == bmTurnPet && !petButton_pressed) {
+						selectedTarget = focusedActor;
+						clickToAttack = true;
+					}
 				}
 			}
 
@@ -520,6 +549,9 @@ void Battle::step() {
 		mode = bmTurnPlayer;
 		playerAction = -1;
 		battleAnimateReady = false;
+		for (auto entity : allies) {
+			std::vector<Effect>::iterator it2 = entity->removeEffect(EFFECT_READY);
+		}
 	}
 
 	//update timer here, not in render. Timer may expire and change mode
@@ -529,18 +561,19 @@ void Battle::step() {
 
 	if (countDown <= 0 && (mode == bmTurnPlayer || mode == bmTurnPet)) {
 		selectTarget = false;
+		selectItem = false;
 		
 		pBattleAction* battleAct;
 		if (mode == bmTurnPlayer) {
 			playerAction = baNoAction;
-			battleAct = new pBattleAction(playerAction, round, ally[0]->id, 0, 0, player->AccountId);
+			battleAct = new pBattleAction(playerAction, round, player->GetID(), 0, 0, player->AccountId);
 			actions.push_back(battleAct);
-			if (ally[0]->alive) ally[0]->setEffect(beReady);
+			if (player->IsAlive()) player->addEffect(EFFECT_READY);
 		}
 		petAction = baNoAction;
-		battleAct = new pBattleAction(petAction, round, ally[1]->id, 0, 0, player->AccountId);
+		battleAct = new pBattleAction(petAction, round, pet->GetBattleId(), 0, 0, player->AccountId);
 		actions.push_back(battleAct);
-		if (ally[1]->alive) ally[1]->setEffect(beReady);
+		if (pet->IsAlive()) pet->addEffect(EFFECT_READY);
 		mode = bmWait;
 	}
 
@@ -554,17 +587,20 @@ void Battle::step() {
 		
 		if (selectedTarget) {
 			bool validTarget = false;
-			for (auto actor : monster) {
-				if (actor == selectedTarget) {
-					validTarget = true;
-					break;
+			if (selectedItem) validTarget = true;
+			else {
+				for (auto actor : enemies) {
+					if (actor == selectedTarget) {
+						validTarget = true;
+						break;
+					}
 				}
 			}
 
 			if (validTarget) {
-				int useId = 0;
+				int useId = (!selectedItem) ? 0 : selectedItem->GetID();
 				//set item or skill ID when appropriate
-				pBattleAction* battleAct = new pBattleAction(playerAction, round, ally[0]->id, selectedTarget->id, useId, player->AccountId);
+				pBattleAction* battleAct = new pBattleAction(playerAction, round, player->GetID(), selectedTarget->GetBattleId(), useId, player->AccountId);
 				actions.push_back(battleAct);
 				mode = bmTurnPet;
 				selectedTarget = nullptr;
@@ -572,7 +608,7 @@ void Battle::step() {
 			}
 			playerAction = -1;
 		}
-		if (mode != bmTurnPlayer) if (ally[0]->alive) ally[0]->setEffect(beReady);
+		if (mode != bmTurnPlayer) if (player->IsAlive()) player->addEffect(EFFECT_READY);
 	}
 
 	if (mode == bmTurnPet) {
@@ -583,17 +619,17 @@ void Battle::step() {
 			btnPetAttack_Click(e);
 		}
 
-		if (running) {
+		if (!pet || running || !pet->IsAlive()) {
 			mode = bmWait;
 			petAction = baNoAction;
 
-			pBattleAction* battleAct = new pBattleAction(petAction, round, ally[1]->id, 0, 0, player->AccountId);
+			pBattleAction* battleAct = new pBattleAction(petAction, round, pet ? pet->GetBattleId() : 0, 0, 0, player->AccountId);
 			actions.push_back(battleAct);
 		}
 
 		if (selectedTarget) {
 			bool validTarget = false;
-			for (auto actor : monster) {
+			for (auto actor : enemies) {
 				if (actor == selectedTarget) {
 					validTarget = true;
 					break;
@@ -601,7 +637,7 @@ void Battle::step() {
 			}
 
 			if (validTarget) {
-				pBattleAction* battleAct = new pBattleAction(petAction, round, ally[1]->id, selectedTarget->id, 0, player->AccountId);
+				pBattleAction* battleAct = new pBattleAction(petAction, round, pet->GetBattleId(), selectedTarget->GetBattleId(), 0, player->AccountId);
 				actions.push_back(battleAct);
 
 				mode = bmWait;
@@ -610,7 +646,7 @@ void Battle::step() {
 			}
 			petAction = -1;
 		}
-		if (mode != bmTurnPet) if (ally[1]->alive) ally[1]->setEffect(beReady);
+		if (pet && mode != bmTurnPet) if (pet->IsAlive()) pet->addEffect(EFFECT_READY);
 	}
 
 	if (mode == bmWait) {
@@ -621,24 +657,24 @@ void Battle::step() {
 
 		if (battleAnimateReady) {
 			mode = bmAnimate;
-			if (ally[0]->alive) ally[0]->setEffect(beNone);
-			if (ally[1]->alive) ally[1]->setEffect(beNone);
+			for (auto entity : allies) {
+				std::vector<Effect>::iterator itr = entity->removeEffect(EFFECT_READY);
+			}
 		}
 	}
 
 	if (mode == bmVictory) {
 		mode = bmAnimate;
 
-		BattleScene *newScene = new BattleScene(ally, monster, &floatingLabels);
-		for (auto actor : ally) {
-			if (actor->alive) {
-				if (actor->id == player->getActivePet()->getBattleId()) {
-					SDL_Point targetPoint = getBattlePosFromArray(allyArray, actor->battleId, false);
-					newScene->addAction(actor, bsVictory, AnimType::Laugh, targetPoint, "Victory!");
+		BattleScene *newScene = new BattleScene(allies, enemies);
+		for (auto actor : allies) {
+			if (actor->IsAlive()) {
+				//No difference between these anymore, now that battle yell is removed
+				if (actor->GetID() == player->getActivePet()->GetBattleId()) {
+					newScene->addAction(actor, bsVictory, AnimType::Laugh, actor->GetTargetingPos());
 				}
 				else {
-					SDL_Point targetPoint = getBattlePosFromArray(allyArray, actor->battleId, false);
-					newScene->addAction(actor, bsVictory, AnimType::Laugh, targetPoint);
+					newScene->addAction(actor, bsVictory, AnimType::Laugh, actor->GetTargetingPos());
 				}
 			}
 		}
@@ -687,11 +723,11 @@ void Battle::step() {
 			}
 		}
 		else {
-			for (auto actor : ally) {
-				actor->defending = false;
+			for (auto actor : allies) {
+				actor->SetDefending(false);
 			}
-			for (auto actor : monster) {
-				actor->defending = false;
+			for (auto actor : enemies) {
+				actor->SetDefending(false);
 			}
 
 			mode = bmRoundStart;
@@ -712,8 +748,9 @@ void Battle::btnPlayerDefend_Click(SDL_Event& e) {
 	playerButton_pressed = true;
 	playerAction = baDefend;
 
-	pBattleAction* battleAct = new pBattleAction(playerAction, round, ally[0]->id, 0, 0, player->AccountId);
+	pBattleAction* battleAct = new pBattleAction(playerAction, round, player->GetID(), 0, 0, player->AccountId);
 	actions.push_back(battleAct);
+	if (player->IsAlive()) player->addEffect(EFFECT_READY);
 }
 
 void Battle::btnPlayerCapture_Click(SDL_Event& e) {
@@ -722,14 +759,26 @@ void Battle::btnPlayerCapture_Click(SDL_Event& e) {
 	playerAction = baCapture;
 }
 
+void Battle::btnPlayerItem_Click(SDL_Event& e) {
+	selectTarget = false;
+	selectItem = true;
+	playerButton_pressed = true;
+	playerAction = baUseItem;
+
+	LoadItemBox();
+	LoadItemList();
+}
+
 void Battle::btnPlayerRun_Click(SDL_Event& e) {
 	mode = bmTurnPet;
 	playerButton_pressed = true;
 	running = true;
 	playerAction = baPlayerRun;
 
-	pBattleAction* battleAct = new pBattleAction(playerAction, round, ally[0]->id, 0, 0, player->AccountId);
+	pBattleAction* battleAct = new pBattleAction(playerAction, round, player->GetID(), 0, 0, player->AccountId);
 	actions.push_back(battleAct);
+	if (player->IsAlive()) player->addEffect(EFFECT_READY);
+	if (pet && pet->IsAlive()) pet->addEffect(EFFECT_READY);
 }
 
 void Battle::btnPetAttack_Click(SDL_Event& e) {
@@ -744,8 +793,9 @@ void Battle::btnPetDefend_Click(SDL_Event& e) {
 	petButton_pressed = true;
 	petAction = baDefend;
 
-	pBattleAction* battleAct = new pBattleAction(petAction, round, ally[1]->id, 0, 0, player->AccountId);
+	pBattleAction* battleAct = new pBattleAction(petAction, round, pet->GetBattleId(), 0, 0, player->AccountId);
 	actions.push_back(battleAct);
+	if (pet && pet->IsAlive()) pet->addEffect(EFFECT_READY);
 }
 
 void Battle::handlePacket(Packet* packet) {
@@ -759,8 +809,11 @@ void Battle::handlePacket(Packet* packet) {
 	case ptBattleAction:
 		//these are for verification, no reason to implement atm
 		break;
-	case ptBattleResponse:
-		handleResponsePacket((pBattleResponse*)packet);
+	case ptNormalAct:
+		handleNormalActPacket((pNormalAct*)packet);
+		break;
+	case ptItemAct:
+		handleItemActPacket((pItemAct*)packet);
 		break;
 	case ptBattleRound:
 		handleRoundPacket((pBattleRound*)packet);
@@ -777,7 +830,7 @@ void Battle::handleEnemyInfoPacket(pEnemyInfo* packet) {
 
 	for (int i = 0; i < enemyCount; i++) {
 		EnemyInfo nextEnemy = packet->enemy[i];
-		addMonster(nextEnemy.monsterId, std::string(nextEnemy.name), nextEnemy.look, nextEnemy.level);
+		addEnemy(nextEnemy.monsterId, std::string(nextEnemy.name), nextEnemy.look, nextEnemy.level);
 	}
 }
 
@@ -786,14 +839,13 @@ void Battle::handleFighterInfoPacket(pFighterInfo* packet) {
 	addAlly(packet->userId, packet->name, packet->look, packet->level, packet->hp_cur, packet->hp_max, packet->mana_cur, packet->mana_max);
 	addAlly(packet->petId, packet->petName, packet->petLook, packet->petLevel, packet->pet_hp_cur, packet->pet_hp_max, 0, 0);
 
-	if ((ally.size() + monster.size()) == actorCount) {
+	if ((allies.size() + enemies.size()) == actorCount) {
 		mode = bmRoundStart;
 	}
 }
 
 
-void Battle::handleResponsePacket(pBattleResponse* packet) {
-	
+void Battle::handleNormalActPacket(pNormalAct* packet) {
 	int action = packet->action;
 	int currentGroup = packet->group;
 	if (currentGroup != lastActionGroup && responseScene) {
@@ -801,7 +853,7 @@ void Battle::handleResponsePacket(pBattleResponse* packet) {
 		responseScene = nullptr;
 		lastActionGroup = currentGroup;
 	}
-	if (!responseScene) responseScene = new BattleScene(ally, monster, &floatingLabels);
+	if (!responseScene) responseScene = new BattleScene(allies, enemies);
 
 	switch (action) {
 	case baAttack:
@@ -820,69 +872,169 @@ void Battle::handleResponsePacket(pBattleResponse* packet) {
 	case baCaptureSuccess:
 		createCaptureResponse(packet);
 		break;
+	case baUseItem:
+		break;
 	}
 }
 
 
-void Battle::createAttackResponse(pBattleResponse* packet, BattleScene* scene) {
-	bMonster* source = getActorById(packet->sourceId);
-	bMonster* target = getActorById(packet->targetId);
+void Battle::handleItemActPacket(pItemAct* packet) {
+	int currentGroup = packet->battleGroup;
+	if (currentGroup != lastActionGroup && responseScene) {
+		scenes.push(responseScene);
+		responseScene = nullptr;
+		lastActionGroup = currentGroup;
+	}
+	if (!responseScene) responseScene = new BattleScene(allies, enemies);
 
-	int reaction = (packet->targetState) ? AnimType::Wound : AnimType::Faint;
-	//defend?
+	if (packet->sourceId == player->GetID()) {
+		if (selectedItem) player->removeItem(selectedItem);
+		selectedItem = nullptr;
+	}
+
+	//add to scene
+	Entity* source = getActorById(packet->sourceId);
+	Entity* target = getActorById(packet->targetId);
+
+	SDL_Event e;
+	SDL_zero(e);
+	for (auto ally : allies) {
+		if (ally->GetBattleId() == packet->targetId) {
+			if (ally->GetBattleId() == player->GetID()) {
+				e.type = CUSTOMEVENT_PLAYER;
+				e.user.code = PLAYER_LIFEMANA;
+			}
+			else if (ally->GetBattleId() == pet->GetBattleId()) {
+				e.type = CUSTOMEVENT_PET;
+				e.user.code = PET_LIFE;
+			}
+
+			switch (packet->itemMode) {
+			case 88:
+				ally->SetLife(ally->GetCurrentLife() - packet->arLife[0]);
+				break;
+			case 700:
+				ally->SetLife(ally->GetCurrentLife() + packet->arLife[0]);
+				ally->SetMana(ally->GetCurrentMana() + packet->arMana[0]);
+				break;
+			}
+			break;
+		}
+	}
+
+	int reaction;
+	std::string top, bottom;
+	int effect = EFFECT_HEAL;
+	if (packet->arLife[0] > 0) {
+		if (packet->itemMode == 88) {
+			reaction = Wound;
+			effect = EFFECT_POISON;
+			top = "-" + std::to_string(packet->arLife[0]) + " Life";
+		}
+		if (packet->itemMode == 700) {
+			reaction = Laugh;
+			top += "+" + std::to_string(packet->arLife[0]) + " Life";
+		}
+	} 
+	if (packet->arMana[0] > 0) {
+		if (packet->itemMode == 700) reaction = Laugh;
+		if (top.length() == 0) top = "+" + std::to_string(packet->arMana[0]) + " Mana";
+		else bottom = "+" + std::to_string(packet->arMana[0]) + " Mana";
+	}
 	responseScene->setReactor(target, reaction);
 
-	SDL_Point target_position;
-	if (target->type == bActorType::ENEMY) target_position = getBattlePosFromArray(enemyArray, target->battleId, false);
-	else target_position = getBattlePosFromArray(allyArray, target->battleId, false);
-	target_position = { (renderRect.x + renderRect.w - target_position.x), (renderRect.y + renderRect.h - target_position.y) };
+	std::vector<std::string> labels;
+	labels.push_back(top);
+	if (bottom.length() > 0) labels.push_back(bottom);
 
+	bsPerform *response = responseScene->addAction(source, bsUseItem, (AnimType)0, target->GetBattleBasePos(), labels);
+	response->effect = effect;
+	if (e.type != 0) response->boundEvent = e;
+}
+
+
+void Battle::createAttackResponse(pNormalAct* packet, BattleScene* scene) {
+	Entity* source = getActorById(packet->sourceId);
+	Entity* target = getActorById(packet->targetId);
+
+	int reaction;
+	if (target->IsDefending())reaction = (packet->targetState) ? AnimType::Defend : AnimType::Faint;
+	else reaction = (packet->targetState) ? AnimType::Wound : AnimType::Faint;
+	responseScene->setReactor(target, reaction);
+
+	std::vector<std::string> labels;
+	std::string damageLbl;
+	if (packet->damage == 0) damageLbl = "Miss";
+	else damageLbl = "-" + std::to_string(packet->damage);
+	labels.push_back(damageLbl);
+
+	SDL_Point target_position = target->GetTargetingPos();
 	responseScene->addAction(source, bsMoveTo, AnimType::Walk, target_position);
-	responseScene->addAction(source, bsAction, (AnimType)(AnimType::Attack01 + (rand() % 3)), target_position, createFloatingLabel(packet->damage, "", target));
-	responseScene->addAction(source, bsMoveTo, (AnimType)(AnimType::Attack01 + (rand() % 3)), source->basePos);
-	responseScene->addAction(source, bsStandby, (AnimType)(AnimType::Attack01 + (rand() % 3)), source->basePos);
+	bsPerform *perf = responseScene->addAction(source, bsAction, (AnimType)(AnimType::Attack01 + (rand() % 3)), target_position, labels);
+	if (perf && packet->damage != 0) {
+		SDL_Event e;
+		SDL_zero(e);
+		if (packet->targetId == player->GetBattleId()) {
+			e.type = CUSTOMEVENT_PLAYER;
+			e.user.code = PLAYER_LIFE;
+			e.user.data1 = new int(packet->damage * -1);
+			perf->boundEvent = e;
+		}
+		if (player->getActivePet() && packet->targetId == player->getActivePet()->GetBattleId()) {
+			e.type = CUSTOMEVENT_PET;
+			e.user.code = PET_LIFE;
+			e.user.data1 = new int(packet->damage * -1);
+			perf->boundEvent = e;
+		}
+	}
+	responseScene->addAction(source, bsMoveTo, AnimType::Walk, source->GetBattleBasePos());
+	responseScene->addAction(source, bsStandby, AnimType::StandBy, source->GetBattleBasePos());
 }
 
 
-void Battle::createDefendResponse(pBattleResponse* packet) {
-	bMonster* source = getActorById(packet->sourceId);
-	source->defending = true;
-
-	floatingLabels.push_back(createFloatingLabel("Defense", "", source));
+void Battle::createDefendResponse(pNormalAct* packet) {
+	Entity* source = getActorById(packet->sourceId);
+	source->SetDefending(true);
+	source->addFloatingLabel("Defense");
 }
 
 
-void Battle::createCaptureResponse(pBattleResponse* packet) {
-	bMonster* source = getActorById(packet->sourceId);
-	bMonster* target = getActorById(packet->targetId);
+void Battle::createCaptureResponse(pNormalAct* packet) {
+	Entity* source = getActorById(packet->sourceId);
+	Entity* target = getActorById(packet->targetId);
 
 	responseScene->setReactor(source, AnimType::StandBy);
-	responseScene->addAction(target, bsCaptureBegin, (AnimType)0, target->basePos);
-	responseScene->addAction(target, bsCaptureDrag, (AnimType)0, target->basePos);
+	responseScene->addAction(target, bsCaptureBegin, (AnimType)0, target->GetBattleBasePos());
+	responseScene->addAction(target, bsCaptureDrag, (AnimType)0, target->GetBattleBasePos());
 
 	if (packet->action == baCaptureSuccess) {
-		responseScene->addAction(target, bsCaptureSuccess, AnimType::Walk, source->basePos);
+		responseScene->addAction(target, bsCaptureSuccess, AnimType::Walk, source->GetBattleBasePos());
 
 		//remove monster from list
 		captureTarget = target;
-		for (int i = 0; i < monsterCount; i++) {
-			if (monster[i] == target) {
-				monster.erase(monster.begin() + i);
+		for (int i = 0; i < enemyCount; i++) {
+			if (enemies[i] == target) {
+				enemies.erase(enemies.begin() + i);
 				break;
 			}
 		}
-		monsterCount--;
+		enemyCount--;
 	}
 
 	if (packet->action == baCaptureFail) {
-		responseScene->addAction(target, bsCaptureAngry, AnimType::StandBy, target->pos, "Test...");
-		responseScene->addAction(target, bsCaptureFail, AnimType::Walk, target->basePos);
-		responseScene->addAction(target, bsStandby, AnimType::StandBy, target->basePos);
+		responseScene->addAction(target, bsCaptureAngry, AnimType::StandBy, target->GetBattlePos());
+		responseScene->addAction(target, bsCaptureFail, AnimType::Walk, target->GetBattleBasePos());
+		responseScene->addAction(target, bsStandby, AnimType::StandBy, target->GetBattleBasePos());
 	}
 }
 
 
 void Battle::handleRoundPacket(pBattleRound* packet) {
+	//remove all pending Ready effects
+	for (auto entity : allies) {
+		std::vector<Effect>::iterator it2 = entity->removeEffect(EFFECT_READY);
+	}
+
 	//Make sure the latest scene is pushed to the scene queue
 	if (responseScene) {
 		scenes.push(responseScene);
@@ -893,7 +1045,7 @@ void Battle::handleRoundPacket(pBattleRound* packet) {
 	int koAlly = 0;
 	for (int i = 0; i < allyCount; i++) {
 		if (!packet->alive[i]) {
-			ally[i]->alive = false;
+			allies[i]->SetAlive(false);
 			koAlly++;
 		}
 	}
@@ -904,9 +1056,9 @@ void Battle::handleRoundPacket(pBattleRound* packet) {
 	}
 
 	int koEnemy = 0;
-	for (int i = 0; i < monsterCount; i++) {
+	for (int i = 0; i < enemyCount; i++) {
 		if (!packet->alive[allyCount + i]) {
-			monster[i]->alive = false;
+			enemies[i]->SetAlive(false);
 			koEnemy++;
 		}
 	}
@@ -927,81 +1079,122 @@ void Battle::handleResultPacket(pBattleResult* packet) {
 
 
 void Battle::handleColorPacket(pColor* packet) {
-	for (auto actor : ally) {
-		if (actor->id == packet->sourceId) {
-			actor->setHslShifts(packet->count, packet->hslSets);
-			return;
+	Entity* entity = nullptr;
+	for (auto actor : allies) {
+		if (actor->GetBattleId() == packet->sourceId) {
+			entity = actor;
+			break;
 		}
 	}
 
-	for (auto actor : monster) {
-		if (actor->id == packet->sourceId) {
-			actor->setHslShifts(packet->count, packet->hslSets);
-			return;
+	if (!entity) {
+		for (auto actor : enemies) {
+			if (actor->GetBattleId() == packet->sourceId) {
+				entity = actor;
+				//actor->setHslShifts(packet->count, packet->hslSets);
+				break;
+			}
 		}
+	}
+
+	if (entity) {
+		ColorShifts colorShifts;
+		for (int i = 0; i < 25; i += 5) {
+			ColorShift shift;
+			memcpy(&shift, packet->hslSets + i, 5);
+			colorShifts.push_back(shift);
+		}
+		if (colorShifts.size() > 0) entity->setColorShifts(colorShifts, true);
+		entity->loadSprite(true);
 	}
 }
 
 
 void Battle::addAlly(int id, std::string name, int look, int level, int life_current, int life_max, int mana_current, int mana_max) {
-	bAlly *tempAlly = new bAlly(this);
-	tempAlly->renderer = renderer;
-	tempAlly->id = id;
-	tempAlly->name = name;
-	tempAlly->look = look;
-	tempAlly->level = level;
-	tempAlly->life_current = life_current;
-	tempAlly->life_max = life_max;
-	tempAlly->mana_current = mana_current;
-	tempAlly->mana_max = mana_max;
-
-	tempAlly->current_animation = AnimType::StandBy;
-	tempAlly->direction = 5;
-
-	tempAlly->setAnimation(tempAlly->current_animation, tempAlly->direction);
-	tempAlly->animation[tempAlly->current_animation_name]->start();
-
-	int arrayPos = 10 + (ally.size() / 2);
-	if (ally.size() % 2 != 0) {
-		tempAlly->type = bActorType::PET;
-		arrayPos = 15 + (ally.size() / 2);
+	Entity *tempAlly = nullptr;
+	if (id > _IDMSK_PET) {
+		if (player->getActivePet() && id == player->getActivePet()->GetBattleId()) {
+			tempAlly = player->getActivePet();
+			if (tempAlly) pet = (Pet*)tempAlly;
+			tempAlly->SetRenderer(renderer);
+		}
+		if (!tempAlly) tempAlly = new Pet(renderer, id, name, look);
+		tempAlly->SetBattleType(OBJTYPE_FRIENDPET);
 	}
-	tempAlly->battleId = arrayPos;
+	else {
+		if (id == player->GetID()) tempAlly = player;
+		if (!tempAlly) tempAlly = userManager.getUserById(id);
+		if (!tempAlly) tempAlly = new User(renderer, id, name, look);
+		tempAlly->SetBattleType(OBJTYPE_FRIENDPLAYER);
+	}
+
+	assert(tempAlly);
+
+	tempAlly->SetLevel(level);
+	tempAlly->SetLife(life_current);
+	tempAlly->SetMaxLife(life_max);
+	tempAlly->SetMana(mana_current);
+	tempAlly->SetMaxMana(mana_max);
+
+	tempAlly->setAnimation(StandBy, true);
+	tempAlly->setDirection(5, true);
+	//tempAlly->loadSprite(true);
+
+	int arrayPos = 10 + (allies.size() / 2);
+	if (allies.size() % 2 != 0) {
+		arrayPos = 15 + (allies.size() / 2);
+	}
 
 	SDL_Point posOffset = getBattlePosFromArray(allyArray, arrayPos, true);
-	tempAlly->basePos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
-	tempAlly->pos = tempAlly->basePos;
-	//tempAlly->destPos = tempAlly->basePos;
-	tempAlly->animation[tempAlly->current_animation_name]->setLocation(tempAlly->pos.x, tempAlly->pos.y);
+	SDL_Point battlePos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
+	posOffset = getBattlePosFromArray(allyArray, arrayPos, false);
+	SDL_Point targetingPos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
 
-	ally.push_back(tempAlly);
+	tempAlly->SetBattleBasePos(battlePos);
+	tempAlly->SetBattlePos(battlePos);
+	tempAlly->SetTargetingPos(targetingPos);
+
+	allies.push_back(tempAlly);
 	allyCount++;
+	tempAlly->SetArrayPos(allyCount);
+	tempAlly->SetAlive(true);
 }
 
 
-void Battle::addMonster(int id, std::string name, int look, int level) {
-	bMonster *tempMon = new bMonster(this);
-	tempMon->renderer = renderer;
-	tempMon->id = id;
-	tempMon->battleId = monster.size();
-	tempMon->name = name;
-	tempMon->look = look;
-	tempMon->level = level;
+void Battle::addEnemy(int id, std::string name, int look, int level) {
+	Entity *tempEnemy = nullptr;
+	if (id > _IDMSK_MONSTER) {
+		tempEnemy = new Monster(renderer, id, name, look);
+	}
+	else if (id > _IDMSK_PET) {
+		tempEnemy = new Pet(renderer, id, name, look);
+		tempEnemy->SetBattleType(OBJTYPE_VSPET);
+	}
+	else {
+		tempEnemy = userManager.getUserById(id);
+		if (!tempEnemy) tempEnemy = new User(renderer, id, name, look);
+		tempEnemy->SetBattleType(OBJTYPE_VSPLAYER);
+	}
 
-	tempMon->current_animation = AnimType::StandBy;
-	tempMon->direction = 1;
+	assert(tempEnemy);
 
-	tempMon->setAnimation(tempMon->current_animation, tempMon->direction);
-	tempMon->animation[tempMon->current_animation_name]->start();
+	tempEnemy->SetLevel(level);
+
+	tempEnemy->setAnimation(StandBy, true);
+	tempEnemy->setDirection(1, true);
+	//tempEnemy->loadSprite(true);
 	
-	SDL_Point posOffset = getBattlePosFromArray(enemyArray, monster.size(), true);
-	tempMon->basePos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
-	tempMon->pos = tempMon->basePos;
-	//tempMon->destPos = tempMon->basePos;
-	tempMon->animation[tempMon->current_animation_name]->setLocation(tempMon->pos.x, tempMon->pos.y);
+	SDL_Point posOffset = getBattlePosFromArray(enemyArray, enemies.size(), true);
+	SDL_Point battlePos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
+	posOffset = getBattlePosFromArray(enemyArray, enemies.size(), false);
+	SDL_Point targetingPos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
 
-	monster.push_back(tempMon);
-	monsterCount++;
+	tempEnemy->SetBattleBasePos(battlePos);
+	tempEnemy->SetBattlePos(battlePos);
+	tempEnemy->SetTargetingPos(targetingPos);
+
+	enemies.push_back(tempEnemy);
+	enemyCount++;
 }
 
 
@@ -1023,13 +1216,13 @@ int Battle::getMode() {
 }
 
 
-bMonster* Battle::getActorById(int actorId) {
-	for (auto actor : ally) {
-		if (actor->id == actorId) return actor;
+Entity* Battle::getActorById(int actorId) {
+	for (auto actor : allies) {
+		if (actor->GetBattleId() == actorId) return actor;
 	}
 
-	for (auto actor : monster) {
-		if (actor->id == actorId) return actor;
+	for (auto actor : enemies) {
+		if (actor->GetBattleId() == actorId) return actor;
 	}
 
 	return nullptr;
@@ -1059,6 +1252,8 @@ void Battle::loadBattleArray(BattleArray** bArray, int arrayId, int type) {
 		(*bArray)->texture = new Texture(renderer, arrayImgPath, SDL_Color{ 0,0,0,255 });
 		(*bArray)->texture->rect.x = renderRect.x;
 		(*bArray)->texture->rect.y = renderRect.y;
+		SDL_SetTextureAlphaMod((*bArray)->texture->texture, 192);
+		SDL_SetTextureBlendMode((*bArray)->texture->texture, SDL_BLENDMODE_ADD);
 		(*bArray)->visible = true;
 	}
 
@@ -1182,195 +1377,51 @@ void Battle::makeChatBubbleTexture() {
 	SDL_SetRenderTarget(renderer, priorTarget);
 }
 
-
-void bMonster::setAnimation(int animType, int animDir) {
-	current_animation = animType;
-	current_animation_name = animationTypeToString(animType) + std::to_string(animDir);
-	
-	if (animation.find(current_animation_name) == animation.end()) {
-		loadAnimationSprite(animType, animDir);
-	}
-	Sprite* currentAnim = animation[current_animation_name];
-	currentAnim->start();
+void Battle::LoadItemBox() {
+	if (itemBox) return;
+	itemBox.reset(new Texture(renderer, "data/effect/num/itembox.tga", true));
 }
 
+void Battle::LoadItemList() {
+	itemList.clear();
+	itemAssets.clear();
 
-void bMonster::loadAnimationSprite(int animType, int animDir) {
-	std::string aniFile = getAniFileName(look);
-	std::string aniSection = animationTypeToString(animType) + std::to_string(animDir);
-
-	INI ani(aniFile, aniSection);
-	std::vector<std::string> frames;
-	for (int i = 0; i < stoi(ani.getEntry("FrameAmount")); i++) {
-		std::string nextFrame = "Frame" + std::to_string(i);
-
-		std::string framePath = ani.getEntry(nextFrame);
-		//if (framePath.substr(framePath.length() - 4) == ".rle") framePath = framePath.substr(0, framePath.length() - 4) + ".png";
-		frames.push_back(framePath);
-	}
-
-	Sprite* tempSprite = new Sprite(renderer, frames, stCharacter);
-	
-	tempSprite->speed = 16;
-	if (animType >= AnimType::Attack01 && animType <= AnimType::Attack03) tempSprite->speed = 9;
-	if (animType == AnimType::Faint) {
-		tempSprite->repeatMode = 1;
-		tempSprite->speed = 3;
-	}
-
-	tempSprite->setLocation(pos.x, pos.y);
-	if (look > 32) tempSprite->setHsbShifts(hslSets, hslSetCount);
-	animation[aniSection] = tempSprite;
-	animation_names.push_back(aniSection);
-	tempSprite = nullptr;
-}
-
-
-std::string bMonster::getAniFileName(int aLook) {
-	INI roles("INI\\Roles.ini", "RolesInfo");
-	//roles.setSection("RolesInfo");
-	std::string entry = "Role" + std::to_string(aLook);
-	std::string aniPath = roles.getEntry(entry);
-	aniPath = "ANI\\" + aniPath + ".ani";
-	return aniPath;
-}
-
-
-void bMonster::render() {
-	animation[current_animation_name]->setLocation(pos.x, pos.y);
-	animation[current_animation_name]->render();
-	if (!focusRect) {
-		focusRect = new SDL_Rect;
-		//*focusRect = animation[current_animation_name]->getCurrentTexture()->rect;
-		*focusRect = animation[current_animation_name]->getRenderRect();
-	}
-
-	if (effect != beNone && effectSprite) {
-		/*if (!effectSprite) {
-			//load the sprite
-			effectSprite = new Sprite(renderer);
-			effectSprite = battle->getEffect(effect)->copy();
-			effectSprite->start();
-		}*/
-		effectSprite->setLocation(pos.x, pos.y);
-		effectSprite->render();
-	}
-
-	if (secEffect != beNone && secEffectSprite) {
-		/*if (!secEffectSprite) {
-			//load the sprite
-			secEffectSprite = new Sprite(renderer);
-			secEffectSprite = battle->getEffect(secEffect)->copy();
-			secEffectSprite->start();
-		}*/
-		secEffectSprite->setLocation(pos.x, pos.y);
-		secEffectSprite->render();
-	}
-}
-
-
-void bMonster::setHslShifts(int count, BYTE* shifts) {
-	if (look <= 32) return;
-	hslSetCount = count;
-	memcpy(hslSets, shifts, count * 5);
-	for (auto sprite : animation) {
-		sprite.second->setHsbShifts(hslSets, count);
-	}
-}
-
-
-void bMonster::setEffect(bEffect ef) {
-	if (effect == ef) return;
-
-	if (effectSprite) {
-		delete effectSprite;
-		effectSprite = nullptr;
-	}
-
-	effect = ef;
-	if (effect == beNone) return;
-	effectSprite = new Sprite(renderer);
-	effectSprite = battle->getEffect(effect)->copy();
-	effectSprite->start();
-}
-
-
-void bMonster::setSecondaryEffect(bEffect ef) {
-	if (secEffect == ef) return;
-	
-	if (secEffectSprite) {
-		delete secEffectSprite;
-		secEffectSprite = nullptr;
-	}
-
-	secEffect = ef;
-	if (secEffect == beNone) return;
-	secEffectSprite = new Sprite(renderer);
-	secEffectSprite = battle->getEffect(secEffect)->copy();
-	secEffectSprite->start();
-}
-
-
-void Battle::loadEffect(bEffect effect) {
-	INI effectINI("ini\\Common.ini", effectTypeToString(effect));
-	std::vector<std::string> frames;
-	for (int i = 0; i < stoi(effectINI.getEntry("FrameAmount")); i++) {
-		std::string filePath = effectINI.getEntry("Frame" + std::to_string(i));
-
-		if (filePath.at(0) == '.') {
-			filePath = filePath.substr(2, std::string::npos);
+	int count = player->inventory->getItemCount();
+	for (int i = 0; i < count; i++) {
+		Item* pItem = player->inventory->getItemInSlot(i);
+		if (pItem && (pItem->getSort() == 700 || pItem->getSort() == 600)) { //700:Medicine, 600:Poison
+			itemList.push_back(pItem);
+			Asset aItem(new Texture(renderer, pItem->getTexturePath(40), true));
+			itemAssets.push_back(aItem);
 		}
-		filePath = "data\\" + filePath;
-
-		frames.push_back(filePath);
 	}
-	Sprite* tempEffect = new Sprite(renderer, frames, stEffect);
-
-	if (effect == beReady) tempEffect->speed = 6;
-
-	effects[effect] = tempEffect;
 }
 
+Asset Battle::CreateItemMouseover(Item* item) {
+	Asset asset;
+	if (!item) return asset;
 
-std::string Battle::effectTypeToString(int effectType) {
-	switch (effectType) {
-	case bEffect::beFaint: return "Faint";
-	case bEffect::beReady: return "Ready";
-	case bEffect::beMirror: return "Mirror";
-	case bEffect::beSphere: return "Sphere";
-	}
-
-	return "";
-}
-
-
-Sprite* Battle::getEffect(bEffect effect) {
-	if (effects.find(effect) == effects.end()) loadEffect(effect);
-	return effects[effect];
-}
-
-
-FloatingLabel* Battle::createFloatingLabel(std::string top, std::string bottom, bMonster* target) {
-	FloatingLabel *newLabel = new FloatingLabel();
-	SDL_Point point;
-	point.x = target->pos.x;
-	point.y = target->pos.y - 50;
-
-	newLabel->top = stringToTexture(renderer, top, gui->font, 0, { 255, 255, 255, 255 }, 0);
-	newLabel->top->setPosition(point);
-	if (!bottom.empty()) {
-		newLabel->bottom = stringToTexture(renderer, bottom, gui->font, 0, { 0, 0, 0, 255 }, 0);
-		point.y += newLabel->top->height;
-		newLabel->bottom->setPosition(point);
+	std::string text = item->getName();
+	switch (item->getSort()) {
+	case 600:
+		text += "\nReduce HP: " + formatInt(item->getLife());
+		text += "\nPoison";
+		break;
+	case 700:
+		text += "\nIncrease HP: " + formatInt(item->getLife());
+		text += "\nIncrease MP: " + formatInt(item->getMana());
+		text += "\nMedicine";
+		break;
 	}
 
-	return newLabel;
-}
+	int levelReq = item->getLevel();
+	if (player->GetLevel() < levelReq) {
+		text += "\n[Unqualified]";
+	}
+	else {
+		text += "\n[Suitable]";
+	}
 
-
-FloatingLabel* Battle::createFloatingLabel(int damage, std::string bottom, bMonster* target) {
-	std::string top;
-	if (damage == 0) top = "Miss";
-	else top = "-" + std::to_string(damage);
-	return createFloatingLabel(top, bottom, target);
+	asset.reset(stringToTexture(renderer, text, gui->font, 0, { 255,255,255,255 }, 110));
+	return asset;
 }

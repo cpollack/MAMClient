@@ -40,15 +40,15 @@ FormShop::FormShop(std::string title, int xPos, int yPos) : SubForm("Shop", titl
 	addWidget(btnClose);
 	addWidget(btnHelp);
 
-	lblCash = new Label("$", x + 383, y + 270);
-	setCashLabel();
-	addWidget(lblCash);
+	//lblCash = new CLabel("$", x + 383, y + 270);
+	//setCashLabel();
+	//addWidget(lblCash);
 
 	ivItem = new ImageView(x + 199, y + 36, 100, 100);
 	lblItemInfo = new Label(" ", x + 199, y + 143);
-	lblItemInfo->setTextWidth(150);
-	addWidget(ivItem);
-	addWidget(lblItemInfo);
+	//lblItemInfo->setTextWidth(150);
+	//addWidget(ivItem);
+	//addWidget(lblItemInfo);
 }
 
 
@@ -128,7 +128,7 @@ bool FormShop::handleEvent(SDL_Event* e) {
 				if (focusedItem != clickedItem) {
 					focusedItem = clickedItem;
 					//ivItem->setTexture(focusedItem->getTexture(85));
-					lblItemInfo->setText(focusedItem->getShopDetails());
+					//lblItemInfo->setText(focusedItem->getShopDetails());
 					setBuyButtonLabel(false);
 				}
 
@@ -166,7 +166,7 @@ void FormShop::handleWidgetEvent() {
 		}
 		focusedItem = shopInventory[itemId];
 		//textureItemivItem->setTexture(focusedItem->getTexture(85));
-		lblItemInfo->setText(focusedItem->getShopDetails());
+		//lblItemInfo->setText(focusedItem->getShopDetails());
 		setBuyButtonLabel(true);
 	}
 
@@ -191,7 +191,7 @@ void FormShop::handleWidgetEvent() {
 		SubForm* findForm = formMain->getSubform("ItemBuy");
 		if (findForm) {
 			if (((FormPrompt*)findForm)->submitted) {
-				pItemAction *buyPacket = new pItemAction(focusedItem->getId(), iaBuy);
+				pItemAction *buyPacket = new pItemAction(focusedItem->GetID(), iaBuy);
 				gClient.addPacket(buyPacket);
 
 				formMain->deleteSubform("ItemBuy");
@@ -206,7 +206,7 @@ void FormShop::handleWidgetEvent() {
 		SubForm* findForm = formMain->getSubform("ItemSell");
 		if (findForm) {
 			if (((FormPrompt*)findForm)->submitted) {
-				pItemAction *sellPacket = new pItemAction(focusedItem->getId(), iaSell);
+				pItemAction *sellPacket = new pItemAction(focusedItem->GetID(), iaSell);
 				gClient.addPacket(sellPacket);
 
 				formMain->deleteSubform("ItemSell");
@@ -230,22 +230,22 @@ void FormShop::handleItemDoubleClick() {
 	case itShoes:
 	case itAccessory:
 	case itHeadwear:
-		if (player->equipment[doubleClickedItem->getType()] && player->equipment[doubleClickedItem->getType()]->getId() == doubleClickedItem->getId()) {
+		if (player->equipment[doubleClickedItem->getType()] && player->equipment[doubleClickedItem->getType()]->GetID() == doubleClickedItem->GetID()) {
 			if (inventory->getItemCount() >= 15) {
 				//create a notice popup
 			}
 			else {
-				itemAction = new pItemAction(doubleClickedItem->getId(), iaUnequip);
+				itemAction = new pItemAction(doubleClickedItem->GetID(), iaUnequip);
 				player->unequipItem(doubleClickedItem);
 			}
 			found = true;
 			break;
 		}
-		if (!found) itemAction = new pItemAction(doubleClickedItem->getId(), iaUse);
+		if (!found) itemAction = new pItemAction(doubleClickedItem->GetID(), iaUse);
 		break;
 
 	case itMedicine:
-		itemAction = new pItemAction(doubleClickedItem->getId(), iaUse);
+		itemAction = new pItemAction(doubleClickedItem->GetID(), iaUse);
 		clearFocusedItem();
 		break;
 	}

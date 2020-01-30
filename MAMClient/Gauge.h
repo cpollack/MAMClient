@@ -21,10 +21,12 @@ public:
 	void SetIncreaseImage(std::string imagePath);
 	void SetUseGUI(bool use);
 
+	int GetCurrent() { return Current; }
 	void set(int val);
 	void set(int val, int max);
 	void add(int val);
 	void subtract(int val);
+	void AdjustTo(int val); //Automatically does afill/empty based on new values versus old
 
 private:
 	void CreateGaugeTexture();
@@ -51,7 +53,7 @@ private:
 	int Max;
 	int Current;
 	float fillPerc;
-	int shiftSpeed = 500; //total time in MS to shift to new position
+	int shiftSpeed = 1000; //total time in MS to shift to new position
 	int shiftDown = -1, shiftUp = -1;
 	int startTime, elapsedTime;
 };

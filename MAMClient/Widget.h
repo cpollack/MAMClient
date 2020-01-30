@@ -58,6 +58,7 @@ protected:
 	bool Underlined, Bold, Multiline;
 	int TextWrapWidth;
 	std::string Text;
+	std::wstring wText;
 
 public: //Accessors
 	int GetX() { return X; }
@@ -68,6 +69,8 @@ public: //Accessors
 	void SetPosition(int toX, int toY);
 	void SetPosition(SDL_Point p);
 
+	int GetWidth() { return Width; }
+	int GetHeight() { return Height; }
 	void SetWidth(int w);
 	void SetHeight(int h);
 
@@ -98,9 +101,10 @@ public:
 //Related to Text Handling
 public: 
 	virtual void SetText(std::string value);
+	virtual void SetText(std::wstring value);
 	void RenderText();
 protected:
-	TTF_Font* font;
+	TTF_Font* font, *fontUni;
 	SDL_Texture* fontTexture = NULL;
 	SDL_Rect fontRect;
 	SDL_Color fontColor, backColor;

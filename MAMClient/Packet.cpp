@@ -139,6 +139,10 @@ void Packet::getString(int pos, char *str, int len) {
 	memcpy(str, buffer + 4 + pos, len);
 }
 
+void Packet::getArray(int pos, BYTE *arr, int len) {
+	getString(pos, (CHAR*)arr, len);
+}
+
 
 void Packet::packString(const char* str, int len) {
 	if (!len) return;

@@ -309,6 +309,12 @@ void CGauge::subtract(int val) {
 	if (ShowLabel) updateLabel();
 }
 
+void CGauge::AdjustTo(int val) {
+	int dif = Current - val;
+	if (dif > 0) subtract(dif);
+	if (dif < 0) add(abs(dif));
+}
+
 
 void CGauge::updateLabel() {
 	std::string labelText;

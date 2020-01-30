@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include <math.h>
+#include <cassert>
 
 #include <SDL.h>
 #include <SDL_image.h>

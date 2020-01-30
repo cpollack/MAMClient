@@ -64,20 +64,22 @@ struct WPixel {
 };
 
 struct ColorShift {
-	int hue;
-	int newHue;
-	int range;
-	int sat;
-	int bright;
+	BYTE hue;
+	BYTE newHue;
+	BYTE range;
+	BYTE sat;
+	BYTE bright;
 };
 
-struct HSBSet {
+using ColorShifts = std::vector<ColorShift>;
+
+/*struct HSBSet {
 	BYTE hue;
 	BYTE newHue;
 	BYTE range;
 	BYTE saturation;
 	BYTE light;
-};
+};*/
 
 class RLE {
 public:
@@ -92,6 +94,7 @@ public:
 
 	bool newRle = false;
 	bool loaded = false;
+	int lastMapKey = -1;
 
 	RLE(std::string file);
 	RLE::RLE(std::string file, unsigned char *wdfBuffer);
@@ -101,10 +104,12 @@ public:
 	void RLE::writeToPNG();
 	void RLE::createBitmap();
 
-	void RLE::addHsbSets(HSBSet* sets, int count);
+	void RLE::addHsbSets(ColorShifts shifts);
 	void RLE::addHSBShift(int hue, int newHue, int range, int saturation, int light);
 	void RLE::addHueShift(BYTE newHue);
-	void RLE::reloadColorMap(bool useHslShifts);
+	void setColorShifts(ColorShifts shifts);
+	void reloadColorMap(bool useHslShifts);
+	int getCurrentMapKey();
 
 private:
 	RLEheader *header = nullptr;
@@ -119,7 +124,7 @@ private:
 
 	std::string fileName, fileExt, filePath;
 	std::string fullFilePath;
-	std::map<int, ColorShift> colorShifts;
+	ColorShifts colorShifts;
 
 	WPixel RLE::HSBtoRGB(HSB hsb);
 	void RLE::RGBtoPixel(WPixel* pixel, int r, int g, int b);

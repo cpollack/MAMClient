@@ -7,7 +7,7 @@
 
 #include "Client.h"
 #include "Player.h"
-#include "pAttributeUpdate.h"
+#include "pUserPoint.h"
 #include "pRename.h"
 
 #include "Texture.h"
@@ -62,7 +62,7 @@ void CCharacterForm::handleEvent(SDL_Event& e) {
 		if (e.user.code == PLAYER_RENAME) {
 			//Server rename response confirmation received
 			LoadAdditionalTab();
-			doPrompt("Confirm", "Nickname has been updated successfully!");
+			doPrompt(this, "Confirm", "Nickname has been updated successfully!");
 		}
 	}
 
@@ -76,7 +76,8 @@ void CCharacterForm::HookWidgets() {
 	//Overview Tab
 	imgSprite = (CImageBox*)GetWidget("imgSprite");
 	lblName = (CLabel*)GetWidget("lblName");
-	lblLevelRank = (CLabel*)GetWidget("lblLevelRank");
+	lblLevelOverview = (CLabel*)GetWidget("lblLevelOverview");
+	lblRank = (CLabel*)GetWidget("lblRank");
 	lblMainCult = (CLabel*)GetWidget("lblMainCult");
 	lblMainLife = (CLabel*)GetWidget("lblMainLife");
 	lblMainMana = (CLabel*)GetWidget("lblMainMana");
@@ -173,9 +174,10 @@ void CCharacterForm::LoadSprite() {
 }
 
 void CCharacterForm::LoadOverviewTab() {
-	lblName->SetText(player->getName());
-	std::string sLevRank = "Level " + formatInt(player->GetLevel()) + " " + player->GetRankText();
-	lblLevelRank->SetText(sLevRank);
+	lblName->SetText(player->GetName());
+	std::string sLevel = "Level " + formatInt(player->GetLevel());
+	lblLevelOverview->SetText(sLevel);
+	lblRank->SetText(player->GetRankText());
 	lblMainCult->SetText(formatInt(player->GetCultivation()));
 
 	lblMainLife->SetText(formatInt(player->GetMaxLife()));
@@ -387,17 +389,17 @@ void CCharacterForm::btnReset_Click(SDL_Event& e) {
 void CCharacterForm::btnApply_Click(SDL_Event& e) {
 	//Validate
 	if (points_rem < 0) {
-		doPromptError("Error", "You cannot add more attribute points then you have available.");
+		doPromptError(this, "Error", "You cannot add more attribute points then you have available.");
 		return;
 	}
 	if (points_rem > points) {
-		doPromptError("Error", "You cannot reallocate attribute points.");
+		doPromptError(this, "Error", "You cannot reallocate attribute points.");
 		return;
 	}
 
 	//Send attribute update packet
-	pAttributeUpdate *pAttr = new pAttributeUpdate(point_life, point_mana, point_attack, point_defence, point_dexterity);
-	gClient.addPacket(pAttr);
+	pUserPoint *pPoint = new pUserPoint(point_life, point_mana, point_attack, point_defence, point_dexterity);
+	gClient.addPacket(pPoint);
 
 	//Update player data
 	player->SetLifePoint(player->GetLifePoint() + point_life);
@@ -414,11 +416,11 @@ void CCharacterForm::btnApply_Click(SDL_Event& e) {
 void CCharacterForm::btnUpdateNickname_Click(SDL_Event& e) {
 	std::string nickname = fldNickname->GetText();
 	if (nickname.length() == 0) {
-		doPromptError("Error", "Nickname cannot be blank.");
+		doPromptError(this, "Error", "Nickname cannot be blank.");
 		return;
 	}
 	if (nickname.length() > 16) {
-		doPromptError("Error", "Nickname cannot be more than 16 characters.");
+		doPromptError(this, "Error", "Nickname cannot be more than 16 characters.");
 		return;
 	}
 
@@ -426,6 +428,6 @@ void CCharacterForm::btnUpdateNickname_Click(SDL_Event& e) {
 	if (nickname.compare(player->getNickName()) == 0) return;
 
 	//send nickname update
-	pRename *rename = new pRename(player->getID(), rmNickname, nickname);
+	pRename *rename = new pRename(player->GetID(), rmNickname, nickname);
 	gClient.addPacket(rename);
 }

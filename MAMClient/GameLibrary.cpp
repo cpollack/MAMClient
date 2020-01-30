@@ -40,6 +40,12 @@ bool doesPointIntersect(SDL_Rect rect, SDL_Point point) {
 	return false;
 }
 
+bool doRectIntersect(SDL_Rect a, SDL_Rect b) {
+	if (a.x <= b.x + b.w - 1 && a.x + a.w - 1 >= b.x &&
+		a.y <= b.y + b.h - 1 && a.y + a.h - 1 >= b.y) return true;
+	return false;
+}
+
 
 std::string getRoleFromLook(int look) {
 	INI roleINI("INI/Roles.ini", "RolesInfo");
@@ -115,16 +121,17 @@ void applicationClose() {
 	SDL_PushEvent(&quitEvent);
 }
 
-CPromptForm* doPrompt(std::string title, std::string message) {
-	CPromptForm* promptForm = new CPromptForm();
+CPromptForm* doPrompt(CWindow* parent, std::string title, std::string message, bool cancel) {
+	CPromptForm* promptForm = new CPromptForm(cancel);
+	promptForm->SetParent(parent);
 	promptForm->SetTitle(title);
 	promptForm->SetMessage(message);
 	Windows.push_back(promptForm);
 	return promptForm;
 }
 
-CPromptForm* doPromptError(std::string title, std::string message) {
-	CPromptForm* promptForm = doPrompt(title, message);
+CPromptForm* doPromptError(CWindow* parent, std::string title, std::string message) {
+	CPromptForm* promptForm = doPrompt(parent, title, message);
 	promptForm->SetType(WINDOW_CLOSE_PROMPT_ERROR);
 	return promptForm;
 }
@@ -150,4 +157,35 @@ Texture* stringToTexture(SDL_Renderer* renderer, std::string text, TTF_Font* fon
 	TTF_SetFontStyle(gui->font, TTF_STYLE_NORMAL);
 
 	return texture;
+}
+
+Texture* stringToTexture(SDL_Renderer* renderer, std::wstring text, TTF_Font* font, int style = 0, SDL_Color color = { 0 ,0, 0, 255 }, int maxWidth = 0) {
+	Texture *texture = nullptr;
+
+	TTF_SetFontStyle(gui->font, style);
+
+	SDL_Surface* lSurface;
+	if (maxWidth > 0) lSurface = TTF_RenderUNICODE_Blended_Wrapped(font, (const Uint16*)text.c_str(), color, maxWidth);
+	else lSurface = TTF_RenderUNICODE_Blended(gui->font_npcDialogue, (const Uint16*)text.c_str(), color);
+
+	if (lSurface) {
+		SDL_Rect fontRect = { 0, 0, lSurface->w, lSurface->h };
+		SDL_Texture* fontTexture = SDL_CreateTextureFromSurface(renderer, lSurface);
+
+		texture = new Texture(renderer, fontTexture, fontRect.w, fontRect.h);
+
+		SDL_FreeSurface(lSurface);
+	}
+
+	TTF_SetFontStyle(gui->font, TTF_STYLE_NORMAL);
+
+	return texture;
+}
+
+std::wstring StringToWString(std::string string) {
+	wchar_t *wc = new wchar_t[string.length() + 1];
+	mbstowcs(wc, string.c_str(), string.length() + 1);
+	std::wstring wstring(wc);
+	delete[] wc;
+	return wstring;
 }

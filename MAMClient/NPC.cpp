@@ -3,6 +3,8 @@
 #include "pNpcInfo.h"
 #include "pNpc.h"
 
+#include "ShopDataFile.h"
+
 #include "CustomEvents.h"
 #include "MainWindow.h"
 #include "GameMap.h"
@@ -17,7 +19,11 @@ NPC::NPC(pNpcInfo* packet):Entity(mainForm->renderer, packet->id, packet->name, 
 	Look = packet->look;
 	setCoord(SDL_Point{ packet->posX, packet->posY });
 
-	memcpy(hslSets, packet->hslSets, 15);
+	for (int i = 0; i < 15; i += 5) {
+		ColorShift shift;
+		memcpy(&shift, packet->hslSets + i, 5);
+		colorShifts.push_back(shift);
+	}
 
 	Direction = Look % 10;
 
@@ -33,7 +39,7 @@ NPC::~NPC() {
 void NPC::render() {
 	Entity::render();
 
-	if (MouseOver) renderNameplate();
+	if (MouseOver) render_nameplate();
 }
 
 
@@ -47,16 +53,19 @@ void NPC::handleEvent(SDL_Event& e) {
 			SDL_Event interact;
 			SDL_zero(interact);
 			interact.type = CUSTOMEVENT_NPC;
-			interact.user.data1 = new int(ID);
+			interact.user.data1 = this;
 			interact.user.data2 = nullptr;
 
 			if (Type >= 100 && Type <= 102) {
-				int shopId = GetShopID();
-				//mainForm->openShop(shopId);
-				interact.user.code = NPC_SHOP;
-				//interact.user.data2 = new int(shopId);
+				CShopDataFile shopFile;
+				if (shopFile.IsShop(GetTypeText(), map->getMapId())) {
+					interact.user.code = NPC_SHOP;
+					CShop *shop = new CShop();
+					shopFile.GetShop(GetTypeText(), map->getMapId(), *shop);
+					interact.user.data2 = shop;
+				}
 			}
-			else {
+			if (interact.user.code != NPC_SHOP) {
 				pNpc* npcPack = new pNpc(ID, 0, 0, 0);
 				gClient.addPacket(npcPack);		
 				interact.user.code = NPC_INTERACT;
@@ -106,7 +115,7 @@ void NPC::loadSprite() {
 		}
 	}
 	
-	sprite = new Sprite(renderer, frames, stNpc, hslSets, 3);
+	sprite = new Sprite(renderer, frames, stNpc, colorShifts);
 	sprite->setLocation(Position.x, Position.y);
 }
 

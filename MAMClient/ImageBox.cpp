@@ -4,6 +4,8 @@
 #include "Define.h"
 #include "Sprite.h"
 
+#include "Window.h"
+
 CImageBox::CImageBox(CWindow* window, std::string name, int x, int y) : CWidget(window) {
 	Name = name;
 	X = x;
@@ -83,8 +85,12 @@ void CImageBox::SetImageFromSkin(std::string skinImage) {
 void CImageBox::SetImage(Texture* image) {
 	SkinImage = "";
 
+	SDL_Rect oldViewport;
+	SDL_RenderGetViewport(renderer, &oldViewport);
+
 	if (ImageBox) SDL_DestroyTexture(ImageBox);
 	ImageBox = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, Width, Height);
+
 	SDL_Color bgColor = gui->backColor;
 
 	SDL_SetRenderTarget(renderer, ImageBox);
@@ -94,9 +100,8 @@ void CImageBox::SetImage(Texture* image) {
 	else SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 255);
 
 	SDL_RenderClear(renderer);
-
 	SDL_Rect viewPortRect = { 0, 0,widgetRect.w, widgetRect.h };
-
+	SDL_RenderSetViewport(renderer, NULL);
 	if (Bordered) {
 		hlineRGBA(renderer, 0, Width - 1, 0, 0xA0, 0xA0, 0xA0, 0xFF);
 		vlineRGBA(renderer, 0, 0, Height - 1, 0xA0, 0xA0, 0xA0, 0xFF);
@@ -110,8 +115,6 @@ void CImageBox::SetImage(Texture* image) {
 		viewPortRect.h -= 2;
 	}
 
-	SDL_Rect oldViewport;
-	SDL_RenderGetViewport(renderer, &oldViewport);
 	SDL_RenderSetViewport(renderer, &viewPortRect);
 
 	SDL_Rect srcRect;
@@ -145,8 +148,8 @@ void CImageBox::SetImage(Texture* image) {
 		SDL_RenderCopy(renderer, image->texture, &srcRect, &destRect);
 	}
 
-	SDL_RenderSetViewport(renderer, &oldViewport);
 	SDL_SetRenderTarget(renderer, NULL);
+	SDL_RenderSetViewport(renderer, &oldViewport);
 }
 
 void CImageBox::BindSprite(Sprite* sprite) {

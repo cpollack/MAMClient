@@ -15,6 +15,8 @@ enum ItemType {
 	itMedicine = 7
 };
 
+class ItemData;
+
 class Item {
 private:
 	int id, ownerId;
@@ -31,17 +33,19 @@ private:
 
 public:
 	Item(pItem* packet);
+	Item(ItemData itemData);
 	Item(int itemId);
 	~Item();
 
-	int Item::getId();
+	int Item::GetID() { return id; }
 	int Item::getType();
 	int Item::getSort();
 	int Item::getCost();
+	int getLevel() { return level; }
 	std::string getTexturePath(int size);
 	std::string Item::getName();
-	std::string Item::getDetails();
-	std::string Item::getShopDetails();
+	std::wstring Item::getDetails();
+	std::wstring Item::getShopDetails();
 
 	int Item::getLife();
 	int Item::getMana();

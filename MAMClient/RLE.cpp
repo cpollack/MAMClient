@@ -367,9 +367,16 @@ void RLE::createBitmap() {
 }
 
 
-void RLE::addHsbSets(HSBSet* sets, int count) {
-	for (int i = 0; i < count; i++) {
-		addHSBShift(sets[i].hue, sets[i].newHue, sets[i].range, sets[i].saturation, sets[i].light);
+void RLE::addHsbSets(ColorShifts shifts) {
+	for (auto shift : shifts) {
+		addHSBShift(shift.hue, shift.newHue, shift.range, shift.sat, shift.bright);
+	}
+}
+
+void RLE::setColorShifts(ColorShifts shifts) {
+	colorShifts.clear();
+	for (auto shift : shifts) {
+		addHSBShift(shift.hue, shift.newHue, shift.range, shift.sat, shift.bright);
 	}
 }
 
@@ -390,7 +397,7 @@ void RLE::addHSBShift(int hue, int newHue, int range, int saturation, int light)
 		return;
 	}
 
-	colorShifts[hue] = newShift;
+	colorShifts.push_back(newShift);
 }
 
 
@@ -401,6 +408,10 @@ void RLE::addHueShift(BYTE newHue) {
 
 void RLE::reloadColorMap(bool useHslShifts) {
 	int start = SDL_GetTicks();
+
+	int currentMapKey = getCurrentMapKey();
+	if (lastMapKey == currentMapKey) return;
+	lastMapKey = currentMapKey;
 
 	for (int i = 0; i < 256; i++) {
 		HSB mapColor = *(((HSB*)bColorMap) + i);
@@ -414,9 +425,8 @@ void RLE::reloadColorMap(bool useHslShifts) {
 				int hue = *((INT16*)&cmapEntry);
 
 				for (auto shift : colorShifts) {
-					ColorShift thisShift = shift.second;
-					if (thisShift.sat <= hue && hue <= thisShift.bright) {
-						hue += thisShift.newHue;
+					if (shift.sat <= hue && hue <= shift.bright) {
+						hue += shift.newHue;
 						if (hue > 359) hue -= 360;
 						*((INT16*)&cmapEntry) = hue;
 						break;
@@ -433,7 +443,7 @@ void RLE::reloadColorMap(bool useHslShifts) {
 				//Loop through HSL Color Shift sets until we find a matching set
 				bool hslShiftFound = false;
 				for (auto shift : colorShifts) {
-					if (shiftHSB(&mapColor, shift.second)) {
+					if (shiftHSB(&mapColor, shift)) {
 						hslShiftFound = true;
 						break;
 					}
@@ -523,4 +533,14 @@ bool RLE::shiftHSB(HSB* hsb, ColorShift colorShift) {
 	hsb->bright = colorShift.bright;
 
 	return true;
+}
+
+int RLE::getCurrentMapKey() {
+	int mapKey = 0;
+
+	for (auto shift : colorShifts) {
+		mapKey += ((shift.hue << 24) | (shift.newHue << 16) | (shift.sat << 8) | shift.sat);
+	}
+
+	return mapKey;
 }

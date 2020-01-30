@@ -12,7 +12,7 @@ pPetInfo::pPetInfo(char* buf, char* encBuf) {
 	memcpy(buffer, buf, size);
 	memcpy(encryptedBuffer, encBuf, size);
 
-	getInt(0, &val1);
+	getInt(0, &mode);
 	getInt(4, &petId);
 	getString(8, name, 16);
 	getInt(24, &monsterClass);
@@ -51,8 +51,19 @@ pPetInfo::~pPetInfo() {
 
 
 void pPetInfo::process() {
-	Pet* newPet = new Pet(this);
-	player->addPet(newPet);
+	Pet* pet = nullptr;
+
+	switch (mode) {
+	case pimAdd:
+		pet = new Pet(this);
+		player->addPet(pet);
+		break;
+
+	case pimUpdate:
+		pet = player->getPet(petId);
+		if (pet) pet->updateInfo(this);
+		break;
+	}
 }
 
 
@@ -60,7 +71,7 @@ void pPetInfo::debugPrint() {
 	hideEncryptedBuffer = true;
 	Packet::debugPrint();
 
-	std::cout << petId << " " << (char*)name << "(" << monsterClass << " - " << look << ")" << " Unkown: " << val1 << std::endl;
+	std::cout << "Mode:" << mode << " Pet:" << petId << " " << (char*)name << "(" << monsterClass << " - " << look << ")" << std::endl;
 	std::cout << "Level: " << level << " Experience: " << experience << " Loyalty: " << loyalty << " Generation: " << generation << std::endl;
 	std::cout << "Life: " << life_current << "/" << life_max << " Atk/Def/Dex: " << attack << "/" << defence << "/" << dexterity << " Medals: " << medal_attack << "/" << medal_defence << "/" << medal_dexterity << std::endl;
 	std::cout << "Skills: " << skillCount;

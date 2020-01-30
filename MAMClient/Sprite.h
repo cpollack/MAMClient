@@ -58,12 +58,10 @@ public:
 	SDL_Rect* spr_rect = nullptr;
 	SDL_Rect* camera = nullptr;
 
-	std::map<int, ColorShift> colorShifts;
-
 	int x, y;
 	int type;
 	int frames, currentFrame, frameCounter;
-	int speed; //ms
+	int speed = 1000; //ms
 	int repeatMode, repeatCount;
 	//int direction;
 	DWORD startTime;
@@ -71,20 +69,18 @@ public:
 	bool visible = true;
 	bool isFinished = false;
 	BYTE alpha = 0xFF;
-	HSBSet hsbSets[7] = { 0 };
-	int hsbSetCount = 0;
-	int hsbShiftId = 0;
+	ColorShifts colorShifts;
 
 	Sprite(SDL_Renderer* aRenderer, int spriteType = stCharacter);
 	Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType);
-	Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType, HSBSet* hsbSets, int hsbCount);
+	Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType, ColorShifts shifts);
 	Sprite(SDL_Renderer* aRenderer, std::string file, int toX, int toY);
 	Sprite(SDL_Renderer* aRenderer, std::string* file, int frameCount, int toX, int toY);
 	Sprite(SDL_Renderer* aRenderer, std::vector<std::string> file, int spriteType);
-	Sprite(SDL_Renderer* aRenderer, std::vector<std::string> file, int spriteType, HSBSet* hsbSets, int hsbCount);
+	Sprite(SDL_Renderer* aRenderer, std::vector<std::string> file, int spriteType, ColorShifts shifts);
 	Sprite(SDL_Renderer* aRenderer, std::vector<std::string> file, int toX, int toY);
 	Sprite(SDL_Renderer* aRenderer, std::vector<Asset> textures, int spriteType);
-	Sprite(SDL_Renderer* aRenderer, std::vector<Asset> textures, int spriteType, HSBSet* hsbSets, int hsbCount);
+	Sprite(SDL_Renderer* aRenderer, std::vector<Asset> textures, int spriteType, ColorShifts shifts);
 	~Sprite();
 
 	void LoadFirst();
@@ -102,7 +98,7 @@ public:
 	void Sprite::setLocation(SDL_Point p);
 	void Sprite::setLocation(int toX, int toY);
 	void Sprite::setAlpha(BYTE newAlpha);
-	void Sprite::setHsbShifts(HSBSet* sets, int count);
+	void Sprite::setHsbShifts(ColorShifts shifts);
 
 	SDL_Rect Sprite::getRenderRect();
 	SDL_Rect Sprite::getRenderRect(int frame);

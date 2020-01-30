@@ -20,6 +20,8 @@ public:
 
 	void UseBlackBackground(bool use);
 
+	SDL_Texture* GetTexture() { return ImageBox; }
+
 private:
 	SDL_Texture* ImageBox = NULL;
 	std::string SkinImage;

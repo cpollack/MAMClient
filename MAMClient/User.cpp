@@ -2,6 +2,7 @@
 #include "User.h"
 #include "GameMap.h"
 
+#include "Define.h"
 #include "pUserInfo.h"
 #include "MainWindow.h"
 
@@ -28,7 +29,13 @@ User::User(pUserInfo *packet):Entity(mainForm->renderer, packet->userId, packet-
 	SubGroup = packet->subGroup;
 	GuildTitle = packet->guildTitle;
 	
-	memcpy(colorSets, packet->colorSets, 25);
+
+	for (int i = 0; i < 25; i += 5) {
+		ColorShift shift;
+		memcpy(&shift, packet->colorSets + i, 5);
+		colorShifts.push_back(shift);
+	}
+	//memcpy(colorSets, packet->colorSets, 25);
 
 	switch (packet->emotion) {
 	case uieNone:
@@ -62,7 +69,6 @@ User::User(SDL_Renderer* r, int id, std::string name, int look):Entity(r, id, na
 }
 
 User::~User() {
-	if (effect) delete effect;
 	if (aura) delete aura;
 }
 
@@ -70,18 +76,13 @@ void User::render() {
 	if (!map) return;
 	Entity::render();
 
-	if (effect) effect->render(RenderPos.x, RenderPos.y);
-	//if (aura) aura->render(effectsX, effectsY);
-
-	renderNameplate();
+	render_nameplate();
 }
 
 
 void User::step() {
 	if (jumping) {
-		if (effect && effect->finished()) {
-			delete effect;
-			effect = nullptr;
+		if (timeGetTime() - lastMoveTick >= JUMP_SPEED) {
 			jumping = false;
 			setAnimation(StandBy);
 			loadSprite();
@@ -127,7 +128,7 @@ void User::jumpTo(SDL_Point coord) {
 	setCoord(coord);
 	setAnimation(Genuflect);
 	loadSprite();
-	loadEffect("FlashDown");
+	addEffect(EFFECT_FLASHDOWN);
 	lastMoveTick = timeGetTime();
 }
 
@@ -201,27 +202,6 @@ bool User::getJumping() {
 
 bool User::getWalking() {
 	return walking;
-}
-
-void User::loadEffect(std::string _effectName) {
-	if (effect) delete effect;
-	effectName = _effectName;
-	INI commonIni("INI\\Common.ini", _effectName);
-
-	//Flash-down Jump Animation
-	std::vector<Asset> assets;
-	for (int i = 0; i < stoi(commonIni.getEntry("FrameAmount")); i++) {
-		std::string nextFrame = "Frame" + std::to_string(i);
-		std::string path = commonIni.getEntry(nextFrame);
-		path = "data\\" + path.substr(2);
-		Asset asset(new Texture(renderer, path, true));
-		asset->setBlendMode(SDL_BLENDMODE_ADD);
-		assets.push_back(asset);
-	}
-	effect = new Sprite(renderer, assets, stEffect);
-	effect->speed = 2;
-	effect->repeatMode = 1;
-	effect->start();
 }
 
 //Load Aura based on Rank

@@ -1,5 +1,4 @@
-#ifndef __BATTLERESULT_H
-#define __BATTLERESULT_H
+#pragma once
 
 #include "Client.h"
 
@@ -21,4 +20,6 @@ private:
 	int startTime = 0, currentTime;
 };
 
-#endif
+extern BattleResult* battleResult;
+extern bool PlayerLeveled; 
+extern bool PetLeveled;

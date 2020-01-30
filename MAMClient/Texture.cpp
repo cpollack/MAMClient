@@ -39,7 +39,10 @@ Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, SDL_Color aColor
 Texture::~Texture() {
 	if (texture) SDL_DestroyTexture(texture);
 	if (surface && surface != NULL) SDL_FreeSurface(surface);
-	if (rle) delete rle;
+	if (rle) {
+		rle.reset();
+		assetManager.releaseRLE(file);
+	}
 }
 
 
@@ -152,42 +155,52 @@ void Texture::loadSurface() {
 		skip = true;
 		return;
 	}
+	bool fileFound = false;
 
 	int extPos = file.find_last_of(".");
 	std::string ext = file.substr(extPos + 1, std::string::npos);
+	transform(ext.begin(), ext.end(), ext.begin(), ::toupper);
 
+	//Attemtp to pull pre-loaded RLE from asset manager
+	if (ext == "RLE") {
+		rle = assetManager.getRLE(file);
+		if (rle) fileFound = true;
+	}
 	//check for hsl ID
-	int hslIdPos = ext.find("_");
+	/*int hslIdPos = ext.find("_");
 	if (hslIdPos != std::string::npos) {
 		int origLength = ext.length();
 		ext = ext.substr(0, hslIdPos);
 		file = file.substr(0, file.length() - (origLength - hslIdPos));
-	}
+	}*/
+
 
 	int fileSize;
 	std::shared_ptr<DataBuffer> fileBuffer;
-	gClient.getFileFromWDF(file, fileBuffer, fileSize);
-
-	transform(ext.begin(), ext.end(), ext.begin(), ::toupper);
+	if (!fileFound) gClient.getFileFromWDF(file, fileBuffer, fileSize);	
 
 	if (ext == "RLE") {
 		if (!rle) {
-			if (fileBuffer) rle = new RLE(file, fileBuffer.get()->buffer);
-			else rle = new RLE(file);
+			if (fileBuffer) rle.reset(new RLE(file, fileBuffer.get()->buffer));
+			else rle.reset(new RLE(file));
+			assetManager.addRLE(file, rle);
+
 			if (rle->load()) {
-				if (hsbSetId > 0) {
-					rle->addHsbSets(hsbSets, hsbSetCount);
+				//Check color disable?
+				if (colorShifts.size() > 0) {
+					rle->addHsbSets(colorShifts);
 					rle->reloadColorMap(true);
 				}
 				else {
 					rle->reloadColorMap(false);
 				}
 				rle->createBitmap();
+				lastReloadKey = rle->getCurrentMapKey();
 			}
 		}
 		else {
 			if (reloadColorMap) {
-				rle->reloadColorMap((hsbSetId > 0) ? true : false);
+				rle->reloadColorMap((colorShifts.size() > 0) ? true : false);
 				rle->createBitmap();
 			}
 		}
@@ -283,7 +296,8 @@ void Texture::setBlendMode(SDL_BlendMode bm) {
 
 
 Uint32 Texture::getPixel(SDL_Point pixelPos) {
-	Uint32 pixel;
+	Uint32 pixel = 0;
+	if (!surface) return pixel;
 
 	SDL_LockSurface(surface);
 	Uint32 *pixels = (Uint32*)surface->pixels;
@@ -330,26 +344,26 @@ void Texture::setAnchor(int aAnchor) {
 }
 
 
-void Texture::setHsbShifts(HSBSet* sets, int count, int id) {
-	hsbSetCount = count;
-	hsbSetId = id;
-
-	for (int i = 0; i < count; i++) {
-		hsbSets[i] = sets[i];
-	}
+void Texture::setHsbShifts(ColorShifts shifts) {
+	colorShifts = shifts;
+	reloadColorMap = true;
 }
 
 
-void Texture::reloadWithHsbShifts(std::map<int, ColorShift> shifts) {
-	for (auto shift : shifts) {
-		ColorShift doShift = shift.second;
-		rle->addHSBShift(doShift.hue, doShift.newHue, doShift.range, doShift.sat, doShift.bright);
-	}
+void Texture::reloadWithHsbShifts(ColorShifts shifts) {
+	if (!rle) return;
+
+	rle->setColorShifts(shifts);
+	//for (auto shift : shifts) {
+	//	rle->addHSBShift(shift.hue, shift.newHue, shift.range, shift.sat, shift.bright);
+	//}
 
 	SDL_FreeSurface(surface);
 	surface = NULL;
 	SDL_DestroyTexture(texture);
 	texture = NULL;
+	loaded = false;
 
 	loadTexture(file);
+	reloadColorMap = false;
 }

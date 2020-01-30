@@ -4,7 +4,7 @@
 Sprite::Sprite(SDL_Renderer* aRenderer, int spriteType) {
 	renderer = aRenderer;
 	type = spriteType;
-	speed = 12;
+	speed = 1000;
 }
 
 
@@ -15,10 +15,10 @@ Sprite::Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType) {
 }
 
 
-Sprite::Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType, HSBSet* hsbSets, int hsbCount) {
+Sprite::Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType, ColorShifts shifts) {
 	std::vector<std::string> files;
 	files.push_back(file);
-	setHsbShifts(hsbSets, hsbCount);
+	setHsbShifts(shifts);
 	init(aRenderer, files, 1, 0, 0, spriteType);
 }
 
@@ -42,8 +42,8 @@ Sprite::Sprite(SDL_Renderer* aRenderer, std::vector<std::string> file, int sprit
 	init(aRenderer, file, file.size(), 0, 0, spriteType);
 }
 
-Sprite::Sprite(SDL_Renderer* aRenderer, std::vector<std::string> file, int spriteType, HSBSet* hsbSets, int hsbCount) {
-	setHsbShifts(hsbSets, hsbCount);
+Sprite::Sprite(SDL_Renderer* aRenderer, std::vector<std::string> file, int spriteType, ColorShifts shifts) {
+	setHsbShifts(shifts);
 	init(aRenderer, file, file.size(), 0, 0, spriteType);
 }
 
@@ -56,45 +56,45 @@ Sprite::Sprite(SDL_Renderer* aRenderer, std::vector<Asset> textures, int spriteT
 	renderer = aRenderer;
 	type = spriteType;
 	if (type == stEffect) repeatMode = 1;
-	speed = 12;
-	if (spriteType == stNpc) speed = 30;
+	speed = 1000;
+	if (spriteType == stNpc) speed = 1000;
 
 	frames = textures.size();
 	if (frames > 0) spr_rect = new SDL_Rect[frames];
 	subimages = textures;
 }
 
-Sprite::Sprite(SDL_Renderer* aRenderer, std::vector<Asset> textures, int spriteType, HSBSet* hsbSets, int hsbCount) {
+Sprite::Sprite(SDL_Renderer* aRenderer, std::vector<Asset> textures, int spriteType, ColorShifts shifts) {
 	renderer = aRenderer;
 	type = spriteType;
 	if (type == stEffect) repeatMode = 1;
-	speed = 12;
-	if (spriteType == stNpc) speed = 30;
+	speed = 1000;
+	if (spriteType == stNpc) speed = 1000;
 
 	frames = textures.size();
 	if (frames > 0) spr_rect = new SDL_Rect[frames];
 	subimages = textures;
 
-	setHsbShifts(hsbSets, hsbCount);
-	if (hsbShiftId > 0) {
+	setHsbShifts(shifts);
+	/*if (colorShifts.size() > 0) {
 		for (auto subimage : subimages) {
-			subimage->setHsbShifts(hsbSets, hsbSetCount, hsbShiftId);
+			subimage->setHsbShifts(shifts);
 		}
-	}
+	}*/
 }
 
 
 Sprite::~Sprite() {
-	if (subimages.size()) {
-		for (int i = 0; i < frames; i++) {
+	//if (subimages.size()) {
+	//	for (int i = 0; i < frames; i++) {
 			//delete subimages.at(i);
 			//handle texture deletion through another method?
 
 			//if (hslShiftId > 0) gClient.deleteTexture(subimages[i]->file, hslShiftId);
 			//else gClient.deleteTexture(subimages[i]->file);
-		}
-		subimages.clear();
-	}
+		//}
+		//subimages.clear();
+	//}
 	if (spr_rect) delete[] spr_rect;
 }
 
@@ -112,14 +112,14 @@ void Sprite::init(SDL_Renderer* aRenderer, std::vector<std::string> file, int fr
 	type = spriteType;
 	if (type == stEffect) repeatMode = 1;
 
-	speed = 12;
-	if (spriteType == stNpc) speed = 30;
+	speed = 1000;
+	if (spriteType == stNpc) speed = 1000;
 
 	frames = frameCount;
 	if (frames > 0) spr_rect = new SDL_Rect[frames];
 	for (int i = 0; i < frames; i++) {
 		Asset next(new Texture(renderer, file[i], false));
-		if (hsbShiftId > 0) next->setHsbShifts(hsbSets, hsbSetCount, hsbShiftId);
+		if (colorShifts.size() > 0) next->setHsbShifts(colorShifts);
 		subimages.push_back(Asset(next));
 	}
 }
@@ -145,35 +145,34 @@ void Sprite::render() {
 void Sprite::render(int offsetX, int offsetY) {
 	if (!visible) return;
 	if (subimages.size() == 0) return;
+	if (!started) return;
 
-	int nextFrame = ((frameCounter + 1) / speed) % frames;
+	//Refactor - Speed respresents length of time to do one full cycle of the sprite
+	//More frames means more detail over the animation, but also more loading
+
+	DWORD currentTime = SDL_GetTicks();
+	DWORD elapsed = currentTime - startTime;
+
+	repeatCount = elapsed / speed;
+	int nextFrame =  floor((elapsed - (repeatCount * speed)) / (speed * 1.0 / frames));
+
+	if (repeatMode > 0) {
+		if (repeatCount >= repeatMode) {
+			nextFrame = frames - 1;
+			isFinished = true;
+			if (type == stEffect) return; //Do not render completed effects
+		}
+	}
+
 	Asset frameTexture = subimages.at(nextFrame);
-	if (frameTexture->texture == nullptr) frameTexture->Load();		
+	if (frameTexture->texture == nullptr) frameTexture->Load();
 
 	SDL_Rect renderRect = getRenderRect(nextFrame);
 	bool inView = true;
 	if (camera) inView = SDL_IntersectRect(camera, &renderRect, NULL);
 	if (!inView) return;
 
-	if (started) frameCounter++;
-
-	if (repeatMode > 0) {
-		if (type == stEffect && repeatCount >= repeatMode) {
-			isFinished = true;
-			return;
-		}
-
-		if (repeatCount < repeatMode) {
-			currentFrame = (frameCounter / speed) % frames;
-			repeatCount = (frameCounter / speed) - frames + 2;
-		}
-	}
-	else {
-		currentFrame = (frameCounter / speed) % frames;
-		repeatCount = (frameCounter / speed) - frames + 2;
-	}
-
-	if (colorShifts.size() > 0) frameTexture->reloadWithHsbShifts(colorShifts);
+	if (frameTexture->reloadColorMap) frameTexture->reloadWithHsbShifts(colorShifts);
 
 	int alphaBlendResult = SDL_SetTextureAlphaMod(frameTexture->texture, alpha);
 	
@@ -188,6 +187,7 @@ void Sprite::start() {
 	currentFrame = 0;
 	frameCounter = 0;
 	repeatCount = 0;
+	startTime = SDL_GetTicks();
 	started = true;
 	isFinished = false;
 }
@@ -268,15 +268,11 @@ Sprite* Sprite::copy() {
 }
 
 
-void Sprite::setHsbShifts(HSBSet* sets, int count) {
-	hsbSetCount = count;
+void Sprite::setHsbShifts(ColorShifts shifts) {
+	colorShifts = shifts;
 
-	for (int i = 0; i < count; i++) {
-		hsbSets[i] = sets[i];
-	}
-
-	hsbShiftId = 0;
-	for (int i = 0; i < count * 5; i++) {
-		hsbShiftId += *((BYTE*)hsbSets + i);
+	for (auto asset : subimages) {
+		asset->reloadColorMap = true;
+		asset->setHsbShifts(shifts);
 	}
 }

@@ -85,7 +85,7 @@ void CCharCreateForm::step() {
 	Message message = messageManager.Poll();
 	if (!message.get()) return;
 
-	CPromptForm *prompt = doPrompt("Character Creation", message->message);
+	CPromptForm *prompt = doPrompt(this, "Character Creation", message->message);
 
 	if (message->message.compare("Character has been created. Please log back in to begin.") != 0) prompt->SetType(WINDOW_CLOSE_PROMPT_ERROR);
 }
@@ -126,16 +126,16 @@ void CCharCreateForm::btnClose_Click(SDL_Event& e) {
 void CCharCreateForm::btnOk_Click(SDL_Event& e) {
 	//validate
 	if (fldName->GetText().length() == 0) {
-		doPromptError("Character Creation Error", "Name cannot be empty.");
+		doPromptError(this, "Character Creation Error", "Name cannot be empty.");
 		return;
 	}
 	if (fldNickname->GetText().length() == 0) {
-		doPromptError("Character Creation Error", "Nickname cannot be empty.");
+		doPromptError(this, "Character Creation Error", "Nickname cannot be empty.");
 		return;
 	}
 
 	if (unspent > 0) {
-		doPromptError("Character Creation Error", "Please allocate all unspent points.");
+		doPromptError(this, "Character Creation Error", "Please allocate all unspent points.");
 		return;
 	}
 

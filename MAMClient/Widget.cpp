@@ -6,6 +6,7 @@ CWidget::CWidget(CWindow* window) {
 	Window = window;
 	renderer = Window->renderer;
 	font = gui->font;
+	fontUni = gui->fontUni;
 	fontColor = gui->fontColor;
 	backColor = { 0, 0, 0, 0 };
 	Loaded = true;
@@ -21,6 +22,7 @@ CWidget::CWidget(CWindow* window, std::string name, int x, int y) {
 	widgetRect = SDL_Rect{ X, Y, Width, Height };
 
 	font = gui->font;
+	fontUni = gui->fontUni;
 	fontColor = gui->fontColor;
 	backColor = { 0, 0, 0, 0 };
 	Loaded = true;
@@ -43,6 +45,7 @@ CWidget::CWidget(CWindow* window, rapidjson::Value& vWidget) {
 
 	widgetRect = SDL_Rect{ X, Y, Width, Height };
 	font = gui->font;
+	fontUni = gui->fontUni;
 	fontColor = gui->fontColor; 
 	backColor = { 0, 0, 0, 0 };
 	Loaded = true;
@@ -59,6 +62,13 @@ CWidget::~CWidget() {
 
 void CWidget::SetText(std::string value) {
 	Text = value;
+	wText.clear();
+	RenderText();
+}
+
+void CWidget::SetText(std::wstring value) {
+	wText = value;
+	Text.clear();
 	RenderText();
 }
 
@@ -72,14 +82,22 @@ void CWidget::RenderText() {
 	if (Underlined) fontStyle |= TTF_STYLE_UNDERLINE;
 	if (Bold) fontStyle |= TTF_STYLE_BOLD;
 
-	TTF_SetFontStyle(font, fontStyle);
-
-	std::string finalText = Text;
-	if (finalText.length() == 0) finalText = " ";
-	if (TextWrapWidth > 0) lSurface = TTF_RenderText_Blended_Wrapped(font, finalText.c_str(), fontColor, TextWrapWidth);
-	else lSurface = TTF_RenderText_Blended(font, finalText.c_str(), fontColor);
-
-	TTF_SetFontStyle(font, TTF_STYLE_NORMAL);
+	if (wText.length()) {
+		TTF_SetFontStyle(fontUni, fontStyle);
+		std::wstring finalText = wText;
+		if (finalText.length() == 0) finalText = L" ";
+		if (TextWrapWidth > 0) lSurface = TTF_RenderUNICODE_Blended_Wrapped(fontUni, (const Uint16*)finalText.c_str(), fontColor, TextWrapWidth);
+		else lSurface = TTF_RenderUNICODE_Blended(fontUni, (const Uint16*)finalText.c_str(), fontColor);
+		TTF_SetFontStyle(fontUni, TTF_STYLE_NORMAL);
+	}
+	else {
+		TTF_SetFontStyle(font, fontStyle);
+		std::string finalText = Text;
+		if (finalText.length() == 0) finalText = " ";
+		if (TextWrapWidth > 0) lSurface = TTF_RenderUTF8_Blended_Wrapped(font, finalText.c_str(), fontColor, TextWrapWidth);
+		else lSurface = TTF_RenderUTF8_Blended(font, finalText.c_str(), fontColor);
+		TTF_SetFontStyle(font, TTF_STYLE_NORMAL);
+	}
 
 	if (lSurface != NULL) {
 		fontRect = { 0, 0, lSurface->w, lSurface->h };
@@ -261,8 +279,11 @@ void Widget::renderText(std::string sText) {
 	//if (underlined) TTF_SetFontStyle(font, TTF_STYLE_UNDERLINE);
 	TTF_SetFontStyle(font, fontStyle);
 
-	if (textWidth > 0) lSurface = TTF_RenderText_Blended_Wrapped(font, sText.c_str(), fontColor, textWidth);
-	else lSurface = TTF_RenderText_Blended(font, sText.c_str(), fontColor);
+	//if (textWidth > 0) lSurface = TTF_RenderText_Blended_Wrapped(font, sText.c_str(), fontColor, textWidth);
+	//else lSurface = TTF_RenderText_Blended(font, sText.c_str(), fontColor);
+
+	if (textWidth > 0) lSurface = TTF_RenderUTF8_Blended_Wrapped(font, sText.c_str(), fontColor, textWidth);
+	else lSurface = TTF_RenderUTF8_Blended(font, sText.c_str(), fontColor);
 
 	TTF_SetFontStyle(font, TTF_STYLE_NORMAL);
 

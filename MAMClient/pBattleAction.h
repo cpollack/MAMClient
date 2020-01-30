@@ -12,7 +12,8 @@ typedef enum BattleAction {
 	baPlayerRun = 5,
 	baCapture = 6,
 	baCaptureFail = 7,
-	baCaptureSuccess = 8
+	baCaptureSuccess = 8,
+	baUseItem = 9,
 	//baUnknown = 11
 }BattleAction;
 

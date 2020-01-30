@@ -30,6 +30,9 @@
 #include "pUserInfo.h"
 #include "pAction.h"
 #include "pRename.h"
+#include "pUserAttribute.h"
+#include "pUserLevelUp.h"
+#include "pPetLevelUp.h"
 
 #include "pNpcInfo.h"
 #include "pNpc.h"
@@ -40,7 +43,8 @@
 #include "pEnemyInfo.h"
 #include "pFighterInfo.h"
 #include "pBattleAction.h"
-#include "pBattleResponse.h"
+#include "pNormalAct.h"
+#include "pItemAct.h"
 #include "pBattleRound.h"
 #include "pBattleResult.h"
 
@@ -423,8 +427,8 @@ int Client::receivePacket(void *ptr) {
 
 		char packetHeader[4];
 		char decHeader[4];
-		int recvBytes;
-		recvBytes = recv(*client->activeSocket, packetHeader, 4, 0);
+		int recvBytes = 0;
+		if (client->activeSocket) recvBytes = recv(*client->activeSocket, packetHeader, 4, 0);
 		int temp = WSAGetLastError();
 		if (recvBytes == 4) {
 			client->decryptPacket((BYTE*)decHeader, (BYTE*)packetHeader, 4);
@@ -434,7 +438,7 @@ int Client::receivePacket(void *ptr) {
 
 			int payloadSize = size - 4;
 			char* buffer = new char[size - 4];
-			recvBytes = recv(*client->activeSocket, buffer, payloadSize, 0);
+			if (client->activeSocket) recvBytes = recv(*client->activeSocket, buffer, payloadSize, 0);
 			if (recvBytes == payloadSize) {
 				client->createPacketByType(type, size, packetHeader, buffer);
 			}
@@ -600,14 +604,20 @@ void Client::createPacketByType(int type, int size, char* header, char* buffer) 
 	case ptPetInfo:
 		packet = new pPetInfo(fullDecryptBuffer, fullBuffer);
 		break;
+	case ptUserAttribute:
+		packet = new pUserAttribute(size, fullDecryptBuffer, fullBuffer);
+		break;
 	case ptColor:
 		packet = new pColor(fullDecryptBuffer, fullBuffer);
 		break;
 	case ptBattleAction:
 		packet = new pBattleAction(fullDecryptBuffer, fullBuffer);
 		break;
-	case ptBattleResponse:
-		packet = new pBattleResponse(fullDecryptBuffer, fullBuffer);
+	case ptNormalAct:
+		packet = new pNormalAct(fullDecryptBuffer, fullBuffer);
+		break;
+	case ptItemAct:
+		packet = new pItemAct(fullDecryptBuffer, fullBuffer);
 		break;
 	case ptBattleState:
 		packet = new pBattleState(fullDecryptBuffer, fullBuffer);
@@ -620,6 +630,12 @@ void Client::createPacketByType(int type, int size, char* header, char* buffer) 
 		break;
 	case ptBattleResult:
 		packet = new pBattleResult(fullDecryptBuffer, fullBuffer);
+		break;
+	case ptUserLevelUp:
+		packet = new pUserLevelUp(fullDecryptBuffer, fullBuffer);
+		break;
+	case ptPetLevelUp:
+		packet = new pPetLevelUp(fullDecryptBuffer, fullBuffer);
 		break;
 	case ptBattleRound:
 		packet = new pBattleRound(fullDecryptBuffer, fullBuffer);

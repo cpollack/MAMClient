@@ -4,22 +4,39 @@ NPCs do not 'turn' when clicked
 Pet accessory info
 Pet Evolve
 Pet Change Accessory
+Pet medals
 
 Bugs:
 
 
+--------------------
+
+
+Build notes 1.0.12
+
+Major Fix:
+- LARGE refactoring of monster and pet mechanics. Pet now inherits from Monster, which inherits from Entity. All share the same base with user/player classes for cleaner flows on animating and state handling.
+- Battle and BattleScene classes restructured and cleaned up.
+
 Fix:
-- You can no longer open certain windows while in battle (character, pet, inventory)
-- Fixed a petlist crash that would try to load a nonexistent pet
-- Map clicks reload coordinates before jumping to prevent jumping to invalid coordiantes during map change via npc/action.
+- Faint animation in battle is smoother and doesn't leave extra frames
+- If max mana changed, it did not update accordingly on the main window gauge
+- Floating labels in battle no longer overlap, and were moved to the entity class
+
+Enhancement:
+- First pass 'catch-all' exception handling added to alert users of a thrown exception before shutting down the client semi-gracefully.
+- 'BattleResponse' refactored to 'NormalAct' in battle. There are multiple battle action type reponses.
+- Sprite rendering updated from frame counter to tick/ms based, allowing finer control of sprite animation.
 
 Feature:
+- Items can now be used in Battle. 
+-- Items also cause a heal/poison effect when used
+- Monster sprites in battle now apply the color packet for recoloring
+- Players / Monsters visible on maps also apply the color shifts as appropriate
 
 
 
 -------------------------------
 
 Minor Bugs:
-On Asset Reload, login form second field widget has a green hue, possible due to blend
 Right click on map should always send a direction packet, even if its a npc click
-packet 2031(npc action?) on right click as well?

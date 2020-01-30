@@ -35,20 +35,10 @@ private:
 private:
 	SDL_Renderer* renderer;
 	Texture* nameLabel;
-	//int id, type, look;
-	//int x, y;
-
-	//Sprite* animations[8] = { nullptr };
-	HSBSet hslSets[3] = { 0 };
-	//int direction, animDir;
-	//SDL_Point real_position;
 
 	int GetShopID();
 
 public:
-	//std::string name;
-
-	//Sprite* getCurrentSprite();
 	int GetType() { return Type; }
 	std::string GetTypeText();
 };

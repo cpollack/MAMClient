@@ -123,7 +123,7 @@ void FormMain::initMain() {
 
 	//Character Detail Labels
 	createLabel("name", "Name", surfacePosX + 382, surfacePosY + 52, true);
-	createLabel("name_value", player->getName(), surfacePosX + 430, surfacePosY + 52, false);
+	createLabel("name_value", player->GetName(), surfacePosX + 430, surfacePosY + 52, false);
 	createLabel("nickname", "Nickname", surfacePosX + 382, surfacePosY + 76, true);
 	createLabel("nickname_value", player->getNickName(), surfacePosX + 455, surfacePosY + 76, false);
 	createLabel("level", "Level", surfacePosX + 382, surfacePosY + 100, true);

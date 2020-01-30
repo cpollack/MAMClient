@@ -6,10 +6,14 @@
 AssetManager::AssetManager() {
 	aMutex = SDL_CreateMutex();
 	qMutex = SDL_CreateMutex();
+	rleMutex = SDL_CreateMutex();
 }
 
 AssetManager::~AssetManager() {
 	//free all assets
+	SDL_DestroyMutex(aMutex);
+	SDL_DestroyMutex(qMutex);
+	SDL_DestroyMutex(rleMutex);
 }
 
 
@@ -67,4 +71,42 @@ Asset AssetManager::getNextAssetFromQueue() {
 	} SDL_UnlockMutex(qMutex);
 
 	return asset;
+}
+
+void AssetManager::addRLE(std::string path, RLEAsset rle) {
+	rleAssets[path] = rle;
+}
+
+RLEAsset AssetManager::getRLE(std::string path) {
+	RLEAsset rle;
+	if (path.length() == 0) return rle;
+
+	SDL_LockMutex(rleMutex);
+	RLEMapItr itr;
+	itr = rleAssets.begin();
+	while (itr != rleAssets.end()) {
+		if (itr->first.compare(path) == 0) {
+			rle = itr->second;
+			return rle;
+		}
+		itr++;
+	}
+	SDL_UnlockMutex(rleMutex);
+	return rle;
+}
+
+void AssetManager::releaseRLE(std::string path) {
+	if (path.length() == 0) return;
+
+	SDL_LockMutex(rleMutex);
+		RLEMapItr itr;
+		itr = rleAssets.begin();
+		while (itr != rleAssets.end()) {
+			if (itr->first.compare(path) == 0) {
+				if (itr->second.use_count() == 1) rleAssets.erase(itr);
+				break;
+			}
+			itr++;
+		}
+	SDL_UnlockMutex(rleMutex);
 }

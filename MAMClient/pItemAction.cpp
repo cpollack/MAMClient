@@ -52,11 +52,25 @@ void pItemAction::process() {
 		break;
 	case iaBuy:
 		player->buyItem(itemId);
-		formMain->setCash(player->cash);
+		e.type = CUSTOMEVENT_ITEM;
+		e.user.code = ITEM_BUY;
+		e.user.data1 = player->inventory->getItem(itemId);
+		SDL_PushEvent(&e);
+
+		e.type = CUSTOMEVENT_PLAYER;
+		e.user.code = PLAYER_MONEY;
+		SDL_PushEvent(&e);
 		break;
 	case iaSell:
+		e.type = CUSTOMEVENT_ITEM;
+		e.user.code = ITEM_SELL;
+		e.user.data1 = player->inventory->getItem(itemId);
+		SDL_PushEvent(&e);
 		player->sellItem(itemId);
-		formMain->setCash(player->cash);
+
+		e.type = CUSTOMEVENT_PLAYER;
+		e.user.code = PLAYER_MONEY;
+		SDL_PushEvent(&e);
 		break;
 	case iaDrop:
 		e.type = CUSTOMEVENT_ITEM;
