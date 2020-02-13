@@ -7,7 +7,6 @@
 #include "Player.h"
 #include "GameMap.h"
 #include "Battle.h"
-#include "FormMain.h"
 #include "MainWindow.h"
 #include "Window.h"
 
@@ -34,7 +33,6 @@ GUI* gui;
 Player* player = nullptr;
 GameMap *map = nullptr;
 Battle *battle = nullptr;
-FormMain* formMain; //To be deprecated
 CMainWindow* mainForm;
 CChat* chat;
 MessageManager messageManager;
@@ -54,14 +52,11 @@ int main(int argc, char *args[]) {
 	}	
 
 	//chat = new CChat(); initialized in formMain
-	//formMain = new FormMain(800, 600);
 	mainForm = new CMainWindow();
-	//focusedWindow = formMain;
 	focusedWindow = mainForm;
 
 	//CTestForm* testForm = new CTestForm();
 	//Windows.push_back(testForm);
-
 
 	bool quit = false;
 	CWindow *topmost;
@@ -73,7 +68,10 @@ int main(int argc, char *args[]) {
 	std::vector<Uint32> ticks;
 	SDL_Event e;
 
-	//try {
+	#define GLOBAL_CATCH
+#ifdef GLOBAL_CATCH
+	try {
+#endif
 		while (!quit) {
 			tickLength = SDL_GetTicks();
 			gClient.handlePackets();
@@ -128,7 +126,6 @@ int main(int argc, char *args[]) {
 						lastFocusLost = true;
 					}
 					else {
-						//formMain->handleEvent(e);
 						mainForm->handleEvent(e);
 						if (Windows.size()) getTopmost()->handleEvent(e);
 						/*for (auto window : Windows) {
@@ -167,7 +164,6 @@ int main(int argc, char *args[]) {
 					}
 				}
 			}
-			//formMain->handleWidgetEvent();
 			mainForm->step();
 			int size = Windows.size();
 			for (int i = 0; i < size; i++) {
@@ -181,7 +177,6 @@ int main(int argc, char *args[]) {
 			if (rem > 0) SDL_Delay(rem);
 
 			//Render texture to screen
-			//formMain->render();
 			mainForm->render();
 			mainForm->renderPresent();
 			for (auto window : Windows) {
@@ -202,7 +197,8 @@ int main(int argc, char *args[]) {
 				tenSec = thisTick;
 			}
 		}
-	/*}
+#ifdef GLOBAL_CATCH
+	}
 	catch (std::bad_alloc) {
 		showErrorMessage("The application has experience a Bad Alloc Error in an unknown location, and will now shut down.");
 	}
@@ -220,7 +216,8 @@ int main(int argc, char *args[]) {
 	}
 	catch (...) {
 		showErrorMessage("The application has experience an unknown fault, and will now shut down.");
-	}*/
+	}
+#endif
 
 	//Free resources and close SDL
 	gClient.shutdownThread();

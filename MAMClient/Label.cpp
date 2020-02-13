@@ -20,7 +20,7 @@ CLabel::CLabel(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 }
 
 CLabel::~CLabel() {
-	//
+	//fontTexture freed in CWidget
 }
 
 void CLabel::ReloadAssets() {
@@ -110,87 +110,4 @@ void CLabel::SetVAlignment(LabelVAlignment valign) {
 
 SDL_Rect CLabel::GetTextRect() {
 	return fontRect;
-}
-
-// Start old Label, to be deprecated
-
-Label::Label(std::string sLine, int toX, int toY, bool isBold) : Widget(toX, toY) {
-	bold = isBold;
-	loadFont(bold);
-	setText(sLine);
-
-	width = fontRect.w;
-	height = fontRect.h;
-
-	alignment = laLeft;
-	initTextRect();
-}
-
-
-Label::~Label() {
-}
-
-
-void Label::render() {
-	if (!visible) return;
-	SDL_RenderCopy(renderer, fontTexture, NULL, &textRect);
-}
-
-
-void Label::offsetPosition(SDL_Point offset) {
-	Widget::offsetPosition(offset);
-	initTextRect();
-}
-
-
-void Label::offsetPosition(int offsetX, int offsetY) {
-	Widget::offsetPosition(offsetX, offsetY);
-	initTextRect();
-}
-
-
-void Label::setAlignment(LabelAlignment algn) {
-	alignment = algn;
-	initTextRect();
-}
-
-
-void Label::initTextRect() {
-	switch (alignment) {
-	case laLeft:
-		textRect = { x, y, fontRect.w, fontRect.h };
-		break;
-	case laCenter:
-		textRect = { x - (fontRect.w/2), y, fontRect.w, fontRect.h };
-		break;
-	case laRight:
-		textRect = { x - fontRect.w, y, fontRect.w, fontRect.h };
-		break;
-	default:
-		textRect = { x, y, fontRect.w, fontRect.h };
-		break;
-	}
-	
-}
-
-
-void Label::setPosition(int px, int py) {
-	Widget::setPosition(px, py);
-	initTextRect();
-}
-
-
-void Label::setText(std::string sText) {
-	Widget::setText(sText);
-	initTextRect();
-}
-
-
-void Label::renderText(std::string sText) {
-	Widget::renderText(sText);
-	initTextRect();
-}
-
-int Label::getHeight() {
-	return textRect.h;
 }

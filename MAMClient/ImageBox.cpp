@@ -26,6 +26,7 @@ CImageBox::CImageBox(CWindow* window, rapidjson::Value& vWidget) : CWidget(windo
 
 CImageBox::~CImageBox() {
 	if (ImageBox) SDL_DestroyTexture(ImageBox);
+	if (sprite) delete sprite;
 }
 
 void CImageBox::ReloadAssets() {

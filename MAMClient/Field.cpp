@@ -23,7 +23,8 @@ CField::CField(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 }
 
 CField::~CField() {
-	//
+	if (fieldTexture) SDL_DestroyTexture(fieldTexture);
+	if (hintTexture) SDL_DestroyTexture(hintTexture);
 }
 
 void CField::ReloadAssets() {
@@ -224,6 +225,22 @@ void CField::SetHint(std::string h) {
 	RenderHintTexture();
 }
 
+void CField::LoseFocus() {
+	if (!Focused) return;
+	Focused = false;
+
+	if (CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
+		SDL_Event event;
+		SDL_zero(event);
+		event.type = CUSTOMEVENT_WIDGET;
+		event.window.windowID = Window->GetWindowID();
+		event.user.code = WIDGET_FOCUS_LOST;
+		event.user.data1 = this;
+		event.user.data2 = Window;
+		SDL_PushEvent(&event);
+	}
+}
+
 std::string CField::GetText() {
 	if (IsPassword) return passwordText;
 	if (Numeric && Text.length() == 0) return "0";
@@ -354,266 +371,4 @@ void CField::OnChange(SDL_Event& e) {
 
 	auto iter = eventMap.find("OnChange");
 	if (iter != eventMap.end()) iter->second(e);
-}
-
-
-//Old implementation, to be deprecated
-
-Field::Field(std::string text, int toX, int toY, int w, int h, bool smallBorder) : Widget(toX, toY) {
-	widgetType = wtField;
-	loadFont(false);
-
-	fieldText = text;
-	//Widget::renderText(fieldText);
-	Widget::setText(fieldText);
-
-	width = w;
-	height = h;
-
-	//Draw Field texture with borders
-	fieldTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
-	SDL_SetRenderTarget(renderer, fieldTexture);
-
-	SDL_SetRenderDrawColor(renderer, gui->backColor.r, gui->backColor.g, gui->backColor.b, 255);
-	SDL_RenderClear(renderer);
-
-	hlineRGBA(renderer, 0, width, 0, 0xA0, 0xA0, 0xA0, 0xFF);
-	vlineRGBA(renderer, 0, 0, height, 0xA0, 0xA0, 0xA0, 0xFF);
-
-	if (!smallBorder) {
-		hlineRGBA(renderer, 1, width - 1, 1, 0x69, 0x69, 0x69, 0xFF);
-		vlineRGBA(renderer, 1, 1, height - 1, 0x69, 0x69, 0x69, 0xFF);
-
-		hlineRGBA(renderer, 1, width - 1, height - 2, 0xE3, 0xE3, 0xE3, 0xFF);
-		vlineRGBA(renderer, width - 2, 1, height - 2, 0xE3, 0xE3, 0xE3, 0xFF);
-	}
-
-	hlineRGBA(renderer, 0, width, height - 1, 0xFF, 0xFF, 0xFF, 0xFF);
-	vlineRGBA(renderer, width - 1, 0, height - 1, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_SetRenderTarget(renderer, NULL);
-}
-
-
-Field::~Field() {
-}
-
-
-void Field::render() {
-	if (!visible) return;
-
-	//Render the background UI for the widget
-	SDL_Rect fieldRect = { x, y, width, height };
-	SDL_RenderCopy(renderer, fieldTexture, NULL, &fieldRect);
-
-	//Render the actual text
-	SDL_Rect textRect{ x + 5, y + ((height / 2) - (fontRect.h / 2)), fontRect.w, fontRect.h };
-	SDL_RenderCopy(renderer, fontTexture, NULL, &textRect);
-
-	//Render cursor
-	if (focused) {
-		cursorFrames++;
-		int nextFrame = cursorFrames % 60;
-		if (nextFrame < 30) {
-			int cursorX = 0;
-			if (cursorPos == fieldText.size()) {
-				cursorX = textRect.x + textRect.w;
-			}
-
-			if (cursorPos == 0) {
-				cursorX = textRect.x;
-			}
-
-			int cursorY1 = textRect.y;
-			int cursorY2 = textRect.y + textRect.h;
-			vlineRGBA(renderer, cursorX, cursorY1, cursorY2, 0xE3, 0xE3, 0xE3, 0xFF);
-		}
-	}
-}
-
-
-bool Field::handleEvent(SDL_Event* e) {
-	if (e->type == SDL_MOUSEBUTTONDOWN) {
-		int mx, my;
-		SDL_GetMouseState(&mx, &my);
-
-		if (mx >= x && mx <= (x + width) && my >= y && my <= (y + height)) {
-			clicked = true;
-			//return true;
-		}
-	}
-
-	if (e->type == SDL_MOUSEBUTTONUP) {
-		int mx, my;
-		SDL_GetMouseState(&mx, &my);
-
-		if (focused && !clicked) {
-			SDL_StopTextInput();
-			focused = false;
-			return false;
-		}
-
-		if (clicked && mx >= x && mx <= (x + width) && my >= y && my <= (y + height)) {
-			clicked = false;
-			if (!disabled) {
-				focused = true;
-				newFocus = true;
-				cursorPos = fieldText.size();
-				cursorFrames = 0;
-				SDL_StartTextInput();
-			}
-			return true;
-		}
-
-		clicked = false;
-	}
-
-	if (focused && e->type == SDL_KEYDOWN)
-	{
-		//Handle backspace
-		if (e->key.keysym.sym == SDLK_BACKSPACE && fieldText.length() > 0)
-		{
-			fieldText.pop_back();
-			formatAndRender();
-			return true;
-		}
-
-		//'Enter' to act like a submit
-		if (e->key.keysym.sym == SDLK_RETURN || e->key.keysym.sym == SDLK_KP_ENTER) {
-			focused = false;
-			submitted = true;
-			return true;
-		}
-	}
-
-	if (focused && e->type == SDL_TEXTINPUT)
-	{
-		//Not copy or pasting
-		/*if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
-		{
-			//Append character
-			inputText += e.text.text;
-			renderText = true;
-		}*/
-
-		fieldText += e->text.text;
-		formatAndRender();
-		return true;
-	}
-
-	return false;
-}
-
-
-void Field::setMaxSize(int size) {
-	characterLimit = size;
-	formatAndRender();
-}
-
-
-void Field::setMask(bool useMask) {
-	isMasked = useMask;
-	formatAndRender();
-}
-
-
-void Field::formatAndRender() {
-	if (fieldText.size() > characterLimit) {
-		fieldText = fieldText.substr(0, characterLimit);
-	}
-	cursorPos = fieldText.size();
-
-	std::string tempOutput;
-	if (isMasked) {
-		int strLength = fieldText.size();
-		//renderText.clear();
-		//for (int i =0; i<strLength; i++)
-		//	renderText.push_back(L'\x2022');
-
-		tempOutput.clear();
-		for (int i = 0; i<strLength; i++)
-			tempOutput.push_back(42);
-	}
-	else {
-		//std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		//renderText = converter.from_bytes(fieldText);
-		tempOutput = fieldText;
-	}
-	
-	/*std::wstring tempOutput;
-	if (renderText.size() == 0) tempOutput = L" ";
-	else tempOutput = renderText;
-	u16string utext(tempOutput.begin(), tempOutput.end());
-
-	SDL_Surface* lSurface = TTF_RenderUNICODE_Solid(font, utext.c_str(), gui->fontColor);*/
-
-	
-	if (!tempOutput.length()) tempOutput = " ";
-	//SDL_Surface* lSurface = TTF_RenderUNICODE_Solid(font, utext.c_str(), gui->fontColor);
-	SDL_Surface* lSurface = TTF_RenderText_Blended(font, tempOutput.c_str(), gui->fontColor);
-	if (lSurface != NULL) {
-		fontTexture = SDL_CreateTextureFromSurface(renderer, lSurface);
-		fontRect = { 0, 0, lSurface->w, lSurface->h };
-
-		SDL_FreeSurface(lSurface);
-	}
-}
-
-
-/*void Field::renderText(std::wstring wText) {
-	SDL_Surface* lSurface = TTF_RenderText_Solid(wFont, wText.c_str(), gui->fontColor);
-	if (lSurface != NULL) {
-		fontTexture = SDL_CreateTextureFromSurface(renderer, lSurface);
-		fontRect = { 0, 0, lSurface->w, lSurface->h };
-
-		SDL_FreeSurface(lSurface);
-	}
-}*/
-
-
-std::string Field::getValue() {
-	return fieldText;
-}
-
-
-void Field::setValue(std::string val) {
-	cursorPos = val.size();
-	fieldText = val;
-	if (val == "") Widget::renderText(" ");
-	else Widget::renderText(fieldText);
-}
-
-
-bool Field::isSubmitted() {
-	if (submitted) {
-		submitted = false;
-		return true;
-	}
-	return false;
-}
-
-
-void Field::setFocused() {
-	focused = true;
-}
-
-
-void Field::clearFocus() {
-	focused = false;
-}
-
-
-bool Field::isNewFocus() {
-	bool nf = newFocus;
-	newFocus = false;
-	return nf;
-}
-
-
-bool Field::isFocused() {
-	return focused;
-}
-
-
-void Field::setDisabled(bool disable) {
-	disabled = disable;
 }

@@ -29,7 +29,7 @@ CPanel::CPanel(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 }
 
 CPanel::~CPanel() {
-	//
+	if (panelTexture) SDL_DestroyTexture(panelTexture);
 }
 
 void CPanel::ReloadAssets() {
@@ -88,61 +88,4 @@ void CPanel::CreatePanelTexture() {
 	}
 
 	SDL_SetRenderTarget(renderer, NULL);
-}
-
-
-/* Old - to be deprecated */
-
-#include "Label.h"
-
-Panel::Panel(int tox, int toy, int w, int h, std::string header) : Widget(tox, toy) {
-	width = w;
-	height = h;
-	panelHeader = header;
-
-	SDL_Color bgColor = gui->backColor;
-	int lblOffset = 0;
-	if (panelHeader != "") {
-		//Header, draw complex border
-		lblHeader = new Label(panelHeader, 9, 0);
-		lblOffset = (lblHeader->height / 2);
-		height += lblOffset;
-		y -= lblOffset;
-	}
-	renderTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
-
-	SDL_SetRenderTarget(renderer, renderTexture);
-	SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 255);
-	SDL_RenderClear(renderer);
-
-	//Border
-	if (panelHeader != "") {
-		//Header, draw complex border
-
-		rectangleRGBA(renderer, 1, lblOffset + 1, width - 1, height - 1, 0xFF, 0xFF, 0xFF, 0xFF);
-		rectangleRGBA(renderer, 0, lblOffset, width - 2, height - 2, 0xA0, 0xA0, 0xA0, 0xFF);
-		
-		boxRGBA(renderer, 9, 0, 9 + lblHeader->textRect.w, lblHeader->textRect.h, bgColor.r, bgColor.g, bgColor.b, bgColor.a);
-		lblHeader->render();
-	}
-	else {
-		//No header, draw simple border
-		hlineRGBA(renderer, 0, width-1, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-		vlineRGBA(renderer, 0, 0, height-1, 0xFF, 0xFF, 0xFF, 0xFF);
-
-		hlineRGBA(renderer, 0, width-1, height-1, 0xA0, 0xA0, 0xA0, 0xFF);
-		vlineRGBA(renderer, width-1, 0, height-1, 0xA0, 0xA0, 0xA0, 0xFF);		
-	}
-	SDL_SetRenderTarget(renderer, NULL);
-}
-
-
-Panel::~Panel() {
-
-}
-
-
-void Panel::render() {
-	renderRect = { x,y,width,height };
-	SDL_RenderCopy(renderer, renderTexture, NULL, &renderRect);
 }

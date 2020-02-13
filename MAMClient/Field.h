@@ -48,6 +48,7 @@ public:
 	void SetHeight(int h);
 	virtual void SetFocus(bool focus);
 	void SetHint(std::string h);
+	void LoseFocus();
 
 protected:
 	void OnFocus();
@@ -59,43 +60,4 @@ protected:
 	void OnSubmit(SDL_Event& e);
 	void OnTab(SDL_Event &e);
 	void OnChange(SDL_Event& e);
-};
-
-//Old implementation, to be deprecated
-
-//typedef std::basic_string<Uint16, std::char_traits<Uint16>, std::allocator<Uint16> > u16string;
-
-class Field : public Widget {
-private:
-	SDL_Texture* fieldTexture;
-	bool focused = false, newFocus = false;
-	bool clicked = false;
-	bool isMasked = false;
-	bool submitted = false;
-	bool disabled = false;
-
-	int cursorPos;
-	int cursorFrames;
-	int characterLimit;
-
-public:
-	Field(std::string sLine, int toX, int toY, int w, int h, bool smallBorder = false);
-	~Field();
-	void Field::render();
-	bool Field::handleEvent(SDL_Event* e);
-	void Field::setMaxSize(int size);
-	void Field::setMask(bool useMask);
-	void Field::formatAndRender();
-	std::string Field::getValue();
-	void Field::setValue(std::string val);
-	void Field::setFocused();
-	void Field::clearFocus();
-	bool Field::isNewFocus();
-	bool Field::isFocused();
-	void Field::setDisabled(bool disable);
-	bool Field::isSubmitted();
-	//void Field::renderText(std::wstring wText);
-
-	std::string fieldText;
-	std::wstring renderText;
 };

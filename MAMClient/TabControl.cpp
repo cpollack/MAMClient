@@ -244,6 +244,7 @@ void CTabControl::DrawButtonTab(int index, bool vTab) {
 
 		SDL_RenderCopy(renderer, tabText->texture, NULL, &textRect);
 	}
+	if (tabText) delete tabText;
 
 	SDL_SetRenderTarget(renderer, priorTarget);
 

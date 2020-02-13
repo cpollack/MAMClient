@@ -51,7 +51,7 @@ protected:
 	int Depth;
 	bool Visible = true;	
 	bool ReadOnly;
-	bool mouseOver;
+	bool MouseOver;
 	bool held;
 
 	//Text related properties
@@ -87,6 +87,7 @@ public: //Accessors
 	int GetTabItem();
 	int GetDepth() { return Depth; }
 
+	bool IsMouseOver() { return MouseOver; }
 
 public:
 	virtual void Render();
@@ -118,55 +119,3 @@ public:
 	virtual void OnFocus();
 	virtual void OnFocusLost();
 };
-
-
-class Widget {
-public:
-	int x, y;
-	int width, height;
-	int textWidth = 0;
-	int priority = 0;
-	int depth = 0;
-	int widgetType = wtWidget;
-
-	Widget(int toX, int toY);
-	~Widget();
-	virtual void Widget::render();
-	virtual bool Widget::handleEvent(SDL_Event* e);
-
-	void Widget::loadFont();
-	void Widget::loadFont(bool isBold );
-	virtual void Widget::renderText(std::string sText);
-	virtual void Widget::setText(std::string sText);
-	void Widget::setTextWidth(int tWidth);
-
-	void Widget::setVisibility(bool setVisible);
-	void Widget::setFont(TTF_Font* newFont);
-	void Widget::setFontColor(SDL_Color aColor);
-	virtual void Widget::setPosition(SDL_Point pos);
-	virtual void Widget::setPosition(int px, int py);
-	virtual void Widget::offsetPosition(SDL_Point offset);
-	virtual void Widget::offsetPosition(int offsetX, int offsetY);
-	void Widget::setPriority(int pri);
-	void Widget::setDepth(int dep);
-	void Widget::setUnderlinded(bool und);
-
-	TTF_Font* font;
-	SDL_Texture* fontTexture = NULL;
-	SDL_Rect fontRect;
-	SDL_Color fontColor;
-
-private:	
-
-protected:
-	SDL_Renderer* renderer;
-	SDL_Texture* wTexture;
-
-	std::string text;
-
-	bool visible;
-	bool underlined = false;
-	bool bold = false;
-};
-
-bool operator<(const Widget &s1, const Widget &s2);

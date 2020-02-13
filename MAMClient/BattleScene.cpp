@@ -679,6 +679,8 @@ bool BattleScene::perform_useItem(bsPerform* perform) {
 		reactor->loadSprite(true);
 		return true;
 	}
+
+	return false;
 }
 
 

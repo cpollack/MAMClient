@@ -1,13 +1,19 @@
 #include "stdafx.h"
 #include "Chat.h"
 
-#include "MainWindow.h"
 #include "Player.h"
+#include "MessageManager.h"
 #include "pMessage.h"
 
+#include "CustomEvents.h"
+#include "Window.h"
+#include "Widget.h"
 #include "Field.h"
+#include "Button.h"
 
 CChat::CChat(CWindow* window) {
+	this->window = window;
+	renderer = window->renderer;
 	opacity = 128;
 
 	chatField = new CChatField(window, this, "chatField", 0, 0);
@@ -15,8 +21,28 @@ CChat::CChat(CWindow* window) {
 	widgets["chatField"] = chatField;
 	registerEvent("chatField", "Submit", std::bind(&CChat::chatField_Submit, this, std::placeholders::_1));
 
+	AddButton("btnAll", 40, 25, "GUI/chat/All.png", "GUI/chat/AllDown.png", 0)->SetType(btToggle);
+	AddButton("btnLocal", 40, 25, "GUI/chat/Local.png", "GUI/chat/LocalDown.png", 40)->SetType(btToggle);
+	AddButton("btnWhisper", 40, 25, "GUI/chat/Whisper.png", "GUI/chat/WhisperDown.png", 80)->SetType(btToggle);
+	AddButton("btnTeam", 40, 25, "GUI/chat/Team.png", "GUI/chat/TeamDown.png", 120)->SetType(btToggle);
+	AddButton("btnFriend", 40, 25, "GUI/chat/Friend.png", "GUI/chat/FriendDown.png", 160)->SetType(btToggle);
+	AddButton("btnGuild", 40, 25, "GUI/chat/Guild.png", "GUI/chat/GuildDown.png", 200)->SetType(btToggle);
+	AddButton("btnSystem", 40, 25, "GUI/chat/System.png", "GUI/chat/SystemDown.png", 240)->SetType(btToggle);
+	AddButton("btnSettings", 20, 20, "GUI/chat/Cog.png", "GUI/chat/CogDown.png", 0);
+
+	registerEvent("btnAll", "ToggleOn", std::bind(&CChat::btnAll_ToggleOn, this, std::placeholders::_1));
+	registerEvent("btnLocal", "ToggleOn", std::bind(&CChat::btnLocal_ToggleOn, this, std::placeholders::_1));
+	registerEvent("btnWhisper", "ToggleOn", std::bind(&CChat::btnWhisper_ToggleOn, this, std::placeholders::_1));
+	registerEvent("btnTeam", "ToggleOn", std::bind(&CChat::btnTeam_ToggleOn, this, std::placeholders::_1));
+	registerEvent("btnFriend", "ToggleOn", std::bind(&CChat::btnFriend_ToggleOn, this, std::placeholders::_1));
+	registerEvent("btnGuild", "ToggleOn", std::bind(&CChat::btnGuild_ToggleOn, this, std::placeholders::_1));
+	registerEvent("btnSystem", "ToggleOn", std::bind(&CChat::btnSystem_ToggleOn, this, std::placeholders::_1));
+	registerEvent("btnSettings", "Click", std::bind(&CChat::btnSettings_Click, this, std::placeholders::_1));
+
 	UpdateRect();
 	chatColor = { 255, 255, 255, opacity };
+	((CButton*)widgets["btnAll"])->Toggle(true);
+	SetChannel(ccNormal);
 }
 
 CChat::~CChat() {
@@ -36,7 +62,7 @@ void CChat::render() {
 	//Draw the main texture first
 	int x2 = mainRect.x + mainRect.w;
 	int y2 = mainRect.y + mainRect.h;
-	//roundedBoxRGBA(renderer, 0, 0, mainRect.w, mainRect.h, 10, 0, 0, 0, opacity);
+	roundedBoxRGBA(renderer, 0, 0, mainRect.w, mainRect.h, 10, 0, 0, 0, opacity);
 
 	//draw header with tabs
 
@@ -58,7 +84,9 @@ void CChat::render() {
 
 	//draw chat input here
 	rectangleRGBA(renderer, chatRect.x, chatRect.y, chatRect.x + chatRect.w, chatRect.y + chatRect.h, 255, 255, 255, opacity);
-	chatField->Render();
+
+	for (auto widget : widgets) widget.second->Render();
+	//chatField->Render();
 
 	SDL_DestroyTexture(histTexture); //this breaks rectangleRGBA for some reason
 
@@ -71,7 +99,40 @@ void CChat::render_history() {
 	int heightUsed = 0;
 	for (int i = messages.size(); i > 0; i--) {
 		CMessage *curMessage = messages[i - 1];
-		if (curMessage->channel == ccHidden) continue;
+
+		bool show = false;
+		switch (curMessage->channel) {
+		case ccNormal:
+			if (Filter == cfAll || Filter == cfLocal) show = true;
+			break;
+		case ccPrivate:
+			show = true;
+			if (Filter == cfSystem) show = false;
+			break;
+		case ccTeam:
+			if (Filter == cfAll || Filter == cfTeam) show = true;
+			break;
+		case ccFriend:
+			if (Filter == cfAll || Filter == cfFriend) show = true;
+			break;
+		case ccGuild:
+			if (Filter == cfAll || Filter == cfGuild) show = true;
+			break;
+		case ccSpouse:
+			show = false;
+			if (Filter == cfAll || Filter == cfWhisper || Filter == cfFriend) show = true;
+			break;
+
+		case ccSystem:
+			show = true;
+		case ccHidden:
+			break;
+
+		default:
+			show = true;
+		}
+		if (!show) continue;
+
 		curMessage->render(width, histRect.h - heightUsed);
 		heightUsed += curMessage->textHeight;
 		
@@ -80,9 +141,49 @@ void CChat::render_history() {
 }
 
 void CChat::handleEvent(SDL_Event& e) {
-	//chatField->HandleEvent(e);
+	if (chatField->IsFocus()) {
+		if (e.type == SDL_KEYDOWN || e.type == SDL_TEXTINPUT) {
+			chatField->HandleEvent(e);
+			return;
+		}
+	}
+	else {
+		if (e.type == SDL_KEYDOWN) {
+			if (e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_RETURN2) window->FocusWidget(chatField);
+		}
+	}
 
-	for (auto widget : widgets) widget.second->HandleEvent(e);
+	if (e.type == SDL_MOUSEMOTION) {
+		MouseOver = false;
+		if (doesPointIntersect(SDL_Rect{ x,y,width,height }, SDL_Point{ e.motion.x, e.motion.y })) {
+			MouseOver = true;
+		}
+	}
+
+	if (!MouseOver) {
+		if (e.type == SDL_MOUSEBUTTONDOWN) chatField->LoseFocus();
+		return;
+	}
+	
+	SDL_Event e2 = e;
+	if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP) {
+		e2.motion.x -= x;
+		e2.motion.y -= y;
+		BlockMouse = false;
+	}
+	for (auto widget : widgets) {
+		widget.second->HandleEvent(e2);
+		if (widget.second->IsMouseOver()) BlockMouse = true;
+	}	
+
+	if (!BlockMouse) {
+		if (e.type == SDL_MOUSEBUTTONDOWN) chatField->LoseFocus();
+	}
+}
+
+void CChat::step() {
+	Message message = messageManager.Poll();
+	if (message.get()) AddMessage(message);
 }
 
 void CChat::registerEvent(std::string widgetName, std::string eventName, EventFunc evf) {
@@ -94,25 +195,69 @@ void CChat::registerEvent(std::string widgetName, std::string eventName, EventFu
 
 /* Event hooks go here */
 
+CButton* CChat::AddButton(std::string name, int btnW, int btnH, std::string btnPath, std::string btnDownPath, int toX) {
+	CButton* newBtn = new CButton(window, name, toX, 0);
+	newBtn->SetWidth(btnW);
+	newBtn->SetHeight(btnH);
+	newBtn->SetUnPressedImage(btnPath);
+	newBtn->SetPressedImage(btnDownPath);
+	widgets[name] = newBtn;
+	return newBtn;
+}
+
 void CChat::UpdateRect() {
 	mainRect = { x, y, width, height };
-	headerRect = { 0, 0, width, 13 };
-	chatRect = { 0, height - InputHeight, width, InputHeight };
-	histRect = { 0, headerRect.h, width, height - headerRect.h - chatRect.h };
+	headerRect = { 0, height - HeaderHeight, width, HeaderHeight };
+	chatRect = { 0, height - HeaderHeight - InputHeight, width, InputHeight };
+	histRect = { 0, 0, width, height - headerRect.h - chatRect.h };
 	scrollRect = { width - 8, histRect.y, 8, histRect.h };
 
 	chatField->SetX(chatRect.x + 5);
 	chatField->SetY(chatRect.y);
 	chatField->SetWidth(chatRect.w - 10);
+
+	widgets["btnAll"]->SetY(headerRect.y);
+	widgets["btnLocal"]->SetY(headerRect.y);
+	widgets["btnWhisper"]->SetY(headerRect.y);
+	widgets["btnTeam"]->SetY(headerRect.y);
+	widgets["btnFriend"]->SetY(headerRect.y);
+	widgets["btnGuild"]->SetY(headerRect.y);
+	widgets["btnSystem"]->SetY(headerRect.y);
+
+	widgets["btnSettings"]->SetX(headerRect.w - widgets["btnSettings"]->GetWidth());
+	widgets["btnSettings"]->SetY(headerRect.y + HeaderHeight - widgets["btnSettings"]->GetHeight());
 }
 
-void CChat::SetRenderer(SDL_Renderer* r) {
+void CChat::UpdateHint() {
+	std::string hint = "Talking in ";
+	switch (Channel) {
+	case ccNormal:
+		hint += "[Local]";
+		break;
+	case ccPrivate:
+		hint += "[Whisper]";
+		break;
+	case ccTeam:
+		hint += "[Team]";
+		break;
+	case ccFriend:
+		hint += "[Friend]";
+		break;
+	case ccGuild:
+		hint += "[Guild]";
+		break;
+	}
+	hint += " @" + Target;
+	chatField->SetHint(hint);
+}
+
+/*void CChat::SetRenderer(SDL_Renderer* r) {
 	renderer = r;
 	//chatField->SetRenderer(renderer);
 	UpdateRect();
 	//chatField->SetText("Test Text!");
-	chatField->SetHint("Talking in [Normal]");
-}
+	//chatField->SetHint("Talking in [Normal]");
+}*/
 
 void CChat::SetFont(TTF_Font *f) {
 	font = f;
@@ -129,7 +274,7 @@ void CChat::SetHeight(int h) {
 }
 
 void CChat::SetHeightInLines(int lines) {
-	SetHeight(TTF_FontHeight(font) * lines);
+	SetHeight(((TTF_FontHeight(font) + LineSpacer) * lines) + HeaderHeight + InputHeight);
 }
 
 void CChat::SetPos(SDL_Point pos) {
@@ -138,8 +283,22 @@ void CChat::SetPos(SDL_Point pos) {
 	UpdateRect();
 }
 
+void CChat::SetChannel(ChatChannel channel) {
+	if (Channel == channel) return;
+	Channel = channel;
+	UpdateHint();
+}
+
 void CChat::AddMessage(pMessage *packet) {
 	CMessage *newMessage = new CMessage(renderer, width, packet);
+	newMessage->SetFont(font);
+	newMessage->GetRows();
+	rowHeight += newMessage->GetRows();
+	messages.push_back(newMessage);
+}
+
+void CChat::AddMessage(Message message) {
+	CMessage *newMessage = new CMessage(renderer, width, message);
 	newMessage->SetFont(font);
 	newMessage->GetRows();
 	rowHeight += newMessage->GetRows();
@@ -162,15 +321,107 @@ int CChat::GetY() {
 	return y;
 }
 
+void CChat::ToggleFilter(std::string btnName, ChatFilter newFilter) {
+	CButton* newBtn = (CButton*)widgets.find(btnName)->second;
+	if (!newBtn || toggledButton == newBtn) return;
+
+	if (toggledButton) toggledButton->Toggle(false);
+	toggledButton = newBtn;
+	Filter = newFilter;
+}
+
 void CChat::chatField_Submit(SDL_Event& e) {
+	if (CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
+		SDL_Event event;
+		SDL_zero(event);
+		event.type = CUSTOMEVENT_WIDGET;
+		event.window.windowID = e.window.windowID;
+		event.user.code = WIDGET_FOCUS_LOST;
+		event.user.data1 = chatField;
+		event.user.data2 = window;
+		SDL_PushEvent(&event);
+	}
+
 	std::string chatText = chatField->GetText();
 	if (chatText.length() == 0) return;
 
+	//Check if this is a valid command
+	if (chatText[0] == '/') {
+		std::locale loc;
+		std::string str = chatText;
+		for (int i = 0; i < str.size(); i++) str[i] = std::toupper(str[i], loc);
+
+		if (str.compare("/L") == 0 || str.compare("/LOCAL") == 0) {
+			SetChannel(ccNormal);
+		}
+		if (str.compare("/W") == 0 || str.compare("/WHISPER") == 0) {
+			SetChannel(ccPrivate);
+		}
+		if (str.compare("/T") == 0 || str.compare("/TEAM") == 0) {
+			SetChannel(ccTeam);
+		}
+		if (str.compare("/F") == 0 || str.compare("/FRIEND") == 0) {
+			SetChannel(ccFriend);
+		}
+		if (str.compare("/G") == 0 || str.compare("/GUILD") == 0) {
+			SetChannel(ccGuild);
+		}
+		chatField->SetText("");
+		return;
+	}
+
+	if (chatText[0] == '@') {
+		std::string str = chatText.substr(1);
+		if (str.size() <= 16 && str.size() >= 1) {
+			Target = str;
+			UpdateHint();
+		}
+		chatField->SetText("");
+		return;
+	}
+
 	int iColor = ((chatColor.r & 0xFF) << 16) | ((chatColor.g & 0xFF) << 8) | (chatColor.b & 0xFF);
-	pMessage *sendMessage = new pMessage(channel, player->GetName(), target, chatText, iColor, effect, emotion);
+	pMessage *sendMessage = new pMessage(Channel, player->GetName(), Target, chatText, iColor, effect, emotion);
 	AddMessage(sendMessage);
 	gClient.addPacket(sendMessage);
 	chatField->SetText("");
+}
+
+void CChat::btnAll_ToggleOn(SDL_Event& e) {
+	ToggleFilter("btnAll", cfAll);
+}
+
+void CChat::btnLocal_ToggleOn(SDL_Event& e) {
+	ToggleFilter("btnLocal", cfLocal);
+	SetChannel(ccNormal);
+}
+
+void CChat::btnWhisper_ToggleOn(SDL_Event& e) {
+	ToggleFilter("btnWhisper", cfWhisper);
+	SetChannel(ccPrivate);
+}
+
+void CChat::btnTeam_ToggleOn(SDL_Event& e) {
+	ToggleFilter("btnTeam", cfTeam);
+	SetChannel(ccTeam);
+}
+
+void CChat::btnFriend_ToggleOn(SDL_Event& e) {
+	ToggleFilter("btnFriend", cfFriend);
+	SetChannel(ccFriend);
+}
+
+void CChat::btnGuild_ToggleOn(SDL_Event& e) {
+	ToggleFilter("btnGuild", cfGuild);
+	SetChannel(ccGuild);
+}
+
+void CChat::btnSystem_ToggleOn(SDL_Event& e) {
+	ToggleFilter("btnSystem", cfSystem);
+}
+
+void CChat::btnSettings_Click(SDL_Event& e) {
+	//
 }
 
 /* - CMessage - */
@@ -187,6 +438,22 @@ CMessage::CMessage(SDL_Renderer *r, int windowWidth, pMessage *packet) {
 	effect = (ChatEffect)packet->effect;
 	emotion = packet->emotion;
 	color = { (Uint8)((packet->color & 0xFF0000) >> 16), (Uint8)((packet->color & 0xFF00) >> 8), (Uint8)(packet->color & 0xFF), (Uint8)0x255 };
+
+	SetFullMessage();
+}
+
+CMessage::CMessage(SDL_Renderer *r, int windowWidth, Message message) {
+	renderer = r;
+	maxWidth = windowWidth;
+
+	sender = message->sender;
+	target = message->target;
+	this->message = message->message;
+
+	channel = (ChatChannel)message->channel;
+	effect = (ChatEffect)message->effect;
+	emotion = message->emotion;
+	color = message->color;
 
 	SetFullMessage();
 }
@@ -223,7 +490,9 @@ void CMessage::render(int maxWidth, int bottomY) {
 		if (row == 1) {
 			//Channel
 			SDL_Color channelColor;
-			if (channel == ccSystem) channelColor = { 255, 0, 255, 255 }; //pruple
+			if (channel == ccSystem) {
+				channelColor = { 255, 0, 255, 255 }; //purple
+			}
 			else {
 				//check for 'related to me'
 				//Color for from/to me: 255,0,255 //purple
@@ -277,8 +546,10 @@ void CMessage::renderText(std::string renderString, SDL_Color withColor, SDL_Poi
 	if (luma > 50) shadow = { 32, 32, 32, 192 };
 	else shadow = { 192, 192, 192, 192 };
 
-	SDL_Surface *textSurface = TTF_RenderText_Blended(gui->chatFont, renderString.c_str(), withColor);
-	SDL_Surface *shadowSurface = TTF_RenderText_Blended(gui->chatFont, renderString.c_str(), shadow);
+	//SDL_Surface *textSurface = TTF_RenderText_Blended(gui->chatFont, renderString.c_str(), withColor);
+	SDL_Surface *textSurface = TTF_RenderUNICODE_Solid(gui->fontUni, (const Uint16*)StringToWString(renderString).c_str(), withColor);
+	//SDL_Surface *shadowSurface = TTF_RenderText_Blended(gui->chatFont, renderString.c_str(), shadow);
+	SDL_Surface *shadowSurface = TTF_RenderUNICODE_Solid(gui->fontUni, (const Uint16*)StringToWString(renderString).c_str(), shadow);
 	SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 	SDL_Texture *shadowTexture = SDL_CreateTextureFromSurface(renderer, shadowSurface);
 
@@ -295,14 +566,14 @@ void CMessage::renderText(std::string renderString, SDL_Color withColor, SDL_Poi
 		SDL_Rect destRect = { toPoint.x, toPoint.y, toWidth, h };
 
 		SDL_SetTextureBlendMode(textTexture, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-		SDL_SetTextureBlendMode(shadowTexture, SDL_BlendMode::SDL_BLENDMODE_NONE);
+		SDL_SetTextureBlendMode(shadowTexture, SDL_BlendMode::SDL_BLENDMODE_BLEND);
 
 		SDL_RenderCopy(renderer, shadowTexture, &srcRect, &destRect);
 		
 		destRect.x -= 1;
 		destRect.y -= 1;
 		SDL_RenderCopy(renderer, textTexture, &srcRect, &destRect);
-		SDL_RenderCopy(renderer, textTexture, &srcRect, &destRect);
+		//SDL_RenderCopy(renderer, textTexture, &srcRect, &destRect);
 
 		*advance = w;
 		SDL_DestroyTexture(textTexture);
@@ -453,35 +724,23 @@ void CChatField::Render() {
 }
 
 void CChatField::HandleEvent(SDL_Event& e) {
-	if (e.type == SDL_MOUSEBUTTONDOWN) {
-		int mx, my;
-		SDL_GetMouseState(&mx, &my);
-		mx -= (gui->left->width + 20 + pChat->GetX());
-		my -= (gui->topCenter->height + 9 + pChat->GetY());
+	CWidget::HandleEvent(e);
 
-		if (DoesPointIntersect(SDL_Point{ mx, my })) {
+	if (e.type == SDL_MOUSEBUTTONDOWN) {
+		if (MouseOver) {
 			held = true;
+			OnClick(e);
+			//OnFocus();
 		}
 	}
 
 	if (e.type == SDL_MOUSEBUTTONUP) {
-		int mx, my;
-		SDL_GetMouseState(&mx, &my);
-		mx -= (gui->left->width + 20 + pChat->GetX());
-		my -= (gui->topCenter->height + 9 + pChat->GetY());
-
-		if (held && DoesPointIntersect(SDL_Point{ mx, my })) {
-			OnClick(e);
-			return;
-		}
-
 		held = false;
 	}
 
 	if (Focused && e.type == SDL_KEYDOWN)
 	{
 		OnKeyDown(e);
-
 	}
 
 	if (Focused && e.type == SDL_TEXTINPUT)

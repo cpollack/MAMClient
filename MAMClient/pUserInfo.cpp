@@ -15,7 +15,7 @@ pUserInfo::pUserInfo(int pSize, char* buf, char* encBuf) {
 	getWord(4, &x);
 	getWord(6, &y);
 	getByte(8, &look);
-	getByte(9, &unk);
+	getByte(9, &face);
 	getByte(10, &state);
 	getByte(11, &direction);
 	getByte(12, &emotion);
@@ -64,6 +64,6 @@ void pUserInfo::debugPrint() {
 		if (subGroudId) std::cout << subGroup << "(" << subGroudId << ") ";
 		std::cout << "Rank: " << rank  << "(" << rankType << ")" << std::endl;
 	}
-	std::cout << "Unknowns: " << unk << ", State? " << state << std::endl;
+	std::cout << "Face:" << face << " State? " << state << std::endl;
 	std::cout << std::endl;
 }

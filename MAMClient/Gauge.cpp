@@ -11,26 +11,6 @@ CGauge::CGauge(CWindow* window, std::string name, int x, int y) : CWidget(window
 	Max = 0;
 	Current = 0;
 	fillPerc = 0;
-
-	/*SDL_Texture* bg = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
-	SDL_SetRenderTarget(renderer, bg);
-	SDL_SetRenderDrawColor(renderer, gui->backColor.r, gui->backColor.g, gui->backColor.b, 255);
-	SDL_RenderClear(renderer);
-	rectangleRGBA(renderer, 0, 0, width - 1, height - 1, 0, 64, 128, 255);
-	SDL_SetRenderTarget(renderer, NULL);
-	background = new Texture(renderer, bg, width, height);
-
-	SDL_Texture* fg = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
-	SDL_SetRenderTarget(renderer, fg);
-	SDL_SetRenderDrawColor(renderer, gui->backColor.r, gui->backColor.g, gui->backColor.b, 255);
-	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, bg, NULL, NULL);
-	boxRGBA(renderer, 2, 2, width - 4, height - 4, 51, 102, 153, 255);
-	SDL_SetRenderTarget(renderer, NULL);
-	foreground = new Texture(renderer, fg, width, height);
-
-	showLabel = true;
-	setLabel();*/
 }
 
 
@@ -42,6 +22,14 @@ CGauge::CGauge(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 
 
 CGauge::~CGauge() {
+	if (backgroundImage) delete backgroundImage;
+	else if (backgroundTexture) SDL_DestroyTexture(backgroundTexture);
+	if (foregroundImage) delete foregroundImage;
+	else if (foregroundTexture) SDL_DestroyTexture(foregroundTexture);
+	if (decreaseImage) delete decreaseImage;
+	else if (decreaseTexture) SDL_DestroyTexture(decreaseTexture);
+	if (increaseImage) delete increaseImage;
+	else if (increaseTexture) SDL_DestroyTexture(increaseTexture);
 }
 
 void CGauge::ReloadAssets() {
@@ -115,32 +103,16 @@ void CGauge::Render_Draw() {
 }
 
 void CGauge::HandleEvent(SDL_Event& e) {
-	if (e.type == SDL_MOUSEMOTION) {
-		int mx, my;
-		SDL_GetMouseState(&mx, &my);
-
-		if (doesPointIntersect(widgetRect, mx, my)) {
-			mouseOver = true;
-		}
-		else {
-			mouseOver = false;
-		}
-	}
+	CWidget::HandleEvent(e);
 
 	if (e.type == SDL_MOUSEBUTTONDOWN) {
-		int mx, my;
-		SDL_GetMouseState(&mx, &my);
-
-		if (doesPointIntersect(widgetRect, mx, my)) {
+		if (MouseOver) {
 			held = true;
 		}
 	}
 
 	if (e.type == SDL_MOUSEBUTTONUP) {
-		int mx, my;
-		SDL_GetMouseState(&mx, &my);
-
-		if (doesPointIntersect(widgetRect, mx, my)) {
+		if (MouseOver) {
 			if (held) {
 				//
 			}
@@ -178,6 +150,7 @@ void CGauge::CreateGaugeTexture() {
 	//Background Texture
 	if (usingImages) {
 		if (UseGUI) {
+			if (backgroundImage) delete backgroundImage;
 			backgroundImage = gui->getSkinTexture(renderer, backgroundImagePath, Anchor::aTopLeft);
 			backgroundTexture = backgroundImage->texture;
 		}
@@ -195,6 +168,7 @@ void CGauge::CreateGaugeTexture() {
 	//Foreground Texture
 	if (usingImages) {
 		if (UseGUI) {
+			if (foregroundImage) delete foregroundImage;
 			foregroundImage = gui->getSkinTexture(renderer, foregroundImagePath, Anchor::aTopLeft);
 			foregroundTexture = foregroundImage->texture;
 		}
@@ -213,8 +187,10 @@ void CGauge::CreateGaugeTexture() {
 	//Increase and Decrease Textures - specific to when using images
 	if (usingImages) {
 		if (UseGUI) {
+			if (increaseImage) delete increaseImage;
 			increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::aTopLeft);
 			increaseTexture = increaseImage->texture;
+			if (decreaseImage) delete decreaseImage;
 			decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::aTopLeft);
 			decreaseTexture = decreaseImage->texture;
 		}

@@ -31,7 +31,9 @@ CListBox::CListBox(CWindow* window, rapidjson::Value& vWidget) : CWidget(window,
 }
 
 CListBox::~CListBox() {
-	//
+	if (ListBoxTexture) SDL_DestroyTexture(ListBoxTexture);
+
+	for (auto item : Items) delete item;
 }
 
 void CListBox::ReloadAssets() {
@@ -191,25 +193,24 @@ void CListBox::Step() {
 }
 
 void CListBox::HandleEvent(SDL_Event& e) {
+	CWidget::HandleEvent(e);
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
 
 	if (e.type == SDL_MOUSEMOTION) {
-		mouseOver = false;
 		ScrollBtnTHover = false;
 		ScrollBtnBHover = false;
 		ScrollUpperHover = false;
 		ScrollLowerHover = false;
 		ScrollBarHover = false;
-		if (doesPointIntersect(widgetRect, mx, my)) {
-			mouseOver = true;
+		if (MouseOver) {
 			OnMouseMove(e);
 		}
 	}
 
 	if (e.type == SDL_MOUSEBUTTONDOWN) {
 		LastStepMs = 0;
-		if (doesPointIntersect(widgetRect, mx, my)) {
+		if (MouseOver) {
 			held = true;
 			OnClick(e);
 		}

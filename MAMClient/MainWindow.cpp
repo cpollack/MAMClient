@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "Define.h"
 #include "CustomEvents.h"
+#include "SDL_syswm.h"
 
 #include "Client.h"
 #include "GUI.h"
@@ -61,6 +62,12 @@ bool CMainWindow::init()
 		SDL_SetWindowBordered(window, SDL_FALSE);
 		mouseFocus = true;
 		keyboardFocus = true;
+
+		SDL_SysWMinfo info;
+		SDL_VERSION(&info.version); /* initialize info structure with SDL version info */
+		if (SDL_GetWindowWMInfo(window, &info)) {
+			hwnd = info.info.win.window; //pull hwnd from sdl version info
+		}
 
 		//Create renderer for window
 		//renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -549,10 +556,11 @@ void CMainWindow::main_init() {
 	gameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, gameRect.w, gameRect.h);
 
 	chat = new CChat(this);
-	chat->SetRenderer(renderer);
+	//chat->SetRenderer(renderer);
 	chat->SetFont(gui->font);
-	chat->SetWidth(gameRect.w);
-	chat->SetHeightInLines(10);
+	//chat->SetWidth(gameRect.w);
+	chat->SetWidth(350);
+	chat->SetHeightInLines(7);
 	chat->SetPos(SDL_Point{ 0, gameRect.h - chat->GetHeight() });
 
 	// Tell the map the UI boundings are
@@ -784,10 +792,21 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		}
 	}
 
+	if (chat) {
+		SDL_Event e2 = e;
+		if (e2.type == SDL_MOUSEMOTION || e2.type == SDL_MOUSEBUTTONDOWN || e2.type == SDL_MOUSEBUTTONUP) {
+			e2.motion.x -= gameRect.x;
+			e2.motion.y -= gameRect.y;
+			chat->handleEvent(e2);
+			if (chat->IsMouseOver() && chat->IsBlockMouse()) return;
+		}
+
+		chat->handleEvent(e2);
+	}
+
 	if (battle && battle->getMode() != bmInit) {
 		if (battle->handleEvent(e)) return;
 	}
-	if (chat) chat->handleEvent(e);
 	if (!battle && map->handleEvent(e)) return;
 }
 
@@ -807,6 +826,8 @@ void CMainWindow::main_step() {
 		RelogReady = false;
 		changeMode(MFM_LOGIN);
 	}
+
+	chat->step();
 
 	if (battle) {
 		battle->step();

@@ -1,0 +1,18 @@
+21:47:48 Beginning Login
+21:47:48 Connected to Account Server
+21:47:49 Connected to the Game Server
+21:47:49 Average Ticks: 17.570000
+21:47:49 Loading player data from packet
+21:47:49 Loading Map WaterCitySuburb
+21:47:49 First Map Loaded
+21:47:49 Login Success, loading game
+21:47:49 Initializing Main
+21:47:54 Average Ticks: 22.490000
+21:47:59 Average Ticks: 22.160000
+21:48:4 Average Ticks: 22.250000
+21:48:9 Average Ticks: 22.320000
+21:48:14 Average Ticks: 22.520000
+21:48:19 Average Ticks: 22.070000
+21:48:24 Average Ticks: 22.260000
+21:48:29 Average Ticks: 22.110000
+21:48:34 Average Ticks: 22.220000

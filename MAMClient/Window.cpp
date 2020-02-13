@@ -19,7 +19,6 @@
 
 #include "SDL_syswm.h"
 #include "include/rapidjson/filereadstream.h"
-#include <d3d9.h>
 
 using namespace rapidjson;
 
@@ -75,6 +74,15 @@ CWindow::~CWindow() {
 	ClearWidgets();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+
+	if (topCenter_s) delete topCenter_s;
+	if (bottomCenter) delete bottomCenter;
+	if (left) delete left;
+	if (right) delete right;
+	if (topLeft_s) delete topLeft_s;
+	if (topRight_s) delete topRight_s;
+	if (bottomLeft) delete bottomLeft;
+	if (bottomRight) delete bottomRight;
 }
 
 
@@ -168,6 +176,7 @@ void CWindow::RemoveWidget(std::string widgetName) {
 
 	while (it != widgets.end()) {
 		if (it->second->Name.compare(widgetName) == 0) {
+			delete it->second;
 			it = widgets.erase(it);
 			break;
 		}
@@ -215,10 +224,22 @@ void CWindow::FocusWidget(std::string widgetName) {
 	}
 }
 
+void CWindow::FocusWidget(CWidget* widget) {
+	if (widget && CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
+		SDL_Event event;
+		SDL_zero(event);
+		event.type = CUSTOMEVENT_WIDGET;
+		event.window.windowID = windowID;
+		event.user.code = WIDGET_FOCUS_GAINED;
+		event.user.data1 = widget;
+		event.user.data2 = this;
+		SDL_PushEvent(&event);
+	}
+}
+
 bool CWindow::init() {
 	//Create window
 	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS | SDL_WINDOW_SKIP_TASKBAR;
-	//Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS | SDL_WINDOW_SKIP_TASKBAR | SDL_WINDOW_ALWAYS_ON_TOP;
 	window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Width, Height, flags);
 	if (window != NULL) {
 		SDL_SetWindowBordered(window, SDL_FALSE);
@@ -245,7 +266,6 @@ bool CWindow::init() {
 			window = NULL;
 		}
 		else {
-			d3dDevice = SDL_RenderGetD3D9Device(renderer); //NULL if not a d3d9 device
 			//Initialize renderer color
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
@@ -450,7 +470,7 @@ void CWindow::step() {
 void CWindow::focus() {
 	if (!shown) SDL_ShowWindow(window);
 	SDL_RaiseWindow(window);
-	SetFocus(hwnd);
+	HWND res2 = SetFocus(hwnd);
 }
 
 void CWindow::raise() {
@@ -543,11 +563,9 @@ void CWindow::SetTitle(std::string title) {
 void CWindow::SetUseClose(bool close) {
 	ShowClose = close;
 	RemoveWidget("btnClose");
-	if (btnClose) delete btnClose;
 	btnClose = nullptr;
 
 	if (ShowClose) {
-		if (btnClose) delete btnClose;
 		btnClose = new CButton(this, "btnClose", (Width - 25), 10);
 		//btnClose->SetRenderer(renderer);
 		btnClose->SetWidth(14);
@@ -565,35 +583,16 @@ void CWindow::SetUseMinimize(bool min) {
 	ShowMinimize = min;
 
 	RemoveWidget("btnMinimize");
-	if (btnMinimize) delete btnMinimize;
 	btnMinimize = nullptr;
 
 	if (ShowMinimize) {
 		btnMinimize = new CButton(this, "btnMinimize", (Width - 45), 10);
-		//btnMinimize->SetRenderer(renderer);
 		btnMinimize->SetWidth(14);
 		btnMinimize->SetHeight(13);
 		btnMinimize->SetUseGUI(true);
 		btnMinimize->SetPressedImage("Min.bmp");
 		btnMinimize->SetUnPressedImage("Min.bmp");
 		AddWidget(btnMinimize);
-	}
-}
-
-void CWindow::SetRendererD3D9Mode(int d3d9Mode) {
-	if (!d3dDevice) return;
-	switch (d3d9Mode) {
-	case D3D9_PRIMITIVE:
-		d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTSS_COLORARG1);
-		d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
-		break;
-	case D3D9_TEXTURE:
-		d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTSS_COLORARG1);
-		d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-		break;
-	default:
-		d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTSS_COLORARG1);
-		d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_SPECULAR);
 	}
 }
 

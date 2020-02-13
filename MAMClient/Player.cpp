@@ -103,6 +103,12 @@ void Player::render() {
 
 
 void Player::step() {
+	if (walking && atDestCoord() && path.size() == 0) {
+		lastPositionPacket = timeGetTime();
+		pAction *packet = new pAction(AccountId, ID, Direction, DestCoord.x, DestCoord.y, amNone);
+		gClient.addPacket(packet);
+	}
+
 	User::step();
 
 	if (walking) {

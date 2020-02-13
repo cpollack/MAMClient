@@ -4,7 +4,6 @@
 #include "Player.h"
 #include "GameMap.h"
 #include "Inventory.h"
-#include "FormMain.h"
 
 #include "GameLibrary.h"
 
@@ -137,7 +136,7 @@ bool Client::connectAccountServer() {
 	//load host dynamically from config
 #ifndef LOCALSERVER
 #ifndef DEVSERVER
-	const char* host = "40.115.122.28";
+	const char* host = "209.159.153.58";
 #else
 	const char* host = "127.0.0.1";
 #endif // !DEVSERVER
@@ -201,7 +200,7 @@ bool Client::connectGameServer() {
 	//load host dynamically from config
 #ifndef LOCALSERVER
 #ifndef DEVSERVER
-	const char* host = "40.115.122.28";
+	const char* host = "209.159.153.58";
 #else
 	const char* host = "127.0.0.1";
 #endif // !DEVSERVER

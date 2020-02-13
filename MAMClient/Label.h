@@ -43,24 +43,3 @@ private:
 	SDL_Rect labelRect;
 	bool held;
 };
-
-class Label : public Widget {
-public:
-	SDL_Rect textRect;
-	LabelAlignment alignment;
-
-	Label(std::string sLine, int toX, int toY, bool isBold = false);
-	~Label();
-	void Label::initTextRect();
-	void Label::setPosition(int px, int py);
-	void Label::setText(std::string sText);
-	//void Label::setText(std::wstring sText);
-	void Label::renderText(std::string sText);
-	//void Label::renderText(std::wstring sText);
-
-	void Label::render();
-	void Label::offsetPosition(SDL_Point offset);
-	void Label::offsetPosition(int offsetX, int offsetY);
-	void Label::setAlignment(LabelAlignment algn);
-	int Label::getHeight();
-};

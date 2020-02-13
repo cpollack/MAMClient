@@ -8,7 +8,8 @@ public:
 	bool sourceState, targetState;
 	DWORD sourceId, targetId;
 	int damage;
-	int v1, v2, v3;
+	int interaction;
+	int v1, v2;
 
 	pNormalAct(char *buf, char* encBuf);
 	~pNormalAct();

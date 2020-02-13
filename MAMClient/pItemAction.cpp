@@ -5,7 +5,6 @@
 
 #include "Player.h"
 #include "Inventory.h"
-#include "FormMain.h"
 
 
 pItemAction::pItemAction(char *buf, char* encBuf) {

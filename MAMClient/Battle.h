@@ -48,6 +48,7 @@ typedef struct BattleArray {
 	BYTE arrayData[348];
 	bool visible = false;
 	Texture *texture = nullptr;
+	Texture *details = nullptr;
 	int type;
 	std::string name;
 	std::string pivot;
@@ -58,9 +59,10 @@ typedef struct BattleArray {
 	bool top;
 
 	~BattleArray() {
-		delete texture;
+		if (texture) delete texture;
+		if (details) delete details;
 	}
-}BattleArray;
+};
 
 class pEnemyInfo;
 class pFighterInfo;

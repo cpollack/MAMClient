@@ -244,9 +244,11 @@ void Battle::render_battleArray(BattleArray* battleArray) {
 
 	SDL_RenderCopy(renderer, battleArray->texture->texture, NULL, &battleArray->texture->rect);
 
-	std::string topText = "Battle Formation: " + battleArray->name + ", Pivot: " + battleArray->pivot + ", Condition: " + battleArray->condition;
+	//Refactor label handling
+	/*std::string topText = "Battle Formation: " + battleArray->name + ", Pivot: " + battleArray->pivot + ", Condition: " + battleArray->condition;
 	Label topLabel(topText, 0, 0);
 	topLabel.setFontColor(SDL_Color{ 255,255,255,255 });
+
 
 	std::string bottomText = "Attack: " + std::to_string(battleArray->attack) + "%, Defense: " + std::to_string(battleArray->defense) + "%, Dexterity: " + std::to_string(battleArray->dex) + "%";
 	Label bottomLabel(bottomText, 0, 0);
@@ -270,7 +272,7 @@ void Battle::render_battleArray(BattleArray* battleArray) {
 	//bottomLabel.x = toX;
 	//bottomLabel.y = toY + topLabel.fontRect.h + 2;
 	bottomLabel.setPosition(toX, toY + topLabel.fontRect.h + 2);
-	bottomLabel.render();
+	bottomLabel.render();*/
 }
 
 
@@ -431,25 +433,26 @@ bool Battle::handleEvent(SDL_Event& e) {
 	mx = x - (gui->left->width + 20);
 	my = y - (gui->topCenter->height + 9);
 
+	SDL_Event e2 = e;
+	e2.motion.x = mx;
+	e2.motion.y = my;
+
 	if (mode == bmTurnPlayer) {
-		battleButtons[BattleMenu::player_attack]->HandleEvent(e, mx, my);
-		battleButtons[BattleMenu::player_skill]->HandleEvent(e, mx, my);
-		battleButtons[BattleMenu::player_capture]->HandleEvent(e, mx, my);
-		battleButtons[BattleMenu::player_item]->HandleEvent(e, mx, my);
-		battleButtons[BattleMenu::player_defend]->HandleEvent(e, mx, my);
-		battleButtons[BattleMenu::player_run]->HandleEvent(e, mx, my);
+		battleButtons[BattleMenu::player_attack]->HandleEvent(e2);
+		battleButtons[BattleMenu::player_skill]->HandleEvent(e2);
+		battleButtons[BattleMenu::player_capture]->HandleEvent(e2);
+		battleButtons[BattleMenu::player_item]->HandleEvent(e2);
+		battleButtons[BattleMenu::player_defend]->HandleEvent(e2);
+		battleButtons[BattleMenu::player_run]->HandleEvent(e2);
 	}
 
 	if (mode == bmTurnPet) {
-		battleButtons[BattleMenu::pet_attack]->HandleEvent(e, mx, my);
-		battleButtons[BattleMenu::pet_skill]->HandleEvent(e, mx, my);
-		battleButtons[BattleMenu::pet_defend]->HandleEvent(e, mx, my);
+		battleButtons[BattleMenu::pet_attack]->HandleEvent(e2);
+		battleButtons[BattleMenu::pet_skill]->HandleEvent(e2);
+		battleButtons[BattleMenu::pet_defend]->HandleEvent(e2);
 	}
 
 	if (e.type == SDL_MOUSEMOTION) {
-		SDL_Event e2 = e;
-		e2.motion.x = mx;
-		e2.motion.y = my;
 		for (auto entity : enemies) entity->handleEvent_battle(e2);
 		for (auto entity : allies) entity->handleEvent_battle(e2);
 

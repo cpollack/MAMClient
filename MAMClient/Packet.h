@@ -42,6 +42,7 @@ enum PacketType {
 	ptBattleAction = 2000,
 	ptNormalAct = 2001, //rename normal act
 	//ptSpecialAct = 2002, 
+	//pt? = 2003 //size 40
 	ptItemAct = 2004,
 	ptBattleState = 2005,
 	ptEnemyInfo = 2007,

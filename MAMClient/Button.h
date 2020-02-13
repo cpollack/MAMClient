@@ -9,11 +9,11 @@ enum ButtonType {
 	btToggle
 };
 
-enum BtnTextureType {
+/*enum BtnTextureType {
 	bttDRAWN,
 	bttONOFF,
 	bttICON
-};
+};*/
 
 class CButton : public CWidget {
 public:
@@ -24,7 +24,6 @@ public:
 	void ReloadAssets();
 	void Render();
 	void HandleEvent(SDL_Event& e);
-	void HandleEvent(SDL_Event& e, int mx, int my);
 
 	void SetType(ButtonType type);
 	void SetText(std::string value);
@@ -32,7 +31,8 @@ public:
 	void SetUnPressedImage(std::string imagePath);
 	void SetUseGUI(bool use);
 
-	bool GetToggled();
+	void Toggle(bool bToggle);
+	bool GetToggled() { return toggled; }
 
 private: //Properties
 	bool UseGUI = false;
@@ -51,44 +51,10 @@ private:
 	bool pressed = false;
 	bool held = false;
 	bool toggled = false;
-	bool mouseOver = false;
 	bool usingImages = false;
 
 	void OnClick(SDL_Event& e);
-};
-
-class Button : public Widget {
-public:
-	SDL_Texture *lTexture, *iconTexture;
-	SDL_Texture *unpressedTexture = nullptr;
-	SDL_Texture *pressedTexture = nullptr;
-	SDL_Texture *mouseoverTexture = nullptr;
-	TTF_Font* lFont;
-
-	SDL_Color fontColor;
-
-	int size;
-	int width, iconWidth;
-	int height, iconHeight;
-	int buttonType, textureType;
-	bool visible = true;
-	bool held = false, pressed = false;
-	std::string text;
-
-	Button(std::string buttonText, int toX, int toY, int w, int h);
-	Button(SDL_Texture *offTexture, SDL_Texture *onTexture, int toX, int toY);
-	~Button();
-	void Button::createButtonTexture();
-	bool Button::handleEvent(SDL_Event* e);
-	//void Button::renderText(std::string sText);
-	//void Button::setText(std::string sText);
-	void Button::render();
-	void Button::setVisibility(bool setVisible);
-	void Button::setButtonText(std::string txt);
-	bool Button::wasPressed();
-	bool isToggled();
-
-private:
-	bool imageButton = false;
-	bool mouseOver = false;
+	void OnToggle(SDL_Event& e);
+	void OnToggleOn(SDL_Event& e);
+	void OnToggleOff(SDL_Event& e);
 };

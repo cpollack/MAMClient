@@ -6,37 +6,25 @@ Pet Evolve
 Pet Change Accessory
 Pet medals
 
-Bugs:
 
 
 --------------------
 
 
-Build notes 1.0.12
+Build notes 1.0.14
 
 Major Fix:
-- LARGE refactoring of monster and pet mechanics. Pet now inherits from Monster, which inherits from Entity. All share the same base with user/player classes for cleaner flows on animating and state handling.
-- Battle and BattleScene classes restructured and cleaned up.
+-
 
 Fix:
-- Faint animation in battle is smoother and doesn't leave extra frames
-- If max mana changed, it did not update accordingly on the main window gauge
-- Floating labels in battle no longer overlap, and were moved to the entity class
+- Chat channel defaulted to []
 
 Enhancement:
-- First pass 'catch-all' exception handling added to alert users of a thrown exception before shutting down the client semi-gracefully.
-- 'BattleResponse' refactored to 'NormalAct' in battle. There are multiple battle action type reponses.
-- Sprite rendering updated from frame counter to tick/ms based, allowing finer control of sprite animation.
+-
 
 Feature:
-- Items can now be used in Battle. 
--- Items also cause a heal/poison effect when used
-- Monster sprites in battle now apply the color packet for recoloring
-- Players / Monsters visible on maps also apply the color shifts as appropriate
+-
 
 
 
 -------------------------------
-
-Minor Bugs:
-Right click on map should always send a direction packet, even if its a npc click

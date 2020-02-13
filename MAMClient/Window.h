@@ -70,7 +70,6 @@ protected: //Window Properties
 
 public:	SDL_Renderer* renderer;
 protected:	
-	IDirect3DDevice9* d3dDevice;
 	HWND hwnd;
 	int windowID;
 	int Type;
@@ -108,9 +107,6 @@ public: //Accessors
 	void SetUseClose(bool close);
 	void SetUseMinimize(bool min);
 
-	IDirect3DDevice9* GetD3DDevice() { return d3dDevice; }
-	void SetRendererD3D9Mode(int d3d9Mode);
-
 public:
 	bool CloseWindow = false;
 
@@ -130,6 +126,7 @@ public:
 	void ClearWidgets();
 	CWidget* GetWidget(std::string widgetName);
 	void FocusWidget(std::string widgetName);
+	void FocusWidget(CWidget* widget);
 
 private:
 	std::list<CWidget*> widgetsByDepth;
@@ -143,8 +140,6 @@ protected: //GUI textures
 	Texture* topRight_s;
 	Texture* bottomLeft;
 	Texture* bottomRight;
-	//Texture* close;
-	//Texture* minimize;
 
 	CButton *btnClose;
 	CButton *btnMinimize;

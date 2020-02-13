@@ -18,7 +18,7 @@ public:
 	int userId;
 	int x, y;
 	int look;
-	int unk, state, direction, emotion;
+	int face, state, direction, emotion;
 	int rank, reborns, rankType, masterType, alignment;
 	int level;
 	int pkEnabled;
