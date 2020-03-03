@@ -22,15 +22,22 @@
 #include "PetListForm.h"
 #include "InventoryForm.h"
 
+#include "AssetManager.h"
 #include "Gauge.h"
+#include "ImageBox.h"
 #include "VideoFrame.h"
 
 #include "pBattleState.h"
 
 CMainWindow::CMainWindow() :CWindow() {
 	Type = FT_MAIN;
+#ifdef SIZE_1024
+	Width = 1024;
+	Height = 768;
+#else
 	Width = 800;
 	Height = 600;
+#endif
 	init();
 	initUI();
 
@@ -55,11 +62,17 @@ CMainWindow::~CMainWindow() {
 bool CMainWindow::init()
 {
 	//Create window
+#ifdef NEWGUI
+	Uint32 flags = SDL_WINDOW_SHOWN;
+#else
 	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS;
+#endif
 	
 	window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Width, Height, flags);
 	if (window != NULL) {
+#ifndef NEWGUI
 		SDL_SetWindowBordered(window, SDL_FALSE);
+#endif
 		mouseFocus = true;
 		keyboardFocus = true;
 
@@ -79,7 +92,13 @@ bool CMainWindow::init()
 		}
 		else {
 			//Initialize renderer color
-			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0x07, 0xFF, 0xFF);
+			SDL_RenderClear(renderer);
+
+			// Change window type to layered (https://stackoverflow.com/a/3970218/3357935)
+			SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+			// Set transparency color
+			SetLayeredWindowAttributes(hwnd, RGB(255,7,255), 0, LWA_COLORKEY);
 
 			//Grab window identifier
 			windowID = SDL_GetWindowID(window);
@@ -95,13 +114,24 @@ bool CMainWindow::init()
 
 void CMainWindow::initUI() {
 	CWindow::initUI();
+
+#ifdef NEWGUI
+	newGui = gui->getSkinTexture(renderer, "newmain/main.tga", Anchor::aBottomLeft);
+#endif
+
+#ifdef SIZE_1024
+	topCenter = gui->getSkinTexture(renderer, "1024/TopCenter.bmp", Anchor::aTopLeft);
+	mainWindow = gui->getSkinTexture(renderer, "1024/mainwindow.jpg", Anchor::aTopLeft);
+	surface = gui->getSkinTexture(renderer, "1024/surface.jpg", Anchor::aTopLeft);
+#else
 	topCenter = gui->getSkinTexture(renderer, "TopCenter.bmp", Anchor::aTopLeft);
+	mainWindow = gui->getSkinTexture(renderer, "mainwindow.jpg", Anchor::aTopLeft);
+	surface = gui->getSkinTexture(renderer, "surface.jpg", Anchor::aTopLeft);
+#endif
+
 	topLeft = gui->getSkinTexture(renderer, "TopLeft.bmp", Anchor::aTopLeft);
 	topRight = gui->getSkinTexture(renderer, "TopRight.bmp", Anchor::aTopRight);
-
-	mainWindow = gui->getSkinTexture(renderer, "mainwindow.jpg", Anchor::aTopLeft);
-
-	surface = gui->getSkinTexture(renderer, "surface.jpg", Anchor::aTopLeft);
+	
 	surfaceRect = surface->rect;
 	surfaceRect.x = left->width;
 	surfaceRect.y = (Height - surface->height - bottomCenter->height);
@@ -115,6 +145,8 @@ void CMainWindow::ReloadAssets() {
 }
 
 void CMainWindow::render() {
+	//SDL_SetRenderDrawColor(renderer, 0xFF, 0x07, 0xFF, 0xFF);
+	//SDL_RenderClear(renderer);
 	switch (Mode) {
 	case MFM_INIT: init_render(); break;
 	case MFM_LOGIN: login_render(); break;
@@ -213,9 +245,15 @@ CGauge* CMainWindow::addMainGauge(std::string name, int x, int y, int w, int h, 
 	gauge->SetHeight(h);
 	gauge->SetUseGUI(true);
 	gauge->SetForegroundImage(foreground);
+#ifdef NEWGUI
+	std::string background = foreground.substr(0, foreground.find_first_of('.')) + "2" + foreground.substr(foreground.find_first_of('.'), std::string::npos);
+	gauge->SetBackgroundImage(background);
+	gauge->SetVerticle(true);
+#else
 	gauge->SetBackgroundImage("bg_slot.jpg");
 	gauge->SetIncreaseImage("orange_slot.jpg");
 	gauge->SetDecreaseImage("red_slot.jpg");
+#endif
 	AddWidget(gauge);
 	return gauge;
 }
@@ -365,8 +403,9 @@ void CMainWindow::select_cleanup() {
 }
 
 void CMainWindow::select_render() {
-	SDL_SetRenderDrawColor(renderer, gui->backColor.r, gui->backColor.g, gui->backColor.b, 0xFF);
-	SDL_RenderClear(renderer);
+	//SDL_SetRenderDrawColor(renderer, gui->backColor.r, gui->backColor.g, gui->backColor.b, 0xFF);
+	//SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0xFF, 0xFF);
+	//SDL_RenderClear(renderer);
 
 	//Draw background and Widgets	
 	SDL_RenderCopy(renderer, topCenter_s->texture, NULL, &getDstRect(topCenter_s, 0, 0));
@@ -382,6 +421,7 @@ void CMainWindow::select_render() {
 	SDL_RenderCopy(renderer, bottomRight->texture, NULL, &getDstRect(bottomRight, Width, Height));
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+	//SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0xFF, 0xFF);
 	SDL_RenderFillRect(renderer, &blackRect);
 
 	//Render Box frames
@@ -543,16 +583,21 @@ void CMainWindow::main_init() {
 	assert(map != nullptr);
 
 	SetTitle("Monster & Me - " + strServer + " - " + std::string(version) + " (" + versionDate + ")");
+#ifndef NEWGUI
 	SetUseClose(true);
 	SetUseMinimize(true);
+	registerEvent("btnClose", "Click", std::bind(&CMainWindow::btnClose_Click, this, std::placeholders::_1));
+	registerEvent("btnMinimize", "Click", std::bind(&CMainWindow::btnMinimize_Click, this, std::placeholders::_1));
+#endif // !NEWGUI
 	Disconnected = false;
 	RelogReady = false;
 
-	registerEvent("btnClose", "Click", std::bind(&CMainWindow::btnClose_Click, this, std::placeholders::_1));
-	registerEvent("btnMinimize", "Click", std::bind(&CMainWindow::btnMinimize_Click, this, std::placeholders::_1));
-
 	//Game Area
+#ifdef NEWGUI
+	gameRect = { 0, 0, 800, 600 };
+#else
 	gameRect = { gui->left->width + 20, gui->topCenter->height + 9, 740, 410 };
+#endif
 	gameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, gameRect.w, gameRect.h);
 
 	chat = new CChat(this);
@@ -561,7 +606,11 @@ void CMainWindow::main_init() {
 	//chat->SetWidth(gameRect.w);
 	chat->SetWidth(350);
 	chat->SetHeightInLines(7);
+#ifdef NEWGUI
+	chat->SetPos(SDL_Point{ 0, Height - newGui->height - chat->GetHeight() - 30 });
+#else
 	chat->SetPos(SDL_Point{ 0, gameRect.h - chat->GetHeight() });
+#endif
 
 	// Tell the map the UI boundings are
 	map->setMapUiRect(gameRect);
@@ -570,11 +619,12 @@ void CMainWindow::main_init() {
 	main_init_widgets();
 
 	//Set Default widget values
+#ifndef NEWGUI
 	setPlayerDetailsLabels();
+#endif // !NEWGUI
 	setPlayerHealthGauge(player->GetCurrentLife(), player->GetMaxLife());
 	setPlayerManaGauge(player->GetCurrentMana(), player->GetMaxMana());
 	setPlayerExpGauge(player->experience, player->GetLevelUpExperience());
-
 	Pet* activePet = player->getActivePet();
 	if (activePet) {
 		setPetHealthGauge(activePet->GetCurrentLife(), activePet->GetMaxLife());
@@ -583,19 +633,45 @@ void CMainWindow::main_init() {
 }
 
 void CMainWindow::main_init_widgets() {
+#ifdef NEWGUI
+	gaugePlayerHealth = addMainGauge("gaugePlayerHealth", 32, Height - 90 - 12, 20, 90, "newmain/herohp.tga");
+	gaugePlayerMana = addMainGauge("gaugePlayerMana", 13, Height - 79 - 6, 36, 79, "newmain/heromp.tga");
+	gaugePlayerExp = addMainGauge("gaugePlayerExp", 0, Height - 69, 36, 69, "newmain/heroexp.tga");
+
+	std::string portraitPath = "GUI/player_icon/" + player->PlayerRole + ".bmp";
+	Texture *txturePortrait = new Texture(renderer, portraitPath, {0,0,0,255}, true);
+	SDL_SetTextureBlendMode(txturePortrait->texture, SDL_BLENDMODE_BLEND);
+	playerPortrait = new CImageBox(this, "playerPortrait", 44, 600 - txturePortrait->height);
+	playerPortrait->SetWidth(txturePortrait->width);
+	playerPortrait->SetHeight(txturePortrait->height);
+	playerPortrait->SetImage(txturePortrait);
+	AddWidget(playerPortrait);
+
+	petPortrait = new CImageBox(this, "petPortrait", 108, 600);
+	petPortrait->SetWidth(55);
+	petPortrait->SetHeight(69);
+	AddWidget(petPortrait);
+	main_setPetPortrait();
+
+	gaugePetHealth = addMainGauge("gaugePetHealth", 164, Height - 90 - 12, 20, 90, "newmain/pethp.tga");
+	gaugePetExp = addMainGauge("gaugePetExp", 170, Height - 79 - 6, 36, 79, "newmain/petexp.tga");
+
+	CButton *btnJump = addMainButton("btnJump", 235, 600-42, 73, 25, "button_fly_off.jpg", "button_fly_on.jpg");
+	addMainButton("btnFight", 315, 600-49, 38, 38, "fight-2.jpg", "fight-1.jpg");
+
+	addMainButton("btnCharacter", 390, 600-35, 73, 25, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
+	addMainButton("btnPet", 465, 600-35, 73, 25, "button_pet.jpg", "button_petDown.jpg");
+
+	addMainButton("btnInventory", 540, 600-42, 41, 39, "items-1.jpg", "items-2.jpg");
+#else
 	//Buttons
 	CButton *btnJump = addMainButton("btnJump", surfaceRect.x + 300, surfaceRect.y + 90, 73, 25, "button_fly_off.jpg", "button_fly_on.jpg");
-	btnJump->SetType(ButtonType::btToggle);
-	registerEvent("btnJump", "Click", std::bind(&CMainWindow::btnJump_Click, this, std::placeholders::_1));
 
-	CButton *btnCharacter = addMainButton("btnCharacter", surfaceRect.x + 17, surfaceRect.y + 11, 73, 25, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
-	CButton *btnPet = addMainButton("btnPet", surfaceRect.x + 102, surfaceRect.y + 11, 73, 25, "button_pet.jpg", "button_petDown.jpg");
-	registerEvent("btnCharacter", "Click", std::bind(&CMainWindow::btnCharacter_Click, this, std::placeholders::_1));
-	registerEvent("btnPet", "Click", std::bind(&CMainWindow::btnPet_Click, this, std::placeholders::_1));
+	addMainButton("btnCharacter", surfaceRect.x + 17, surfaceRect.y + 11, 73, 25, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
+	addMainButton("btnPet", surfaceRect.x + 102, surfaceRect.y + 11, 73, 25, "button_pet.jpg", "button_petDown.jpg");
 
 	addMainButton("btnFight", surfaceRect.x + 290, surfaceRect.y + 5, 38, 38, "fight-2.jpg", "fight-1.jpg");
 	addMainButton("btnChat", surfaceRect.x + 335, surfaceRect.y + 5, 38, 38, "chat-2.jpg", "chat-1.jpg");
-	registerEvent("btnFight", "Click", std::bind(&CMainWindow::btnFight_Click, this, std::placeholders::_1));
 
 	addMainButton("btnDetails", surfaceRect.x + 377, surfaceRect.y, 44, 46, "HeroStatus.jpg", "HeroStatus.jpg");
 	addMainButton("btnChat2", surfaceRect.x + 422, surfaceRect.y, 44, 46, "ChatPanel.jpg", "ChatPanel.jpg");
@@ -607,7 +683,6 @@ void CMainWindow::main_init_widgets() {
 	addMainButton("btnPK", surfaceRect.x + 635, surfaceRect.y + 1, 41, 39, "PK-1.jpg", "PK-2.jpg");
 	addMainButton("btnChatHistory", surfaceRect.x + 676, surfaceRect.y + 1, 41, 39, "record-1.jpg", "record-2.jpg");
 	addMainButton("btnFriendList", surfaceRect.x + 717, surfaceRect.y + 1, 41, 39, "email-1.jpg", "email-2.jpg");
-	registerEvent("btnInventory", "Click", std::bind(&CMainWindow::btnInventory_Click, this, std::placeholders::_1));
 
 	//Labels
 	lblCoordX = addMainLabel("lblCoordX", surfaceRect.x + 220, surfaceRect.y + 10, 20, 14, "", true);
@@ -641,7 +716,36 @@ void CMainWindow::main_init_widgets() {
 	gaugePlayerExp = addMainGauge("gaugePlayerExp", surfaceRect.x + 62, surfaceRect.y + 93, 110, 16, "green_slot.jpg");
 	gaugePetHealth = addMainGauge("gaugePetHealth", surfaceRect.x + 259, surfaceRect.y + 47, 110, 16, "yellow_slot.jpg");
 	gaugePetExp = addMainGauge("gaugePetExp", surfaceRect.x + 259, surfaceRect.y + 70, 110, 16, "green_slot.jpg");
+#endif
+
+	btnJump->SetType(ButtonType::btToggle);
+	registerEvent("btnJump", "Click", std::bind(&CMainWindow::btnJump_Click, this, std::placeholders::_1));
+	registerEvent("btnFight", "Click", std::bind(&CMainWindow::btnFight_Click, this, std::placeholders::_1));
+
+	registerEvent("btnCharacter", "Click", std::bind(&CMainWindow::btnCharacter_Click, this, std::placeholders::_1));
+	registerEvent("btnPet", "Click", std::bind(&CMainWindow::btnPet_Click, this, std::placeholders::_1));
+
+	registerEvent("btnInventory", "Click", std::bind(&CMainWindow::btnInventory_Click, this, std::placeholders::_1));
 }
+
+void CMainWindow::main_setPetPortrait() {
+	Pet* activePet = player->getActivePet();
+	if (!activePet) return;
+
+	petPortrait->SetImage(nullptr);
+
+	std::string look = std::to_string(activePet->GetLook());
+	while (look.size() < 4) look.insert(look.begin(), '0');
+	look = "peticon" + look;
+
+	INI ini("INI\\petLook.ini", look);
+	std::string portraitPath = ini.getEntry("Frame0");
+	Texture *txturePortrait = new Texture(renderer, portraitPath, { 0,0,0,255 }, true);
+	SDL_SetTextureBlendMode(txturePortrait->texture, SDL_BLENDMODE_BLEND);
+	petPortrait->SetImage(txturePortrait);
+	petPortrait->SetY(600 - 77);
+}
+
 
 void CMainWindow::main_cleanup() {
 	ClearWidgets();
@@ -687,12 +791,19 @@ void CMainWindow::main_render() {
 	} SDL_SetRenderTarget(renderer, priorTarget);
 	SDL_RenderCopy(renderer, gameTexture, NULL, &gameRect);
 
+#ifdef NEWGUI
+	SDL_RenderCopy(renderer, newGui->texture, NULL, &getDstRect(newGui, 0, Height));
+#endif
+
 	for (auto widget : widgets) {
 		widget.second->Render();
 	}
 }
 
 void CMainWindow::main_render_ui() {
+#ifdef NEWGUI 
+	return;
+#endif
 	//render all UI pieces in order
 	SDL_RenderCopy(renderer, topCenter->texture, NULL, &getDstRect(topCenter, 0, 0));
 
@@ -716,6 +827,7 @@ void CMainWindow::main_render_ui() {
 
 void CMainWindow::main_handleEvent(SDL_Event& e) {
 	if (e.type == CUSTOMEVENT_PLAYER) {
+#ifndef NEWGUI
 		if (e.user.code == PLAYER_RENAME) {
 			lblNickName->SetText(player->getNickName());
 		}
@@ -723,6 +835,7 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		if (e.user.code == PLAYER_UPDATE) {
 			setPlayerDetailsLabels();
 		}
+#endif
 
 		if (e.user.code == PLAYER_LIFE) {
 			gaugePlayerHealth->AdjustTo(player->GetCurrentLife());
@@ -745,16 +858,20 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		}
 
 		if (e.user.code == PLAYER_LEVEL) {
+#ifndef NEWGUI
 			setPlayerDetailsLabels();
+#endif
 			gaugePlayerExp->set(player->GetExperience(), player->GetLevelUpExperience());
 		}
 
+#ifndef NEWGUI
 		if (e.user.code == PLAYER_MONEY) {
 			lblCash->SetText(formatInt(player->GetCash()));
 		}
 		if (e.user.code == PLAYER_REPUTATION) {
 			lblReputation->SetText(formatInt(player->GetReputation()));
 		}
+#endif
 	}
 
 	if (e.type == CUSTOMEVENT_PET) {
@@ -804,6 +921,10 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		chat->handleEvent(e2);
 	}
 
+	//Verify no widgets have taken ownership of the mouse
+	//Prevents improper mouse clickthrough when clicking buttons etc
+	if (WidgetHasMouse()) return;
+
 	if (battle && battle->getMode() != bmInit) {
 		if (battle->handleEvent(e)) return;
 	}
@@ -849,6 +970,7 @@ void CMainWindow::main_step() {
 
 void CMainWindow::btnClose_Click(SDL_Event& e) {
 	if (Mode == MFM_MAIN) {
+		if (Windows.size() > 0) return;
 		CLogoutForm *logoutForm = new CLogoutForm();
 		Windows.push_back(logoutForm);
 	}
@@ -899,6 +1021,9 @@ void CMainWindow::setPlayerDetailsLabels() {
 	lastMouseoverUser = nullptr;
 	userDetailsStartTime = 0;
 
+#ifdef NEWGUI
+	return;
+#endif
 	lblName->SetText(StringToWString(player->GetName()));
 	lblNickName->SetText(StringToWString(player->getNickName()));
 	lblSpouse->SetText(StringToWString(player->getSpouse()));
@@ -921,8 +1046,10 @@ void CMainWindow::setUserDetailsLabels(User* user) {
 }
 
 void CMainWindow::setMapCoordLabels(SDL_Point coord) {
+#ifndef NEWGUI
 	lblCoordX->SetText(std::to_string(coord.x));
 	lblCoordY->SetText(std::to_string(coord.y));
+#endif
 }
 
 void CMainWindow::setPlayerHealthGauge(int val) {

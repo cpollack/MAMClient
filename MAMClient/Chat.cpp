@@ -14,7 +14,7 @@
 CChat::CChat(CWindow* window) {
 	this->window = window;
 	renderer = window->renderer;
-	opacity = 128;
+	opacity = 0;
 
 	chatField = new CChatField(window, this, "chatField", 0, 0);
 	chatField->SetHeight(InputHeight);
@@ -546,10 +546,16 @@ void CMessage::renderText(std::string renderString, SDL_Color withColor, SDL_Poi
 	if (luma > 50) shadow = { 32, 32, 32, 192 };
 	else shadow = { 192, 192, 192, 192 };
 
+	std::wstring wstr = StringToWString(renderString);
+	if (renderString.length() > 0 && wstr.length() == 0) {
+		wstr = L"[Error Converting String into WString]";
+		gClient.addToDebugLog("Failed to convert Message String into WString: " + renderString);
+	}
+
 	//SDL_Surface *textSurface = TTF_RenderText_Blended(gui->chatFont, renderString.c_str(), withColor);
-	SDL_Surface *textSurface = TTF_RenderUNICODE_Solid(gui->fontUni, (const Uint16*)StringToWString(renderString).c_str(), withColor);
+	SDL_Surface *textSurface = TTF_RenderUNICODE_Solid(gui->fontUni, (const Uint16*)wstr.c_str(), withColor);
 	//SDL_Surface *shadowSurface = TTF_RenderText_Blended(gui->chatFont, renderString.c_str(), shadow);
-	SDL_Surface *shadowSurface = TTF_RenderUNICODE_Solid(gui->fontUni, (const Uint16*)StringToWString(renderString).c_str(), shadow);
+	SDL_Surface *shadowSurface = TTF_RenderUNICODE_Solid(gui->fontUni, (const Uint16*)wstr.c_str(), shadow);
 	SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 	SDL_Texture *shadowTexture = SDL_CreateTextureFromSurface(renderer, shadowSurface);
 

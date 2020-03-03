@@ -92,6 +92,7 @@ public: //Accessors
 public:
 	virtual void Render();
 	virtual void HandleEvent(SDL_Event& e);	
+	virtual void Load() {}
 	virtual void ReloadAssets() {}
 
 	virtual bool DoesPointIntersect(SDL_Point point);

@@ -103,6 +103,11 @@ void GameMap::loadMapFile(int mapDoc) {
 	//Load map attributes
 	mapWidth = mapFile.width;
 	mapHeight = mapFile.height;
+	mapOffsetX = 0;
+	mapOffsetY = 0;
+	if (tMap->width < uiRect.w) mapOffsetX = (uiRect.w / 2) - (tMap->width / 2);
+	if (tMap->height < uiRect.h) mapOffsetY = (uiRect.h / 2) - (tMap->height / 2);
+
 	mapCoordinates = new char[mapWidth * mapHeight];
 	for (int y = 0; y < mapHeight; y++) {
 		for (int x = 0; x < mapWidth; x++) {
@@ -254,7 +259,7 @@ bool GameMap::handleEvent(SDL_Event& e) {
 		}
 	}
 
-	// CUstom Events
+	// Custom Events
 
 	if (e.type == CUSTOMEVENT_NPC) {
 		NPC* sourceNPC = (NPC*)e.user.data1;
@@ -279,8 +284,8 @@ bool GameMap::handleEvent(SDL_Event& e) {
 void GameMap::OnClick(SDL_Event& e) {
 	int mx, my, cx, cy;
 	SDL_GetMouseState(&mx, &my);
-	mx -= uiRect.x;
-	my -= uiRect.y;
+	mx -= uiRect.x + mapOffsetX;
+	my -= uiRect.y + mapOffsetY;
 	cx = mx + cameraX;
 	cy = my + cameraY;
 
@@ -324,8 +329,8 @@ void GameMap::OnClick(SDL_Event& e) {
 void GameMap::OnMouseMove(SDL_Event& e) {
 	int mx, my, cx, cy;
 	SDL_GetMouseState(&mx, &my);
-	mx -= uiRect.x;
-	my -= uiRect.y;
+	mx -= uiRect.x + mapOffsetX;
+	my -= uiRect.y + mapOffsetY;
 	cx = mx + cameraX;
 	cy = my + cameraY;
 
@@ -362,7 +367,7 @@ void GameMap::render() {
 	SDL_Rect finalRect;
 	int finalX;
 	if (tMap->width < uiRect.w) {
-		finalRect.x = (uiRect.w / 2) - (tMap->width / 2);
+		finalRect.x = mapOffsetX;
 		finalRect.w = tMap->width;
 	}
 	else {
@@ -371,7 +376,7 @@ void GameMap::render() {
 	}
 
 	if (tMap->height < uiRect.h) {
-		finalRect.y = (uiRect.h / 2) - (tMap->height / 2);
+		finalRect.y = mapOffsetY;
 		finalRect.h = tMap->height;
 	}
 	else {
@@ -405,7 +410,7 @@ void GameMap::render() {
 		if (doRectIntersect(nextSprite->getRenderRect(), mapRect)) {
 			//only render visible objects
 			nextSprite->resume();
-			nextSprite->render(-cameraX, -cameraY);
+			nextSprite->render(mapOffsetX-cameraX, mapOffsetY-cameraY);
 		}
 		else nextSprite->stop();
 	}

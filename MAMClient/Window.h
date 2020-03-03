@@ -128,6 +128,8 @@ public:
 	void FocusWidget(std::string widgetName);
 	void FocusWidget(CWidget* widget);
 
+	bool WidgetHasMouse();
+
 private:
 	std::list<CWidget*> widgetsByDepth;
 

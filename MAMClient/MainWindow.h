@@ -7,6 +7,7 @@ class CPromptForm;
 class CCharCreateForm;
 
 class CGauge;
+class CImageBox;
 class CVideoFrame;
 
 class User;
@@ -104,9 +105,11 @@ private: // Main
 	void main_step();
 
 	void main_init_widgets();
+	void main_setPetPortrait();
 	void main_render_ui();
 
-	void btnClose_Click(SDL_Event& e);
+public: void btnClose_Click(SDL_Event& e);
+private: 
 	void btnJump_Click(SDL_Event& e);
 	void btnFight_Click(SDL_Event& e);
 
@@ -124,6 +127,7 @@ private: // Main
 	CLabel *lblName, *lblNickName, *lblLevel;
 	CLabel *lblSpouse, *lblCash, *lblReputation;
 	CLabel *lblRank, *lblGuild, *lblGuildRank;
+	CImageBox *playerPortrait, *petPortrait;
 	CGauge *gaugePlayerHealth, *gaugePlayerMana, *gaugePlayerExp;
 	CGauge *gaugePetHealth, *gaugePetExp;
 
@@ -164,6 +168,7 @@ private: //GUI Texture
 	Texture* topRight;
 	Texture* mainWindow;
 	Texture* surface;
+	Texture* newGui;
 	Texture* minimize;
 
 	SDL_Rect surfaceRect;

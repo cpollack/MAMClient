@@ -17,7 +17,7 @@ Major Fix:
 -
 
 Fix:
-- Chat channel defaulted to []
+-
 
 Enhancement:
 -

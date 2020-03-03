@@ -10,6 +10,8 @@ CImageBox::CImageBox(CWindow* window, std::string name, int x, int y) : CWidget(
 	Name = name;
 	X = x;
 	Y = y;
+	widgetRect.x = X;
+	widgetRect.y = Y;
 }
 
 CImageBox::CImageBox(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWidget) {
@@ -98,7 +100,7 @@ void CImageBox::SetImage(Texture* image) {
 
 	//Draw the background
 	if (BlackBackground) SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	else SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 255);
+	else SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 
 	SDL_RenderClear(renderer);
 	SDL_Rect viewPortRect = { 0, 0,widgetRect.w, widgetRect.h };
@@ -150,6 +152,7 @@ void CImageBox::SetImage(Texture* image) {
 	}
 
 	SDL_SetRenderTarget(renderer, NULL);
+	SDL_SetTextureBlendMode(ImageBox, SDL_BLENDMODE_BLEND);
 	SDL_RenderSetViewport(renderer, &oldViewport);
 }
 

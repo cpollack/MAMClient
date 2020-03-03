@@ -99,7 +99,12 @@ int main(int argc, char *args[]) {
 				//User requests quit
 				if (e.type == SDL_QUIT)
 				{
-					quit = true;
+					if(bExitApplication) quit = true;
+#ifdef NEWGUI
+					else {
+						mainForm->btnClose_Click(e);
+					}
+#endif
 				}
 
 				//Process Window Events for all Forms

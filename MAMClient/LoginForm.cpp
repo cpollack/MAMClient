@@ -104,9 +104,7 @@ void CLoginForm::btnCancel_Click(SDL_Event& e) {
 	//CloseWindow = true;
 
 	//Force an application close
-	SDL_Event quitEvent;
-	quitEvent.type = SDL_QUIT;
-	SDL_PushEvent(&quitEvent);
+	applicationClose();
 }
 
 void CLoginForm::handleLogin() {

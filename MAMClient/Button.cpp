@@ -27,6 +27,12 @@ CButton::~CButton() {
 	if (mouseoverTexture) SDL_DestroyTexture(unpressedTexture);
 }
 
+void CButton::Load() {
+	if (!buttonTexture) {
+		CreateButtonTexture();
+	}
+}
+
 void CButton::ReloadAssets() {
 	if (buttonTexture) {
 		CreateButtonTexture();

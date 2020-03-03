@@ -5,6 +5,8 @@
 //#define LOCALSERVER
 #define DEBUG_LOG
 #define DEBUG_PACKET
+//#define SIZE_1024
+#define NEWGUI
 
 #include "GUI.h"
 #include "GameLibrary.h"

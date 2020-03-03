@@ -40,7 +40,7 @@ enum PacketType {
 	//ptTrade = 1056,
 	//ptConjure = 1057,
 	ptBattleAction = 2000,
-	ptNormalAct = 2001, //rename normal act
+	ptNormalAct = 2001, 
 	//ptSpecialAct = 2002, 
 	//pt? = 2003 //size 40
 	ptItemAct = 2004,

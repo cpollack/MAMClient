@@ -143,6 +143,8 @@
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Battle.cpp" />
+    <ClCompile Include="BattleAI.cpp" />
+    <ClCompile Include="BattleArray.cpp" />
     <ClCompile Include="BattleResult.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -247,6 +249,8 @@
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Battle.h" />
+    <ClInclude Include="BattleAI.h" />
+    <ClInclude Include="BattleArray.h" />
     <ClInclude Include="BattleResult.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="Button.h" />

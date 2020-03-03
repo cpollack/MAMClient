@@ -48,41 +48,105 @@ void CGauge::Render_Textures() {
 	SDL_RenderCopy(renderer, backgroundTexture, NULL, &widgetRect);
 
 	if (shiftDown != -1) {
-		float fillWidth = Width * fillPerc;
-		elapsedTime = SDL_GetTicks() - startTime;
-		float excess = Width * ((float)(shiftDown - Current) / (float)Max) *  ((float)(shiftSpeed - elapsedTime) / (float)shiftSpeed);
-		SDL_Rect shiftRect_src = { 0, 0, fillWidth + excess, Height };
-		SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
-		SDL_RenderCopy(renderer, decreaseTexture, &shiftRect_src, &shiftRect_dest);
+		if (Verticle) {
+			float fillHeight = Height * fillPerc;
+			elapsedTime = SDL_GetTicks() - startTime;
+			float excess = Height * ((float)(shiftDown - Current) / (float)Max) *  ((float)(shiftSpeed - elapsedTime) / (float)shiftSpeed);
 
-		SDL_Rect fgRect_src = { 0, 0, fillWidth, Height };
-		SDL_Rect fgRect_dest = { X, Y, fgRect_src.w, fgRect_src.h };
-		SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
+			if (decreaseTexture) {
+				SDL_Rect shiftRect_src = { 0, Height - (fillHeight + excess), Width, (fillHeight + excess) };
+				SDL_Rect shiftRect_dest = { X, Y + shiftRect_src.y, shiftRect_src.w, shiftRect_src.h };
+				SDL_RenderCopy(renderer, decreaseTexture, &shiftRect_src, &shiftRect_dest);
+
+				SDL_Rect fgRect_src = { 0, Height - fillHeight, Width, fillHeight };
+				SDL_Rect fgRect_dest = { X, Y + fgRect_src.y, fgRect_src.w, fgRect_src.h };
+				SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
+			}
+			else {
+				SDL_Rect shiftRect_src = { 0, Height - (fillHeight + excess), Width, (fillHeight + excess) };
+				SDL_Rect shiftRect_dest = { X, Y + shiftRect_src.y, shiftRect_src.w, shiftRect_src.h };
+				SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+			}
+		}
+		else { //Horizontal
+			float fillWidth = Width * fillPerc;
+			elapsedTime = SDL_GetTicks() - startTime;
+			float excess = Width * ((float)(shiftDown - Current) / (float)Max) *  ((float)(shiftSpeed - elapsedTime) / (float)shiftSpeed);
+
+			if (decreaseTexture) {
+				SDL_Rect shiftRect_src = { 0, 0, fillWidth + excess, Height };
+				SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
+				SDL_RenderCopy(renderer, decreaseTexture, &shiftRect_src, &shiftRect_dest);
+
+				SDL_Rect fgRect_src = { 0, 0, fillWidth, Height };
+				SDL_Rect fgRect_dest = { X, Y, fgRect_src.w, fgRect_src.h };
+				SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
+			}
+			else {
+				SDL_Rect shiftRect_src = { 0, 0, fillWidth + excess, Height };
+				SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
+				SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+			}
+		}
 
 		if (elapsedTime >= shiftSpeed) shiftDown = -1;
 		return;
 	}
 
 	if (shiftUp != -1) {
-		float fillWidth = Width * fillPerc;
-		elapsedTime = SDL_GetTicks() - startTime;
-		float elapsedPerc = (float)elapsedTime / (float)shiftSpeed;
-		if (elapsedPerc > 1) elapsedPerc = 1.0;
-		float excess = Width * (((float)(Current - shiftUp) / (float)Max) *  elapsedPerc);
-		SDL_Rect shiftRect_src = { 0, 0, fillWidth, Height };
-		SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
-		SDL_RenderCopy(renderer, increaseTexture, &shiftRect_src, &shiftRect_dest);
+		if (Verticle) {
+			float fillHeight = Height * fillPerc;
+			elapsedTime = SDL_GetTicks() - startTime;
+			float elapsedPerc = (float)elapsedTime / (float)shiftSpeed;
+			if (elapsedPerc > 1) elapsedPerc = 1.0;
+			float excess = Width * (((float)(Current - shiftUp) / (float)Max) *  elapsedPerc);
 
-		SDL_Rect fgRect_src = { 0, 0, ((float)shiftUp / (float)Max * Width) + excess, Height };
-		SDL_Rect fgRect_dest = { X, Y, fgRect_src.w, fgRect_src.h };
-		SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
+			if (increaseTexture) {
+				SDL_Rect shiftRect_src = { 0, Height - fillHeight, Width, fillHeight };
+				SDL_Rect shiftRect_dest = { X, Y + shiftRect_src.y, shiftRect_src.w, shiftRect_src.h };
+				SDL_RenderCopy(renderer, increaseTexture, &shiftRect_src, &shiftRect_dest);
+
+				int adjH = ((float)shiftUp / (float)Max * Height) + excess;
+				SDL_Rect fgRect_src = { 0, Height - adjH, Width,  adjH };
+				SDL_Rect fgRect_dest = { X, Y + fgRect_src.y, fgRect_src.w, fgRect_src.h };
+				SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
+			}
+			else {
+				SDL_Rect shiftRect_src = { 0, Height - fillHeight, Width, fillHeight };
+				SDL_Rect shiftRect_dest = { X, Y + shiftRect_src.y, shiftRect_src.w, shiftRect_src.h };
+				SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+			}
+		}
+		else {
+			float fillWidth = Width * fillPerc;
+			elapsedTime = SDL_GetTicks() - startTime;
+			float elapsedPerc = (float)elapsedTime / (float)shiftSpeed;
+			if (elapsedPerc > 1) elapsedPerc = 1.0;
+			float excess = Width * (((float)(Current - shiftUp) / (float)Max) *  elapsedPerc);
+
+			if (increaseTexture) {
+				SDL_Rect shiftRect_src = { 0, 0, fillWidth, Height };
+				SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
+				SDL_RenderCopy(renderer, increaseTexture, &shiftRect_src, &shiftRect_dest);
+
+				SDL_Rect fgRect_src = { 0, 0, ((float)shiftUp / (float)Max * Width) + excess, Height };
+				SDL_Rect fgRect_dest = { X, Y, fgRect_src.w, fgRect_src.h };
+				SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
+			}
+			else {
+				SDL_Rect shiftRect_src = { 0, 0, fillWidth, Height };
+				SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
+				SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+			}
+		}
 
 		if (elapsedTime >= shiftSpeed) shiftUp = -1;
 		return;
 	}
 
-	SDL_Rect fgRect_src = { 0, 0, (Width * fillPerc), Height };
-	SDL_Rect fgRect_dest = { X, Y, fgRect_src.w, fgRect_src.h };
+	SDL_Rect fgRect_src = { 0, 0, (int)(Width * fillPerc), Height };
+	if (Verticle) fgRect_src = { 0, Height - (int)(Height * fillPerc), Width, (int)(Height * fillPerc) };
+	SDL_Rect fgRect_dest = { X, Y + fgRect_src.y, fgRect_src.w, fgRect_src.h };
 	SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
 }
 
@@ -188,11 +252,11 @@ void CGauge::CreateGaugeTexture() {
 	if (usingImages) {
 		if (UseGUI) {
 			if (increaseImage) delete increaseImage;
-			increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::aTopLeft);
-			increaseTexture = increaseImage->texture;
+			if (increaseImagePath.length()) increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::aTopLeft);
+			if (increaseImage) increaseTexture = increaseImage->texture;
 			if (decreaseImage) delete decreaseImage;
-			decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::aTopLeft);
-			decreaseTexture = decreaseImage->texture;
+			if (decreaseImagePath.length())decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::aTopLeft);
+			if (decreaseImage) decreaseTexture = decreaseImage->texture;
 		}
 		else {
 			//non gui textures?

@@ -237,6 +237,15 @@ void CWindow::FocusWidget(CWidget* widget) {
 	}
 }
 
+bool CWindow::WidgetHasMouse() {
+	for (auto widget : widgets) {
+		if (widget.second->IsMouseOver()) {
+			return true;
+		}
+	}
+	return false;
+}
+
 bool CWindow::init() {
 	//Create window
 	Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS | SDL_WINDOW_SKIP_TASKBAR;
@@ -285,10 +294,18 @@ void CWindow::initUI() {
 	//Deprecate or move?
 	if (!gui) gClient.initializeGUI();
 
+#ifdef SIZE_1024
+	topCenter_s = gui->getSkinTexture(renderer, "1024/TopCenter_s.bmp", Anchor::aTopLeft);
+	bottomCenter = gui->getSkinTexture(renderer, "1024/BottomCenter.bmp", Anchor::aBottomLeft);
+	left = gui->getSkinTexture(renderer, "1024/Left.bmp", Anchor::aTopLeft);
+	right = gui->getSkinTexture(renderer, "1024/Right.bmp", Anchor::aTopRight);
+#else
 	topCenter_s = gui->getSkinTexture(renderer, "TopCenter_s.bmp", Anchor::aTopLeft);
 	bottomCenter = gui->getSkinTexture(renderer, "BottomCenter.bmp", Anchor::aBottomLeft);
 	left = gui->getSkinTexture(renderer, "Left.bmp", Anchor::aTopLeft);
 	right = gui->getSkinTexture(renderer, "Right.bmp", Anchor::aTopRight);
+#endif
+
 	topLeft_s = gui->getSkinTexture(renderer, "TopLeft_s.bmp", Anchor::aTopLeft);
 	topRight_s = gui->getSkinTexture(renderer, "TopRight_s.bmp", Anchor::aTopRight);
 	bottomLeft = gui->getSkinTexture(renderer, "BottomLeft.bmp", Anchor::aBottomLeft);

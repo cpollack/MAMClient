@@ -94,6 +94,7 @@ public:
 	Sprite* findEffect(int effect);
 	std::vector<Effect>::iterator removeEffect(int effect);
 	std::vector<Effect>::iterator removeEffect(Sprite* effect);
+	void clearEffects();
 
 protected: //Attributes
 	int Level = 0;

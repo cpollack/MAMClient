@@ -1,9 +1,12 @@
 #include "stdafx.h"
 #include "Battle.h"
 #include "BattleScene.h"
+#include "BattleArray.h"
+#include "BattleAI.h"
 
 #include "CustomEvents.h"
 #include "Define.h"
+#include "Options.h"
 
 #include "GUI.h"
 #include "Texture.h"
@@ -35,17 +38,34 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	doc = mapDoc;
 	this->actorCount = actorCount;
 	mode = bmInit;
+	autoBattle = options.GetAutoBattle();
+	battleAI.reset(new BattleAI);
+
+#ifdef NEWGUI
+	battleRect = { 0, 0, 800, 600 };
+
+	std::string num = std::to_string(rand() % 48);
+	while (num.length() < 3) num.insert(num.begin(), '0');
+	std::string backdropPath = "data/fightBG/backdrop/backdrop" + num + ".jpg";
+
+	num = std::to_string(rand() % 18);
+	while (num.length() < 3) num.insert(num.begin(), '0');
+	std::string scenePath = "data/fightBG/scene/scene" + num + ".tga";
+#else
+	battleRect = {0, 0, 740, 410};
 
 	INI fightBg("INI\\FIGHTBGDATA.ini", "FIGHTBG" + std::to_string(doc));
-	std::string bgPath = fightBg.getEntry("FIGHTBG0");
-
+	std::string scenePath = fightBg.getEntry("FIGHTBG0");
+	std::string backdropPath;
+#endif
 	renderRect = { 0, 0, battleRect.w, battleRect.h };
-	bgTexture = new Texture(renderer, bgPath);
+	tScene = new Texture(renderer, scenePath);
+	if (backdropPath.length() > 0) tBackdrop = new Texture(renderer, backdropPath);
 
 	//Load button textures
 	std::string btnPlayerPath = "fight\\menu\\";
 	std::string btnPetPath = "fight\\petbutton\\";
-	int y = battleRect.h - 48 - 6;
+	int y = battleRect.h - 50 - 48 - 6;
 	for (int i = 0; i <= 9; i++) {
 		std::string btnName;
 		switch (i) {
@@ -70,6 +90,15 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 		battleButtons[i]->SetUnPressedImage(btnPath + std::to_string(i) + ".bmp");
 		battleButtons[i]->SetPressedImage(btnPath + std::to_string(i) + "-1.bmp");
 	}
+	battleButtons[auto_battle] = new CButton(mainForm, "btnAutoBattle", 10, 10);
+	battleButtons[auto_battle]->SetWidth(48);
+	battleButtons[auto_battle]->SetHeight(48);
+	battleButtons[auto_battle]->SetType(ButtonType::btToggle);
+	battleButtons[auto_battle]->SetUnPressedImage("fight/AutoOff.bmp");
+	battleButtons[auto_battle]->SetPressedImage("fight/AutoOn.bmp");
+	battleButtons[auto_battle]->Load();
+	battleButtons[auto_battle]->Toggle(autoBattle);
+
 
 	int x = battleRect.w - 300 - 20;
 	battleButtons[BattleMenu::player_attack]->SetX(x);
@@ -90,6 +119,7 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	battleButtons[BattleMenu::player_run]->RegisterEvent("Click", std::bind(&Battle::btnPlayerRun_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::pet_attack]->RegisterEvent("Click", std::bind(&Battle::btnPetAttack_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::pet_defend]->RegisterEvent("Click", std::bind(&Battle::btnPetDefend_Click, this, std::placeholders::_1));
+	battleButtons[BattleMenu::auto_battle]->RegisterEvent("Click", std::bind(&Battle::btnAutoBattle_Click, this, std::placeholders::_1));
 
 	//Load number textures
 	SDL_Color colorKey;
@@ -118,7 +148,7 @@ Battle::~Battle() {
 	delete allyArray;
 	delete enemyArray;
 
-	delete bgTexture;
+	delete tScene;
 	numbers.clear(); //Not required, but explicitly freeing numbers
 
 	for (auto ally : allies) ally->CleanupBattle();
@@ -144,28 +174,29 @@ Battle::~Battle() {
 
 
 void Battle::setAllyFormation(int formation) {
-	loadBattleArray(&allyArray, formation, 0);
+	int allyFormation = formation % 0xFFFF;
+	loadBattleArray(&allyArray, formation, true);
 }
 
 
 void Battle::setEnemyFormation(int formation) {
-	int enemyFormation = formation / 0xFFFF - allyArray->type;
-	loadBattleArray(&enemyArray, enemyFormation, 1);
+	int enemyFormation = formation / 0xFFFF - allyArray->GetType();
+	loadBattleArray(&enemyArray, enemyFormation, false);
 }
 
 
 void Battle::render() {
-	SDL_RenderCopy(renderer, bgTexture->texture, NULL, &renderRect);
+	if (tBackdrop) {
+		SDL_Rect srcRect = {200, 100, 800, 600};
+		SDL_RenderCopy(renderer, tBackdrop->texture, &srcRect, NULL);
+	}
+	SDL_RenderCopy(renderer, tScene->texture, NULL, &renderRect);
 
-	if (allyArray && allyArray->visible) {
-		render_battleArray(allyArray);
-	}
-	if (enemyArray && enemyArray->visible) {
-		render_battleArray(enemyArray);
-	}
+	if (allyArray) allyArray->Render();
+	if (enemyArray) enemyArray->Render();
 
 	//Render timer
-	if (mode == bmTurnPlayer || mode == bmTurnPet) {
+	if (!autoBattle && (mode == bmTurnPlayer || mode == bmTurnPet)) {
 		if (countDown > 0) {
 			int tensPos = countDown / 10;
 			int onesPos = countDown % 10;
@@ -193,6 +224,8 @@ void Battle::render() {
 	}
 
 	//Draw Battle Buttons
+	battleButtons[BattleMenu::auto_battle]->Render();
+
 	if (mode == bmTurnPlayer) {
 		if (!selectTarget && !selectItem) {
 			battleButtons[BattleMenu::player_attack]->Render();
@@ -236,43 +269,6 @@ void Battle::render() {
 			aYell->Render();
 		}
 	}
-}
-
-
-void Battle::render_battleArray(BattleArray* battleArray) {
-	if (battleArray->type == 0) return;
-
-	SDL_RenderCopy(renderer, battleArray->texture->texture, NULL, &battleArray->texture->rect);
-
-	//Refactor label handling
-	/*std::string topText = "Battle Formation: " + battleArray->name + ", Pivot: " + battleArray->pivot + ", Condition: " + battleArray->condition;
-	Label topLabel(topText, 0, 0);
-	topLabel.setFontColor(SDL_Color{ 255,255,255,255 });
-
-
-	std::string bottomText = "Attack: " + std::to_string(battleArray->attack) + "%, Defense: " + std::to_string(battleArray->defense) + "%, Dexterity: " + std::to_string(battleArray->dex) + "%";
-	Label bottomLabel(bottomText, 0, 0);
-	bottomLabel.setFontColor(SDL_Color{ 255,255,255,255 });
-
-	int toX, toY;
-	if (battleArray->top) {
-		toX = renderRect.x + renderRect.w - 400;
-		toY = renderRect.y + 5;
-	}
-	else {
-		toX = renderRect.x + 5;
-		toY = renderRect.y + renderRect.h - topLabel.fontRect.h - bottomLabel.fontRect.h - 5;
-	}
-
-	//topLabel.x = toX;
-	//topLabel.y = toY;
-	topLabel.setPosition(toX, toY);
-	topLabel.render();
-
-	//bottomLabel.x = toX;
-	//bottomLabel.y = toY + topLabel.fontRect.h + 2;
-	bottomLabel.setPosition(toX, toY + topLabel.fontRect.h + 2);
-	bottomLabel.render();*/
 }
 
 
@@ -430,12 +426,19 @@ bool Battle::handleEvent(SDL_Event& e) {
 	SDL_GetMouseState(&x, &y);
 
 	int mx, my;
+#ifdef NEWGUI
+	mx = x;
+	my = y;
+#else
 	mx = x - (gui->left->width + 20);
 	my = y - (gui->topCenter->height + 9);
+#endif
 
 	SDL_Event e2 = e;
 	e2.motion.x = mx;
 	e2.motion.y = my;
+
+	battleButtons[BattleMenu::auto_battle]->HandleEvent(e2);
 
 	if (mode == bmTurnPlayer) {
 		battleButtons[BattleMenu::player_attack]->HandleEvent(e2);
@@ -583,6 +586,11 @@ void Battle::step() {
 	if (mode == bmTurnPlayer) {
 		//Button event callbacks set action flags
 
+		if (autoBattle) {
+			selectedTarget = battleAI->GetNextTarget(player, enemies);
+			if (selectedTarget) playerAction = BattleAction::baAttack;
+		}
+
 		if (clickToAttack) {
 			SDL_Event e;
 			btnPlayerAttack_Click(e);
@@ -616,6 +624,11 @@ void Battle::step() {
 
 	if (mode == bmTurnPet) {
 		//Button event callbacks set action flags
+
+		if (autoBattle) {
+			selectedTarget = battleAI->GetNextTarget(pet, enemies);
+			if (selectedTarget) petAction = BattleAction::baAttack;
+		}
 
 		if (clickToAttack) {
 			SDL_Event e;
@@ -799,6 +812,11 @@ void Battle::btnPetDefend_Click(SDL_Event& e) {
 	pBattleAction* battleAct = new pBattleAction(petAction, round, pet->GetBattleId(), 0, 0, player->AccountId);
 	actions.push_back(battleAct);
 	if (pet && pet->IsAlive()) pet->addEffect(EFFECT_READY);
+}
+
+void Battle::btnAutoBattle_Click(SDL_Event& e) {
+	autoBattle = !autoBattle;
+	options.SetAutoBattle(autoBattle);
 }
 
 void Battle::handlePacket(Packet* packet) {
@@ -1143,15 +1161,17 @@ void Battle::addAlly(int id, std::string name, int look, int level, int life_cur
 	tempAlly->setDirection(5, true);
 	//tempAlly->loadSprite(true);
 
-	int arrayPos = 10 + (allies.size() / 2);
+	int arrayPos = allies.size() / 2;
 	if (allies.size() % 2 != 0) {
-		arrayPos = 15 + (allies.size() / 2);
+		arrayPos = 5 + (allies.size() / 2);
 	}
 
-	SDL_Point posOffset = getBattlePosFromArray(allyArray, arrayPos, true);
-	SDL_Point battlePos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
-	posOffset = getBattlePosFromArray(allyArray, arrayPos, false);
-	SDL_Point targetingPos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
+	SDL_Point posOffset = allyArray->GetPosition(arrayPos, true);
+	//SDL_Point battlePos = { (renderRect.x + renderRect.w - posOffset.x - adjx), (renderRect.y + renderRect.h - posOffset.y - adjy) };
+	SDL_Point battlePos = posOffset;
+	posOffset = allyArray->GetTargetPosition(arrayPos, true);
+	//SDL_Point targetingPos = { (renderRect.x + renderRect.w - posOffset.x - adjx), (renderRect.y + renderRect.h - posOffset.y - adjy) };
+	SDL_Point targetingPos = posOffset;
 
 	tempAlly->SetBattleBasePos(battlePos);
 	tempAlly->SetBattlePos(battlePos);
@@ -1161,6 +1181,7 @@ void Battle::addAlly(int id, std::string name, int look, int level, int life_cur
 	allyCount++;
 	tempAlly->SetArrayPos(allyCount);
 	tempAlly->SetAlive(true);
+	if (allyCount == 1) allyArray->SetLeader(tempAlly);
 }
 
 
@@ -1187,10 +1208,12 @@ void Battle::addEnemy(int id, std::string name, int look, int level) {
 	tempEnemy->setDirection(1, true);
 	//tempEnemy->loadSprite(true);
 	
-	SDL_Point posOffset = getBattlePosFromArray(enemyArray, enemies.size(), true);
-	SDL_Point battlePos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
-	posOffset = getBattlePosFromArray(enemyArray, enemies.size(), false);
-	SDL_Point targetingPos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
+	SDL_Point posOffset = enemyArray->GetPosition(enemies.size(), false);
+	SDL_Point battlePos = posOffset;
+	//SDL_Point battlePos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
+	posOffset = enemyArray->GetTargetPosition(enemies.size(), false);
+	SDL_Point targetingPos = posOffset;
+	//SDL_Point targetingPos = { (renderRect.x + renderRect.w - posOffset.x), (renderRect.y + renderRect.h - posOffset.y) };
 
 	tempEnemy->SetBattleBasePos(battlePos);
 	tempEnemy->SetBattlePos(battlePos);
@@ -1198,6 +1221,7 @@ void Battle::addEnemy(int id, std::string name, int look, int level) {
 
 	enemies.push_back(tempEnemy);
 	enemyCount++;
+	if (enemyCount == 1) enemyArray->SetLeader(tempEnemy);
 }
 
 
@@ -1232,70 +1256,25 @@ Entity* Battle::getActorById(int actorId) {
 }
 
 
-void Battle::loadBattleArray(BattleArray** bArray, int arrayId, int type) {
+void Battle::loadBattleArray(BattleArray** bArray, int arrayId, bool bAlly) {
 	if (*bArray) delete *bArray;
-	*bArray = new BattleArray;
+	*bArray = new BattleArray(renderer);
 
 	std::string arrayPath = "ArrayData\\";
 	INI arrayINI(arrayPath + "array.ini", "ARRAY" + std::to_string(arrayId));
 	std::string arrayFilePath = arrayINI.getEntry("ARRAY0");
 	if (arrayFilePath.at(0) == '.') arrayFilePath = arrayFilePath.substr(2, std::string::npos);
 
-	std::vector<BYTE> test;
-	std::ifstream ifs(arrayFilePath, std::ios::binary);
-	if (ifs) {
-		ifs.read((char*)(*bArray)->arrayData, 348);
-	}
-	ifs.close();
-
-	//0 is 'Normal' - type should be 0(ally) or 1(enemy)
-	if (arrayId > 0) {
-		std::string arrayImgPath = arrayINI.getEntry("Pic" + std::to_string(type));
-		if (arrayImgPath.at(0) == '.') arrayImgPath = arrayImgPath.substr(2, std::string::npos);
-		(*bArray)->texture = new Texture(renderer, arrayImgPath, SDL_Color{ 0,0,0,255 });
-		(*bArray)->texture->rect.x = renderRect.x;
-		(*bArray)->texture->rect.y = renderRect.y;
-		SDL_SetTextureAlphaMod((*bArray)->texture->texture, 192);
-		SDL_SetTextureBlendMode((*bArray)->texture->texture, SDL_BLENDMODE_ADD);
-		(*bArray)->visible = true;
-	}
-
-	(*bArray)->type = arrayId;
-	switch (arrayId) {
-	case 0:
-		break;
-	case 1:
-		(*bArray)->name = "Phoenix";
-		break;
-	case 2:
-		(*bArray)->name = "Tiger";
-		break;
-	case 3:
-		(*bArray)->name = "Turtle";
-		break;
-	case 4:
-		(*bArray)->name = "Kylin";
-		break;
-	case 5:
-		(*bArray)->name = "Dragon";
-		break;
-	}
-	(*bArray)->pivot = "Fine";
-	(*bArray)->condition = "Normal";
-	(*bArray)->attack = 0;
-	(*bArray)->defense = 0;
-	(*bArray)->dex = 0;
-
-	if (type) (*bArray)->top = true;
-	else (*bArray)->top = false;
+	bool success = (*bArray)->Load(arrayFilePath.c_str(), arrayId, bAlly);
+	if (!success) return;
 }
 
 
-SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, bool isSource) {
+/*SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, bool isSource) {
 	if (!bArray) return { 0, 0 };
 	BYTE* arrayData = bArray->arrayData;
 
-	int *v4 = (int*)(arrayData + 0xE4); // v4[5] - 0xE4
+	int *ally15xsets = (int*)(arrayData + 0xE4); // v4[5] - 0xE4
 	int *v5 = (int*)(arrayData + 0xF8); // v5[5] - 0xF8
 	int *v6 = (int*)(arrayData + 0x10C); // v6[5] - 0x10C
 	int *v7 = (int*)(arrayData + 0x120); // v7[5] - 0x120
@@ -1306,7 +1285,7 @@ SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, boo
 
 	if (fighterNum >= 5)
 	{
-		if (fighterNum >= 10)
+		if (fighterNum >= 10) //Allies
 		{
 			if (fighterNum >= 15)
 			{
@@ -1320,13 +1299,13 @@ SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, boo
 			}
 			else
 			{
-				sourcePos.x = 46 * (15 - v4[fighterNum]) + 46;
+				sourcePos.x = 46 * (15 - ally15xsets[fighterNum]) + 46;
 				sourcePos.y = 25 * (15 - v5[fighterNum]);
-				targetPos.x = 46 * (15 - v4[fighterNum]);
+				targetPos.x = 46 * (15 - ally15xsets[fighterNum]);
 				targetPos.y = 25 * (15 - v5[fighterNum]) + 25;
 			}
 		}
-		else
+		else //enemies
 		{
 			sourcePos.x = 46 * v7[fighterNum];
 			sourcePos.y = 25 * v8[fighterNum] + 25;
@@ -1334,7 +1313,7 @@ SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, boo
 			targetPos.y = 25 * v8[fighterNum];
 		}
 	}
-	else
+	else // enemies
 	{
 		sourcePos.x = 46 * v6[fighterNum];
 		sourcePos.y = 25 * v7[fighterNum] + 25;
@@ -1344,7 +1323,7 @@ SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, boo
 	
 	if (isSource) return sourcePos;
 	return targetPos;
-}
+}*/
 
 
 bool Battle::doesMouseIntersect(SDL_Rect aRect, int x, int y) {

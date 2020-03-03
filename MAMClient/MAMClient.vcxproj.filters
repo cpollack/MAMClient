@@ -398,6 +398,12 @@
     <ClCompile Include="Options.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="BattleArray.cpp">
+      <Filter>Source Files\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleAI.cpp">
+      <Filter>Source Files\Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -707,6 +713,12 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="FloatingLabel.h">
+      <Filter>Header Files\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleArray.h">
+      <Filter>Header Files\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleAI.h">
       <Filter>Header Files\Battle</Filter>
     </ClInclude>
   </ItemGroup>

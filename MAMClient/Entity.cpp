@@ -37,11 +37,12 @@ void Entity::CleanupBattle() {
 	alive = true;
 	defending = false;
 	floatingLabels.clear();
+	clearEffects();
 }
 
 void Entity::render() {
-	RenderPos.x = Position.x - map->cameraX;
-	RenderPos.y = Position.y - map->cameraY;
+	RenderPos.x = Position.x + map->mapOffsetX - map->cameraX;
+	RenderPos.y = Position.y + map->mapOffsetY - map->cameraY;
 	if (!sprite) return;
 
 	if (!sprite->started) sprite->start();
@@ -483,6 +484,11 @@ std::vector<Effect>::iterator Entity::removeEffect(Sprite* sprEffect) {
 			return effects.erase(itr);
 		}
 	}
+}
+
+void Entity::clearEffects() {
+	for (auto effect : effects) if (effect.sprite) delete effect.sprite;
+	effects.clear();
 }
 
 bool Entity::IsEnemy() {

@@ -177,78 +177,90 @@ void Texture::loadSurface() {
 
 	int fileSize;
 	std::shared_ptr<DataBuffer> fileBuffer;
+
+	struct stat buffer;
+	if (stat(file.c_str(), &buffer) == 0) {
+		surface = IMG_Load(file.c_str());
+		if (surface) {
+			fileFound = true;
+			loaded = true;
+		}
+	}
+
 	if (!fileFound) gClient.getFileFromWDF(file, fileBuffer, fileSize);	
 
-	if (ext == "RLE") {
-		if (!rle) {
-			if (fileBuffer) rle.reset(new RLE(file, fileBuffer.get()->buffer));
-			else rle.reset(new RLE(file));
-			assetManager.addRLE(file, rle);
+	if (!loaded) {
+		if (ext == "RLE") {
+			if (!rle) {
+				if (fileBuffer) rle.reset(new RLE(file, fileBuffer.get()->buffer));
+				else rle.reset(new RLE(file));
+				assetManager.addRLE(file, rle);
 
-			if (rle->load()) {
-				//Check color disable?
-				if (colorShifts.size() > 0) {
-					rle->addHsbSets(colorShifts);
-					rle->reloadColorMap(true);
+				if (rle->load()) {
+					//Check color disable?
+					if (colorShifts.size() > 0) {
+						rle->addHsbSets(colorShifts);
+						rle->reloadColorMap(true);
+					}
+					else {
+						rle->reloadColorMap(false);
+					}
+					rle->createBitmap();
+					lastReloadKey = rle->getCurrentMapKey();
 				}
-				else {
-					rle->reloadColorMap(false);
+			}
+			else {
+				if (reloadColorMap) {
+					rle->reloadColorMap((colorShifts.size() > 0) ? true : false);
+					rle->createBitmap();
 				}
-				rle->createBitmap();
-				lastReloadKey = rle->getCurrentMapKey();
+			}
+
+			if (rle->loaded) {
+				SDL_RWops* rwop = SDL_RWFromMem(rle->bitmap, rle->bitmapSize);
+				surface = SDL_LoadBMP_RW(rwop, 0);
+				SDL_RWclose(rwop);
+			}
+		}
+		else if (ext == "BMP") {
+			if (fileBuffer) {
+				SDL_RWops* rwop = SDL_RWFromMem(fileBuffer.get()->buffer, fileSize);
+				surface = SDL_LoadBMP_RW(rwop, 0);
+				SDL_RWclose(rwop);
+			}
+		}
+		else if (ext == "JPG" || ext == "PNG") {
+			if (fileBuffer) {
+				SDL_RWops* rwop = SDL_RWFromMem(fileBuffer.get()->buffer, fileSize);
+				surface = IMG_Load_RW(rwop, 1);
+				SDL_RWclose(rwop);
+			}
+		}
+		else if (ext == "TGA") {
+			if (fileBuffer.get()) {
+				TGA* tga = new TGA(file, fileBuffer.get()->buffer, fileSize);
+				SDL_RWops* rwop = SDL_RWFromMem(tga->getBitmap(), tga->getBitmapSize());
+				surface = SDL_LoadBMP_RW(rwop, 0);
+				SDL_RWclose(rwop);
+				delete tga;
 			}
 		}
 		else {
-			if (reloadColorMap) {
-				rle->reloadColorMap((colorShifts.size() > 0) ? true : false);
-				rle->createBitmap();
-			}
+			std::cout << "Unknown file extension for: " << file << std::endl;
 		}
-
-		if (rle->loaded) {
-			SDL_RWops* rwop = SDL_RWFromMem(rle->bitmap, rle->bitmapSize);
-			surface = SDL_LoadBMP_RW(rwop, 0);
-			SDL_RWclose(rwop);
-		}
-	}
-	else if (ext == "BMP") {
-		if (fileBuffer) {
-			SDL_RWops* rwop = SDL_RWFromMem(fileBuffer.get()->buffer, fileSize);
-			surface = SDL_LoadBMP_RW(rwop, 0);
-			SDL_RWclose(rwop);
-		}
-	}
-	else if (ext == "JPG" || ext == "PNG") {
-		if (fileBuffer) {
-			SDL_RWops* rwop = SDL_RWFromMem(fileBuffer.get()->buffer, fileSize);
-			surface = IMG_Load_RW(rwop,1);
-			SDL_RWclose(rwop);
-		}
-	}
-	else if (ext == "TGA") {
-		if (fileBuffer.get()) {
-			TGA* tga = new TGA(file, fileBuffer.get()->buffer, fileSize);
-			SDL_RWops* rwop = SDL_RWFromMem(tga->getBitmap(), tga->getBitmapSize());
-			surface = SDL_LoadBMP_RW(rwop, 0);
-			SDL_RWclose(rwop);
-			delete tga;
-		}
-	}
-	else {
-		std::cout << "Unknown file extension for: " << file << std::endl;
 	}
 
 	if (surface == NULL) {
 		//precheck for file in path?
-		struct stat buffer;
-		if (stat(file.c_str(), &buffer) != 0) {
-			std::cout << "File not Found: " << file << "\n";
-			skip = true;
-			loadFailed = true;
-			return;
-		}
+		//struct stat buffer;
+		//if (stat(file.c_str(), &buffer) != 0) {
+			//std::cout << "File not Found: " << file << "\n";
+			//skip = true;
+			//loadFailed = true;
+			//return;
+		//}
 
-		surface = IMG_Load(file.c_str());
+		//surface = IMG_Load(file.c_str());
 	}
 
 	if (surface == NULL)

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameLibrary.h"
 #include "CustomEvents.h"
+#include "Global.h"
 
 #include "INI.h"
 #include "Sprite.h"
@@ -116,6 +117,7 @@ void showErrorMessage(std::string message) {
 }
 
 void applicationClose() {
+	bExitApplication = true;
 	SDL_Event quitEvent;
 	quitEvent.type = SDL_QUIT;
 	SDL_PushEvent(&quitEvent);

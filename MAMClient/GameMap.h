@@ -53,7 +53,11 @@ public:
 	SDL_Renderer* renderer;
 	SDL_Rect renderRect;
 	
+#ifdef NEWGUI
+	SDL_Rect uiRect = { 0, 0, 800, 600 };
+#else
 	SDL_Rect uiRect = { 0, 0, 740, 410 };
+#endif
 	int uiX, uiY;
 
 	SDL_Texture* tileTexture;
@@ -66,6 +70,7 @@ public:
 	SDL_Rect mapRect;
 	int mapWidth, mapHeight;
 	int cameraX, cameraY;
+	int mapOffsetX, mapOffsetY;
 	int mouseX, mouseY;
 
 	char *mapCoordinates;

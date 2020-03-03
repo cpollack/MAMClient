@@ -35,7 +35,5 @@ void CTestForm::render() {
 	//std::cout << "LogoutForm Ok Clicked\n";
 
 	//Force an application close
-	SDL_Event quitEvent;
-	quitEvent.type = SDL_QUIT;
-	SDL_PushEvent(&quitEvent);
+	applicationClose()
 }*/

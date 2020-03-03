@@ -3,6 +3,7 @@
 #include "GameLibrary.h"
 #include "INI.h"
 
+
 #include "Texture.h"
 #include "Sprite.h"
 #include "Button.h"
@@ -10,6 +11,7 @@
 
 class Battle;
 class BattleScene;
+class BattleAI;
 
 class Entity;
 class Player;
@@ -41,29 +43,11 @@ enum BattleMenu {
 	player_defend,
 	pet_attack,
 	pet_skill,
-	pet_defend
+	pet_defend,
+	auto_battle,
 };
 
-typedef struct BattleArray {
-	BYTE arrayData[348];
-	bool visible = false;
-	Texture *texture = nullptr;
-	Texture *details = nullptr;
-	int type;
-	std::string name;
-	std::string pivot;
-	std::string condition;
-	int attack;
-	int defense;
-	int dex;
-	bool top;
-
-	~BattleArray() {
-		if (texture) delete texture;
-		if (details) delete details;
-	}
-};
-
+class BattleArray;
 class pEnemyInfo;
 class pFighterInfo;
 class pNormalAct;
@@ -89,7 +73,6 @@ public:
 	Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount);
 	Battle::~Battle();
 	void render();
-	void render_battleArray(BattleArray* battleArray);
 	void render_focusBox(Entity* entity);
 	void render_items();
 	bool handleEvent(SDL_Event& e);
@@ -104,12 +87,14 @@ private:
 	bool battleEnd = false;
 	bool victory = false;
 	bool running = false;
+	bool autoBattle = false;
 	int battleEndTimer;
 
 	int doc;
-	SDL_Rect battleRect = { 0, 0, 740, 410 };
+	SDL_Rect battleRect;// = { 0, 0, 740, 410 };
 	SDL_Rect renderRect;
-	Texture *bgTexture = nullptr;
+	Texture *tScene = nullptr, *tBackdrop = nullptr;
+	std::shared_ptr<BattleAI> battleAI;
 
 	std::priority_queue<Entity*, std::vector<Entity*>, LessThanByY> drawActors;
 	std::vector<Entity*> allies;
@@ -185,8 +170,8 @@ public:
 	bool IsReady() { return mode != BattleMode::bmInit; }
 	Entity* Battle::getActorById(int actorId);
 
-	void Battle::loadBattleArray(BattleArray** bArray, int arrayId, int type);
-	SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, bool isSource);
+	void Battle::loadBattleArray(BattleArray** bArray, int arrayId, bool bAlly);
+	//SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, bool isSource);
 
 	bool Battle::doesMouseIntersect(SDL_Rect aRect, int x, int y);
 	//bsType Battle::getSceneTypeFromAction(int action);
@@ -201,6 +186,7 @@ public:
 	void btnPlayerRun_Click(SDL_Event& e);
 	void btnPetAttack_Click(SDL_Event& e);
 	void btnPetDefend_Click(SDL_Event& e);
+	void btnAutoBattle_Click(SDL_Event& e);
 
 };
 
