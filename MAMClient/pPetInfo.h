@@ -26,7 +26,7 @@ public:
 	int life_current, life_max;
 	int skillCount;
 	int skills[5];
-	int val2;
+	BYTE val1, val2, val3, val4;
 	int medal_attack, medal_defence, medal_dexterity;
 
 	BYTE hslSets[15];

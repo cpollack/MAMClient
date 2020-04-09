@@ -35,31 +35,48 @@ void CLabel::Render() {
 	if (!Visible) return;
 	if (!fontTexture) RenderText();
 
-	labelRect = fontRect;
+	SDL_Rect srcRect = fontRect;
+	SDL_Rect dstRect = widgetRect;
+
+	//Offset Rendering positions
 	switch (alignment) {
 	case laLeft:
-		labelRect.x = X;
+		//labelRect.x = X;
 		break;
 	case laRight:
-		labelRect.x = X + Width - fontRect.w;
+		if (srcRect.w > dstRect.w) srcRect.x = dstRect.w - srcRect.w;
+		else dstRect.x += (dstRect.w - srcRect.w);
+		//labelRect.x = X + Width - fontRect.w;
 		break;
 	case laCenter:
-		labelRect.x = X + (Width / 2) - (fontRect.w / 2);
+		if (srcRect.w > dstRect.w) srcRect.x = (dstRect.w / 2) - (srcRect.w / 2);
+		else dstRect.x -= (srcRect.w / 2) - (dstRect.w / 2);
+		//labelRect.x = X + (Width / 2) - (fontRect.w / 2);
 		break;
 	}
 	switch (valignment) {
 	case lvaTop:
-		labelRect.y = Y;
+		//labelRect.y = Y;
 		break;
 	case lvaBottom:
-		labelRect.y = Y + Height - fontRect.h;
+		if (srcRect.h > dstRect.h) srcRect.y = dstRect.h - srcRect.h;
+		else dstRect.y += (dstRect.h - srcRect.h);
+		//labelRect.y = Y + Height - fontRect.h;
 		break;
 	case lvaCenter:
-		labelRect.y = Y + (Height / 2) - (fontRect.h / 2);
+		if (srcRect.h > dstRect.h) srcRect.y = (dstRect.h / 2) - (srcRect.h / 2);
+		else dstRect.y -= (srcRect.h / 2) - (dstRect.h / 2);
+		//labelRect.y = Y + (Height / 2) - (fontRect.h / 2);
 		break;
 	}
 
-	SDL_RenderCopy(renderer, fontTexture, NULL, &labelRect);
+	//Equalize rectangles
+	if (srcRect.w > dstRect.w) srcRect.w = dstRect.w;
+	if (srcRect.h > dstRect.h) srcRect.h = dstRect.h;
+	if (dstRect.w > srcRect.w) dstRect.w = srcRect.w;
+	if (dstRect.h > srcRect.h) dstRect.h = srcRect.h;
+
+	SDL_RenderCopy(renderer, fontTexture, &srcRect, &dstRect);
 }
 
 void CLabel::HandleEvent(SDL_Event& e) {

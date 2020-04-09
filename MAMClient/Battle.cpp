@@ -141,6 +141,13 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	//loadEffect(EFFECT_FAINT);
 	//loadEffect(EFFECT_READY);
 	makeChatBubbleTexture();
+
+	SDL_Event e;
+	SDL_zero(e);
+	e.type = CUSTOMEVENT_BATTLE;
+	e.user.code = BATTLE_START;
+	e.user.data1 = this;
+	SDL_PushEvent(&e);
 }
 
 
@@ -736,6 +743,12 @@ void Battle::step() {
 			int curEndSecs = (SDL_GetTicks() - battleEndTimer) / 1000;
 			if (curEndSecs >= 2) {
 				mode = bmEnd;
+				SDL_Event e;
+				SDL_zero(e);
+				e.type = CUSTOMEVENT_BATTLE;
+				e.user.code = BATTLE_END;
+				e.user.data1 = this;
+				SDL_PushEvent(&e);
 			}
 		}
 		else {

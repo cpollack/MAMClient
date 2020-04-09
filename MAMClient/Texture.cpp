@@ -5,7 +5,7 @@
 
 Texture::Texture(SDL_Renderer* aRenderer) {
 	renderer = aRenderer;
-	setAnchor(aTopLeft);
+	setAnchor(ANCOR_TOPLEFT);
 }
 
 
@@ -14,14 +14,14 @@ Texture::Texture(SDL_Renderer* aRenderer, SDL_Texture* txtr, int w, int h) {
 	texture = txtr;
 	width = w;
 	height = h;
-	setAnchor(aTopLeft);
+	setAnchor(ANCOR_TOPLEFT);
 }
 
 
 Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, bool load) {
 	renderer = aRenderer;
 	file = filePath;
-	setAnchor(aTopLeft);
+	setAnchor(ANCOR_TOPLEFT);
 	if (load) Load();
 }
 
@@ -29,7 +29,7 @@ Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, bool load) {
 Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, SDL_Color aColorKey, bool load) {
 	renderer = aRenderer;
 	file = filePath;
-	setAnchor(aTopLeft);
+	setAnchor(ANCOR_TOPLEFT);
 	useColorKey = true;
 	colorKey = aColorKey;
 	if (load) Load();
@@ -43,6 +43,7 @@ Texture::~Texture() {
 		rle.reset();
 		assetManager.releaseRLE(file);
 	}
+	//free manually generated format/
 }
 
 
@@ -114,11 +115,11 @@ void Texture::loadResource(std::string filePath, int anchor) {
 		height = surface->h;
 
 		int x;
-		if (anchor == Anchor::aTopRight || anchor == Anchor::aBottomRight) x = -width;
+		if (anchor == Anchor::ANCOR_TOPRIGHT || anchor == Anchor::ANCOR_BOTTOMLEFT) x = -width;
 		else x = 0;
 
 		int y;
-		if (anchor == Anchor::aBottomLeft || anchor == Anchor::aBottomRight) y = -height;
+		if (anchor == Anchor::ANCOR_BOTTOMLEFT || anchor == Anchor::ANCOR_BOTTOMLEFT) y = -height;
 		else y = 0;
 
 		rect = { x, y, width, height };
@@ -307,6 +308,16 @@ void Texture::setBlendMode(SDL_BlendMode bm) {
 }
 
 
+SDL_PixelFormat* Texture::GetFormat() {
+	if (format) return format;
+	if (!texture) return nullptr;
+
+	Uint32 pixel_format;
+	SDL_QueryTexture(texture, &pixel_format, NULL, NULL, NULL);
+	format = SDL_AllocFormat(pixel_format);
+	return format;
+}
+
 Uint32 Texture::getPixel(SDL_Point pixelPos) {
 	Uint32 pixel = 0;
 	if (!surface) return pixel;
@@ -320,12 +331,31 @@ Uint32 Texture::getPixel(SDL_Point pixelPos) {
 	return pixel;
 }
 
+void Texture::setPixel(SDL_Point point, SDL_Color pixel) {
+	SDL_BlendMode blend;
+	SDL_GetTextureBlendMode(texture, &blend);
+	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_NONE);
+
+	SDL_Texture *priorTarget;
+	priorTarget = SDL_GetRenderTarget(renderer);
+	SDL_SetRenderTarget(renderer, texture);
+
+	//pixelRGBA(renderer, point.x, point.y, pixel.r, pixel.g, pixel.b, pixel.a);
+	SDL_SetRenderDrawColor(renderer, pixel.r, pixel.g, pixel.b, pixel.a);
+	SDL_RenderDrawPoint(renderer, point.x, point.y);
+
+	SDL_SetRenderTarget(renderer, priorTarget);
+
+	SDL_SetTextureBlendMode(texture, blend);
+}
+
 
 Uint8 Texture::getPixelAlpha(Uint32 pixel) {
 	Uint8 alpha;
-	Uint32 temp = pixel & format->Amask;
-	temp = temp >> format->Ashift;
-	temp = temp << format->Aloss;
+	SDL_PixelFormat *aFormat = GetFormat();
+	Uint32 temp = pixel & aFormat->Amask;
+	temp = temp >> aFormat->Ashift;
+	temp = temp << aFormat->Aloss;
 	alpha = (Uint8)temp;
 
 	return alpha;
@@ -345,11 +375,11 @@ void Texture::setAnchor(int aAnchor) {
 	anchor = aAnchor;
 
 	int x;
-	if (anchor == Anchor::aTopRight || anchor == Anchor::aBottomRight) x = -width;
+	if (anchor == Anchor::ANCOR_TOPRIGHT || anchor == Anchor::ANCOR_BOTTOMLEFT) x = -width;
 	else x = 0;
 
 	int y;
-	if (anchor == Anchor::aBottomLeft || anchor == Anchor::aBottomRight) y = -height;
+	if (anchor == Anchor::ANCOR_BOTTOMLEFT || anchor == Anchor::ANCOR_BOTTOMLEFT) y = -height;
 	else y = 0;
 
 	rect = { x, y, width, height };

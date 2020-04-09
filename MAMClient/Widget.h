@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Client.h"
+#include "Define.h"
 
 #include "include/rapidjson/document.h"
 #include <functional>
@@ -53,6 +54,10 @@ protected:
 	bool ReadOnly;
 	bool MouseOver;
 	bool held;
+	
+	const int DragDelta = 5;
+	bool Dragging;
+	SDL_Rect DragStart;
 
 	//Text related properties
 	bool Underlined, Bold, Multiline;
@@ -104,7 +109,7 @@ public:
 public: 
 	virtual void SetText(std::string value);
 	virtual void SetText(std::wstring value);
-	void RenderText();
+	virtual void RenderText();
 protected:
 	TTF_Font* font, *fontUni;
 	SDL_Texture* fontTexture = NULL;
@@ -112,10 +117,12 @@ protected:
 	SDL_Color fontColor, backColor;
 
 protected:
+	std::map<std::string, CWidget*> widgets;
 	typedef std::function<void(SDL_Event&)> EventFunc;
 	std::map<std::string, EventFunc> eventMap;
 public:
 	virtual void RegisterEvent(std::string eventName, EventFunc evf);
+	virtual void RegisterEvent(std::string widgetName, std::string eventName, EventFunc evf);
 
 	virtual void OnFocus();
 	virtual void OnFocusLost();

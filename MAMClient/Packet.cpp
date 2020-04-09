@@ -217,7 +217,7 @@ void Packet::debugPrint() {
 	#endif // DEBUG_PACKET
 	
 
-	if (unknownType) {
+	/*if (unknownType) {
 		for (int i = 0; i < size; i++) {
 			std::cout << buffer[i];
 		}
@@ -246,5 +246,5 @@ void Packet::debugPrint() {
 		}
 
 		std::cout << std::endl;
-	}
+	}*/
 }

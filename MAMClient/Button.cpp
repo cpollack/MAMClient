@@ -48,17 +48,19 @@ void CButton::Render() {
 void CButton::HandleEvent(SDL_Event& e) {
 	CWidget::HandleEvent(e);
 
+	if (!Visible) return;
+
 	if (e.type == SDL_MOUSEMOTION) {
 		if (MouseOver) {
 			if (!held && mouseoverTexture) buttonTexture = mouseoverTexture;
 		}
 		else {
 			if (Type == btToggle) {
-				if (toggled) buttonTexture = pressedTexture;
+				if (toggled && pressedTexture) buttonTexture = pressedTexture;
 				else buttonTexture = unpressedTexture;
 			}
 			else {
-				if (held) buttonTexture = pressedTexture;
+				if (held && pressedTexture) buttonTexture = pressedTexture;
 				else buttonTexture = unpressedTexture;
 			}
 		}
@@ -68,7 +70,7 @@ void CButton::HandleEvent(SDL_Event& e) {
 		if (MouseOver) {
 			held = true;
 
-			if (Type != btToggle) buttonTexture = pressedTexture;
+			if (Type != btToggle) buttonTexture = pressedTexture ? pressedTexture : unpressedTexture;
 		}
 	}
 
@@ -84,7 +86,7 @@ void CButton::HandleEvent(SDL_Event& e) {
 		held = false;
 
 		if (Type == btToggle) {
-			if (toggled) buttonTexture = pressedTexture;
+			if (toggled && pressedTexture) buttonTexture = pressedTexture;
 			else buttonTexture = unpressedTexture;
 		}
 		else buttonTexture = unpressedTexture;
@@ -165,7 +167,7 @@ void CButton::CreateButtonTexture() {
 	if (usingImages) {
 		if (UseGUI) {
 			if (unpressedImage) delete unpressedImage;
-			unpressedImage = gui->getSkinTexture(renderer, UnPressedImagePath, Anchor::aTopLeft);
+			unpressedImage = gui->getSkinTexture(renderer, UnPressedImagePath, Anchor::ANCOR_TOPLEFT);
 			unpressedTexture = unpressedImage->texture;
 		}
 		else {
@@ -189,7 +191,7 @@ void CButton::CreateButtonTexture() {
 	if (usingImages) {
 		if (UseGUI) {
 			if (pressedImage) delete pressedImage;
-			pressedImage = gui->getSkinTexture(renderer, PressedImagePath, Anchor::aTopLeft);
+			pressedImage = gui->getSkinTexture(renderer, PressedImagePath, Anchor::ANCOR_TOPLEFT);
 			pressedTexture = pressedImage->texture;
 		}
 		else {
@@ -218,7 +220,7 @@ void CButton::CreateButtonTexture() {
 	}
 
 	SDL_DestroyTexture(mainTexture);
-	if (pressed) buttonTexture = pressedTexture;
+	if (pressed && pressedTexture) buttonTexture = pressedTexture;
 	else buttonTexture = unpressedTexture;
 }
 
@@ -245,12 +247,14 @@ void CButton::SetUseGUI(bool use) {
 	UseGUI = use;
 }
 
-void CButton::Toggle(bool bToggle) {
+void CButton::Toggle(bool bToggle, bool fireEvent) {
 	toggled = bToggle;
-	if (toggled) buttonTexture = pressedTexture;
+	if (toggled && pressedTexture) buttonTexture = pressedTexture;
 	else buttonTexture = unpressedTexture;
 
-	SDL_Event e;
-	OnToggle(e);
+	if (fireEvent) {
+		SDL_Event e;
+		OnToggle(e);
+	}
 }
 

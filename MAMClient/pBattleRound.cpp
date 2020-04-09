@@ -7,7 +7,7 @@
 pBattleRound::pBattleRound(char* buf, char* encBuf) {
 	description = "Battle Round (Server)";
 	type = ptBattleRound;
-	initBuffer(20);
+	initBuffer(24);
 	memcpy(buffer, buf, size);
 	memcpy(encryptedBuffer, encBuf, size);
 

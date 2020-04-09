@@ -112,7 +112,8 @@ public:
 public: // Pets
 	void Player::addPet(Pet* newPet);
 	Pet* Player::setActivePet(int id);
-	Pet* Player::getActivePet();
+	Pet* getActivePet();
+	Pet* GetMarchingPet() { return getActivePet(); }
 	Pet* Player::getPet(int petId);
 	std::vector<Pet*> Player::getPetList();
 	void Player::removePet(int petId);

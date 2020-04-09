@@ -62,12 +62,12 @@ pPlayerInfo::pPlayerInfo(int size, char* buf, char* encBuf) {
 	int stringCount = 0;
 	std::vector<std::string> strings = getStringPack(86);
 
-	if (strings.size() >= 0) strcpy(name,strings[0].c_str());
-	if (strings.size() >= 1) strcpy(nickName, strings[1].c_str());
-	if (strings.size() >= 2) strcpy(spouse, strings[2].c_str());
-	if (strings.size() >= 3) strcpy(syndicate, strings[3].c_str());
-	if (strings.size() >= 4) strcpy(branch, strings[4].c_str());
-	if (strings.size() >= 5) strcpy(position, strings[5].c_str());
+	if (strings.size() > 0) strcpy(name,strings[0].c_str());
+	if (strings.size() > 1) strcpy(nickName, strings[1].c_str());
+	if (strings.size() > 2) strcpy(spouse, strings[2].c_str());
+	if (strings.size() > 3) strcpy(syndicate, strings[3].c_str());
+	if (strings.size() > 4) strcpy(branch, strings[4].c_str());
+	if (strings.size() > 5) strcpy(position, strings[5].c_str());
 }
 
 

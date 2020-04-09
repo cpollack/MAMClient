@@ -23,9 +23,9 @@ pNormalAct::pNormalAct(char* buf, char* encBuf) {
 	getDWord(4, &sourceId);
 	getDWord(8, &targetId);
 	getWord(12, &damage);
-	getWord(14, &v1);
-	getByte(16, &interaction);
-	getByte(17, &v2);
+	getWord(14, &heal);
+	getByte(16, &interaction); //element interaction: generate/restrain etc
+	getByte(17, &unk);
 }
 
 
@@ -42,7 +42,7 @@ void pNormalAct::debugPrint() {
 	Packet::debugPrint();
 
 	std::cout << "Action: " << action << " Group: " << group << "Source>Target: " << sourceId << "(" << sourceState << ") > " << targetId << "(" << targetState << ") Damage: " << damage << std::endl;
-	std::cout << "Unknown Values: " << v1 << " / " << v2 << " / " << interaction << std::endl;
+	std::cout << "Unknown Values: " << heal << " / " << unk << " / " << interaction << std::endl;
 
 	std::cout << std::endl;
 }

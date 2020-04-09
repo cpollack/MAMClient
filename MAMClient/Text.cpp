@@ -14,7 +14,7 @@ Text::Text(SDL_Renderer* r, std::string sLine, int toX, int toY, bool isBold) {
 	color = { 255, 255, 255, 255 };
 	setText(sLine);
 
-	alignment = haLeft;
+	alignment = HORIZONTAL_LEFT;
 }
 
 
@@ -63,13 +63,13 @@ void Text::render() {
 SDL_Rect Text::getTextRect() {
 	SDL_Rect textRect;
 	switch (alignment) {
-	case haLeft:
+	case HORIZONTAL_LEFT:
 		textRect = { rect.x, rect.y, rect.w, rect.h };
 		break;
-	case haCenter:
+	case HORIZONTAL_CENTER:
 		textRect = { rect.x - (rect.w / 2), rect.y, rect.w, rect.h };
 		break;
-	case haRight:
+	case HORIZONTAL_RIGHT:
 		textRect = { rect.x - rect.w, rect.y, rect.w, rect.h };
 		break;
 	default:

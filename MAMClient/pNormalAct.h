@@ -9,7 +9,7 @@ public:
 	DWORD sourceId, targetId;
 	int damage;
 	int interaction;
-	int v1, v2;
+	int heal, unk;
 
 	pNormalAct(char *buf, char* encBuf);
 	~pNormalAct();

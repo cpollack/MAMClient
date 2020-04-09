@@ -27,7 +27,6 @@
 #include <list>
 #include <queue>
 
-
 #define LOWORD(l) ((WORD)(l))
 #define HIWORD(l) ((WORD)(((DWORD)(l) >> 16) & 0xFFFF))
 #define LOBYTE(w) ((BYTE)(w))

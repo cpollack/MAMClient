@@ -1,27 +1,27 @@
 #pragma once
 
 enum HorizontalAlignment {
-	haLeft,
-	haCenter,
-	haRight
+	HORIZONTAL_LEFT,
+	HORIZONTAL_CENTER,
+	HORIZONTAL_RIGHT
 };
 
 enum VerticalAlignment {
-	vaTop,
-	vaCenter,
-	vaBottom
+	VERTICAL_TOP,
+	VERTICAL_CENTER,
+	VERTICAL_BOTTOM
 };
 
 enum Anchor {
-	aTopLeft,
-	aCenterLeft,
-	aBottomLeft,
-	aTopMiddle,
-	aCenter,
-	aBottomMiddle,
-	aTopRight,
-	aCenterRight,
-	aBottomRight
+	ANCOR_TOPLEFT,
+	ANCOR_CENTERLEFT,
+	ANCOR_BOTTOMLEFT,
+	ANCOR_TOPMIDDLE,
+	ANCOR_CENTER,
+	ANCOR_BOTTOMMIDDLE,
+	ANCOR_TOPRIGHT,
+	ANCOR_CENTERRIGHT,
+	ANCOR_BOTTOMRIGHT
 };
 
 enum EffectType {
@@ -37,8 +37,11 @@ enum EffectType {
 
 //Battle Info
 const DWORD	_IDMSK_PET		= 0x80000000;
-const DWORD _IDMSK_MONSTER	= 0xc0000000;
+const DWORD _IDMSK_MONSTER	= 0xC0000000;
 
 enum { OBJ_NONE = 1234, OBJ_MONSTER, OBJ_PET, OBJ_USER, OBJ_ITEM };
 
 enum { OBJTYPE_MONSTER = 0, OBJTYPE_VSPET, OBJTYPE_VSPLAYER, OBJTYPE_FRIENDPET, OBJTYPE_FRIENDPLAYER };
+
+class Texture;
+using Asset = std::shared_ptr<Texture>;

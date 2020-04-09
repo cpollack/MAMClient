@@ -213,14 +213,14 @@ void CGauge::CreateGaugeTexture() {
 
 	//Background Texture
 	if (usingImages) {
+		if (backgroundImage) delete backgroundImage;
 		if (UseGUI) {
-			if (backgroundImage) delete backgroundImage;
-			backgroundImage = gui->getSkinTexture(renderer, backgroundImagePath, Anchor::aTopLeft);
-			backgroundTexture = backgroundImage->texture;
+			backgroundImage = gui->getSkinTexture(renderer, backgroundImagePath, Anchor::ANCOR_TOPLEFT);
 		}
 		else {
-			//non gui texture?
+			backgroundImage = new Texture(renderer, backgroundImagePath);
 		}
+		backgroundTexture = backgroundImage->texture;
 	}
 	else {
 		backgroundTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, Width, Height);
@@ -231,14 +231,14 @@ void CGauge::CreateGaugeTexture() {
 
 	//Foreground Texture
 	if (usingImages) {
+		if (foregroundImage) delete foregroundImage;
 		if (UseGUI) {
-			if (foregroundImage) delete foregroundImage;
-			foregroundImage = gui->getSkinTexture(renderer, foregroundImagePath, Anchor::aTopLeft);
-			foregroundTexture = foregroundImage->texture;
+			foregroundImage = gui->getSkinTexture(renderer, foregroundImagePath, Anchor::ANCOR_TOPLEFT);
 		}
 		else {
-			//non gui texture?
+			foregroundImage = new Texture(renderer, foregroundImagePath);
 		}
+		foregroundTexture = foregroundImage->texture;
 	}
 	else {
 		foregroundTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, Width-4, Height-4);
@@ -252,10 +252,10 @@ void CGauge::CreateGaugeTexture() {
 	if (usingImages) {
 		if (UseGUI) {
 			if (increaseImage) delete increaseImage;
-			if (increaseImagePath.length()) increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::aTopLeft);
+			if (increaseImagePath.length()) increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::ANCOR_TOPLEFT);
 			if (increaseImage) increaseTexture = increaseImage->texture;
 			if (decreaseImage) delete decreaseImage;
-			if (decreaseImagePath.length())decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::aTopLeft);
+			if (decreaseImagePath.length())decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::ANCOR_TOPLEFT);
 			if (decreaseImage) decreaseTexture = decreaseImage->texture;
 		}
 		else {

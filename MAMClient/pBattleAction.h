@@ -8,7 +8,7 @@ typedef enum BattleAction {
 	baSpecial = 1,
 	baDefend = 2,
 	baNoAction = 3,
-	//baUnknown = 4,
+	//baUnknown = 4, //call pet?
 	baPlayerRun = 5,
 	baCapture = 6,
 	baCaptureFail = 7,

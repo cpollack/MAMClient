@@ -21,6 +21,7 @@ CMessageForm::CMessageForm() : CWindow(400, 100) {
 	lblMessage = new CLabel(this, "lblMessage", 20, 35);
 	//lblMessage->SetRenderer(renderer);
 	lblMessage->SetWidth(350);
+	lblMessage->SetHeight(90);
 	lblMessage->SetWrapLength(350);
 	AddWidget(lblMessage);
 }

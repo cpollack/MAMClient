@@ -32,7 +32,7 @@ public:
 	void SetUnPressedImage(std::string imagePath);
 	void SetUseGUI(bool use);
 
-	void Toggle(bool bToggle);
+	void Toggle(bool bToggle, bool fireEvent = true);
 	bool GetToggled() { return toggled; }
 
 private: //Properties

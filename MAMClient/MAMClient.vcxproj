@@ -187,6 +187,7 @@
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="pItemAct.cpp" />
+    <ClCompile Include="PlayerInfoFrame.cpp" />
     <ClCompile Include="pPetLevelUp.cpp" />
     <ClCompile Include="pUserAttribute.cpp" />
     <ClCompile Include="pUserLevelUp.cpp" />
@@ -273,6 +274,7 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GameLibrary.h" />
+    <ClInclude Include="PlayerInfoFrame.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="ImageBox.h" />
     <ClInclude Include="INI.h" />

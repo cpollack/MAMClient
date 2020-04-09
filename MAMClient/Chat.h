@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Widget.h"
 #include "Field.h"
 #include "MessageManager.h"
 
@@ -49,40 +50,29 @@ typedef enum ChatFilter {
 	cfSystem
 };
 
-class CChat {
+class CChat : public CWidget {
 public:
 	CChat(CWindow* window);
 	~CChat();
 
-	void render();
-	void handleEvent(SDL_Event& e);
+	void Render();
+	void HandleEvent(SDL_Event& e);
 	void step();
 
 	//void SetRenderer(SDL_Renderer* r);
 	void SetFont(TTF_Font *f);
-	void SetWidth(int w);
-	void SetHeight(int h);
 	void SetHeightInLines(int lines);
 	void SetPos(SDL_Point pos);
 	void SetChannel(ChatChannel channel);
 
 	CButton* AddButton(std::string name, int btnW, int btnH, std::string btnPath, std::string btnDownPath, int toX);
-	void UpdateRect();
 	void UpdateHint();
-
-	int GetWidth();
-	int GetHeight();
-	int GetX();
-	int GetY();
-	//SDL_Point GetPos();
 
 	void AddMessage(pMessage *packet);
 	void AddMessage(Message message);
 
 private:
-	SDL_Renderer* renderer;
 	TTF_Font *font;
-	CWindow* window;
 
 	int x, y;
 	int width, height;
@@ -92,14 +82,22 @@ private:
 	const int HeaderHeight = 25;
 	const int InputHeight = 20;
 	const int LineSpacer = 3;
-	SDL_Rect mainRect, headerRect, histRect, chatRect, scrollRect;
+	const SDL_Rect frameRect = { 4, 7 + 16, 310, 144 }; // Frame is offset by 16 pixels
+	const SDL_Rect chatRect = { 11, 25, 298, 122 }; //14 for chat, 16 for widget rect
+	const SDL_Rect inputRect = { 11, 145, 298, 20 };
+	SDL_Rect mainRect, headerRect, histRect, scrollRect;
 	BYTE opacity;
+
+	Asset ChatFrame;
+	bool Expanded = true;
 
 	std::vector<CMessage*> messages;
 	int rowHeight = 0;
 	void render_history();
 
 	CButton* toggledButton = nullptr;
+	CButton *btnMinimize, *btnExpand;
+	Asset InputField;
 	CChatField* chatField = nullptr;
 	SDL_Color chatColor;
 	int Filter = cfAll;
@@ -111,21 +109,22 @@ private:
 	std::string emotion = "";
 
 private: //Local Reimplementation of Event Handling
-	std::map<std::string, CWidget*> widgets;
-	typedef std::function<void(SDL_Event&)> EventFunc;
-	void registerEvent(std::string widgetName, std::string eventName, EventFunc evf);
+	
+	//typedef std::function<void(SDL_Event&)> EventFunc;
+	//void registerEvent(std::string widgetName, std::string eventName, EventFunc evf);
 
 	void chatField_Submit(SDL_Event& e);
-	void btnAll_ToggleOn(SDL_Event& e);
-	void btnLocal_ToggleOn(SDL_Event& e);
-	void btnWhisper_ToggleOn(SDL_Event& e);
-	void btnTeam_ToggleOn(SDL_Event& e);
-	void btnFriend_ToggleOn(SDL_Event& e);
-	void btnGuild_ToggleOn(SDL_Event& e);
-	void btnSystem_ToggleOn(SDL_Event& e);
+	void btnAll_Toggle(SDL_Event& e);
+	void btnLocal_Toggle(SDL_Event& e);
+	void btnWhisper_Toggle(SDL_Event& e);
+	void btnTeam_Toggle(SDL_Event& e);
+	void btnFriend_Toggle(SDL_Event& e);
+	void btnGuild_Toggle(SDL_Event& e);
+	void btnSystem_Toggle(SDL_Event& e);
+	void btnMinimize_Click(SDL_Event& e);
+	void btnExpand_Click(SDL_Event& e);
 	void btnSettings_Click(SDL_Event& e);
 
-	bool MouseOver = false;
 	bool BlockMouse = false;
 
 public: 
@@ -177,6 +176,8 @@ public:
 	CChatField(CWindow* window, CChat *chat, std::string name, int x, int y);
 	virtual void Render();
 	virtual void HandleEvent(SDL_Event& e);
+
+	virtual void RenderText();
 
 private:
 	CChat *pChat;

@@ -11,19 +11,25 @@ Pet medals
 --------------------
 
 
-Build notes 1.0.14
+Build notes 1.0.15
 
 Major Fix:
 -
 
 Fix:
--
+- Buttons should not be clickable when hidden
 
 Enhancement:
 -
 
 Feature:
 -
+
+Major Change:
+-Main UI Rework!
+--Player and Pet Frame now show life/mana/exp, and level.
+--Chat reredesigned. It is now collapsable and moveable as well.
+--Menu buttons redesigned and can be hidden.
 
 
 

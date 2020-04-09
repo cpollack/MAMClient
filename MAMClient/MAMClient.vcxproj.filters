@@ -404,6 +404,9 @@
     <ClCompile Include="BattleAI.cpp">
       <Filter>Source Files\Battle</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerInfoFrame.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -720,6 +723,9 @@
     </ClInclude>
     <ClInclude Include="BattleAI.h">
       <Filter>Header Files\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInfoFrame.h">
+      <Filter>Header Files\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

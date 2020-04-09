@@ -102,17 +102,26 @@ void CWidget::RenderText() {
 	}
 
 	if (lSurface != NULL) {
-		fontRect = { 0, 0, lSurface->w, lSurface->h };
+		fontRect = { 0, 0, Width, lSurface->h };
+		if (lSurface->w < Width) fontRect.w = lSurface->w;
 		fontTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, fontRect.w, fontRect.h);
 
 		SDL_Texture* priorTarget = SDL_GetRenderTarget(renderer);
 		SDL_SetRenderTarget(renderer, fontTexture);
-		SDL_SetRenderDrawColor(renderer, backColor.r, backColor.g, backColor.b, backColor.a);
-		SDL_RenderClear(renderer);
+		//SDL_SetRenderDrawColor(renderer, backColor.r, backColor.g, backColor.b, backColor.a);
+		//SDL_RenderClear(renderer);
 		SDL_SetTextureBlendMode(fontTexture, SDL_BLENDMODE_BLEND);
 		SDL_Texture *tempTexture = SDL_CreateTextureFromSurface(renderer, lSurface);
-		SDL_RenderCopy(renderer, tempTexture, NULL, NULL);
-		SDL_RenderCopy(renderer, tempTexture, NULL, NULL);
+
+		// Show rightmost side of available text within width, does not take into account cursor/scroll position 
+		SDL_Rect srcRect = { 0, 0, lSurface->w, lSurface->h };
+		if (srcRect.w > Width) {
+			srcRect.x = srcRect.w - Width;
+			srcRect.w = Width;
+		}
+
+		SDL_RenderCopy(renderer, tempTexture, &srcRect, &fontRect);
+		SDL_RenderCopy(renderer, tempTexture, &srcRect, &fontRect);
 		SDL_SetRenderTarget(renderer, priorTarget);
 
 		SDL_DestroyTexture(tempTexture);
@@ -127,7 +136,7 @@ void CWidget::Render() {
 void CWidget::HandleEvent(SDL_Event& e) {
 	if (e.type == SDL_MOUSEMOTION) {
 		MouseOver = false;
-		if (doesPointIntersect(SDL_Rect{ X,Y,Width,Height }, SDL_Point{ e.motion.x, e.motion.y })) {
+		if (Visible && doesPointIntersect(SDL_Rect{ X,Y,Width,Height }, SDL_Point{ e.motion.x, e.motion.y })) {
 			MouseOver = true;
 		}
 	}
@@ -141,6 +150,13 @@ bool CWidget::DoesPointIntersect(SDL_Point point) {
 
 void CWidget::RegisterEvent(std::string eventName, EventFunc evf) {
 	eventMap[eventName] = evf;
+}
+
+void CWidget::RegisterEvent(std::string widgetName, std::string eventName, EventFunc evf) {
+	auto iter = widgets.find(widgetName);
+	if (iter != widgets.end()) {
+		iter->second->RegisterEvent(eventName, evf);
+	}
 }
 
 void CWidget::OnFocus() {

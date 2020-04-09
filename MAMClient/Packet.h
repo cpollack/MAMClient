@@ -46,7 +46,7 @@ enum PacketType {
 	ptItemAct = 2004,
 	ptBattleState = 2005,
 	ptEnemyInfo = 2007,
-	ptFighterInfo = 2008, //friend?
+	ptFighterInfo = 2008,
 	ptBattleResult = 2009,
 	ptUserLevelUp = 2010,
 	ptPetLevelUp = 2011, //rename pet level up

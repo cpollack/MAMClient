@@ -16,6 +16,11 @@ enum {
 	WIDGET_FOCUS_LOST
 };
 
+extern Uint32 CUSTOMEVENT_BATTLE;
+enum {
+	BATTLE_START,
+	BATTLE_END,
+};
 
 extern Uint32 CUSTOMEVENT_PLAYER;
 enum {

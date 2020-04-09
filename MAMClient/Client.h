@@ -1,8 +1,10 @@
 #ifndef __CLIENT_H
 #define __CLIENT_H
 
+//For local and new server testing
 //#define DEVSERVER
 //#define LOCALSERVER
+
 #define DEBUG_LOG
 #define DEBUG_PACKET
 //#define SIZE_1024

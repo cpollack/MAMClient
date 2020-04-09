@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Define.h"
+
 class Texture;
 class RLE;
 
-using Asset = std::shared_ptr<Texture>;
 using AssetMap = std::map<std::string, Asset>;
 using AssetItr = AssetMap::iterator;
 using ContextMap = std::map<void*, AssetMap>;

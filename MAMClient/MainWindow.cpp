@@ -23,6 +23,7 @@
 #include "InventoryForm.h"
 
 #include "AssetManager.h"
+#include "PlayerInfoFrame.h"
 #include "Gauge.h"
 #include "ImageBox.h"
 #include "VideoFrame.h"
@@ -116,7 +117,7 @@ void CMainWindow::initUI() {
 	CWindow::initUI();
 
 #ifdef NEWGUI
-	newGui = gui->getSkinTexture(renderer, "newmain/main.tga", Anchor::aBottomLeft);
+	//newGui = gui->getSkinTexture(renderer, "newmain/main.tga", Anchor::aBottomLeft);
 #endif
 
 #ifdef SIZE_1024
@@ -124,13 +125,13 @@ void CMainWindow::initUI() {
 	mainWindow = gui->getSkinTexture(renderer, "1024/mainwindow.jpg", Anchor::aTopLeft);
 	surface = gui->getSkinTexture(renderer, "1024/surface.jpg", Anchor::aTopLeft);
 #else
-	topCenter = gui->getSkinTexture(renderer, "TopCenter.bmp", Anchor::aTopLeft);
-	mainWindow = gui->getSkinTexture(renderer, "mainwindow.jpg", Anchor::aTopLeft);
-	surface = gui->getSkinTexture(renderer, "surface.jpg", Anchor::aTopLeft);
+	topCenter = gui->getSkinTexture(renderer, "TopCenter.bmp", Anchor::ANCOR_TOPLEFT);
+	mainWindow = gui->getSkinTexture(renderer, "mainwindow.jpg", Anchor::ANCOR_TOPLEFT);
+	surface = gui->getSkinTexture(renderer, "surface.jpg", Anchor::ANCOR_TOPLEFT);
 #endif
 
-	topLeft = gui->getSkinTexture(renderer, "TopLeft.bmp", Anchor::aTopLeft);
-	topRight = gui->getSkinTexture(renderer, "TopRight.bmp", Anchor::aTopRight);
+	topLeft = gui->getSkinTexture(renderer, "TopLeft.bmp", Anchor::ANCOR_TOPLEFT);
+	topRight = gui->getSkinTexture(renderer, "TopRight.bmp", Anchor::ANCOR_TOPRIGHT);
 	
 	surfaceRect = surface->rect;
 	surfaceRect.x = left->width;
@@ -238,22 +239,44 @@ CButton* CMainWindow::addMainButton(std::string name, int x, int y, int w, int h
 	return btn;
 }
 
+CButton* CMainWindow::addMainButton2(std::string name, int x, int y, int w, int h, std::string unpressed, std::string pressed) {
+	CButton *btn = new CButton(this, name, x, y);
+	btn->SetWidth(w);
+	btn->SetHeight(h);
+	btn->SetPressedImage(pressed);
+	btn->SetUnPressedImage(unpressed);
+	AddWidget(btn);
+	return btn;
+}
+
 CGauge* CMainWindow::addMainGauge(std::string name, int x, int y, int w, int h, std::string foreground) {
 	CGauge *gauge = new CGauge(this, name, x, y);
 	//gauge->SetRenderer(renderer);
 	gauge->SetWidth(w);
 	gauge->SetHeight(h);
-	gauge->SetUseGUI(true);
 	gauge->SetForegroundImage(foreground);
 #ifdef NEWGUI
 	std::string background = foreground.substr(0, foreground.find_first_of('.')) + "2" + foreground.substr(foreground.find_first_of('.'), std::string::npos);
 	gauge->SetBackgroundImage(background);
 	gauge->SetVerticle(true);
 #else
+	gauge->SetUseGUI(true);
 	gauge->SetBackgroundImage("bg_slot.jpg");
 	gauge->SetIncreaseImage("orange_slot.jpg");
 	gauge->SetDecreaseImage("red_slot.jpg");
 #endif
+	AddWidget(gauge);
+	return gauge;
+}
+
+CGauge* CMainWindow::addMainGauge2(std::string name, int x, int y, int w, int h, std::string foreground) {
+	CGauge *gauge = new CGauge(this, name, x, y);
+	gauge->SetWidth(w);
+	gauge->SetHeight(h);
+	gauge->SetForegroundImage(foreground);
+	std::string background = foreground.substr(0, foreground.find_first_of('.')) + "_Back" + foreground.substr(foreground.find_first_of('.'), std::string::npos);
+	gauge->SetBackgroundImage(background);
+	//gauge->SetVerticle(true);
 	AddWidget(gauge);
 	return gauge;
 }
@@ -362,8 +385,8 @@ void CMainWindow::select_init() {
 		portaitPath = "GUI/player_icon/Man0" + std::to_string(i+1) + ".bmp";
 		portraits[i] = new Texture(renderer, portaitPath, true);
 	}
-	selectedCharacter = gui->getSkinTexture(renderer, "BoxFocus.bmp", aTopLeft);
-	unselectedCharacter = gui->getSkinTexture(renderer, "BoxNormal.bmp", aTopLeft);
+	selectedCharacter = gui->getSkinTexture(renderer, "BoxFocus.bmp", ANCOR_TOPLEFT);
+	unselectedCharacter = gui->getSkinTexture(renderer, "BoxNormal.bmp", ANCOR_TOPLEFT);
 
 	videoFrame = new CVideoFrame(this, "videoFrame", 20, 33);
 	videoFrame->SetWidth(500);
@@ -604,13 +627,14 @@ void CMainWindow::main_init() {
 	//chat->SetRenderer(renderer);
 	chat->SetFont(gui->font);
 	//chat->SetWidth(gameRect.w);
-	chat->SetWidth(350);
-	chat->SetHeightInLines(7);
+	//chat->SetWidth(350);
+	//chat->SetHeightInLines(7);
 #ifdef NEWGUI
-	chat->SetPos(SDL_Point{ 0, Height - newGui->height - chat->GetHeight() - 30 });
+	//chat->SetPos(SDL_Point{ 0, Height - chat->GetHeight() - 30 });
 #else
 	chat->SetPos(SDL_Point{ 0, gameRect.h - chat->GetHeight() });
 #endif
+	AddWidget(chat);
 
 	// Tell the map the UI boundings are
 	map->setMapUiRect(gameRect);
@@ -634,35 +658,50 @@ void CMainWindow::main_init() {
 
 void CMainWindow::main_init_widgets() {
 #ifdef NEWGUI
-	gaugePlayerHealth = addMainGauge("gaugePlayerHealth", 32, Height - 90 - 12, 20, 90, "newmain/herohp.tga");
-	gaugePlayerMana = addMainGauge("gaugePlayerMana", 13, Height - 79 - 6, 36, 79, "newmain/heromp.tga");
-	gaugePlayerExp = addMainGauge("gaugePlayerExp", 0, Height - 69, 36, 69, "newmain/heroexp.tga");
+	std::string portraitPath;
+	Texture *txturePortrait;
 
-	std::string portraitPath = "GUI/player_icon/" + player->PlayerRole + ".bmp";
-	Texture *txturePortrait = new Texture(renderer, portraitPath, {0,0,0,255}, true);
-	SDL_SetTextureBlendMode(txturePortrait->texture, SDL_BLENDMODE_BLEND);
-	playerPortrait = new CImageBox(this, "playerPortrait", 44, 600 - txturePortrait->height);
-	playerPortrait->SetWidth(txturePortrait->width);
-	playerPortrait->SetHeight(txturePortrait->height);
-	playerPortrait->SetImage(txturePortrait);
-	AddWidget(playerPortrait);
+	playerInfoFrame = new CPlayerInfoFrame(this, "playerInfoFrame", 0, 0);
+	AddWidget(playerInfoFrame);
 
-	petPortrait = new CImageBox(this, "petPortrait", 108, 600);
+	//gaugePlayerHealth = playerInfoFrame->GetPlayerHealthGauge();
+	//gaugePlayerMana = playerInfoFrame->GetPlayerManaGauge();
+	//gaugePlayerExp = playerInfoFrame->GetPlayerExpGauge();
+
+	/*petPortrait = new CImageBox(this, "petPortrait", 108, 600);
 	petPortrait->SetWidth(55);
 	petPortrait->SetHeight(69);
 	AddWidget(petPortrait);
-	main_setPetPortrait();
+	main_setPetPortrait();*/
 
-	gaugePetHealth = addMainGauge("gaugePetHealth", 164, Height - 90 - 12, 20, 90, "newmain/pethp.tga");
-	gaugePetExp = addMainGauge("gaugePetExp", 170, Height - 79 - 6, 36, 79, "newmain/petexp.tga");
+	//gaugePetHealth = addMainGauge2("gaugePetHealth", 97, 123, 50, 20, "data/GUI/main/Pet_Health.png");
+	//gaugePetExp = addMainGauge2("gaugePetExp", 108, 137, 38, 20, "data/GUI/main/Pet_Exp.png");
+	//gaugePetHealth = addMainGauge("gaugePetHealth", 164, Height - 90 - 12, 20, 90, "newmain/pethp.tga");
+	//gaugePetExp = addMainGauge("gaugePetExp", 170, Height - 79 - 6, 36, 79, "newmain/petexp.tga");
+	//gaugePetHealth = playerInfoFrame->GetPetLifeGauge();
+	//gaugePetExp = playerInfoFrame->GetPetExpGauge();
 
-	CButton *btnJump = addMainButton("btnJump", 235, 600-42, 73, 25, "button_fly_off.jpg", "button_fly_on.jpg");
-	addMainButton("btnFight", 315, 600-49, 38, 38, "fight-2.jpg", "fight-1.jpg");
+	CButton *btnJump = addMainButton2("btnJump", 387, 538, 64, 24, "data/GUI/main/btnWalk.png", "data/GUI/main/btnJump.png");
+	addMainButton2("btnFight", 387, 562, 64, 24, "data/GUI/main/btnFight.png", "data/GUI/main/btnFight.png");
 
-	addMainButton("btnCharacter", 390, 600-35, 73, 25, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
-	addMainButton("btnPet", 465, 600-35, 73, 25, "button_pet.jpg", "button_petDown.jpg");
+	//addMainButton2("btnCharacter", 390, 600-60, 60, 60, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
+	//addMainButton2("btnPet", 465, 600-35, 60, 60, "button_pet.jpg", "button_petDown.jpg");
 
-	addMainButton("btnInventory", 540, 600-42, 41, 39, "items-1.jpg", "items-2.jpg");
+	addMainButton2("btnMap", 448, 532, 60, 60, "data/GUI/main/btnMap.png", "data/GUI/main/btnMap.png");
+	addMainButton2("btnInventory", 504, 532, 60, 60, "data/GUI/main/btnInventory.png", "data/GUI/main/btnInventory.png");
+	addMainButton2("btnWuxing", 562, 532, 60, 60, "data/GUI/main/btnWuxing.png", "data/GUI/main/btnWuxing.png");
+	addMainButton2("btnKungfu", 618, 532, 60, 60, "data/GUI/main/btnKungfu.png", "data/GUI/main/btnKungfu.png");
+	addMainButton2("btnTeam", 674, 532, 60, 60, "data/GUI/main/btnTeam.png", "data/GUI/main/btnTeam.png");
+	//addMainButton2("btnFriend", 684, 532, 60, 60, "data/GUI/main/btnFriend.png", "data/GUI/main/btnFriend.png");
+	addMainButton2("btnGuild", 730, 532, 60, 60, "data/GUI/main/btnGuild.png", "data/GUI/main/btnGuild.png");
+
+	MenuBG.reset(new Texture(renderer, "data/GUI/Main/menu_bg.png", true));
+	MenuRight.reset(new Texture(renderer, "data/GUI/Main/menu_right.png", true));
+	btnMenuCollapse = addMainButton2("btnMenuCollapse", 360, Height - 78, 30, 78, "data/GUI/Main/btnMenuCollapse.png", "");
+	btnMenuExpand = addMainButton2("btnMenuExpand", Width - 31, Height - 78, 30, 78, "data/GUI/Main/btnMenuExpand.png", "");
+	btnMenuExpand->SetVisible(false);
+	registerEvent("btnMenuCollapse", "Click", std::bind(&CMainWindow::btnMenuCollapse_Click, this, std::placeholders::_1));
+	registerEvent("btnMenuExpand", "Click", std::bind(&CMainWindow::btnMenuExpand_Click, this, std::placeholders::_1));
 #else
 	//Buttons
 	CButton *btnJump = addMainButton("btnJump", surfaceRect.x + 300, surfaceRect.y + 90, 73, 25, "button_fly_off.jpg", "button_fly_on.jpg");
@@ -758,10 +797,10 @@ void CMainWindow::main_cleanup() {
 		delete battle;
 		battle = nullptr;
 	}
-	if (chat) {
+	/*if (chat) {
 		delete chat;
 		chat = nullptr;
-	}
+	}*/ //chat is now a widget
 	if (player) {
 		delete player;
 		player = nullptr;
@@ -786,13 +825,21 @@ void CMainWindow::main_render() {
 			if (map) map->render();
 		}
 
-		//Chat
-		if (chat) chat->render();
+		//Chat - now a widget
+		//if (chat) chat->render();
 	} SDL_SetRenderTarget(renderer, priorTarget);
 	SDL_RenderCopy(renderer, gameTexture, NULL, &gameRect);
 
+	//Menu
+	if (!bMenuHidden || battle) {
+		SDL_Rect menuRect = { Width - MenuBG->width - 10, Height - MenuRight->height + 3, MenuBG->width, MenuBG->height };
+		SDL_RenderCopy(renderer, MenuBG->texture, NULL, &menuRect);
+		menuRect = { Width - MenuRight->width, Height - MenuRight->height, MenuRight->width, MenuRight->height };
+		SDL_RenderCopy(renderer, MenuRight->texture, NULL, &menuRect);
+	}
+
 #ifdef NEWGUI
-	SDL_RenderCopy(renderer, newGui->texture, NULL, &getDstRect(newGui, 0, Height));
+	//SDL_RenderCopy(renderer, newGui->texture, NULL, &getDstRect(newGui, 0, Height));
 #endif
 
 	for (auto widget : widgets) {
@@ -826,6 +873,11 @@ void CMainWindow::main_render_ui() {
 }
 
 void CMainWindow::main_handleEvent(SDL_Event& e) {
+	if (e.type == CUSTOMEVENT_BATTLE) {
+		if (e.user.code == BATTLE_START) OnBattle_Start(e);
+		if (e.user.code == BATTLE_END) OnBattle_End(e);
+	}
+
 	if (e.type == CUSTOMEVENT_PLAYER) {
 #ifndef NEWGUI
 		if (e.user.code == PLAYER_RENAME) {
@@ -838,30 +890,31 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 #endif
 
 		if (e.user.code == PLAYER_LIFE) {
-			gaugePlayerHealth->AdjustTo(player->GetCurrentLife());
+			playerInfoFrame->adjustPlayerHealthGauge(player->GetCurrentLife());
 		}
 		if (e.user.code == PLAYER_LIFEMAX) {
-			gaugePlayerHealth->set(player->GetCurrentLife(), player->GetMaxLife());
+			playerInfoFrame->setPlayerHealthGauge(player->GetCurrentLife(), player->GetMaxLife());
 		}
 		if (e.user.code == PLAYER_MANA) {
-			gaugePlayerMana->AdjustTo(player->GetCurrentMana());
+			playerInfoFrame->adjustPlayerManaGauge(player->GetCurrentMana());
 		}
 		if (e.user.code == PLAYER_MANAMAX) {
-			gaugePlayerMana->set(player->GetCurrentMana(), player->GetMaxMana());
+			playerInfoFrame->setPlayerManaGauge(player->GetCurrentMana(), player->GetMaxMana());
 		}
 		if (e.user.code == PLAYER_LIFEMANA) {
-			gaugePlayerHealth->AdjustTo(player->GetCurrentLife());
-			gaugePlayerMana->AdjustTo(player->GetCurrentMana());
+			playerInfoFrame->adjustPlayerHealthGauge(player->GetCurrentLife());
+			playerInfoFrame->adjustPlayerManaGauge(player->GetCurrentMana());
 		}
 		if (e.user.code == PLAYER_EXP) {
-			gaugePlayerExp->AdjustTo(player->GetExperience());
+			playerInfoFrame->adjustPlayerExpGauge(player->GetExperience());
 		}
 
 		if (e.user.code == PLAYER_LEVEL) {
 #ifndef NEWGUI
 			setPlayerDetailsLabels();
 #endif
-			gaugePlayerExp->set(player->GetExperience(), player->GetLevelUpExperience());
+			playerInfoFrame->setPlayerExpGauge(player->GetExperience(), player->GetLevelUpExperience());
+			playerInfoFrame->updatePlayerLevel();
 		}
 
 #ifndef NEWGUI
@@ -876,6 +929,7 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 
 	if (e.type == CUSTOMEVENT_PET) {
 		if (e.user.code == PET_MARCHING) {
+			playerInfoFrame->Reload();
 			Pet* pet = player->getActivePet();
 			if (pet) {
 				setPetHealthGauge(pet->GetCurrentLife(), pet->GetMaxLife());
@@ -885,17 +939,18 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 
 		if (e.user.code == PET_LIFE) {
 			Pet* pet = player->getActivePet();
-			if (pet) gaugePetHealth->AdjustTo(pet->GetCurrentLife());
+			if (pet) playerInfoFrame->adjustPetHealthGauge(pet->GetCurrentLife());
 		}
 		if (e.user.code == PET_EXP) {
 			Pet* pet = player->getActivePet();
-			if (pet) gaugePetExp->AdjustTo(pet->getExperience());
+			if (pet) playerInfoFrame->adjustPetExpGauge(pet->getExperience());
 		}
 		if (e.user.code == PET_LEVEL) {
 			Pet* pet = player->getActivePet();
 			if (pet) {
-				gaugePetHealth->set(pet->GetCurrentLife(), pet->GetMaxLife());
-				gaugePetExp->set(pet->getExperience(), pet->getLevelUpExperience());
+				playerInfoFrame->setPetHealthGauge(pet->GetCurrentLife(), pet->GetMaxLife());
+				playerInfoFrame->setPetExpGauge(pet->getExperience(), pet->getLevelUpExperience());
+				playerInfoFrame->updatePetLevel();
 			}
 		}
 	}
@@ -909,7 +964,7 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		}
 	}
 
-	if (chat) {
+	/*if (chat) {
 		SDL_Event e2 = e;
 		if (e2.type == SDL_MOUSEMOTION || e2.type == SDL_MOUSEBUTTONDOWN || e2.type == SDL_MOUSEBUTTONUP) {
 			e2.motion.x -= gameRect.x;
@@ -919,7 +974,7 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		}
 
 		chat->handleEvent(e2);
-	}
+	}*/
 
 	//Verify no widgets have taken ownership of the mouse
 	//Prevents improper mouse clickthrough when clicking buttons etc
@@ -1013,6 +1068,68 @@ void CMainWindow::btnInventory_Click(SDL_Event& e) {
 	Windows.push_back(invForm);
 }
 
+void CMainWindow::btnMenuCollapse_Click(SDL_Event& e) {
+	bMenuHidden = true;
+	btnMenuCollapse->SetVisible(false);
+	btnMenuExpand->SetVisible(true);
+
+	((CButton*)widgets["btnJump"])->SetVisible(false);
+	((CButton*)widgets["btnFight"])->SetVisible(false);
+	((CButton*)widgets["btnMap"])->SetVisible(false);
+	((CButton*)widgets["btnInventory"])->SetVisible(false);
+	((CButton*)widgets["btnWuxing"])->SetVisible(false);
+	((CButton*)widgets["btnKungfu"])->SetVisible(false);
+	((CButton*)widgets["btnTeam"])->SetVisible(false);
+	//((CButton*)widgets["btnFriend"])->SetVisible(false);
+	((CButton*)widgets["btnGuild"])->SetVisible(false);
+}
+
+void CMainWindow::btnMenuExpand_Click(SDL_Event& e) {
+	bMenuHidden = false;
+	btnMenuCollapse->SetVisible(true);
+	btnMenuExpand->SetVisible(false);
+
+	((CButton*)widgets["btnJump"])->SetVisible(true);
+	((CButton*)widgets["btnFight"])->SetVisible(true);
+	((CButton*)widgets["btnMap"])->SetVisible(true);
+	((CButton*)widgets["btnInventory"])->SetVisible(true);
+	((CButton*)widgets["btnWuxing"])->SetVisible(true);
+	((CButton*)widgets["btnKungfu"])->SetVisible(true);
+	((CButton*)widgets["btnTeam"])->SetVisible(true);
+	//((CButton*)widgets["btnFriend"])->SetVisible(true);
+	((CButton*)widgets["btnGuild"])->SetVisible(true);
+}
+
+void CMainWindow::OnBattle_Start(SDL_Event& e) {
+	//bPriorMenuState = bMenuHidden;
+	if (bMenuHidden) btnMenuExpand_Click(e);
+
+	((CButton*)widgets["btnJump"])->SetVisible(false);
+	((CButton*)widgets["btnFight"])->SetVisible(false);
+	((CButton*)widgets["btnMap"])->SetVisible(false);
+	((CButton*)widgets["btnInventory"])->SetVisible(false);
+	((CButton*)widgets["btnWuxing"])->SetVisible(false);
+	((CButton*)widgets["btnKungfu"])->SetVisible(false);
+	((CButton*)widgets["btnTeam"])->SetVisible(false);
+	((CButton*)widgets["btnGuild"])->SetVisible(false);
+}
+
+void CMainWindow::OnBattle_End(SDL_Event& e) {
+	//if (bPriorMenuState != bMenuHidden) { //it was hidden
+	//	bMenuHidden = false;
+	//	btnMenuCollapse_Click(e);
+	//}
+
+	((CButton*)widgets["btnJump"])->SetVisible(true);
+	((CButton*)widgets["btnFight"])->SetVisible(true);
+	((CButton*)widgets["btnMap"])->SetVisible(true);
+	((CButton*)widgets["btnInventory"])->SetVisible(true);
+	((CButton*)widgets["btnWuxing"])->SetVisible(true);
+	((CButton*)widgets["btnKungfu"])->SetVisible(true);
+	((CButton*)widgets["btnTeam"])->SetVisible(true);
+	((CButton*)widgets["btnGuild"])->SetVisible(true);
+}
+
 /* Main Form - Hooks */
 
 void CMainWindow::setPlayerDetailsLabels() {
@@ -1053,82 +1170,77 @@ void CMainWindow::setMapCoordLabels(SDL_Point coord) {
 }
 
 void CMainWindow::setPlayerHealthGauge(int val) {
-	gaugePlayerHealth->set(val);
+	playerInfoFrame->setPlayerHealthGauge(val);
 }
 
 
 void CMainWindow::setPlayerHealthGauge(int val, int max) {
-	gaugePlayerHealth->set(val, max);
+	playerInfoFrame->setPlayerHealthGauge(val, max);
 }
 
 
 void CMainWindow::shiftPlayerHealthGauge(int val) {
-	if (val >= 0) gaugePlayerHealth->add(val);
-	else gaugePlayerHealth->subtract(val);
+	playerInfoFrame->shiftPlayerHealthGauge(val);
 }
 
 
 void CMainWindow::setPlayerManaGauge(int val) {
-	gaugePlayerMana->set(val);
+	playerInfoFrame->setPlayerManaGauge(val);
 }
 
 
 void CMainWindow::setPlayerManaGauge(int val, int max) {
-	gaugePlayerMana->set(val, max);
+	playerInfoFrame->setPlayerManaGauge(val, max);
 }
 
 
 void CMainWindow::shiftPlayerManaGauge(int val) {
-	if (val >= 0) gaugePlayerMana->add(val);
-	else gaugePlayerMana->subtract(val);
+	playerInfoFrame->shiftPlayerManaGauge(val);
 }
 
 
 void CMainWindow::setPlayerExpGauge(int val) {
-	gaugePlayerExp->set(val);
+	playerInfoFrame->setPlayerExpGauge(val);
 }
 
 
 void CMainWindow::setPlayerExpGauge(int val, int max) {
-	gaugePlayerExp->set(val, max);
+	playerInfoFrame->setPlayerExpGauge(val, max);
 }
 
 
 void CMainWindow::shiftPlayerExpGauge(int val) {
-	if (val >= 0) gaugePlayerExp->add(val);
-	else gaugePlayerExp->subtract(val);
+	playerInfoFrame->shiftPlayerExpGauge(val);
 }
 
 
 void CMainWindow::setPetHealthGauge(int val) {
-	gaugePetHealth->set(val);
+	playerInfoFrame->setPetHealthGauge(val);
 }
 
 
 void CMainWindow::setPetHealthGauge(int val, int max) {
-	gaugePetHealth->set(val, max);
+	playerInfoFrame->setPetHealthGauge(val, max);
 }
 
 
 void CMainWindow::shiftPetHealthGauge(int val) {
-	if (val >= 0) gaugePetHealth->add(val);
-	else gaugePetHealth->subtract(val);
+	playerInfoFrame->shiftPetHealthGauge(val);
 }
 
 
 void CMainWindow::setPetExpGauge(int val) {
-	gaugePetExp->set(val);
+	playerInfoFrame->setPetExpGauge(val);
 }
 
 
 void CMainWindow::setPetExpGauge(int val, int max) {
-	gaugePetExp->set(val, max);
+	playerInfoFrame->setPetExpGauge(val, max);
 }
 
 
 void CMainWindow::shiftPetExpGauge(int val) {
-	if (val >= 0) gaugePetExp->add(val);
-	else gaugePetExp->subtract(val);
+	playerInfoFrame->shiftPetExpGauge(val);
 }
 
 void CMainWindow::openShop(int sId) {

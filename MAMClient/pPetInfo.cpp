@@ -34,7 +34,11 @@ pPetInfo::pPetInfo(char* buf, char* encBuf) {
 	getInt(64, &skills[3]);
 	getInt(68, &skills[4]);
 
-	getInt(72, &val2);
+	getByte(72, &val1);
+	getByte(73, &val2);
+	getByte(74, &val3);
+	getByte(75, &val4);
+
 	getByte(76, &medal_attack);
 	getByte(77, &medal_defence);
 	getByte(78, &medal_dexterity);

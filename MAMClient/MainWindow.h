@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Window.h"
+#include "Define.h"
 
 class CLoginForm;
 class CPromptForm;
 class CCharCreateForm;
 
+class CPlayerInfoFrame;
 class CGauge;
 class CImageBox;
 class CVideoFrame;
@@ -41,7 +43,9 @@ public:
 	CLabel* addMainLabel(std::string name, int x, int y, int w, int h, std::string text, bool bold=false);
 	CButton* addMainButton(std::string name, std::string text, int x, int y, int w, int h);
 	CButton* addMainButton(std::string name, int x, int y, int w, int h, std::string pressed, std::string unpressed);
+	CButton* addMainButton2(std::string name, int x, int y, int w, int h, std::string pressed, std::string unpressed);
 	CGauge* addMainGauge(std::string name, int x, int y, int w, int h, std::string foreground);
+	CGauge* addMainGauge2(std::string name, int x, int y, int w, int h, std::string foreground);
 
 private: //Init
 	void init_init();
@@ -108,7 +112,8 @@ private: // Main
 	void main_setPetPortrait();
 	void main_render_ui();
 
-public: void btnClose_Click(SDL_Event& e);
+public: //Widget Event hooks
+	void btnClose_Click(SDL_Event& e);
 private: 
 	void btnJump_Click(SDL_Event& e);
 	void btnFight_Click(SDL_Event& e);
@@ -117,19 +122,31 @@ private:
 	void btnPet_Click(SDL_Event& e);
 
 	void btnInventory_Click(SDL_Event& e);
+	void btnMenuCollapse_Click(SDL_Event& e);
+	void btnMenuExpand_Click(SDL_Event& e);
+
+	//Custom event hooks
+	void OnBattle_Start(SDL_Event& e);
+	void OnBattle_End(SDL_Event& e);
 
 	SDL_Texture* gameTexture;
 	SDL_Rect gameRect;
 	CPromptForm *dcPromptForm = nullptr;
 	bool Disconnected = false, RelogReady = false;
 
+	CPlayerInfoFrame *playerInfoFrame;
 	CLabel *lblCoordX, *lblCoordY;
 	CLabel *lblName, *lblNickName, *lblLevel;
 	CLabel *lblSpouse, *lblCash, *lblReputation;
 	CLabel *lblRank, *lblGuild, *lblGuildRank;
 	CImageBox *playerPortrait, *petPortrait;
-	CGauge *gaugePlayerHealth, *gaugePlayerMana, *gaugePlayerExp;
-	CGauge *gaugePetHealth, *gaugePetExp;
+	CImageBox *imgPortrait;
+	//CGauge *gaugePlayerHealth, *gaugePlayerMana, *gaugePlayerExp;
+	//CGauge *gaugePetHealth, *gaugePetExp;
+	
+	Asset MenuBG, MenuRight;
+	CButton *btnMenuCollapse, *btnMenuExpand;
+	bool bMenuHidden = false, bPriorMenuState;
 
 	User* lastMouseoverUser = nullptr;
 	int userDetailsStartTime;
