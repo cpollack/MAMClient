@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MessageManager.h"
 
+#include "Define.h"
 #include "pMessage.h"
 
 MessageManager::MessageManager() {
@@ -41,5 +42,15 @@ void MessageManager::Push(pMessage* pMsg) {
 	message.channel = pMsg->channel;
 	message.effect = pMsg->effect;
 	message.color = { (Uint8)((pMsg->color & 0xFF0000) >> 16), (Uint8)((pMsg->color & 0xFF00) >> 8), (Uint8)(pMsg->color & 0xFF), (Uint8)0x255 };
+	Push(message);
+}
+
+void MessageManager::DoSystemMessage(std::string msg) {
+	SMessage message;
+	message.sender = "SYSTEM";
+	message.target = "ALLUSERES";
+	message.message = msg;
+	message.channel = ccSystem;
+	message.color = { 255, 0, 0, 255 };
 	Push(message);
 }

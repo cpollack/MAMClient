@@ -152,7 +152,7 @@ void Entity::handleEvent(SDL_Event& e) {
 	if (e.type == SDL_MOUSEMOTION) {
 		MouseOver = false;
 		if (doesPointIntersect(sprRect, e.motion.x, e.motion.y)) {
-			//Only focus a npc when its 'solid' pixels are moused over
+			//Only focus a sprite when its 'solid' pixels are moused over
 			SDL_Point getPixel = { e.motion.x - sprRect.x, e.motion.y - sprRect.y };
 
 			Asset currentTexture = sprite->getCurrentTexture();
@@ -215,7 +215,8 @@ void Entity::setDirection(int direction, bool forBattle) {
 		if (sprDirection > 7) sprDirection -= 8;
 	}
 	else {
-		BattleSprDirection = direction;
+		BattleSprDirection = direction + 1;
+		if (BattleSprDirection > 7) BattleSprDirection -= 8;
 	}
 }
 

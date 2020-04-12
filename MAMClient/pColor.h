@@ -1,5 +1,5 @@
-#ifndef __PCOLOR_H
-#define __PCOLOR_H
+#pragma once
+
 #include "Packet.h"
 
 class pColor : public Packet {
@@ -14,5 +14,3 @@ public:
 	virtual void process();
 	void pColor::debugPrint();
 };
-
-#endif

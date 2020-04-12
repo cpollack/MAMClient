@@ -22,6 +22,7 @@ public:
 	Message Poll();
 	void Push(SMessage msg);
 	void Push(pMessage* pMsg);
+	void DoSystemMessage(std::string message);
 
 private:
 	std::queue<Message> messages;

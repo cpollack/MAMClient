@@ -2,6 +2,7 @@
 #include "UserManager.h"
 
 #include "User.h"
+#include "Player.h"
 
 UserManager::UserManager() {
 	//
@@ -16,6 +17,7 @@ void UserManager::addUser(User* pUser) {
 }
 
 User* UserManager::getUserById(int id) {
+	if (id == player->GetID()) return player;
 	for (auto user : Users) {
 		if (user.second->GetID() == id) return user.second;
 	}
@@ -45,5 +47,12 @@ void UserManager::stepAllUsers() {
 			delete it->second;
 			Users.erase(it);
 		}
+	}
+}
+
+void UserManager::handleEventAllUsers(SDL_Event& e) {
+	for (auto user : Users)
+	{
+		user.second->handleEvent(e);
 	}
 }

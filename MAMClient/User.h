@@ -2,11 +2,11 @@
 
 #include "Entity.h"
 
-class pUserInfo;
-class Sprite;
-
 enum { MALE, FEMALE };
 
+class pUserInfo;
+class Sprite;
+class CTeam;
 class User : public Entity {
 public:
 	User(pUserInfo *packet);
@@ -80,4 +80,11 @@ public:
 protected: /* Effects */
 	Sprite *aura = nullptr;
 	void loadAura();
+
+public: //Team
+	CTeam* GetTeam() { return team; }
+	void CreateTeam();
+	void JoinTeam(CTeam* pTeam);
+private: 
+	CTeam *team = nullptr;
 };

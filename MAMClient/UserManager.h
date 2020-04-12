@@ -14,6 +14,7 @@ public:
 
 	//Batch Handling for all users
 	void stepAllUsers();
+	void handleEventAllUsers(SDL_Event& e);
 
 private:
 	std::map<int, User*> Users;

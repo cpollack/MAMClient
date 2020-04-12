@@ -2,9 +2,13 @@
 #include "User.h"
 #include "GameMap.h"
 
+#include "Global.h"
 #include "Define.h"
+#include "CustomEvents.h"
 #include "pUserInfo.h"
 #include "MainWindow.h"
+
+#include "Team.h"
 
 User::User(pUserInfo *packet):Entity(mainForm->renderer, packet->userId, packet->name, packet->look) {
 	NickName = packet->nickName;
@@ -109,10 +113,22 @@ void User::step() {
 }
 
 void User::handleEvent(SDL_Event& e) {
-	//standard event handling and call mousemove subfunc
-	//check for mouse over
-	//intersecting, check if valid pixel
-	//callback function for displaying info?
+	Entity::handleEvent(e);
+
+	if (!sprite) return;
+
+	if (e.type == SDL_MOUSEBUTTONDOWN) {
+		if (e.button.button == SDL_BUTTON_RIGHT && MouseOver) {
+			if (GameMode == GAMEMODE_SELECTTEAM) GameMode = GAMEMODE_JOINTEAM;
+			SDL_Event interact;
+			SDL_zero(interact);
+			interact.type = CUSTOMEVENT_USER;
+			interact.user.code = USER_RIGHTCLICK;
+			interact.user.data1 = this;
+			interact.user.data2 = nullptr;
+			SDL_PushEvent(&interact);
+		}
+	}
 }
 
 void User::jumpTo(SDL_Point coord) {
@@ -289,4 +305,14 @@ std::string User::getGuild() {
 
 std::string User::getGuildTitle() {
 	return GuildTitle;
+}
+
+void User::CreateTeam() {
+	team = new CTeam();
+	team->AddMember(this);
+}
+
+void User::JoinTeam(CTeam* pTeam) {
+	team = pTeam;
+	team->AddMember(this);
 }

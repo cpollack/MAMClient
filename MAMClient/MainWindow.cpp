@@ -29,6 +29,7 @@
 #include "VideoFrame.h"
 
 #include "pBattleState.h"
+#include "Team.h"
 
 CMainWindow::CMainWindow() :CWindow() {
 	Type = FT_MAIN;
@@ -765,6 +766,7 @@ void CMainWindow::main_init_widgets() {
 	registerEvent("btnPet", "Click", std::bind(&CMainWindow::btnPet_Click, this, std::placeholders::_1));
 
 	registerEvent("btnInventory", "Click", std::bind(&CMainWindow::btnInventory_Click, this, std::placeholders::_1));
+	registerEvent("btnTeam", "Click", std::bind(&CMainWindow::btnTeam_Click, this, std::placeholders::_1));
 }
 
 void CMainWindow::main_setPetPortrait() {
@@ -837,6 +839,8 @@ void CMainWindow::main_render() {
 		menuRect = { Width - MenuRight->width, Height - MenuRight->height, MenuRight->width, MenuRight->height };
 		SDL_RenderCopy(renderer, MenuRight->texture, NULL, &menuRect);
 	}
+
+	if (battle && battle->getMode() != BattleMode::bmInit) battle->render_ui();
 
 #ifdef NEWGUI
 	//SDL_RenderCopy(renderer, newGui->texture, NULL, &getDstRect(newGui, 0, Height));
@@ -955,6 +959,13 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		}
 	}
 
+	if (e.type == CUSTOMEVENT_USER) {
+		if (e.user.code == USER_RIGHTCLICK && GameMode == GAMEMODE_JOINTEAM) {
+			CTeam::Join((User*)e.user.data1);
+			GameMode = GAMEMODE_NONE;
+		}
+	}
+
 	//After Disconnect Prompt
 	if (e.type == CUSTOMEVENT_WINDOW) {
 		if (e.user.code == WINDOW_CLOSE_PROMPT_OK && e.user.data1 == dcPromptForm) {
@@ -984,6 +995,12 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		if (battle->handleEvent(e)) return;
 	}
 	if (!battle && map->handleEvent(e)) return;
+
+	if (e.type == SDL_MOUSEBUTTONDOWN && GameMode == GAMEMODE_SELECTTEAM) {
+		if (e.button.button == SDL_BUTTON_LEFT || e.button.button == SDL_BUTTON_RIGHT) {
+			GameMode == GAMEMODE_NONE;
+		}
+	}
 }
 
 void CMainWindow::main_step() {
@@ -1068,7 +1085,14 @@ void CMainWindow::btnInventory_Click(SDL_Event& e) {
 	Windows.push_back(invForm);
 }
 
+void CMainWindow::btnTeam_Click(SDL_Event& e) {
+	//CTeam::Create();
+
+	GameMode = GAMEMODE_SELECTTEAM;
+}
+
 void CMainWindow::btnMenuCollapse_Click(SDL_Event& e) {
+	if (battle) return;
 	bMenuHidden = true;
 	btnMenuCollapse->SetVisible(false);
 	btnMenuExpand->SetVisible(true);

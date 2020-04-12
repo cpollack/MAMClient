@@ -317,12 +317,11 @@ void GameMap::OnClick(SDL_Event& e) {
 		pDirection *dirPacket = new pDirection(player->GetID(), player->getCoord().x, player->getCoord().y, rcDir);
 		gClient.addPacket(dirPacket);
 
-		//add pDirection and new packet 2031(npc action?) 
-
 		SDL_Event e2 = e;
 		e2.motion.x = cx;
 		e2.motion.y = cy;
 		for (auto npc : npcs) npc->handleEvent(e2);
+		userManager.handleEventAllUsers(e2);
 	}
 }
 
@@ -343,6 +342,7 @@ void GameMap::OnMouseMove(SDL_Event& e) {
 	e2.motion.x = cx;
 	e2.motion.y = cy;
 	for (auto npc : npcs) npc->handleEvent(e2);
+	userManager.handleEventAllUsers(e2);
 }
 
 

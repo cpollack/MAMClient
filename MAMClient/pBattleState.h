@@ -16,7 +16,7 @@ class pBattleState : public Packet {
 public:
 	int state, actors;
 	int userId;
-	int formation;
+	int formation, allyFormation, enemyFormation;
 
 	pBattleState(char *buf, char* encBuf);
 	pBattleState(int code, int aSize, int uId, int form);

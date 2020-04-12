@@ -134,7 +134,7 @@ void CGauge::Render_Textures() {
 				SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
 			}
 			else {
-				SDL_Rect shiftRect_src = { 0, 0, fillWidth, Height };
+				SDL_Rect shiftRect_src = { 0, 0, ((float)shiftUp / (float)Max * Width) + excess, Height };
 				SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
 				SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
 			}

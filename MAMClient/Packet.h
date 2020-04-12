@@ -51,8 +51,8 @@ enum PacketType {
 	ptUserLevelUp = 2010,
 	ptPetLevelUp = 2011, //rename pet level up
 	ptBattleRound = 2012, //end turn
-	//ptTeam = 2020,
-	//ptTeamInfo = 2021,
+	ptTeam = 2020,
+	ptTeamMember = 2021,
 	ptFriend = 2022,
 	ptNpcInfo = 2030,
 	ptNpc = 2031,

@@ -4,8 +4,11 @@
 
 #include "GameMap.h"
 #include "Battle.h"
+#include "UserManager.h"
 #include "Player.h"
-#include "MainWindow.h"
+#include "Team.h"
+
+#include "MainWindow.h" //for renderer
 
 pBattleState::pBattleState(char* buf, char* encBuf) {
 	description = "Battle State (Server)";
@@ -18,6 +21,9 @@ pBattleState::pBattleState(char* buf, char* encBuf) {
 	getByte(1, &actors);
 	getInt(4, &userId);
 	getInt(8, &formation);
+
+	allyFormation = formation % 0xFFFF;
+	enemyFormation = formation / 0xFFFF;
 }
 
 
@@ -30,12 +36,12 @@ pBattleState::pBattleState(int code, int tSize, int uId, int form) {
 	actors = tSize;
 	if (actors == 0) actors = 1;
 	userId = uId;
-	formation = form;
+	allyFormation = form;
 
 	addByte(0, state);
 	addByte(1, actors);
 	addDWord(4, userId);
-	addDWord(8, formation);
+	addDWord(8, allyFormation);
 }
 
 
@@ -51,11 +57,25 @@ void pBattleState::process() {
 
 			if (battle) delete battle;
 			battle = new Battle(mainForm->renderer, map->getMapDoc(), actors);
-			battle->setAllyFormation(gClient.battleFormation);
-			battle->setEnemyFormation(formation);
+			battle->setAllyFormation(allyFormation);
+			battle->setEnemyFormation(enemyFormation);
 		}
 		else {
 			//user manager
+			User *pUser = userManager.getUserById(userId);
+			CTeam *pTeam = player->GetTeam();
+			if (pTeam && pUser->GetID() == pTeam->GetLeader()->GetID()) {
+				//my team, intiate battle
+				if (map->doesBattleResultExist()) map->deleteBattleResult();
+
+				if (battle) delete battle;
+				battle = new Battle(mainForm->renderer, map->getMapDoc(), actors);
+				battle->setAllyFormation(allyFormation);
+				battle->setEnemyFormation(enemyFormation);
+			}
+			else {
+				//not my team, update states
+			}
 		}
 	}
 
@@ -70,7 +90,7 @@ void pBattleState::process() {
 void pBattleState::debugPrint() {
 	Packet::debugPrint();
 
-	std::cout << "State: " << state << " Actors: " << actors <<  " User ID: " << userId << " Formation: " << formation << std::endl;
+	std::cout << "State: " << state << " Actors: " << actors <<  " User ID: " << userId << " Ally Formation: " << allyFormation << " Enemy Formation: " << enemyFormation << std::endl;
 
 	std::cout << std::endl;
 }

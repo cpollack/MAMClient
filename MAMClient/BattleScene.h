@@ -9,6 +9,9 @@
 class Entity;
 enum AnimType;
 
+const int default_ally_dir = 4;
+const int default_monster_dir = 0;
+
 enum bsType {
 	bsMoveTo,
 	bsFadeTo,
@@ -58,9 +61,6 @@ private:
 	Entity* reactor;
 	int reaction;
 	SDL_Point lookTo;
-
-	const int default_ally_dir = 5;
-	const int default_monster_dir = 1;
 
 	bool started = false, finished = false;
 

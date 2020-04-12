@@ -73,6 +73,7 @@ public:
 	Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount);
 	Battle::~Battle();
 	void render();
+	void render_ui();
 	void render_focusBox(Entity* entity);
 	void render_items();
 	bool handleEvent(SDL_Event& e);
@@ -161,8 +162,8 @@ public:
 	void Battle::createAttackResponse(pNormalAct* packet, BattleScene* scene);
 	void Battle::createDefendResponse(pNormalAct* packet);
 	void Battle::createCaptureResponse(pNormalAct* packet);
-	void Battle::addAlly(int id, std::string name, int look, int level, int life_current, int life_max, int mana_current, int mana_max);
-	void Battle::addEnemy(int id, std::string name, int look, int level);
+	void Battle::addAlly(DWORD id, std::string name, int look, int level, int life_current, int life_max, int mana_current, int mana_max);
+	void Battle::addEnemy(DWORD id, std::string name, int look, int level);
 
 	void Battle::start();
 	bool Battle::isOver();

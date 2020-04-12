@@ -407,6 +407,15 @@
     <ClCompile Include="PlayerInfoFrame.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Team.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="pTeam.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="pTeamMember.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -726,6 +735,18 @@
     </ClInclude>
     <ClInclude Include="PlayerInfoFrame.h">
       <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Team.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="pTeam.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="AllPacket.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="pTeamMember.h">
+      <Filter>Header Files\Packet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -65,7 +65,8 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	//Load button textures
 	std::string btnPlayerPath = "fight\\menu\\";
 	std::string btnPetPath = "fight\\petbutton\\";
-	int y = battleRect.h - 50 - 48 - 6;
+	//int y = battleRect.h - 50 - 48 - 6;
+	int y = 538;
 	for (int i = 0; i <= 9; i++) {
 		std::string btnName;
 		switch (i) {
@@ -90,7 +91,7 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 		battleButtons[i]->SetUnPressedImage(btnPath + std::to_string(i) + ".bmp");
 		battleButtons[i]->SetPressedImage(btnPath + std::to_string(i) + "-1.bmp");
 	}
-	battleButtons[auto_battle] = new CButton(mainForm, "btnAutoBattle", 10, 10);
+	battleButtons[auto_battle] = new CButton(mainForm, "btnAutoBattle", 730, y);
 	battleButtons[auto_battle]->SetWidth(48);
 	battleButtons[auto_battle]->SetHeight(48);
 	battleButtons[auto_battle]->SetType(ButtonType::btToggle);
@@ -100,7 +101,8 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	battleButtons[auto_battle]->Toggle(autoBattle);
 
 
-	int x = battleRect.w - 300 - 20;
+	//int x = battleRect.w - 300 - 20;
+	int x = 396;
 	battleButtons[BattleMenu::player_attack]->SetX(x);
 	battleButtons[BattleMenu::player_skill]->SetX(x + (48 * 1));
 	battleButtons[BattleMenu::player_capture]->SetX(x + (48 * 2));
@@ -181,14 +183,14 @@ Battle::~Battle() {
 
 
 void Battle::setAllyFormation(int formation) {
-	int allyFormation = formation % 0xFFFF;
+	//int allyFormation = formation % 0xFFFF;
 	loadBattleArray(&allyArray, formation, true);
 }
 
 
 void Battle::setEnemyFormation(int formation) {
-	int enemyFormation = formation / 0xFFFF - allyArray->GetType();
-	loadBattleArray(&enemyArray, enemyFormation, false);
+	//int enemyFormation = formation / 0xFFFF;
+	loadBattleArray(&enemyArray, formation, false);
 }
 
 
@@ -230,29 +232,6 @@ void Battle::render() {
 		render_focusBox(focusedActor);
 	}
 
-	//Draw Battle Buttons
-	battleButtons[BattleMenu::auto_battle]->Render();
-
-	if (mode == bmTurnPlayer) {
-		if (!selectTarget && !selectItem) {
-			battleButtons[BattleMenu::player_attack]->Render();
-			battleButtons[BattleMenu::player_skill]->Render();
-			battleButtons[BattleMenu::player_capture]->Render();
-			battleButtons[BattleMenu::player_item]->Render();
-			battleButtons[BattleMenu::player_defend]->Render();
-			battleButtons[BattleMenu::player_run]->Render();
-		}
-		if (selectItem) {
-			render_items();
-		}
-	}
-
-	if (mode == bmTurnPet && !selectTarget) {
-		battleButtons[BattleMenu::pet_attack]->Render();
-		battleButtons[BattleMenu::pet_skill]->Render();
-		battleButtons[BattleMenu::pet_defend]->Render();
-	}
-
 	//Display battle dialogue
 	for (int i = 0; i < allies.size(); i++) {
 		if (allies[i]->GetBattleYell() != "") {
@@ -275,6 +254,31 @@ void Battle::render() {
 			aYell->setPosition(p);
 			aYell->Render();
 		}
+	}
+}
+
+void Battle::render_ui() {
+	//Draw Battle Buttons
+	battleButtons[BattleMenu::auto_battle]->Render();
+
+	if (mode == bmTurnPlayer) {
+		if (!selectTarget && !selectItem) {
+			battleButtons[BattleMenu::player_attack]->Render();
+			battleButtons[BattleMenu::player_skill]->Render();
+			battleButtons[BattleMenu::player_capture]->Render();
+			battleButtons[BattleMenu::player_item]->Render();
+			battleButtons[BattleMenu::player_defend]->Render();
+			battleButtons[BattleMenu::player_run]->Render();
+		}
+		if (selectItem) {
+			render_items();
+		}
+	}
+
+	if (mode == bmTurnPet && !selectTarget) {
+		battleButtons[BattleMenu::pet_attack]->Render();
+		battleButtons[BattleMenu::pet_skill]->Render();
+		battleButtons[BattleMenu::pet_defend]->Render();
 	}
 }
 
@@ -1144,7 +1148,7 @@ void Battle::handleColorPacket(pColor* packet) {
 }
 
 
-void Battle::addAlly(int id, std::string name, int look, int level, int life_current, int life_max, int mana_current, int mana_max) {
+void Battle::addAlly(DWORD id, std::string name, int look, int level, int life_current, int life_max, int mana_current, int mana_max) {
 	Entity *tempAlly = nullptr;
 	if (id > _IDMSK_PET) {
 		if (player->getActivePet() && id == player->getActivePet()->GetBattleId()) {
@@ -1171,7 +1175,7 @@ void Battle::addAlly(int id, std::string name, int look, int level, int life_cur
 	tempAlly->SetMaxMana(mana_max);
 
 	tempAlly->setAnimation(StandBy, true);
-	tempAlly->setDirection(5, true);
+	tempAlly->setDirection(default_ally_dir, true);
 	//tempAlly->loadSprite(true);
 
 	int arrayPos = allies.size() / 2;
@@ -1198,7 +1202,7 @@ void Battle::addAlly(int id, std::string name, int look, int level, int life_cur
 }
 
 
-void Battle::addEnemy(int id, std::string name, int look, int level) {
+void Battle::addEnemy(DWORD id, std::string name, int look, int level) {
 	Entity *tempEnemy = nullptr;
 	if (id > _IDMSK_MONSTER) {
 		tempEnemy = new Monster(renderer, id, name, look);
@@ -1218,7 +1222,7 @@ void Battle::addEnemy(int id, std::string name, int look, int level) {
 	tempEnemy->SetLevel(level);
 
 	tempEnemy->setAnimation(StandBy, true);
-	tempEnemy->setDirection(1, true);
+	tempEnemy->setDirection(default_monster_dir, true);
 	//tempEnemy->loadSprite(true);
 	
 	SDL_Point posOffset = enemyArray->GetPosition(enemies.size(), false);

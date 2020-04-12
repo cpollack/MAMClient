@@ -189,6 +189,8 @@
     <ClCompile Include="pItemAct.cpp" />
     <ClCompile Include="PlayerInfoFrame.cpp" />
     <ClCompile Include="pPetLevelUp.cpp" />
+    <ClCompile Include="pTeam.cpp" />
+    <ClCompile Include="pTeamMember.cpp" />
     <ClCompile Include="pUserAttribute.cpp" />
     <ClCompile Include="pUserLevelUp.cpp" />
     <ClCompile Include="pUserPoint.cpp" />
@@ -236,6 +238,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TabControl.cpp" />
+    <ClCompile Include="Team.cpp" />
     <ClCompile Include="TestForm.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -248,6 +251,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AllPacket.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Battle.h" />
     <ClInclude Include="BattleAI.h" />
@@ -295,6 +299,8 @@
     <ClInclude Include="Packet.h" />
     <ClInclude Include="pItemAct.h" />
     <ClInclude Include="pPetLevelUp.h" />
+    <ClInclude Include="pTeam.h" />
+    <ClInclude Include="pTeamMember.h" />
     <ClInclude Include="pUserLevelUp.h" />
     <ClInclude Include="pUserPoint.h" />
     <ClInclude Include="pEmotion.h" />
@@ -344,6 +350,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TabControl.h" />
+    <ClInclude Include="Team.h" />
     <ClInclude Include="TestForm.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />

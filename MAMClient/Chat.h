@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Define.h"
 #include "Widget.h"
 #include "Field.h"
 #include "MessageManager.h"
@@ -9,25 +10,6 @@ class pMessage;
 class CMessage;
 class CChatField;
 class CButton;
-
-enum ChatChannel {
-	ccNone = 0,
-	nnUnknown = 2000,
-	ccPrivate = 2001,
-	ccAction = 2002,
-	ccTeam = 2003,
-	ccGuild = 2004,
-	ccSystem = 2005,
-	ccSpouse = 2006,
-	ccNormal = 2007,
-	ccShout = 2008,
-	ccFriend = 2009,
-	ccBroadcast = 2010,
-	ccGM = 2011,
-	ccHidden = 2101,
-	ccVendor = 2104,
-	cWebsite = 2105
-};
 
 enum ChatEffect {
 	ceNone = 0,

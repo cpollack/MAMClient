@@ -1,40 +1,47 @@
-20:50:12 Beginning Login
-20:50:12 Connected to Account Server
-20:50:12 Connected to the Game Server
-20:50:13 Loading player data from packet
-20:50:13 Average Ticks: 19.890000
-20:50:14 Loading Map WaterCitySuburb
-20:50:14 First Map Loaded
-20:50:14 Login Success, loading game
-20:50:14 Initializing Main
-20:50:18 Average Ticks: 24.660000
-20:50:24 Average Ticks: 71.320000
-20:50:29 Average Ticks: 23.800000
-20:50:34 Average Ticks: 27.110000
-20:50:39 Average Ticks: 23.780000
-20:50:44 Average Ticks: 26.520000
-20:50:49 Average Ticks: 24.410000
-20:50:54 Average Ticks: 24.810000
-20:50:59 Average Ticks: 24.830000
-20:51:4 Average Ticks: 23.160000
-20:51:9 Average Ticks: 23.400000
-20:51:14 Average Ticks: 24.280000
-20:51:19 Average Ticks: 24.540000
-20:51:24 Average Ticks: 24.320000
-20:51:29 Average Ticks: 24.520000
-20:51:34 Average Ticks: 25.220000
-20:51:39 Average Ticks: 23.110000
-20:51:44 Average Ticks: 23.210000
-20:51:49 Average Ticks: 23.080000
-20:51:54 Average Ticks: 23.830000
-20:51:59 Average Ticks: 33.300000
-20:52:4 Average Ticks: 32.320000
-20:52:9 Average Ticks: 32.140000
-20:52:14 Average Ticks: 32.140000
-20:52:19 Average Ticks: 33.350000
-20:52:24 Average Ticks: 33.330000
-20:52:29 Average Ticks: 33.830000
-20:52:34 Average Ticks: 33.460000
-20:52:39 Average Ticks: 32.510000
-20:52:44 Average Ticks: 32.340000
-20:52:49 Average Ticks: 32.740000
+21:56:41 Beginning Login
+21:56:41 Connected to Account Server
+21:56:41 Connected to the Game Server
+21:56:42 Loading player data from packet
+21:56:42 Average Ticks: 20.220000
+21:56:43 Loading Map WaterCitySuburb
+21:56:43 First Map Loaded
+21:56:43 Login Success, loading game
+21:56:43 Initializing Main
+21:56:47 Average Ticks: 31.770000
+21:56:52 Average Ticks: 28.180000
+21:56:55 Loading Map HillOfTear
+21:56:57 Average Ticks: 26.460000
+21:57:2 Average Ticks: 23.080000
+21:57:7 Average Ticks: 23.040000
+21:57:12 Average Ticks: 32.820000
+21:57:17 Average Ticks: 36.620000
+21:57:22 Average Ticks: 36.740000
+21:57:27 Average Ticks: 37.290000
+21:57:32 Average Ticks: 38.140000
+21:57:37 Average Ticks: 24.390000
+21:57:42 Average Ticks: 35.130000
+21:57:47 Average Ticks: 35.620000
+21:57:52 Average Ticks: 33.780000
+21:57:57 Average Ticks: 35.400000
+21:58:2 Average Ticks: 36.720000
+21:58:7 Average Ticks: 36.040000
+21:58:12 Average Ticks: 36.440000
+21:58:17 Average Ticks: 21.060000
+21:58:22 Average Ticks: 33.450000
+21:58:27 Average Ticks: 34.140000
+21:58:32 Average Ticks: 34.400000
+21:58:37 Average Ticks: 35.590000
+21:58:43 Average Ticks: 34.260000
+21:58:48 Average Ticks: 30.280000
+21:58:53 Average Ticks: 36.790000
+21:58:58 Average Ticks: 33.120000
+21:59:3 Average Ticks: 36.350000
+21:59:8 Average Ticks: 37.200000
+21:59:13 Average Ticks: 36.160000
+21:59:18 Average Ticks: 45.240000
+21:59:23 Average Ticks: 44.190000
+21:59:28 Average Ticks: 44.360000
+21:59:33 Average Ticks: 44.290000
+21:59:38 Average Ticks: 39.740000
+21:59:43 Average Ticks: 36.300000
+21:59:48 Average Ticks: 37.190000

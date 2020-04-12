@@ -50,6 +50,11 @@ enum {
 	PET_LEVEL,
 };
 
+extern Uint32 CUSTOMEVENT_USER;
+enum {
+	USER_RIGHTCLICK,
+};
+
 extern Uint32 CUSTOMEVENT_NPC;
 enum {
 	NPC_NONE,
