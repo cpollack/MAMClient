@@ -284,7 +284,7 @@ void Battle::render_ui() {
 
 
 void Battle::render_focusBox(Entity* entity) {
-	SDL_Rect rect = entity->getRenderRect(0, true);
+	SDL_Rect rect = entity->GetRenderRect(0, true);
 	//each is 4 pixel width
 	//255,255,128,128
 

@@ -1,47 +1,33 @@
-21:56:41 Beginning Login
-21:56:41 Connected to Account Server
-21:56:41 Connected to the Game Server
-21:56:42 Loading player data from packet
-21:56:42 Average Ticks: 20.220000
-21:56:43 Loading Map WaterCitySuburb
-21:56:43 First Map Loaded
-21:56:43 Login Success, loading game
-21:56:43 Initializing Main
-21:56:47 Average Ticks: 31.770000
-21:56:52 Average Ticks: 28.180000
-21:56:55 Loading Map HillOfTear
-21:56:57 Average Ticks: 26.460000
-21:57:2 Average Ticks: 23.080000
-21:57:7 Average Ticks: 23.040000
-21:57:12 Average Ticks: 32.820000
-21:57:17 Average Ticks: 36.620000
-21:57:22 Average Ticks: 36.740000
-21:57:27 Average Ticks: 37.290000
-21:57:32 Average Ticks: 38.140000
-21:57:37 Average Ticks: 24.390000
-21:57:42 Average Ticks: 35.130000
-21:57:47 Average Ticks: 35.620000
-21:57:52 Average Ticks: 33.780000
-21:57:57 Average Ticks: 35.400000
-21:58:2 Average Ticks: 36.720000
-21:58:7 Average Ticks: 36.040000
-21:58:12 Average Ticks: 36.440000
-21:58:17 Average Ticks: 21.060000
-21:58:22 Average Ticks: 33.450000
-21:58:27 Average Ticks: 34.140000
-21:58:32 Average Ticks: 34.400000
-21:58:37 Average Ticks: 35.590000
-21:58:43 Average Ticks: 34.260000
-21:58:48 Average Ticks: 30.280000
-21:58:53 Average Ticks: 36.790000
-21:58:58 Average Ticks: 33.120000
-21:59:3 Average Ticks: 36.350000
-21:59:8 Average Ticks: 37.200000
-21:59:13 Average Ticks: 36.160000
-21:59:18 Average Ticks: 45.240000
-21:59:23 Average Ticks: 44.190000
-21:59:28 Average Ticks: 44.360000
-21:59:33 Average Ticks: 44.290000
-21:59:38 Average Ticks: 39.740000
-21:59:43 Average Ticks: 36.300000
-21:59:48 Average Ticks: 37.190000
+21:10:49 Beginning Login
+21:10:49 Connected to Account Server
+21:10:49 Average Ticks: 17.660000
+21:10:49 Connected to the Game Server
+21:10:50 Loading player data from packet
+21:10:51 Loading Map WaterCitySuburb
+21:10:51 First Map Loaded
+21:10:51 Login Success, loading game
+21:10:51 Initializing Main
+21:10:54 Average Ticks: 50.010000
+21:10:56 Loading Map WaterCity
+21:10:59 Average Ticks: 50.980000
+21:11:2 Loading Map WaterCityInn
+21:11:4 Average Ticks: 33.750000
+21:11:9 Average Ticks: 31.250000
+21:11:14 Average Ticks: 28.340000
+21:11:19 Average Ticks: 32.320000
+21:11:24 Average Ticks: 27.470000
+21:11:29 Average Ticks: 28.270000
+21:11:34 Average Ticks: 27.340000
+21:11:39 Average Ticks: 27.440000
+21:11:44 Average Ticks: 27.420000
+21:11:49 Average Ticks: 27.290000
+21:11:54 Average Ticks: 27.580000
+21:11:59 Average Ticks: 27.380000
+21:12:4 Average Ticks: 27.420000
+21:12:9 Average Ticks: 28.190000
+21:12:14 Average Ticks: 27.260000
+21:12:19 Average Ticks: 27.300000
+21:12:24 Average Ticks: 27.210000
+21:12:29 Average Ticks: 27.180000
+21:12:34 Average Ticks: 27.370000
+21:12:39 Average Ticks: 27.380000

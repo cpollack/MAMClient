@@ -57,8 +57,11 @@ public:
 	void Texture::loadSurface(std::string filePath);
 	void Texture::loadTexture(std::string filePath);
 
+	SDL_Rect getRect();
+
 	SDL_PixelFormat* GetFormat();
 	Uint32 Texture::getPixel(SDL_Point pixelPos);
+	SDL_Color getPixelColor(SDL_Point pixelPos);
 	void setPixel(SDL_Point pixelPos, SDL_Color pixel);
 	Uint8 Texture::getPixelAlpha(Uint32 pixel);
 

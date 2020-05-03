@@ -29,6 +29,20 @@ int getDirection(SDL_Point fromPos, SDL_Point toPos) {
 	return newDirection;
 }
 
+SDL_Point getFrontCoord(SDL_Point coord, int direction) {
+	SDL_Point frontCoord = coord;
+	frontCoord.x += _DELTA_X[direction];
+	frontCoord.y += _DELTA_Y[direction];
+	return frontCoord;
+}
+
+SDL_Point getBackCoord(SDL_Point coord, int direction) {
+	SDL_Point backCoord = coord;
+	backCoord.x += _DELTA_X[direction] * -1;
+	backCoord.y += _DELTA_Y[direction] * -1;
+	return backCoord;
+}
+
 
 bool doesPointIntersect(SDL_Rect rect, int x, int y) {
 	if (x >= rect.x && x <= (rect.x + rect.w) && y >= rect.y && y <= (rect.y + rect.h)) return true;

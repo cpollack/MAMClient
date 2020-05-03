@@ -9,9 +9,7 @@
 #include "FloatingLabel.h"
 #include "Options.h"
 
-Entity::Entity(SDL_Renderer* r, int id, std::string name, int look) {
-	renderer = r;
-	Type = OBJ_NONE;
+Entity::Entity(SDL_Renderer* r, int id, std::string name, int look) : GameObj(r) {
 	ID = id;
 	BattleID = id;
 	Name = name;
@@ -41,14 +39,7 @@ void Entity::CleanupBattle() {
 }
 
 void Entity::render() {
-	RenderPos.x = Position.x + map->mapOffsetX - map->cameraX;
-	RenderPos.y = Position.y + map->mapOffsetY - map->cameraY;
-	if (!sprite) return;
-
-	if (!sprite->started) sprite->start();
-
-	sprite->setLocation(RenderPos);
-	sprite->render();
+	GameObj::render();
 
 	render_effects(RenderPos);
 
@@ -124,7 +115,11 @@ void Entity::render_nameplate() {
 
 	if (nameTexture) {
 		SDL_Rect srcRect = { 0, 0, w, h };
-		SDL_Rect destRect = { RenderPos.x - (w / 2), RenderPos.y - 82 - h, w, h };
+		SDL_Rect destRect = { RenderPos.x - (w / 2), RenderPos.y - 87 - h, w, h };
+
+		if (NameplateBackground) {
+			boxRGBA(renderer, destRect.x, destRect.y, destRect.x + destRect.w, destRect.y + destRect.h, 0, 0, 0, 96);
+		}
 
 		SDL_SetTextureBlendMode(nameTexture, SDL_BlendMode::SDL_BLENDMODE_BLEND);
 		SDL_SetTextureBlendMode(shadowTexture, SDL_BlendMode::SDL_BLENDMODE_BLEND);
@@ -147,7 +142,7 @@ void Entity::step() {
 void Entity::handleEvent(SDL_Event& e) {
 	if (!sprite) return;
 
-	SDL_Rect sprRect = getRenderRect();
+	SDL_Rect sprRect = GetRenderRect();
 
 	if (e.type == SDL_MOUSEMOTION) {
 		MouseOver = false;
@@ -171,7 +166,7 @@ void Entity::handleEvent(SDL_Event& e) {
 void Entity::handleEvent_battle(SDL_Event& e) {
 	if (!BattleSprite) return;
 
-	SDL_Rect sprRect = getRenderRect(true);
+	SDL_Rect sprRect = GetRenderRect(true);
 
 	if (e.type == SDL_MOUSEMOTION) {
 		if (doesPointIntersect(sprRect, e.motion.x, e.motion.y)) {
@@ -232,6 +227,46 @@ int Entity::getDirection(bool forBattle) {
 
 int Entity::getDirectionToCoord(SDL_Point coordinate) {
 	return map->getDirectionToCoord(Coord, coordinate);
+}
+
+void Entity::SetEmotion(int emotion) {
+	int anim = Animation;
+	switch (emotion) {
+	case EMOTE_STANDBY:
+		anim = StandBy;
+		break;
+	case EMOTE_WAVE:
+		anim = SayHello;
+		break;
+	case EMOTE_FAINT:
+		anim = Faint;
+		break;
+	case EMOTE_SIT:
+		anim = SitDown;
+		break;
+	case EMOTE_KNEEL:
+		anim = Genuflect;
+		break;
+	case EMOTE_LAUGH:
+		anim = Laugh;
+		break;
+	case EMOTE_ANGRY:
+		anim = Fury;
+		break;
+	case EMOTE_SAD:
+		anim = Sad;
+		break;
+	case EMOTE_CAST:
+		anim = Cast;
+		break;
+	case EMOTE_BOW:
+		anim = Politeness;
+		break;
+	default:
+		anim = StandBy;
+	}
+
+	setAnimation(anim);
 }
 
 void Entity::setAnimation(int animation, bool forBattle) {
@@ -317,57 +352,28 @@ void Entity::loadSprite(bool forBattle) {
 	}
 }
 
-SDL_Rect Entity::getRenderRect(bool forBattle) {
+SDL_Rect Entity::GetRenderRect(bool forBattle) {
+	if (!forBattle) return GameObj::GetRenderRect();
+
 	SDL_Rect renderRect;
-	Sprite *spr = nullptr;
-	SDL_Point pos;
-	if (!forBattle) {
-		spr = sprite;
-		pos = Position;
-	}
-	else {
-		spr = BattleSprite;
-		pos = BattlePos;
-	}
-
-	if (spr) {
+	if (BattleSprite) {
 		//Always reload the sprite location in case its location became invalid
-		spr->setLocation(pos.x, pos.y);
-		renderRect = spr->getRenderRect();
+		BattleSprite->setLocation(BattlePos.x, BattlePos.y);
+		renderRect = BattleSprite->getRenderRect();
 	}
 	return renderRect;
 }
 
-SDL_Rect Entity::getRenderRect(int frame, bool forBattle) {
-	SDL_Rect renderRect = {0,0,0,0};
-	Sprite *spr = nullptr;
-	SDL_Point pos;
-	if (!forBattle) {
-		spr = sprite;
-		pos = Position;
-	}
-	else {
-		spr = BattleSprite;
-		pos = BattlePos;
-	}
+SDL_Rect Entity::GetRenderRect(int frame, bool forBattle) {
+	if (!forBattle) return GameObj::GetRenderRect(frame);
 
-	if (spr) {
+	SDL_Rect renderRect;
+	if (BattleSprite) {
 		//Always reload the sprite location in case its location became invalid
-		spr->setLocation(pos.x, pos.y);
-		renderRect = spr->getRenderRect(frame);
+		BattleSprite->setLocation(BattlePos.x, BattlePos.y);
+		renderRect = BattleSprite->getRenderRect(frame);
 	}
 	return renderRect;
-}
-
-void Entity::setCoord(SDL_Point coord) {
-	Coord = coord;
-	if (map) {
-		Position = map->CenterOfCoord(Coord);
-	}
-}
-
-SDL_Point Entity::getCoord() {
-	return Coord;
 }
 
 Sprite* Entity::CreateEffectSprite(int effect) {

@@ -122,9 +122,17 @@ private:
 	void btnPet_Click(SDL_Event& e);
 
 	void btnInventory_Click(SDL_Event& e);
+	void btnKungfu_Click(SDL_Event& e);
 	void btnTeam_Click(SDL_Event& e);
+	void btnGuild_Click(SDL_Event& e);
 	void btnMenuCollapse_Click(SDL_Event& e);
 	void btnMenuExpand_Click(SDL_Event& e);
+
+	void btnTeamCreate_Click(SDL_Event& e);
+	void btnTeamJoin_Click(SDL_Event& e);
+	void btnTeamManage_Click(SDL_Event& e);
+	void btnTeamLeave_Click(SDL_Event& e);
+	void btnTeamDisband_Click(SDL_Event& e);
 
 	//Custom event hooks
 	void OnBattle_Start(SDL_Event& e);
@@ -151,6 +159,10 @@ private:
 
 	User* lastMouseoverUser = nullptr;
 	int userDetailsStartTime;
+
+	bool ShowingTeamButtons;
+	void ShowTeamButtons();
+	void HideTeamButtons();
 
 public: // Main form hooks
 	void setPlayerDetailsLabels();

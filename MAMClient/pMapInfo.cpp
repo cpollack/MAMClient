@@ -50,14 +50,16 @@ void pMapInfo::process() {
 	if (map) {
 		mapUiRect = map->uiRect;
 		jumpMode = map->getJumpMode();
-		delete map;
+		GameMap* pTemp = map;
+		map = nullptr;
+		delete pTemp;
 		firstMap = false;
 	}
 
 	map = new GameMap(this);
 	if (!firstMap) map->setMapUiRect(mapUiRect);
 	if (jumpMode) map->toggleJumpMode();
-	player->setCoord(SDL_Point{ mapX, mapY });
+	player->SetCoord(SDL_Point{ mapX, mapY });
 
 	if (firstMap) {
 		gClient.addToDebugLog("First Map Loaded");

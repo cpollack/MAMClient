@@ -145,13 +145,25 @@ void Sprite::render() {
 void Sprite::render(int offsetX, int offsetY) {
 	if (!visible) return;
 	if (subimages.size() == 0) return;
-	if (!started) return;
+	
+	DWORD currentTime = SDL_GetTicks();
+	DWORD elapsed = currentTime - startTime;
+	
+	if (!started) {
+		if (LoopTimer > 0) {
+			DWORD compareTime = currentTime - LastLoopTime;
+			if (compareTime < LoopTimer) return;
+			else {
+				LastLoopTime = currentTime;
+				start();
+				elapsed = currentTime - startTime;
+			}
+		}
+		else return;
+	}
 
 	//Refactor - Speed respresents length of time to do one full cycle of the sprite
 	//More frames means more detail over the animation, but also more loading
-
-	DWORD currentTime = SDL_GetTicks();
-	DWORD elapsed = currentTime - startTime;
 
 	repeatCount = elapsed / speed;
 	int nextFrame =  floor((elapsed - (repeatCount * speed)) / (speed * 1.0 / frames));
@@ -160,6 +172,7 @@ void Sprite::render(int offsetX, int offsetY) {
 		if (repeatCount >= repeatMode) {
 			nextFrame = frames - 1;
 			isFinished = true;
+			stop();
 			if (type == stEffect) return; //Do not render completed effects
 		}
 	}
@@ -224,16 +237,25 @@ void Sprite::setAlpha(BYTE newAlpha) {
 }
 
 SDL_Rect Sprite::getRenderRect() {
-	return getRenderRect(currentFrame);
-}
+	if (subimages.size() == 0 || subimages.size() < currentFrame) return{ 0,0 };
 
+	SDL_Rect renderRect = getRenderRect(currentFrame);
+
+	Asset frameTexture = subimages.at(currentFrame);
+	if (!frameTexture->getSurface() && !frameTexture->skip) frameTexture->loadSurface();
+	SDL_Rect sprRect = frameTexture->getRect();
+	renderRect.x += sprRect.x;
+	renderRect.y += sprRect.y;
+
+	return renderRect;
+}
 
 SDL_Rect Sprite::getRenderRect(int frame) {
 	if (subimages.size() == 0 || subimages.size() < frame) return{ 0,0 };
 	Asset frameTexture = subimages.at(frame);
 	if (!frameTexture->getSurface() && !frameTexture->skip) frameTexture->loadSurface();
 
-	SDL_Rect sprRect = frameTexture->rect;
+	SDL_Rect sprRect = frameTexture->getRect();
 	SDL_Rect renderRect;
 	switch (type) {
 	case stCharacter:
@@ -245,6 +267,7 @@ SDL_Rect Sprite::getRenderRect(int frame) {
 	case stObject:
 	case stStatic:
 		renderRect = { x, y, sprRect.w, sprRect.h };
+		//renderRect = { x + sprRect.x, y + sprRect.y, sprRect.w, sprRect.h };
 		break;
 	}
 

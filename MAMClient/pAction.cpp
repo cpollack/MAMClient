@@ -77,6 +77,13 @@ void pAction::process() {
 		if (user) {
 			user->setLeaving(true);
 		}
+	case (amEmote):
+		user = userManager.getUserById(userId);
+		if (user) {
+			int emote = direction;
+			user->SetEmotion(emote);
+			user->loadSprite();
+		}
 	}
 
 }

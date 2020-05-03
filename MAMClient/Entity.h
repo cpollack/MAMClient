@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameObj.h"
 #include "RLE.h"
 
 class Sprite;
@@ -11,7 +12,7 @@ struct Effect {
 };
 using EffectItr = std::vector<Effect>::iterator;
 
-class Entity {
+class Entity : public GameObj {
 public:
 	Entity(SDL_Renderer* r, int id, std::string name, int look);
 	virtual ~Entity();
@@ -28,38 +29,33 @@ public:
 	virtual void handleEvent_battle(SDL_Event& e);
 
 protected:
-	SDL_Renderer* renderer;
 	int ID;
 	std::string Name;
-	SDL_Point Coord, Position, RenderPos;
 	SDL_Point BattlePos_Base, BattlePos, TargetingPos;
 	
-	int Type;
 	int Look, Face;
 	std::string Role;
 	int Animation;
 	int lastSpriteAnimation = -1, lastSpriteDirection = -1;
-	Sprite* sprite = nullptr;
 	ColorShifts colorShifts;
 
 	std::vector<Effect> effects;
 
 	int Direction, sprDirection;
 
+	bool NameplateBackground = false;
 	bool MouseOver = false;
 
 public:
 	int GetID() { return ID; }
 
-	void SetRenderer(SDL_Renderer* rend) { renderer = rend; }
-
 	std::string GetName() { return Name; }
 	void SetName(std::string name) { Name = name; }
 
-	Sprite* GetSprite(bool forBattle = false) { return !forBattle ? sprite : BattleSprite; }
+	virtual Sprite* GetSprite(bool forBattle = false) { return !forBattle ? sprite : BattleSprite; }
 
-	SDL_Rect getRenderRect(bool forBattle = false);
-	SDL_Rect getRenderRect(int frame, bool forBattle = false);
+	SDL_Rect GetRenderRect(bool forBattle = false);
+	SDL_Rect GetRenderRect(int frame, bool forBattle = false);
 
 	virtual std::string getRole(int look);
 	virtual void setRole(int look);
@@ -69,16 +65,12 @@ public:
 
 	int GetFace() { return Face; }
 
-	virtual void setCoord(SDL_Point coord);
-	SDL_Point getCoord();
-
-	SDL_Point GetPosition() { return Position; }
-
 	void setDirection(int direction, bool forBattle = false);
 	void setDirectionToCoord(SDL_Point coordinate, bool forBattle = false);
 	int getDirection(bool forBattle = false);
 	int getDirectionToCoord(SDL_Point coordinate);
 
+	void SetEmotion(int emotion);
 	void setAnimation(int animation, bool forBattle = false);
 	void setColorShifts(ColorShifts shifts, bool forBattle = false);
 	virtual void loadSprite(bool forBattle = false);

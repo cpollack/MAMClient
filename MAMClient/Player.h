@@ -49,7 +49,7 @@ public:
 	void jumpTo(SDL_Point coord);
 	void walkTo(SDL_Point coord);
 
-	void setCoord(SDL_Point coord);
+	virtual void SetCoord(SDL_Point coord);
 protected: 
 	void takeNextStep();
 	

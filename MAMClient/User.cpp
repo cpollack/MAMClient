@@ -5,15 +5,17 @@
 #include "Global.h"
 #include "Define.h"
 #include "CustomEvents.h"
-#include "pUserInfo.h"
 #include "MainWindow.h"
+#include "INI.h"
 
 #include "Team.h"
+
+#include "pUserInfo.h"
 
 User::User(pUserInfo *packet):Entity(mainForm->renderer, packet->userId, packet->name, packet->look) {
 	NickName = packet->nickName;
 	Spouse = packet->spouse;
-	setCoord(SDL_Point{ packet->x, packet->y });
+	SetCoord(SDL_Point{ packet->x, packet->y });
 	setDirection(packet->direction);
 	setAnimation(StandBy); //TEMP - Does the packet define the animation?
 
@@ -66,19 +68,32 @@ User::User(pUserInfo *packet):Entity(mainForm->renderer, packet->userId, packet-
 	default:
 		Animation = StandBy;
 	}
+
+	loadAura();
 }
 
 User::User(SDL_Renderer* r, int id, std::string name, int look):Entity(r, id, name, look) {
-	setAnimation(StandBy); //TEMP - Does the packet define the animation?
+	setAnimation(StandBy);
 }
 
 User::~User() {
-	if (aura) delete aura;
+	if (Aura) delete Aura;
+	if (TeamLeader) delete TeamLeader;
 }
 
 void User::render() {
 	if (!map) return;
 	Entity::render();
+
+	if (Aura) {
+		Aura->render(RenderPos.x, RenderPos.y);
+	}
+
+	if (team && TeamLeader) {
+		TeamLeader->setLocation(RenderPos.x, RenderPos.y - 87 + 8);
+		TeamLeader->speed = 500;
+		TeamLeader->render();
+	}
 
 	render_nameplate();
 }
@@ -108,6 +123,16 @@ void User::step() {
 		}
 		else {
 			takeNextStep();
+		}
+	}
+
+	if (team && !IsTeamLeader()) {
+		User *nextUser = team->GetNextInLine(this);
+		if (nextUser) {
+			SDL_Point backCoord = getBackCoord(nextUser->GetCoord(), nextUser->getDirection());
+			if ((Coord.x != backCoord.x || Coord.y != backCoord.y) && map->isCoordWalkable(backCoord)) {
+				if (backCoord.x != DestCoord.x || backCoord.y != DestCoord.y) User::walkTo(backCoord);
+			}
 		}
 	}
 }
@@ -141,7 +166,7 @@ void User::jumpTo(SDL_Point coord) {
 	jumping = true;
 
 	setDirectionToCoord(coord);
-	setCoord(coord);
+	SetCoord(coord);
 	setAnimation(Genuflect);
 	loadSprite();
 	addEffect(EFFECT_FLASHDOWN);
@@ -199,7 +224,7 @@ void User::takeNextStep() {
 	double shifty = (destPos.y - basePos.y) * movePerc;
 	Position.x = basePos.x + shiftx;
 	Position.y = basePos.y + shifty;
-	if (Position.x == destPos.x && Position.y == destPos.y) setCoord(DestCoord);
+	if (Position.x == destPos.x && Position.y == destPos.y) SetCoord(DestCoord);
 }
 
 void User::setLeaving(bool leaving) {
@@ -222,7 +247,63 @@ bool User::getWalking() {
 
 //Load Aura based on Rank
 void User::loadAura() {
+	if (Aura) delete Aura;
 
+	if (Rank < 2) return;
+
+	std::string rankEffect;
+	if (Alignment == 1) rankEffect = "God";
+	else rankEffect = "Devil";
+	rankEffect += std::to_string(Rank);
+
+	INI iniLeader("ini/common.ini", rankEffect);
+
+	std::string buffer;
+	if (iniLeader.getEntry("FrameAmount", &buffer)) {
+		std::vector<std::string> vStrings;
+		int length = stoi(buffer);
+		for (int i = 0; i < length; i++) {
+			std::string entry = "Frame" + std::to_string(i);
+			std::string result = iniLeader.getEntry(entry);
+			if (result.size()) {
+				result = "data/" + result;
+				vStrings.push_back(result);
+			}
+		}
+
+		if (vStrings.size()) {
+			Aura = new Sprite(renderer, vStrings, stEffect);
+			Aura->repeatMode = 1;
+			Aura->SetLoopTimer(7000); //repeat every 7 seconds
+			Aura->start();
+		}
+	}
+}
+
+void User::loadTeamLead() {
+	if (TeamLeader) return;
+
+	INI iniLeader("ini/common.ini", "Leader");
+	
+	std::string buffer;
+	if (iniLeader.getEntry("FrameAmount", &buffer)) {
+		std::vector<std::string> vStrings;
+		int length = stoi(buffer);
+		for (int i = 0; i < length; i++) {
+			std::string entry = "Frame" + std::to_string(i);
+			std::string result = iniLeader.getEntry(entry);
+			if (result.size()) {
+				result = "data" + result.substr(1, std::string::npos);
+				vStrings.push_back(result);
+			}
+		}
+
+		if (vStrings.size()) {
+			TeamLeader = new Sprite(renderer, vStrings, stEffect);
+			TeamLeader->repeatMode = 0;
+			TeamLeader->start();
+		}
+	}
 }
 
 std::string User::getNickName() {
@@ -310,9 +391,34 @@ std::string User::getGuildTitle() {
 void User::CreateTeam() {
 	team = new CTeam();
 	team->AddMember(this);
+	loadTeamLead();
 }
 
 void User::JoinTeam(CTeam* pTeam) {
 	team = pTeam;
 	team->AddMember(this);
+}
+
+void User::LeaveTeam() {
+	if (!team) return;
+
+	if (team->GetLeader() == this) {
+		for (int i = 1; i < team->GetMemberCount(); i++) {
+			User *member = team->GetMember(i + 1);
+			if (member && member != this) {
+				member->LeaveTeam();
+			}
+		}
+		delete team;
+		if (TeamLeader) delete TeamLeader;
+		TeamLeader = nullptr;
+	}
+	else team->RemoveMember(this);
+	team = nullptr;
+}
+
+bool User::IsTeamLeader() {
+	if (!team) return false;
+	if (team->GetLeader() == this) return true;
+	return false;
 }

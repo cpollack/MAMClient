@@ -6,12 +6,16 @@
 #include "GUI.h"
 #include "Texture.h"
 
-Dialogue::Dialogue(pNpcDialogue* packet, std::string npcName, int pX, int pY) {
-	renderer = mainForm->renderer;
-	width = 550;
-	height = 120; 
-	x = pX;
-	y = pY;
+#include "pNpcDialogue.h"
+#include "pNpcAction.h"
+
+Dialogue *dialogue = nullptr;
+
+Dialogue::Dialogue(CWindow* window, pNpcDialogue* packet, std::string npcName, int pX, int pY) : CWidget(window) {
+	SetX(pX);
+	SetY(pY);
+	SetWidth(550);
+	SetHeight(120);
 
 	portraitId = packet->npcFace;
 	name = "[" + npcName + "]";
@@ -42,7 +46,7 @@ void Dialogue::createDialogueBox() {
 	SDL_Color msgColor = { 0, 255, 255, 255 };
 	SDL_Color white = { 255, 255, 255, 255 };
 	int spacer = 10;
-	int shiftX = x - (width / 2);
+	int shiftX = X - (Width / 2);
 
 	int msgPos = 33;
 
@@ -66,9 +70,9 @@ void Dialogue::createDialogueBox() {
 		}
 	}
 
-	height = msgPos + msgHeight;
-	if (height < MINHEIGHT) height = MINHEIGHT;
-	mainTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+	SetHeight(msgPos + msgHeight);
+	if (Height < MINHEIGHT) SetHeight(MINHEIGHT);
+	mainTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, Width, Height);
 
 	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
 	SDL_SetRenderTarget(renderer, mainTexture);
@@ -77,10 +81,10 @@ void Dialogue::createDialogueBox() {
 	SDL_RenderClear(renderer);
 
 	//Border
-	hlineRGBA(renderer, 0, width, 0, 35, 87, 85, 128);
-	hlineRGBA(renderer, 0, width, height - 1, 35, 87, 85, 192);
-	vlineRGBA(renderer, 0, 0, height - 1, 35, 87, 85, 0xFF);
-	vlineRGBA(renderer, width - 1, 0, height - 1, 0, 255, 255, 192);
+	hlineRGBA(renderer, 0, Width, 0, 35, 87, 85, 128);
+	hlineRGBA(renderer, 0, Width, Height - 1, 35, 87, 85, 192);
+	vlineRGBA(renderer, 0, 0, Height - 1, 35, 87, 85, 0xFF);
+	vlineRGBA(renderer, Width - 1, 0, Height - 1, 0, 255, 255, 192);
 
 	//portrait
 	char portraitPath[32];
@@ -130,7 +134,7 @@ void Dialogue::createDialogueBox() {
 
 	SDL_SetRenderTarget(renderer, priorTarget);
 
-	renderRect = { x - (width / 2), y, width, height };
+	SetX(X - (Width / 2));
 }
 
 Texture* Dialogue::createDialogueText(std::string text, int maxWidth, SDL_Color color) {
@@ -160,13 +164,13 @@ Dialogue::~Dialogue() {
 }
 
 
-void Dialogue::render() {
-	SDL_RenderCopy(renderer, mainTexture, NULL, &renderRect);
+void Dialogue::Render() {
+	SDL_RenderCopy(renderer, mainTexture, NULL, &widgetRect);
 
 	if (focusedOption >= 0) {
 		SDL_Color yellow = { 255, 255, 0, 255 };
-		SDL_Rect viewRect{ x - (width / 2), y, width, height };
-		SDL_RenderSetViewport(renderer, &viewRect);
+		//SDL_Rect viewRect{ X - (Width / 2), Y, Width, Height };
+		SDL_RenderSetViewport(renderer, &widgetRect);
 		
 		if (focusedOption == 0) {
 			//Exit
@@ -186,21 +190,21 @@ void Dialogue::render() {
 }
 
 
-bool Dialogue::handleEvent(SDL_Event *e) {
+void Dialogue::HandleEvent(SDL_Event &e) {
+	CWidget::HandleEvent(e);
+
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
 	mx -= windowOffset.x;
 	my -= windowOffset.y;
-	renderRect;
 
 	SDL_Point p{ mx, my };
-	if (e->type == SDL_MOUSEMOTION) {
-		if (SDL_PointInRect(&p, &renderRect)) {
-			p.x -= renderRect.x;
-			p.y -= renderRect.y;
+	if (e.type == SDL_MOUSEMOTION) {
+		focusedOption = -1;
 
-			focusedOption = -1;
-
+		if (MouseOver) {
+			p.x -= widgetRect.x;
+			p.y -= widgetRect.y;
 			if (SDL_PointInRect(&p, &exitRect)) focusedOption = 0;
 			else {
 				for (int i = 0; i < responses.size(); i++) {
@@ -210,37 +214,29 @@ bool Dialogue::handleEvent(SDL_Event *e) {
 		}
 	}
 
-	if (e->type == SDL_MOUSEBUTTONUP) {
+	/*if (e.type == SDL_MOUSEBUTTONUP) {
 		if (boxClicked) {
 			if (focusedOption >= 0) {
 				selection = focusedOption;
+				pNpcAction* actPack = new pNpcAction(selection, 100, 0);
+				gClient.addPacket(actPack);
 			}
 			boxClicked = false;
 		}
-	}
+	}*/
 
-	if (e->type == SDL_MOUSEBUTTONDOWN) {
-		boxClicked = false;
-		if (doesPointIntersect(renderRect, mx, my)) {
-			if (e->button.button == SDL_BUTTON_LEFT) boxClicked = true;
+	if (MouseOver && e.type == SDL_MOUSEBUTTONDOWN) {
+		//boxClicked = false;
+		if (e.button.button == SDL_BUTTON_LEFT) { //boxClicked = true;
+			if (focusedOption >= 0) {
+				selection = focusedOption;
+				pNpcAction* actPack = new pNpcAction(selection, 100, 0);
+				gClient.addPacket(actPack);
+			}
 		}
 	}
-
-	return false;
-}
-
-
-void Dialogue::setPosition(int pX, int pY) {
-	x = pX;
-	y = pY;
-	renderRect = { x - (width / 2), y - (height / 2), width, height };
 }
 
 void Dialogue::setWindowOffset(SDL_Point p) {
 	windowOffset = p;
-}
-
-
-SDL_Rect Dialogue::getRendeRect() {
-	return renderRect;
 }

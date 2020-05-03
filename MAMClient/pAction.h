@@ -23,8 +23,9 @@ enum ActionMode {
 	//16 - pnlScreenMouseDown case 1040
 	//17 - actDamageMagExecute
 	//18 - actCurMagExecute?
-	amLogin = 19 //Done on first login, where else? get/leaveWord and from main loop.
+	amLogin = 19, //Done on first login, where else? get/leaveWord and from main loop.
 	//20 - pnlScreenMouseDown case 1044
+	amEmote = 0xFDFDFDFD,
 };
 
 //Is this packet also used to set things for battle? formation, team, etc?

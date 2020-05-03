@@ -18,9 +18,10 @@ public:
 
 	User* GetLeader();
 	User* GetMember(int position);
+	User* GetNextInLine(User *user);
+	int GetMemberCount();
 	void AddMember(User *pUser);
+	void RemoveMember(User *pUser);
 private:
 	std::vector<User*> members;
 };
-
-extern CTeam *team;

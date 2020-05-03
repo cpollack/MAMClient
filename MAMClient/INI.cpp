@@ -194,6 +194,7 @@ std::vector<std::string> INI::getSections() {
 
 
 bool INI::setSection(std::string aSection) {
+	currentSection = -1;
 	for (int i = 0; i < sections.size(); i++) {
 		if (sections.at(i).section.compare(aSection) == 0) {
 			currentSection = i; 

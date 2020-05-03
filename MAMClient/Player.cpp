@@ -6,7 +6,7 @@
 #include "GameMap.h"
 #include "Pet.h"
 #include "Inventory.h"
-//#include "GameLibrary.h"
+#include "Team.h"
 
 
 #include "pPlayerInfo.h"
@@ -65,6 +65,7 @@ void Player::setPlayerInfo(pPlayerInfo* packet) {
 	Alignment = packet->alignment;
 	FullRank = (MasterRank * 10000) + (Rank * 1000) + (Reborns * 10) + Alignment;
 	//get rankDesc from above
+	loadAura();
 
 	pkEnabled = packet->pkEnabled;
 	cash = packet->cash;
@@ -126,27 +127,44 @@ void Player::step() {
 void Player::jumpTo(SDL_Point coord) {
 	if (!map->isCoordWalkable(coord)) return;
 
-	User::jumpTo(coord);
+	if (!team) User::jumpTo(coord);
 
 	//Send jump packets
 	std::vector<Packet*> jumpPackets;
-	pDirection* jumpPacket = new pDirection(ID, coord.x, coord.y, Direction);
-	jumpPackets.push_back(jumpPacket);
+	pDirection* dirPacket = new pDirection(ID, coord.x, coord.y, Direction);
+	jumpPackets.push_back(dirPacket);
 
-	lastPositionPacket = timeGetTime();
-	pAction* movePacket = new pAction(AccountId, ID, Direction, coord.x, coord.y, amJump);
-	jumpPackets.push_back(movePacket);
+	if (!team) {
+		lastPositionPacket = timeGetTime();
+		pAction* actPacket = new pAction(AccountId, ID, Direction, coord.x, coord.y, amJump);
+		jumpPackets.push_back(actPacket);
+	}
+	else {
+		setDirectionToCoord(coord);
+		loadSprite();
+	}
 	gClient.addPacket(jumpPackets);
 }
 
 
 void Player::walkTo(SDL_Point coord) {
-	User::walkTo(coord);
+	bool canWalk = true;
+	if (team && team->GetLeader() != this) canWalk = false;
 
 	//Send walking packets
 	std::vector<Packet*> walkPackets;
-	pWalk* walkPacket = new pWalk(ID, Coord.x, Coord.y, coord.x, coord.y);
-	walkPackets.push_back(walkPacket);
+	if (canWalk) {
+		User::walkTo(coord);
+
+		pWalk* walkPacket = new pWalk(ID, Coord.x, Coord.y, coord.x, coord.y);
+		walkPackets.push_back(walkPacket);
+	}
+	else {
+		setDirectionToCoord(coord);
+		loadSprite();
+		pDirection *dirPacket = new pDirection(ID, Coord.x, Coord.y, Direction);
+		walkPackets.push_back(dirPacket);
+	}
 
 	//Move this to step?
 	if (walking) {
@@ -160,8 +178,8 @@ void Player::walkTo(SDL_Point coord) {
 	gClient.addPacket(walkPackets);
 }
 
-void Player::setCoord(SDL_Point coord) {
-	Entity::setCoord(coord);
+void Player::SetCoord(SDL_Point coord) {
+	Entity::SetCoord(coord);
 	map->setMapPos(Position.x, Position.y);
 }
 

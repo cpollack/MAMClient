@@ -5,7 +5,6 @@
 #include "Sprite.h"
 #include "MapFile.h"
 #include "pMapInfo.h"
-#include "Dialogue.h"
 #include "Colosseum.h"
 
 using Asset = std::shared_ptr<Texture>;
@@ -30,6 +29,8 @@ struct PathTile {
 	int depth = 0;
 };
 
+class GameObj;
+class pNpcDialogue;
 class GameMap {
 public:
 	GameMap(pMapInfo* packet);
@@ -47,7 +48,10 @@ private: // Events
 
 private:
 	void loadMapFile(int mapDoc);
-	void renderMasks();
+	void renderObjects();
+	void renderMasksSolid();
+	void addObjectByCoord(std::vector<GameObj*> &vSort, GameObj* entity);
+	void renderMasksTransparent();
 
 public:
 	SDL_Renderer* renderer;
@@ -77,7 +81,7 @@ public:
 	std::vector<MapPortal> portals;
 	std::vector<std::vector<Asset>> mapAssets;
 	std::vector<std::string> masks;
-	std::vector<Sprite*> objects;
+	std::vector<GameObj*> mapObjects;
 	std::vector<NPC*> npcs;
 
 	NPC* focusedNPC = nullptr;
@@ -138,7 +142,6 @@ private:
 
 	NPC* dialogueNpc = nullptr;
 	int shopId = 0;
-	Dialogue* dialogue = nullptr;
 
 public: 
 	void addBattleResult(BattleResult* br);

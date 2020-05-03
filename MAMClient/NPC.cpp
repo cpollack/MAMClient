@@ -8,6 +8,7 @@
 #include "CustomEvents.h"
 #include "MainWindow.h"
 #include "GameMap.h"
+#include "Player.h"
 
 NPC::NPC(pNpcInfo* packet):Entity(mainForm->renderer, packet->id, packet->name, packet->look) {
 	renderer = map->renderer;
@@ -17,7 +18,7 @@ NPC::NPC(pNpcInfo* packet):Entity(mainForm->renderer, packet->id, packet->name, 
 	ID = packet->id;
 	Type = packet->npcType;
 	Look = packet->look;
-	setCoord(SDL_Point{ packet->posX, packet->posY });
+	SetCoord(SDL_Point{ packet->posX, packet->posY });
 
 	for (int i = 0; i < 15; i += 5) {
 		ColorShift shift;
@@ -28,6 +29,7 @@ NPC::NPC(pNpcInfo* packet):Entity(mainForm->renderer, packet->id, packet->name, 
 	Direction = Look % 10;
 
 	loadSprite();
+	NameplateBackground = true;
 }
 
 
@@ -56,6 +58,12 @@ void NPC::handleEvent(SDL_Event& e) {
 			interact.user.data1 = this;
 			interact.user.data2 = nullptr;
 
+			//Change direction
+			int newDir = getDirectionToCoord(player->GetCoord()) + 1;
+			if (newDir == 8) newDir = 0;
+			setDirection(newDir);
+			loadSprite();
+
 			if (Type >= 100 && Type <= 102) {
 				CShopDataFile shopFile;
 				if (shopFile.IsShop(GetTypeText(), map->getMapId())) {
@@ -78,6 +86,12 @@ void NPC::handleEvent(SDL_Event& e) {
 
 void NPC::loadSprite() {
 	if (!gClient.npcRle) return;
+
+	Sprite *oldSprite = nullptr;
+	if (sprite) {
+		oldSprite = sprite;
+		sprite = nullptr;
+	}
 	
 	//int start = SDL_GetTicks();
 	int newLook = ((Look / 10) * 10) + Direction;
@@ -115,8 +129,14 @@ void NPC::loadSprite() {
 		}
 	}
 	
-	sprite = new Sprite(renderer, frames, stNpc, colorShifts);
-	sprite->setLocation(Position.x, Position.y);
+	if (frames.size()) {
+		sprite = new Sprite(renderer, frames, stNpc, colorShifts);
+		sprite->setLocation(Position.x, Position.y);
+	}
+	if (oldSprite) {
+		if (sprite) delete oldSprite;
+		else sprite = oldSprite;
+	}
 }
 
 int NPC::GetShopID() {

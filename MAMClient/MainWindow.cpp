@@ -13,6 +13,7 @@
 
 #include "Player.h"
 #include "Pet.h"
+#include "Team.h"
 
 #include "LoginForm.h"
 #include "LogoutForm.h"
@@ -27,9 +28,9 @@
 #include "Gauge.h"
 #include "ImageBox.h"
 #include "VideoFrame.h"
+#include "Dialogue.h"
 
 #include "pBattleState.h"
-#include "Team.h"
 
 CMainWindow::CMainWindow() :CWindow() {
 	Type = FT_MAIN;
@@ -696,6 +697,12 @@ void CMainWindow::main_init_widgets() {
 	//addMainButton2("btnFriend", 684, 532, 60, 60, "data/GUI/main/btnFriend.png", "data/GUI/main/btnFriend.png");
 	addMainButton2("btnGuild", 730, 532, 60, 60, "data/GUI/main/btnGuild.png", "data/GUI/main/btnGuild.png");
 
+	addMainButton2("btnTeamCreate", 674, 500, 83, 21, "data/GUI/Team/btnTeamCreate.png", "data/GUI/Team/btnTeamCreate.png")->SetVisible(false);
+	addMainButton2("btnTeamJoin", 674, 500, 83, 21, "data/GUI/Team/btnTeamJoin.png", "data/GUI/Team/btnTeamJoin.png")->SetVisible(false);
+	addMainButton2("btnTeamManage", 674, 500, 83, 21, "data/GUI/Team/btnTeamManage.png", "data/GUI/Team/btnTeamManage.png")->SetVisible(false);
+	addMainButton2("btnTeamLeave", 674, 500, 83, 21, "data/GUI/Team/btnTeamLeave.png", "data/GUI/Team/btnTeamLeave.png")->SetVisible(false);
+	addMainButton2("btnTeamDisband", 674, 500, 83, 21, "data/GUI/Team/btnTeamDisband.png", "data/GUI/Team/btnTeamDisband.png")->SetVisible(false);
+
 	MenuBG.reset(new Texture(renderer, "data/GUI/Main/menu_bg.png", true));
 	MenuRight.reset(new Texture(renderer, "data/GUI/Main/menu_right.png", true));
 	btnMenuCollapse = addMainButton2("btnMenuCollapse", 360, Height - 78, 30, 78, "data/GUI/Main/btnMenuCollapse.png", "");
@@ -766,7 +773,15 @@ void CMainWindow::main_init_widgets() {
 	registerEvent("btnPet", "Click", std::bind(&CMainWindow::btnPet_Click, this, std::placeholders::_1));
 
 	registerEvent("btnInventory", "Click", std::bind(&CMainWindow::btnInventory_Click, this, std::placeholders::_1));
+	registerEvent("btnKungfu", "Click", std::bind(&CMainWindow::btnKungfu_Click, this, std::placeholders::_1));
 	registerEvent("btnTeam", "Click", std::bind(&CMainWindow::btnTeam_Click, this, std::placeholders::_1));
+	registerEvent("btnGuild", "Click", std::bind(&CMainWindow::btnGuild_Click, this, std::placeholders::_1));
+
+	registerEvent("btnTeamCreate", "Click", std::bind(&CMainWindow::btnTeamCreate_Click, this, std::placeholders::_1));
+	registerEvent("btnTeamJoin", "Click", std::bind(&CMainWindow::btnTeamJoin_Click, this, std::placeholders::_1));
+	registerEvent("btnTeamManage", "Click", std::bind(&CMainWindow::btnTeamManage_Click, this, std::placeholders::_1));
+	registerEvent("btnTeamLeave", "Click", std::bind(&CMainWindow::btnTeamLeave_Click, this, std::placeholders::_1));
+	registerEvent("btnTeamDisband", "Click", std::bind(&CMainWindow::btnTeamDisband_Click, this, std::placeholders::_1));
 }
 
 void CMainWindow::main_setPetPortrait() {
@@ -810,8 +825,6 @@ void CMainWindow::main_cleanup() {
 }
 
 void CMainWindow::main_render() {
-	main_render_ui();
-
 	//Render target set to game area
 	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
 	SDL_SetRenderTarget(renderer, gameTexture); {
@@ -827,11 +840,13 @@ void CMainWindow::main_render() {
 			if (map) map->render();
 		}
 
-		//Chat - now a widget
-		//if (chat) chat->render();
 	} SDL_SetRenderTarget(renderer, priorTarget);
 	SDL_RenderCopy(renderer, gameTexture, NULL, &gameRect);
 
+	main_render_ui();
+}
+
+void CMainWindow::main_render_ui() {
 	//Menu
 	if (!bMenuHidden || battle) {
 		SDL_Rect menuRect = { Width - MenuBG->width - 10, Height - MenuRight->height + 3, MenuBG->width, MenuBG->height };
@@ -840,40 +855,15 @@ void CMainWindow::main_render() {
 		SDL_RenderCopy(renderer, MenuRight->texture, NULL, &menuRect);
 	}
 
-	if (battle && battle->getMode() != BattleMode::bmInit) battle->render_ui();
-
-#ifdef NEWGUI
-	//SDL_RenderCopy(renderer, newGui->texture, NULL, &getDstRect(newGui, 0, Height));
-#endif
-
+	//Widgets after Menu 
 	for (auto widget : widgets) {
 		widget.second->Render();
 	}
-}
 
-void CMainWindow::main_render_ui() {
-#ifdef NEWGUI 
-	return;
-#endif
-	//render all UI pieces in order
-	SDL_RenderCopy(renderer, topCenter->texture, NULL, &getDstRect(topCenter, 0, 0));
+	if (battle && battle->getMode() != BattleMode::bmInit) battle->render_ui();
 
-	SDL_RenderCopy(renderer, bottomCenter->texture, NULL, &getDstRect(bottomCenter, 0, Height));
-	SDL_RenderCopy(renderer, left->texture, NULL, &getDstRect(left, 0, 0));
-	SDL_RenderCopy(renderer, right->texture, NULL, &getDstRect(right, Width, 0));
-
-	SDL_RenderCopy(renderer, topLeft->texture, NULL, &getDstRect(topLeft, 0, 0));
-	SDL_RenderCopy(renderer, topRight->texture, NULL, &getDstRect(topRight, Width, 0));
-
-	SDL_RenderCopy(renderer, bottomLeft->texture, NULL, &getDstRect(bottomLeft, 0, Height));
-	SDL_RenderCopy(renderer, bottomRight->texture, NULL, &getDstRect(bottomRight, Width, Height));
-
-	SDL_RenderCopy(renderer, mainWindow->texture, NULL, &getDstRect(mainWindow, left->width, topCenter->height));
-	SDL_RenderCopy(renderer, surface->texture, NULL, &getDstRect(surface, left->width, (Height - surface->height - bottomCenter->height)));
-
-	//Move to image buttons
-	//SDL_RenderCopy(renderer, minimize->texture, NULL, &getDstRect(minimize, (Width - 45), 10));
-	//SDL_RenderCopy(renderer, close->texture, NULL, &getDstRect(close, (Width - 25), 10));
+	//Dialogue
+	if (dialogue) dialogue->Render();
 }
 
 void CMainWindow::main_handleEvent(SDL_Event& e) {
@@ -929,6 +919,9 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 			lblReputation->SetText(formatInt(player->GetReputation()));
 		}
 #endif
+		if (e.user.code == PLAYER_TEAM) {
+			if (ShowingTeamButtons) ShowTeamButtons(); //updates appropriate visible team buttons
+		}
 	}
 
 	if (e.type == CUSTOMEVENT_PET) {
@@ -987,6 +980,12 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		chat->handleEvent(e2);
 	}*/
 
+	//Dialogue sits ontop of window and widgets
+	if (dialogue) {
+		dialogue->HandleEvent(e);
+		if (dialogue->IsMouseOver()) return;
+	}
+
 	//Verify no widgets have taken ownership of the mouse
 	//Prevents improper mouse clickthrough when clicking buttons etc
 	if (WidgetHasMouse()) return;
@@ -1030,6 +1029,18 @@ void CMainWindow::main_step() {
 		}
 	}
 	else if (map) map->step();
+
+	if (dialogue) {
+		if (dialogue->selection >= 0) {
+			//send npc action packet
+			//pNpcAction* actPack = new pNpcAction(dialogue->selection, 100, 0);
+			//gClient.addPacket(actPack);
+			//Moved to dialogue
+
+			delete dialogue;
+			dialogue = nullptr;
+		}
+	}
 
 	//User details on mouseover revert after 2 seconds
 	if (userDetailsStartTime > 0) {
@@ -1085,10 +1096,17 @@ void CMainWindow::btnInventory_Click(SDL_Event& e) {
 	Windows.push_back(invForm);
 }
 
-void CMainWindow::btnTeam_Click(SDL_Event& e) {
-	//CTeam::Create();
+void CMainWindow::btnKungfu_Click(SDL_Event& e) {
+	//
+}
 
-	GameMode = GAMEMODE_SELECTTEAM;
+void CMainWindow::btnTeam_Click(SDL_Event& e) {
+	if (ShowingTeamButtons) HideTeamButtons();
+	else ShowTeamButtons();
+}
+
+void CMainWindow::btnGuild_Click(SDL_Event& e) {
+	//
 }
 
 void CMainWindow::btnMenuCollapse_Click(SDL_Event& e) {
@@ -1106,6 +1124,8 @@ void CMainWindow::btnMenuCollapse_Click(SDL_Event& e) {
 	((CButton*)widgets["btnTeam"])->SetVisible(false);
 	//((CButton*)widgets["btnFriend"])->SetVisible(false);
 	((CButton*)widgets["btnGuild"])->SetVisible(false);
+
+	if (ShowingTeamButtons) HideTeamButtons();
 }
 
 void CMainWindow::btnMenuExpand_Click(SDL_Event& e) {
@@ -1122,6 +1142,26 @@ void CMainWindow::btnMenuExpand_Click(SDL_Event& e) {
 	((CButton*)widgets["btnTeam"])->SetVisible(true);
 	//((CButton*)widgets["btnFriend"])->SetVisible(true);
 	((CButton*)widgets["btnGuild"])->SetVisible(true);
+}
+
+void CMainWindow::btnTeamCreate_Click(SDL_Event& e) {
+	CTeam::Create();
+}
+
+void CMainWindow::btnTeamJoin_Click(SDL_Event& e) {
+	GameMode = GAMEMODE_SELECTTEAM;
+}
+
+void CMainWindow::btnTeamManage_Click(SDL_Event& e) {
+	//
+}
+
+void CMainWindow::btnTeamLeave_Click(SDL_Event& e) {
+	CTeam::Leave();
+}
+
+void CMainWindow::btnTeamDisband_Click(SDL_Event& e) {
+	CTeam::Leave();
 }
 
 void CMainWindow::OnBattle_Start(SDL_Event& e) {
@@ -1155,6 +1195,46 @@ void CMainWindow::OnBattle_End(SDL_Event& e) {
 }
 
 /* Main Form - Hooks */
+
+void CMainWindow::ShowTeamButtons() {
+	HideTeamButtons();
+
+	std::vector<CButton*> teamBtns;
+	if (player->GetTeam()) {
+		if (player->GetTeam()->GetLeader() == player) {
+			teamBtns.push_back((CButton*)GetWidget("btnTeamManage"));
+			teamBtns.push_back((CButton*)GetWidget("btnTeamDisband"));
+		}
+		else teamBtns.push_back((CButton*)GetWidget("btnTeamLeave"));
+	}
+	else {
+		teamBtns.push_back((CButton*)GetWidget("btnTeamCreate"));
+		teamBtns.push_back((CButton*)GetWidget("btnTeamJoin"));
+	}
+
+	if (teamBtns.size() > 1) {
+		teamBtns[0]->SetX(632);
+		teamBtns[0]->SetVisible(true);
+
+		teamBtns[1]->SetX(716);
+		teamBtns[1]->SetVisible(true);
+	}
+	else {
+		teamBtns[0]->SetX(674);
+		teamBtns[0]->SetVisible(true);
+	}
+
+	ShowingTeamButtons = true;
+}
+
+void CMainWindow::HideTeamButtons() {
+	((CButton*)GetWidget("btnTeamCreate"))->SetVisible(false);
+	((CButton*)GetWidget("btnTeamJoin"))->SetVisible(false);
+	((CButton*)GetWidget("btnTeamManage"))->SetVisible(false);
+	((CButton*)GetWidget("btnTeamLeave"))->SetVisible(false);
+	((CButton*)GetWidget("btnTeamDisband"))->SetVisible(false);
+	ShowingTeamButtons = false;
+}
 
 void CMainWindow::setPlayerDetailsLabels() {
 	if (!player) return;

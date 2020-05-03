@@ -78,13 +78,18 @@ public:
 	std::string getGuildTitle();
 
 protected: /* Effects */
-	Sprite *aura = nullptr;
+	Sprite *Aura = nullptr;
 	void loadAura();
+
+	Sprite *TeamLeader = nullptr;
+	void loadTeamLead();
 
 public: //Team
 	CTeam* GetTeam() { return team; }
 	void CreateTeam();
 	void JoinTeam(CTeam* pTeam);
-private: 
+	void LeaveTeam();
+	bool IsTeamLeader();
+protected: 
 	CTeam *team = nullptr;
 };

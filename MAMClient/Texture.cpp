@@ -331,6 +331,13 @@ Uint32 Texture::getPixel(SDL_Point pixelPos) {
 	return pixel;
 }
 
+SDL_Color Texture::getPixelColor(SDL_Point pixelPos) {
+	Uint32 pixel = getPixel(pixelPos);
+	Uint8 r, g, b, a;
+	SDL_GetRGBA(pixel, format, &r, &g, &b, &a);
+	return SDL_Color{ r,g,b,a };
+}
+
 void Texture::setPixel(SDL_Point point, SDL_Color pixel) {
 	SDL_BlendMode blend;
 	SDL_GetTextureBlendMode(texture, &blend);
@@ -370,6 +377,12 @@ void Texture::setPosition(SDL_Point p) {
 	position = p;
 }
 
+SDL_Rect Texture::getRect() {
+	SDL_Rect finalRect = rect;
+	finalRect.x += position.x;
+	finalRect.y += position.y;
+	return finalRect;
+}
 
 void Texture::setAnchor(int aAnchor) {
 	anchor = aAnchor;

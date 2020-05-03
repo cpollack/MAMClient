@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "pTeam.h"
 
+#include "CustomEvents.h"
+
 #include "UserManager.h"
 #include "Player.h"
 #include "Team.h"
@@ -45,12 +47,26 @@ void pTeam::process() {
 	case TEAM_ACT_CREATE:
 		if (sourceUser) sourceUser->CreateTeam();
 		break;
+	case TEAM_ACT_DISBAND:
+		if (sourceUser) sourceUser->LeaveTeam();
+		break;
 	case TEAM_ACT_JOIN:
 		if (sourceUser && targetUser) {
 			sourceUser->JoinTeam(targetUser->GetTeam());
 		}
 		break;
-	 }
+	case TEAM_ACT_QUIT:
+		if (sourceUser) sourceUser->LeaveTeam();
+		break;
+	}
+
+	if (sourceUser == player || targetUser == player) {
+		SDL_Event e;
+		SDL_zero(e);
+		e.type = CUSTOMEVENT_PLAYER;
+		e.user.code = PLAYER_TEAM;
+		SDL_PushEvent(&e);
+	}
 }
 
 

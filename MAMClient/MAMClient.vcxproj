@@ -161,6 +161,7 @@
     <ClCompile Include="Dropdown.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Field.cpp" />
+    <ClCompile Include="GameObj.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="ImageBox.cpp" />
     <ClCompile Include="Inventory.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="FloatingLabel.h" />
     <ClInclude Include="GameMap.h" />
+    <ClInclude Include="GameObj.h" />
     <ClInclude Include="Gauge.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="GUI.h" />

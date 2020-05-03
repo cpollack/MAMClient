@@ -63,6 +63,8 @@ public:
 	int frames, currentFrame, frameCounter;
 	int speed = 1000; //ms
 	int repeatMode, repeatCount;
+	int LoopTimer = 0; //ms to wait before restarting the loop
+	int LastLoopTime = 0;
 	//int direction;
 	DWORD startTime;
 	bool started = false;
@@ -93,6 +95,8 @@ public:
 	void Sprite::resume();
 	void Sprite::stop();
 	bool Sprite::finished();
+
+	void SetLoopTimer(int timeMS) { LoopTimer = timeMS; }
 
 	void setCamera(SDL_Rect c);
 	void Sprite::setLocation(SDL_Point p);

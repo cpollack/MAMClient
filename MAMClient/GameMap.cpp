@@ -21,6 +21,7 @@
 #include "pDirection.h"
 
 #include "ShopForm.h"
+#include "Dialogue.h"
 
 
 GameMap::GameMap(pMapInfo* packet) {
@@ -54,9 +55,9 @@ GameMap::~GameMap() {
 	}
 	masks.clear();*/
 
-	for (auto obj : objects)
+	for (auto obj : mapObjects)
 		delete obj;
-	objects.clear();
+	mapObjects.clear();
 
 	for (auto npc : npcs)
 		delete npc;
@@ -168,7 +169,8 @@ void GameMap::loadMapFile(int mapDoc) {
 		SDL_SetRenderTarget(renderer, NULL);
 	}
 
-	//Load map Objects as Sprites and Draw static instances of masks
+	//Load map Objects as Sprites 
+	// no longer do: Draw static instances of masks
 	if (mapFile.objects.size()) {
 		SDL_SetRenderTarget(renderer, tMap->texture);
 		for (int i = 0; i < mapFile.objects.size(); i++) {
@@ -178,20 +180,26 @@ void GameMap::loadMapFile(int mapDoc) {
 
 			vMask = mapAssets[maskId];
 			if (vMask.size() > 0) {
+				GameObj *obj = new GameObj(renderer);
+				obj->SetCoord(SDL_Point{ mapFile.objects.at(i).x, mapFile.objects.at(i).y });
+				obj->SetPosition(CenterOfCoord(mapFile.objects.at(i).x, mapFile.objects.at(i).y));
+
 				int sType;
 				if (vMask.size() > 1) sType = stObject;
 				else sType = stStatic;
-				SDL_Point pPoint = CenterOfCoord(mapFile.objects.at(i).x, mapFile.objects.at(i).y);
+				//SDL_Point pPoint = CenterOfCoord(mapFile.objects.at(i).x, mapFile.objects.at(i).y);
 
 				mSprite = new Sprite(renderer, vMask, sType);
-				mSprite->setLocation(pPoint);
+				mSprite->setLocation(obj->GetPosition());
 				mSprite->start();
-				objects.push_back(mSprite);
+				obj->SetSprite(mSprite);
+				
+				mapObjects.push_back(obj);
 
 				mSprite->LoadFirst();
-				if (vMask.size() == 1) {
+				/*if (vMask.size() == 1) {
 					mSprite->render();
-				}
+				}*/
 			}
 		}
 		SDL_SetRenderTarget(renderer, NULL);
@@ -228,11 +236,6 @@ void GameMap::addColosseum(pColosseum* packet) {
 
 
 bool GameMap::handleEvent(SDL_Event& e) {
-	if (dialogue) {
-		dialogue->handleEvent(&e);
-		return false;
-	}
-
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
 
@@ -314,7 +317,7 @@ void GameMap::OnClick(SDL_Event& e) {
 		player->setDirectionToCoord(toCoord);
 		player->loadSprite();
 
-		pDirection *dirPacket = new pDirection(player->GetID(), player->getCoord().x, player->getCoord().y, rcDir);
+		pDirection *dirPacket = new pDirection(player->GetID(), player->GetCoord().x, player->GetCoord().y, rcDir);
 		gClient.addPacket(dirPacket);
 
 		SDL_Event e2 = e;
@@ -403,31 +406,24 @@ void GameMap::render() {
 
 	//filledPolygonColor(renderer, x, y, 4, (Uint32)0x80FFFFFF);
 
-	for (int i = 0; i < objects.size(); i++) {
-		Sprite* nextSprite = objects.at(i);
-		if (nextSprite->subimages.size() == 0) continue;
-
-		if (doRectIntersect(nextSprite->getRenderRect(), mapRect)) {
-			//only render visible objects
-			nextSprite->resume();
-			nextSprite->render(mapOffsetX-cameraX, mapOffsetY-cameraY);
-		}
-		else nextSprite->stop();
-	}
+	//renderMasksSolid();
+	renderObjects();
 
 	//NPCs
-	for (auto npc : npcs) {
+	/*for (auto npc : npcs) {
 		if (doRectIntersect(npc->getRenderRect(), mapRect)) {
 			npc->render();
 		}
 		else {
 			if (npc->GetSprite()) npc->GetSprite()->stop();
 		}
-	}
+	}*/
 
 	if (colosseum) {
 		//colosseum->render(-posX, -posY);
 	}
+
+	renderMasksTransparent();
 
 	//SDL_SetRenderTarget(renderer, origTarget);
 
@@ -435,14 +431,14 @@ void GameMap::render() {
 	//SDL_DestroyTexture(final_map);
 
 	//Other Users
-	std::vector<User*> userList = userManager.getUsers();
+	/*std::vector<User*> userList = userManager.getUsers();
 	for (auto user : userList) {
 		if (doRectIntersect(user->getRenderRect(), mapRect)) {
 			user->render();
 		}
-	}
+	}*/
 
-	player->render();
+	//player->render();
 
 	//Battle Results
 	if (battleResult && !battle) {
@@ -451,30 +447,107 @@ void GameMap::render() {
 			deleteBattleResult();
 		}
 	}
+}
 
-	//Dialogue
-	if (dialogue) dialogue->render();
+void GameMap::renderObjects() {
+	std::vector<GameObj*> objects;
+	//npc, user, player, mapObject
+
+	for (auto obj : mapObjects) addObjectByCoord(objects, obj);
+	for (auto npc : npcs) addObjectByCoord(objects, npc);
+	std::vector<User*> userList = userManager.getUsers();
+	for (auto user : userList) addObjectByCoord(objects, user);
+	addObjectByCoord(objects, player);
+
+	for (auto object : objects) {
+		if (doRectIntersect(object->GetRenderRect(), mapRect)) {
+			object->render();
+		}
+		else {
+			if (object->GetSprite()) object->GetSprite()->stop();
+		}
+	}
+}
+
+void GameMap::addObjectByCoord(std::vector<GameObj*> &vSort, GameObj* object) {
+	if (!object) return;
+	std::vector<GameObj*>::iterator itr;
+	itr = vSort.begin();
+
+	SDL_Point pointObject = object->GetPosition();
+	while (itr != vSort.end()) {
+		GameObj *compare = *itr;
+
+		if (compare) {
+			SDL_Point pointCompare = compare->GetPosition();
+			if (pointObject.y <= pointCompare.y) break;
+			itr++;
+		}
+	}
+	vSort.insert(itr, object);
 }
 
 
-//Renders map object masks when approptiate - creates the 'see-through' effect when a charact is behind an object
-void GameMap::renderMasks() {
-	//
+//Renders map object masks when approptiate - creates the 'see-through' effect when a character is behind an object
+void GameMap::renderMasksSolid() {
+	for (int i = 0; i < mapObjects.size(); i++) {
+		Sprite* nextSprite = mapObjects.at(i)->GetSprite();
+		if (nextSprite->subimages.size() == 0) continue;
+
+		if (doRectIntersect(nextSprite->getRenderRect(), mapRect)) {
+			//only render visible objects
+			nextSprite->resume();
+			nextSprite->render(mapOffsetX - cameraX, mapOffsetY - cameraY);
+		}
+		else nextSprite->stop();
+	}
+}
+
+void GameMap::renderMasksTransparent() {
+	std::vector<GameObj*> objects;
+	for (auto obj : mapObjects)  objects.push_back(obj);
+	for (auto npc : npcs) objects.push_back(npc);
+	std::vector<User*> userList = userManager.getUsers();
+	for (auto user : userList) objects.push_back(user);
+
+	for (auto object : objects) {
+		if (object->GetSprite()->subimages.size() == 0) continue;
+		if (doRectIntersect(object->GetRenderRect(), mapRect)) {
+
+			bool draw = false;
+			SDL_Rect objRect = object->GetRenderRect();
+			SDL_Rect playerRect = player->GetRenderRect();
+			if (!doRectIntersect(objRect, playerRect)) continue;
+
+			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+			//Find the pixels that intersect and draw only those pixels with alpha blending on top
+			for (int y = 0; y < playerRect.h; y++) {
+				for (int x = 0; x < playerRect.w; x++) {
+					SDL_Point getPixel = { x, y };
+					Asset currentTexture = player->GetSprite()->getCurrentTexture();
+					if (currentTexture && currentTexture->loaded) {
+						SDL_Color playerPixel = currentTexture->getPixelColor(getPixel);
+
+						if (playerPixel.a > 0) {
+							//the pixel becomes see-through, so its alpha is reduced
+							double alpha = playerPixel.a * 0.25;
+							playerPixel.a = alpha;
+							SDL_SetRenderDrawColor(renderer, playerPixel.r, playerPixel.g, playerPixel.b, playerPixel.a);
+							SDL_Point destPoint = { playerRect.x + getPixel.x - cameraX, playerRect.y + getPixel.y - cameraY };
+							SDL_RenderDrawPoint(renderer, destPoint.x, destPoint.y);
+						}
+					}
+				}
+			}
+
+			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+		}
+	}
 }
 
 
 void GameMap::step() {
-	if (dialogue) {
-		if (dialogue->selection >= 0) {
-			//send npc action packet
-			pNpcAction* actPack = new pNpcAction(dialogue->selection, 100, 0);
-			gClient.addPacket(actPack);
-
-			delete dialogue;
-			dialogue = nullptr;
-		}
-	}
-
 	player->step();
 
 	userManager.stepAllUsers();
@@ -488,8 +561,9 @@ void GameMap::step() {
 
 
 void GameMap::checkForMapChange() {
+	if (player->GetTeam() && !player->IsTeamLeader()) return;
 	int portalId;
-	SDL_Point coord = player->getCoord();
+	SDL_Point coord = player->GetCoord();
 	if (isCoordAPortal(coord, &portalId)) {
 		pAction* portalPacket = new pAction(player->AccountId, player->GetID(), portalId, coord.x, coord.y, amLeave);
 		gClient.addPacket(portalPacket);
@@ -557,6 +631,7 @@ SDL_Point GameMap::CoordToPoint(SDL_Point point) {
 }
 
 SDL_Point GameMap::CoordToPoint(int x, int y) {
+	if (!tMap) return SDL_Point{ 0, 0 };
 	int offset_x = (tMap->width / 2);
 	int offset_y = (32 * mapHeight / 2) - (tMap->height / 2);
 	int adjust_y = mapHeight % 2 == 0 ? 0 : 1;
@@ -997,7 +1072,7 @@ void GameMap::createDialogue(pNpcDialogue* packet) {
 	std::string name = "";
 	if (dialogueNpc) name = dialogueNpc->GetName();
 
-	dialogue = new Dialogue(packet, name, (map->uiRect.w / 2), 10);
+	dialogue = new Dialogue(mainForm, packet, name, (map->uiRect.w / 2), 10);
 	dialogue->setWindowOffset(SDL_Point{ uiRect.x, uiRect.y });
 }
 

@@ -66,12 +66,6 @@
     <Filter Include="Source Files\Packet\Battle">
       <UniqueIdentifier>{722332ec-7f12-46fe-acf9-ac63458ef74d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Core\Entities">
-      <UniqueIdentifier>{ceb4396d-a2c4-4874-a61a-87c0857c47e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Core\Entities">
-      <UniqueIdentifier>{b8d7d54e-2753-4b92-accd-0c8c78a545b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{607c9e76-aadd-4d6a-8936-3d4cca18b416}</UniqueIdentifier>
     </Filter>
@@ -89,6 +83,12 @@
     </Filter>
     <Filter Include="Source Files\Packet\Pet">
       <UniqueIdentifier>{f7ae32d7-9712-4042-806c-03e2dc3464d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Game Objects">
+      <UniqueIdentifier>{ceb4396d-a2c4-4874-a61a-87c0857c47e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Game Objects">
+      <UniqueIdentifier>{b8d7d54e-2753-4b92-accd-0c8c78a545b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -264,19 +264,19 @@
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Core\Entities</Filter>
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="Pet.cpp">
-      <Filter>Source Files\Core\Entities</Filter>
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="NPC.cpp">
-      <Filter>Source Files\Core\Entities</Filter>
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Core\Entities</Filter>
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">
-      <Filter>Source Files\Core\Entities</Filter>
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="UserManager.cpp">
       <Filter>Source Files\Core</Filter>
@@ -393,7 +393,7 @@
       <Filter>Source Files\Packet\Battle</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
-      <Filter>Source Files\Core\Entities</Filter>
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="Options.cpp">
       <Filter>Source Files\Core</Filter>
@@ -415,6 +415,9 @@
     </ClCompile>
     <ClCompile Include="pTeamMember.cpp">
       <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObj.cpp">
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -587,19 +590,19 @@
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
     <ClInclude Include="NPC.h">
-      <Filter>Header Files\Core\Entities</Filter>
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="Pet.h">
-      <Filter>Header Files\Core\Entities</Filter>
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Header Files\Core\Entities</Filter>
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>Header Files\Core\Entities</Filter>
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="User.h">
-      <Filter>Header Files\Core\Entities</Filter>
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="UserManager.h">
       <Filter>Header Files\Core</Filter>
@@ -719,7 +722,7 @@
       <Filter>Header Files\Packet\Battle</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
-      <Filter>Header Files\Core\Entities</Filter>
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="Options.h">
       <Filter>Header Files\Core</Filter>
@@ -747,6 +750,9 @@
     </ClInclude>
     <ClInclude Include="pTeamMember.h">
       <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObj.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,9 @@ const int _DELTA_X[8] = { 0, -1, -1, -1,  0,  1, 1, 1 };
 const int _DELTA_Y[8] = { 1,  1,  0, -1, -1, -1, 0, 1 };
 
 int getDirection(SDL_Point fromCoord, SDL_Point toCoord);
+SDL_Point getFrontCoord(SDL_Point coord, int direction);
+SDL_Point getBackCoord(SDL_Point coord, int direction);
+
 bool doesPointIntersect(SDL_Rect aRect, int x, int y);
 bool doesPointIntersect(SDL_Rect rect, SDL_Point point);
 bool doRectIntersect(SDL_Rect a, SDL_Rect b);
