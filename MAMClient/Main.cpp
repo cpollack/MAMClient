@@ -177,7 +177,7 @@ int main(int argc, char *args[]) {
 
 			Uint32 thisTick = SDL_GetTicks();
 			double FPS = (thisTick - lastTick) / 1000.0;
-			double timeNeeded = 1000 / FRAMES_PER_SEC;
+			double timeNeeded = 1000.0 / FRAMES_PER_SEC;
 			int rem = timeNeeded - FPS;
 			if (rem > 0) SDL_Delay(rem);
 

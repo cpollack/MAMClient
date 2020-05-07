@@ -1,16 +1,20 @@
 
 Todo:
-NPC Think bubble
 Pet accessory info
 Pet Evolve
 Pet Change Accessory
 Pet medals
 clouds
 
+bugs:
+joining team doesnt clear open team options
+team options still visible when in battle
+battle array position is off
+
 --------------------
 
 
-Build notes 1.0.17
+Build notes 1.0.18
 
 Major Fix:
 -

@@ -342,13 +342,22 @@ void Entity::loadSprite(bool forBattle) {
 		destSprite = BattleSprite;
 	}
 
+	
 	switch (DestAnimation) {
-	case Walk:
-		destSprite->speed = 750;
+	case Attack01:
+	case Attack02:
+	case Attack03:
+		destSprite->setFrameInterval(150);
 		break;
 	case Faint:
-		destSprite->speed = 150;
+		destSprite->setFrameInterval(40);
 		break;
+	case Walk:
+		destSprite->speed = 750;
+		destSprite->setFrameInterval(50);
+		break;
+	default:
+		destSprite->setFrameInterval(350);
 	}
 }
 
@@ -382,6 +391,9 @@ Sprite* Entity::CreateEffectSprite(int effect) {
 	if (effect == EFFECT_NONE) return nullptr;
 
 	std::string effectName = EffectToString(effect);
+
+	int offsetX = 0;
+	int offsetY = 0;
 	int speed = 1000;
 	int repeatMode = 1;
 	bool useKey = false;
@@ -407,6 +419,11 @@ Sprite* Entity::CreateEffectSprite(int effect) {
 		useKey = true;
 		blendMode = SDL_BLENDMODE_ADD;
 		break;
+	case EFFECT_THINK:
+		repeatMode = 3;
+		offsetX = 10;
+		offsetY = -100;
+		break;
 	}
 
 	if (effectName.size() == 0) {
@@ -425,7 +442,8 @@ Sprite* Entity::CreateEffectSprite(int effect) {
 	for (int i = 0; i < stoi(frameAmount); i++) {
 		std::string nextFrame = "Frame" + std::to_string(i);
 		std::string path = commonIni.getEntry(nextFrame);
-		path = "data\\" + path.substr(2);
+		if (path[0] == '.') path = "data\\" + path.substr(2);
+		else path = "data\\" + path;
 		Asset asset;
 		if (useKey) asset.reset(new Texture(renderer, path, {0,0,0,255}, true));
 		else asset.reset(new Texture(renderer, path, true));
@@ -433,7 +451,12 @@ Sprite* Entity::CreateEffectSprite(int effect) {
 		assets.push_back(asset);
 	}
 	sprEffect = new Sprite(renderer, assets, stEffect);
-	sprEffect->speed = speed;
+
+	if (offsetX != 0) sprEffect->SetX(offsetX);
+	if (offsetY != 0) sprEffect->SetY(offsetY);
+
+	sprEffect->speed = speed; // remove?
+	sprEffect->setFrameInterval(50);
 	sprEffect->repeatMode = repeatMode;
 	sprEffect->start();
 
@@ -449,6 +472,7 @@ std::string Entity::EffectToString(int effect) {
 	case EFFECT_SPHERE: return "Sphere";
 	case EFFECT_HEAL: return "Health";
 	case EFFECT_POISON: return "Poisoning";
+	case EFFECT_THINK: return "Think";
 	}
 
 	return "";

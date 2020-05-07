@@ -180,25 +180,27 @@ std::wstring Item::getDetails() {
 	details += "Type " + typeText + "\n\n";
 
 	if (life > 0) {
-		if (type == itPoison) details += "Life -" + std::to_string(life) + "\n";
-		else details += "Life +" + std::to_string(life) + "\n";
+		if (type == itPoison) details += "Life -" + formatInt(life) + "\n";
+		else details += "Life +" + formatInt(life) + "\n";
 	}
 	if (mana > 0) {
-		details += "Mana +" + std::to_string(mana) + "\n";
+		details += "Mana +" + formatInt(mana) + "\n";
 	}
 	if (attack > 0) {
-		details += "Attack +" + std::to_string(attack) + "\n";
+		details += "Attack +" + formatInt(attack) + "\n";
 	}
 	if (defence > 0) {
-		details += "Defence +" + std::to_string(defence) + "\n";
+		details += "Defence +" + formatInt(defence) + "\n";
 	}
 	if (dexterity > 0) {
-		details += "Dexterity +" + std::to_string(dexterity) + "\n";
+		details += "Dexterity +" + formatInt(dexterity) + "\n";
 	}
 
-	details += "Price $ " + std::to_string(cost) + "\n";
+	details += "Price $ " + formatInt(cost) + "\n";
 	details += "Maker " + creator + "\n";
-	details += "Lvl Required " + std::to_string(level);
+	int reqLevel = level;
+	if (reqLevel > 1000000) reqLevel = 1000000;
+	details += "Lvl Required " + formatInt(reqLevel);
 	
 	return StringToWString(details);
 }
@@ -210,15 +212,15 @@ std::wstring Item::getShopDetails() {
 	details = name + "\n";
 	details += "Type " + typeText + "\n";
 
-	if (type == itPoison) details += "Life -" + std::to_string(life) + "\n";
-	else details += "Life +" + std::to_string(life) + "\n";
-	details += "Mana +" + std::to_string(mana) + "\n";
-	details += "Attack +" + std::to_string(attack) + "\n";
-	details += "Defence +" + std::to_string(defence) + "\n";
-	details += "Dexterity +" + std::to_string(dexterity) + "\n";
+	if (type == itPoison) details += "Life -" + formatInt(life) + "\n";
+	else details += "Life +" + formatInt(life) + "\n";
+	details += "Mana +" + formatInt(mana) + "\n";
+	details += "Attack +" + formatInt(attack) + "\n";
+	details += "Defence +" + formatInt(defence) + "\n";
+	details += "Dexterity +" + formatInt(dexterity) + "\n";
 
-	details += "Lvl Required " + std::to_string(level) + "\n";
-	details += "Price $ " + std::to_string(cost) + "\n";
+	details += "Lvl Required " + formatInt(level) + "\n";
+	details += "Price $ " + formatInt(cost) + "\n";
 	details += "Maker " + creator + "\n";
 
 	return StringToWString(details);

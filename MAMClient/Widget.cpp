@@ -119,6 +119,10 @@ void CWidget::RenderText() {
 			srcRect.x = srcRect.w - Width;
 			srcRect.w = Width;
 		}
+		//Only shop topmost part of text
+		/*if (srcRect.h > Height) {
+			srcRect.h = Height;
+		}*/
 
 		SDL_RenderCopy(renderer, tempTexture, &srcRect, &fontRect);
 		SDL_RenderCopy(renderer, tempTexture, &srcRect, &fontRect);

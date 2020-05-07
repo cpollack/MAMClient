@@ -220,7 +220,7 @@ bool BattleScene::perform_moveTo(bsPerform* perform) {
 		actor->loadSprite(true);
 	}
 
-	float dtMove = 20.0;
+	float dtMove = 30.0;
 	float distance = sqrtf( powf((target.x - actor->GetBattlePos().x),2) + powf((target.y - actor->GetBattlePos().y), 2));
 	float dtRem = distance - dtMove;
 

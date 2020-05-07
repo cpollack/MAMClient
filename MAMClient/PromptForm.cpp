@@ -5,7 +5,7 @@
 #include "MainWindow.h"
 #include "Label.h"
 #include "Button.h"
-CPromptForm::CPromptForm() : CWindow(400, 125) {
+CPromptForm::CPromptForm() : CWindow(400, 160) {
 	Type = FT_PROMPT;
 
 	parent = mainForm;
@@ -25,10 +25,11 @@ CPromptForm::CPromptForm() : CWindow(400, 125) {
 
 	lblMessage = new CLabel(this, "lblMessage", 20, 35);
 	lblMessage->SetWidth(350);
+	lblMessage->SetHeight(80);
 	lblMessage->SetWrapLength(350);
 	AddWidget(lblMessage);
 
-	CButton *btnOK = new CButton(this, "btnOK", 164, 80);
+	CButton *btnOK = new CButton(this, "btnOK", 164, 120);
 	btnOK->SetWidth(72);
 	btnOK->SetHeight(24);
 	btnOK->SetText("OK(&O)");
@@ -37,7 +38,7 @@ CPromptForm::CPromptForm() : CWindow(400, 125) {
 	registerEvent("btnOK", "Click", std::bind(&CPromptForm::btnOk_Click, this, std::placeholders::_1));
 }
 
-CPromptForm::CPromptForm(bool allowCancel) : CWindow(400, 125) {
+CPromptForm::CPromptForm(bool allowCancel) : CWindow(400, 160) {
 	Type = FT_PROMPT;
 
 	parent = mainForm;
@@ -57,10 +58,11 @@ CPromptForm::CPromptForm(bool allowCancel) : CWindow(400, 125) {
 
 	lblMessage = new CLabel(this, "lblMessage", 20, 35);
 	lblMessage->SetWidth(350);
+	lblMessage->SetHeight(80);
 	lblMessage->SetWrapLength(350);
 	AddWidget(lblMessage);
 
-	CButton *btnOK = new CButton(this, "btnOK", 164, 80);
+	CButton *btnOK = new CButton(this, "btnOK", 164, 120);
 	btnOK->SetWidth(72);
 	btnOK->SetHeight(24);
 	btnOK->SetText("OK(&O)");
@@ -69,7 +71,7 @@ CPromptForm::CPromptForm(bool allowCancel) : CWindow(400, 125) {
 	registerEvent("btnOK", "Click", std::bind(&CPromptForm::btnOk_Click, this, std::placeholders::_1));
 
 	if (allowCancel) {
-		CButton *btnCancel = new CButton(this, "btnCancel", 245, 80);
+		CButton *btnCancel = new CButton(this, "btnCancel", 245, 120);
 		btnCancel->SetWidth(72);
 		btnCancel->SetHeight(24);
 		btnCancel->SetText("Cancel(&C)");

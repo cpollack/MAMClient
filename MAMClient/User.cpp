@@ -207,7 +207,7 @@ void User::getNextDestCoord() {
 
 	//If the next Coord is a map portal, end path traversal on portal
 	if (map->isCoordAPortal(DestCoord)) {
-		path.clear();
+		clearPath();
 	}
 }
 
@@ -225,6 +225,10 @@ void User::takeNextStep() {
 	Position.x = basePos.x + shiftx;
 	Position.y = basePos.y + shifty;
 	if (Position.x == destPos.x && Position.y == destPos.y) SetCoord(DestCoord);
+}
+
+void User::clearPath() {
+	path.clear();
 }
 
 void User::setLeaving(bool leaving) {
@@ -273,9 +277,10 @@ void User::loadAura() {
 
 		if (vStrings.size()) {
 			Aura = new Sprite(renderer, vStrings, stEffect);
+			Aura->setFrameInterval(55);
 			Aura->repeatMode = 1;
 			Aura->SetLoopTimer(7000); //repeat every 7 seconds
-			Aura->start();
+			Aura->RandomizeTimerDelay();
 		}
 	}
 }

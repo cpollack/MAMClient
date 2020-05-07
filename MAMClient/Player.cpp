@@ -150,6 +150,8 @@ void Player::jumpTo(SDL_Point coord) {
 void Player::walkTo(SDL_Point coord) {
 	bool canWalk = true;
 	if (team && team->GetLeader() != this) canWalk = false;
+	if (map->isCoordAPortal(Coord)) canWalk = false;
+	if (walking && map->isCoordAPortal(DestCoord)) canWalk = false;
 
 	//Send walking packets
 	std::vector<Packet*> walkPackets;

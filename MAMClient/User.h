@@ -36,6 +36,7 @@ protected:
 	bool atDestCoord();
 	void getNextDestCoord();
 	virtual void takeNextStep();
+	void clearPath();
 
 protected:
 	std::string NickName;

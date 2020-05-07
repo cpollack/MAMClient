@@ -531,10 +531,10 @@ void GameMap::renderMasksTransparent() {
 
 						if (playerPixel.a > 0) {
 							//the pixel becomes see-through, so its alpha is reduced
-							double alpha = playerPixel.a * 0.25;
+							double alpha = playerPixel.a * 0.3;
 							playerPixel.a = alpha;
 							SDL_SetRenderDrawColor(renderer, playerPixel.r, playerPixel.g, playerPixel.b, playerPixel.a);
-							SDL_Point destPoint = { playerRect.x + getPixel.x - cameraX, playerRect.y + getPixel.y - cameraY };
+							SDL_Point destPoint = { playerRect.x + getPixel.x + mapOffsetX - cameraX, playerRect.y + getPixel.y + mapOffsetY - cameraY };
 							SDL_RenderDrawPoint(renderer, destPoint.x, destPoint.y);
 						}
 					}

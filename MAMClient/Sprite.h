@@ -61,12 +61,13 @@ public:
 	int x, y;
 	int type;
 	int frames, currentFrame, frameCounter;
+	int frameInterval = 150; //ms delay between frames
 	int speed = 1000; //ms
 	int repeatMode, repeatCount;
 	int LoopTimer = 0; //ms to wait before restarting the loop
 	int LastLoopTime = 0;
 	//int direction;
-	DWORD startTime;
+	DWORD startTime, lastFrame;
 	bool started = false;
 	bool visible = true;
 	bool isFinished = false;
@@ -97,11 +98,15 @@ public:
 	bool Sprite::finished();
 
 	void SetLoopTimer(int timeMS) { LoopTimer = timeMS; }
+	void RandomizeTimerDelay();
 
 	void setCamera(SDL_Rect c);
+	void SetX(int iX) { x = iX; }
+	void SetY(int iY) { y = iY; }
 	void Sprite::setLocation(SDL_Point p);
 	void Sprite::setLocation(int toX, int toY);
 	void Sprite::setAlpha(BYTE newAlpha);
+	void setFrameInterval(int fiv) { frameInterval = fiv; }
 	void Sprite::setHsbShifts(ColorShifts shifts);
 
 	SDL_Rect Sprite::getRenderRect();

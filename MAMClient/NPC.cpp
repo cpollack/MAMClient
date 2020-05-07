@@ -63,6 +63,7 @@ void NPC::handleEvent(SDL_Event& e) {
 			if (newDir == 8) newDir = 0;
 			setDirection(newDir);
 			loadSprite();
+			addEffect(EFFECT_THINK);
 
 			if (Type >= 100 && Type <= 102) {
 				CShopDataFile shopFile;

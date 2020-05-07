@@ -165,8 +165,27 @@ void Sprite::render(int offsetX, int offsetY) {
 	//Refactor - Speed respresents length of time to do one full cycle of the sprite
 	//More frames means more detail over the animation, but also more loading
 
-	repeatCount = elapsed / speed;
-	int nextFrame =  floor((elapsed - (repeatCount * speed)) / (speed * 1.0 / frames));
+	//repeatCount = elapsed / speed;
+	//int nextFrame =  floor((elapsed - (repeatCount * speed)) / (speed * 1.0 / frames));
+
+	//refactor 2, speed/frameInterval is flat 50ms assumed. 
+
+	int nextFrame = currentFrame;
+
+	if (currentTime - lastFrame > frameInterval) {
+		lastFrame = currentTime;
+		currentFrame++;
+		if (currentFrame >= frames) {
+			currentFrame = 0;
+			repeatCount++;
+		}
+		nextFrame = currentFrame;
+	}
+
+	//int framesElapsed = elapsed / frameInterval;
+	//repeatCount = framesElapsed / frames;
+	//int nextFrame = framesElapsed % frames;
+
 
 	if (repeatMode > 0) {
 		if (repeatCount >= repeatMode) {
@@ -201,6 +220,7 @@ void Sprite::start() {
 	frameCounter = 0;
 	repeatCount = 0;
 	startTime = SDL_GetTicks();
+	lastFrame = startTime;
 	started = true;
 	isFinished = false;
 }
@@ -215,6 +235,10 @@ void Sprite::stop() {
 
 bool Sprite::finished() {
 	return isFinished;
+}
+
+void Sprite::RandomizeTimerDelay() {
+	LastLoopTime = SDL_GetTicks() - (rand() % LoopTimer);
 }
 
 void Sprite::setCamera(SDL_Rect c) {
