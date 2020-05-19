@@ -232,6 +232,7 @@
     <ClCompile Include="pTick.cpp" />
     <ClCompile Include="pUserInfo.cpp" />
     <ClCompile Include="pWalk.cpp" />
+    <ClCompile Include="pWuxing.cpp" />
     <ClCompile Include="RC5.cpp" />
     <ClCompile Include="RLE.cpp" />
     <ClCompile Include="ShopDataFile.cpp" />
@@ -250,6 +251,7 @@
     <ClCompile Include="WDF.cpp" />
     <ClCompile Include="Widget.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WuxingForm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllPacket.h" />
@@ -344,6 +346,7 @@
     <ClInclude Include="pUserInfo.h" />
     <ClInclude Include="pUserAttribute.h" />
     <ClInclude Include="pWalk.h" />
+    <ClInclude Include="pWuxing.h" />
     <ClInclude Include="RC5.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RLE.h" />
@@ -363,6 +366,7 @@
     <ClInclude Include="WDF.h" />
     <ClInclude Include="Widget.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WuxingForm.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MAMClient.rc" />

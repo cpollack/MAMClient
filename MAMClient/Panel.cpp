@@ -7,6 +7,7 @@ CPanel::CPanel(CWindow* window, std::string name, int x, int y) : CWidget(window
 	Name = name;
 	X = x;
 	Y = y;
+	WidgetType = wtPanel;
 }
 
 CPanel::CPanel(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWidget) {
@@ -26,6 +27,7 @@ CPanel::CPanel(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 			}
 		}
 	}
+	WidgetType = wtPanel;
 }
 
 CPanel::~CPanel() {
@@ -49,7 +51,7 @@ void CPanel::Render() {
 	for (auto widget : Children) {
 		if (widget != Window->focusedWidget) widget->Render();
 	}
-	if (Window->focusedWidget) Window->focusedWidget->Render();
+	if (Window->focusedWidget && Window->focusedWidget->GetParent() == this) Window->focusedWidget->Render();
 }
 
 void CPanel::CreatePanelTexture() {

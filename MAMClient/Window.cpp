@@ -475,13 +475,21 @@ void CWindow::handleEvent(SDL_Event& e)
 
 	for (auto widget : widgets) {
 		eventWidget = widget.second;
-		eventWidget->HandleEvent(e);
+		bool doEvents = true;
+		if (eventWidget->GetParent() && eventWidget->GetParent()->WidgetType == wtTabControl) {
+			if (((CTabControl*)eventWidget->GetParent())->GetVisibleTab() != eventWidget->GetTabItem()) doEvents = false;
+		}
+		if (doEvents) eventWidget->HandleEvent(e);
 	}
 	eventWidget = nullptr;
 }
 
 void CWindow::step() {
-	//
+	for (auto widget : widgets) {
+		eventWidget = widget.second;
+		widget.second->Step();
+	}
+	eventWidget = nullptr;
 }
 	
 void CWindow::focus() {

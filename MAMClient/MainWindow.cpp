@@ -22,6 +22,7 @@
 #include "CharacterForm.h"
 #include "PetListForm.h"
 #include "InventoryForm.h"
+#include "WuxingForm.h"
 
 #include "AssetManager.h"
 #include "PlayerInfoFrame.h"
@@ -773,6 +774,7 @@ void CMainWindow::main_init_widgets() {
 	registerEvent("btnPet", "Click", std::bind(&CMainWindow::btnPet_Click, this, std::placeholders::_1));
 
 	registerEvent("btnInventory", "Click", std::bind(&CMainWindow::btnInventory_Click, this, std::placeholders::_1));
+	registerEvent("btnWuxing", "Click", std::bind(&CMainWindow::btnWuxing_Click, this, std::placeholders::_1));
 	registerEvent("btnKungfu", "Click", std::bind(&CMainWindow::btnKungfu_Click, this, std::placeholders::_1));
 	registerEvent("btnTeam", "Click", std::bind(&CMainWindow::btnTeam_Click, this, std::placeholders::_1));
 	registerEvent("btnGuild", "Click", std::bind(&CMainWindow::btnGuild_Click, this, std::placeholders::_1));
@@ -1094,6 +1096,12 @@ void CMainWindow::btnInventory_Click(SDL_Event& e) {
 	if (battle) return;
 	CInventoryForm* invForm = new CInventoryForm();
 	Windows.push_back(invForm);
+}
+
+void CMainWindow::btnWuxing_Click(SDL_Event& e) {
+	if (battle) return;
+	CWuxingForm* wuxForm = new CWuxingForm();
+	Windows.push_back(wuxForm);
 }
 
 void CMainWindow::btnKungfu_Click(SDL_Event& e) {

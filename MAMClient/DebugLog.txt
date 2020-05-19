@@ -1,9 +1,1646 @@
-21:34:55 Beginning Login
-21:34:55 Connected to Account Server
-21:34:55 Average Ticks: 18.840000
-21:34:56 Connected to the Game Server
-21:34:56 Loading player data from packet
-21:34:57 Loading Map WaterCitySuburb
-21:34:57 First Map Loaded
-21:34:57 Login Success, loading game
-21:34:57 Initializing Main
+13:20:20 Beginning Login
+13:20:20 Connected to Account Server
+13:20:21 Connected to the Game Server
+13:20:22 Loading player data from packet
+13:20:22 Average Ticks: 20.570000
+13:20:23 Loading Map WaterCitySuburb
+13:20:23 First Map Loaded
+13:20:23 Login Success, loading game
+13:20:23 Initializing Main
+13:20:23 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:23 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:23 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:23 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:23 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:23 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:23 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:23 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:23 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:23 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:23 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:23 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:23 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:23 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:24 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:24 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:25 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:25 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:26 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:26 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Average Ticks: 45.960000
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:27 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:27 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:28 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:28 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:29 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:29 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:30 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:30 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:31 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:31 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Average Ticks: 44.670000
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:32 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:32 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:33 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:33 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:34 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:34 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:35 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:35 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:36 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:36 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Average Ticks: 44.560000
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:37 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:37 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:38 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:38 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:39 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:39 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:40 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:40 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:41 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:41 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Average Ticks: 43.870000
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:42 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:42 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:43 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:43 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:44 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:44 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:45 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:45 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:46 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:46 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Average Ticks: 44.330000
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:47 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:47 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:48 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:48 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:49 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:49 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:50 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:50 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:51 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:51 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Average Ticks: 44.410000
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:52 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:52 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:53 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:53 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:54 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:54 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:55 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:55 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:56 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:56 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Average Ticks: 44.480000
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:57 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:57 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:58 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:58 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£
+13:20:59 Failed to convert Message String into WString: ÄãµÄÔÂ¿¨½«ÓÚ 97.101.237.251 µ½ÆÚ£
+13:20:59 Failed to convert Message String into WString: ¬Çë¼°Ê±³äÖµ¡£

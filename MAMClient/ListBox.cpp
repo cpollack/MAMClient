@@ -4,17 +4,24 @@
 #include "ImageBox.h"
 
 #include "CustomEvents.h"
+#include "TabControl.h"
 
 CListBox::CListBox(CWindow* window, std::string name, int x, int y) : CWidget(window) {
 	Name = name;
 	X = x;
 	Y = y;
+	captionOffset = 0;
+	WidgetType == wtListBox;
 }
 
 CListBox::CListBox(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWidget) {
 	if (!vWidget.IsObject()) return;
 
-	if (vWidget.HasMember("Caption")) SetText(vWidget["Caption"].GetString());
+	if (vWidget.HasMember("Caption")) {
+		SetText(vWidget["Caption"].GetString());
+		captionOffset = 7;
+	}
+	else captionOffset = 0;
 
 	if (vWidget.HasMember("Widgets")) {
 		rapidjson::Value vChildWidgets = vWidget["Widgets"].GetArray();
@@ -28,6 +35,7 @@ CListBox::CListBox(CWindow* window, rapidjson::Value& vWidget) : CWidget(window,
 			}
 		}
 	}
+	WidgetType == wtListBox;
 }
 
 CListBox::~CListBox() {
@@ -50,7 +58,8 @@ void CListBox::Render() {
 	if (!ListBoxTexture) CreateListBoxTexture();
 	SDL_RenderCopy(renderer, ListBoxTexture, NULL, &widgetRect);
 
-	Step(); //Check for list changes each 'step'
+	//moved to virtual call from window
+	//Step(); //Check for list changes each 'step'
 
 	//Render the list
 	SDL_Rect oldVp;
@@ -165,8 +174,10 @@ void CListBox::Render_ScrollBar() {
 }
 
 void CListBox::Step() {
+	CWidget::Step();
+	int mx, my;
+
 	if (ScrollBarDrag) {
-		int my;
 		SDL_GetGlobalMouseState(NULL, &my);
 		int change = my - lastDragY;
 		lastDragY = my;
@@ -231,6 +242,11 @@ void CListBox::HandleEvent(SDL_Event& e) {
 	}
 
 	if (e.type == SDL_MOUSEBUTTONUP) {
+		MouseDown = false;
+		if (ItemDrag) {
+			ItemDrag = false;
+			OnItemDragEnd(e);
+		}
 		ScrollBtnTHold = false;
 		ScrollBtnBHold = false;
 		ScrollUpperHold = false;
@@ -290,9 +306,60 @@ void CListBox::OnMouseMove(SDL_Event& e) {
 			if (my >= bar.y + bar.h) ScrollLowerHover = true;
 		}
 	}
+
+	//Items
+	SDL_Rect listRect = { X + 3, Y + captionOffset + 3 + 3, GetListWidth(), GetListHeight() };
+	SDL_Point pos = { 0,0 };
+	MouseOverItem = -1;
+	for (int i = 0; i < Items.size(); i++) {
+		SDL_Rect itemRect = { listRect.x + Items[i]->GetX(), listRect.y + pos.y, Items[i]->GetWidth(), Items[i]->GetHeight() };
+		if (doesPointIntersect(itemRect, mx, my)) {
+			MouseOverItem = i;
+			if (MouseOverPoint.x != mx || MouseOverPoint.y != my) {
+				MouseOverPoint = { mx, my };
+				MouseOverStart = SDL_GetTicks();
+			}
+			break;
+		}
+		pos.y += Items[i]->GetHeight();
+	}
+
+	if (MouseDown && !ItemDrag && MouseOverItem >= 0 && (abs(mx - ClickPoint.x) >= 5 || abs(my - ClickPoint.y) >= 5)) {
+		ItemDrag = true;
+		OnItemDragStart(e);
+		DragIndex = MouseOverItem;
+	}
 }
 
+void CListBox::OnHoverStart(SDL_Event &e) {
+	CWidget::OnHoverStart(e);
+	if (MouseOverItem >= 0) OnListItemHoverStart(e);
+}
+
+void CListBox::OnHoverEnd(SDL_Event &e) {
+	CWidget::OnHoverEnd(e);
+	if (HoveringListItem) OnListItemHoverEnd(e);
+}
+
+void CListBox::OnListItemHoverStart(SDL_Event& e) {
+	HoveringListItem = true;
+	auto iter = eventMap.find("OnListItemHoverStart");
+	if (iter != eventMap.end()) iter->second(e);
+}
+
+void CListBox::OnListItemHoverEnd(SDL_Event& e) {
+	HoveringListItem = false;
+	auto iter = eventMap.find("OnListItemHoverEnd");
+	if (iter != eventMap.end()) iter->second(e);
+}
+
+/*void CListBox::OnListItemHover(SDL_Event& e) {
+	auto iter = eventMap.find("OnListItemHover");
+	if (iter != eventMap.end()) iter->second(e);
+}*/
+
 void CListBox::OnClick(SDL_Event& e) {
+	MouseDown = true;
 	auto iter = eventMap.find("Click");
 	if (iter != eventMap.end()) iter->second(e);
 
@@ -333,11 +400,13 @@ void CListBox::OnClick(SDL_Event& e) {
 		return;
 	}
 
+	//Widget
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
 	SDL_Rect listRect = { X + 3, Y + captionOffset + 3 + 3, GetListWidth(), GetListHeight() };
 	if (!doesPointIntersect(listRect, mx, my)) return;
-		
+	
+	//Items
 	int px, py;
 	px = mx - listRect.x;
 	py = my - listRect.y;
@@ -348,6 +417,7 @@ void CListBox::OnClick(SDL_Event& e) {
 		SDL_Rect itemRect = { pos.x, pos.y - ScrollPos, ib->GetWidth(), ib->GetHeight() };
 		if (doesPointIntersect(itemRect, px, py)) {
 			clickIndex = i;
+			ClickPoint = {mx, my};
 			break;
 		}
 		pos.y += ib->GetHeight();
@@ -370,6 +440,32 @@ void CListBox::SelectionChange(SDL_Event& e) {
 void CListBox::SelectionDblClick(SDL_Event& e) {
 	auto iter = eventMap.find("SelectionDblClick");
 	if (iter != eventMap.end()) iter->second(e);
+}
+
+void CListBox::OnItemDragStart(SDL_Event &e) {
+	auto iter = eventMap.find("OnItemDragStart");
+	if (iter != eventMap.end()) iter->second(e);
+	std::cout << Name << " List item Drag Start" << std::endl;
+}
+
+void CListBox::OnItemDragEnd(SDL_Event &e) {
+	auto iter = eventMap.find("OnItemDragEnd");
+	if (iter != eventMap.end()) iter->second(e);
+	std::cout << Name << " List item Drag End" << std::endl;
+}
+
+void CListBox::OnFocusLost() {
+	SDL_Event e;
+	SDL_zero(e);
+	e.user.data1 = this;
+
+	if (ItemDrag) {
+		ItemDrag = false;
+		OnItemDragEnd(e);
+	}
+	if (HoveringListItem) {
+		OnListItemHoverEnd(e);
+	}
 }
 
 void CListBox::CreateListBoxTexture() {
@@ -479,6 +575,33 @@ SDL_Rect CListBox::GetScrollBar_BarRect() {
 	int barPos = (int)((((double)ScrollPos / ScrollHeight) * offsetHeight));
 	SDL_Rect bar = { sbRect.x + 1, sbRect.y + ScrollBtnHeight + barPos, ScrollWidth - 2, barHeight };
 	return bar;
+}
+
+void CListBox::AddItem(std::string text) {
+	Texture *itemTexture = stringToTexture(renderer, text, gui->font, 0, gui->fontColor, 0);
+
+	SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GetListWidth(), itemTexture->height);
+	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
+	SDL_SetRenderTarget(renderer, texture);
+	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, gui->backColor.r, gui->backColor.g, gui->backColor.b, gui->backColor.a);
+	SDL_RenderClear(renderer);
+
+	SDL_RenderCopy(renderer, itemTexture->getTexture(), NULL, &itemTexture->getRect());
+
+	SDL_SetRenderTarget(renderer, priorTarget);
+
+	SDL_DestroyTexture(itemTexture->getTexture());
+	itemTexture->texture = texture;
+	itemTexture->width = GetListWidth();
+
+	std::string ibName = Name + "_imageBox" + std::to_string(Items.size());
+	CImageBox* imgItem = new CImageBox(Window, Name, 0, 0);
+	imgItem->SetWidth(itemTexture->width);
+	imgItem->SetHeight(itemTexture->height);
+	imgItem->SetAnchor(ANCOR_TOPLEFT);
+	imgItem->SetImage(itemTexture);
+	AddItem(imgItem);
 }
 
 void CListBox::AddItem(CImageBox* item) {

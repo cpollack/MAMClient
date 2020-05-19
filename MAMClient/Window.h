@@ -18,6 +18,7 @@ enum FormType {
 	FT_PET,
 	FT_INVENTORY,
 	FT_SHOP,
+	FT_WUXING,
 };
 
 enum RendererD3D9Mode {

@@ -293,6 +293,8 @@ SDL_Rect Sprite::getRenderRect(int frame) {
 		renderRect = { x, y, sprRect.w, sprRect.h };
 		//renderRect = { x + sprRect.x, y + sprRect.y, sprRect.w, sprRect.h };
 		break;
+	default:
+		renderRect = { x, y, sprRect.w, sprRect.h };
 	}
 
 	return renderRect;

@@ -84,7 +84,7 @@ void CInventoryForm::handleEvent(SDL_Event& e) {
 			UpdateInventory();
 			if (e.user.data1 && ((Item*)e.user.data1)->getType() <= 4) UpdateEquipment();
 		}
-		if (e.user.code == ITEM_DROP) {
+		if (e.user.code == ITEM_REMOVE) {
 			UpdateInventory();
 		}
 	}
@@ -339,7 +339,7 @@ void CInventoryForm::btnDrop_Click(SDL_Event& e) {
 	if (!viewItem) return;
 
 	std::string message = "Are you sure you wish to Drop ";
-	message += "[" + viewItem->getName() + "]?";
+	message += "[" + viewItem->GetName() + "]?";
 	promptForm = doPrompt(this, "Confirm", message, true);
 
 	DropItem = true;
@@ -440,6 +440,6 @@ void CInventoryForm::UseItem(Item* item) {
 	std::string message = "Are you sure you wish to ";
 	if (item->getType() <= 4) message += "Equip ";
 	else message += "Use ";
-	message += "[" + item->getName() + "]?";
+	message += "[" + item->GetName() + "]?";
 	promptForm = doPrompt(this, "Confirm", message, true);
 }

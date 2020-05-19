@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Define.h"
 #include "Monster.h"
 #include "pPetInfo.h"
 
@@ -44,6 +45,10 @@ public:
 	Item* Pet::getItem();
 	void Pet::useItem(int itemId);
 	void Pet::useMedicine(Item* item);
+
+	std::string getPortraitPath();
+	std::string getDetails();
+	Asset GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon);
 
 private:
 	int owner;

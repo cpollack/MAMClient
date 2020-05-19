@@ -10,6 +10,7 @@ CTabControl::CTabControl(CWindow* window, std::string name, int x, int y) : CWid
 	Y = y;
 
 	VisibleTab = 0;
+	WidgetType = wtTabControl;
 }
 
 CTabControl::CTabControl(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWidget) {
@@ -45,6 +46,7 @@ CTabControl::CTabControl(CWindow* window, rapidjson::Value& vWidget) : CWidget(w
 			}
 		}
 	}
+	WidgetType = wtTabControl;
 }
 
 CTabControl::~CTabControl() {
@@ -82,7 +84,7 @@ void CTabControl::Render() {
 	for (auto widget : Children) {
 		if (widget->GetTabItem() == VisibleTab && widget != Window->focusedWidget) widget->Render();
 	}
-	if (Window->focusedWidget && Window->focusedWidget->GetTabItem() == VisibleTab) Window->focusedWidget->Render();
+	if (Window->focusedWidget && Window->focusedWidget->GetTabItem() == VisibleTab && Window->focusedWidget->GetParent() == this) Window->focusedWidget->Render();
 }
 
 void CTabControl::RenderTabs() {
@@ -169,7 +171,7 @@ void CTabControl::CreateTabControlTexture() {
 }
 
 void CTabControl::DrawSimpleBorder() {
-	//TODO
+	rectangleRGBA(renderer, 0, TAB_HEADER_HEIGHT - 1, Width - 1, Height - 2, 0xA0, 0x96, 0x83, 0xFF);
 }
 
 void CTabControl::DrawDetailBorder() {
@@ -200,7 +202,47 @@ void CTabControl::CreateTabTexture(int index) {
 }
 
 void CTabControl::DrawSimpleTab(int index, bool vTab) {
-	//TODO
+	SDL_Color tabFontColor = fontColor;
+	if (!vTab) tabFontColor = { gui->backColor.r, gui->backColor.g, gui->backColor.b, gui->backColor.a };
+	Texture* tabText = stringToTexture(renderer, tabs[index], gui->font, 0, tabFontColor, 0);
+
+	int strSize = tabText->width;
+	int tabWidth = (strSize + 16 < TAB_MIN_WIDTH) ? TAB_MIN_WIDTH : (strSize + 16);
+	int tabHeight = vTab ? TAB_HEADER_HEIGHT : TAB_HEADER_HEIGHT - 1;
+	Texture* tabTexture = new Texture(renderer);
+	tabTexture->texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, tabWidth, tabHeight);
+	tabTexture->width = tabWidth;			tabTexture->rect.w = tabWidth;
+	tabTexture->height = tabHeight;	tabTexture->rect.h = tabHeight;
+	SDL_Rect textRect = { (tabWidth / 2) - (tabText->width / 2),  (tabHeight / 2) - (tabText->height / 2), tabText->width, tabText->height };
+
+	SDL_Texture * priorTarget = SDL_GetRenderTarget(renderer);
+	SDL_SetRenderTarget(renderer, tabTexture->texture);
+	SDL_SetRenderDrawColor(renderer, gui->backColor.r, gui->backColor.g, gui->backColor.b, gui->backColor.a);
+	SDL_RenderClear(renderer);
+
+	if (vTab) {
+		SDL_SetRenderDrawColor(renderer, 0xA0, 0x96, 0x83, 255);
+		SDL_RenderDrawLine(renderer, 0, 0, 0, tabHeight - 1);
+		SDL_RenderDrawLine(renderer, tabWidth - 1, 0, tabWidth - 1, tabHeight - 1);
+		SDL_RenderDrawLine(renderer, 0, 0, textRect.x, 0);
+		SDL_RenderDrawLine(renderer, textRect.x + textRect.w, 0, tabWidth - 1, 0);
+
+		SDL_RenderCopy(renderer, tabText->texture, NULL, &textRect);
+	}
+	else {
+		boxRGBA(renderer, 0, 0, tabWidth - 1, tabHeight - 1, 0x30, 0x60, 0x90, 255);
+		SDL_RenderCopy(renderer, tabText->texture, NULL, &textRect);
+	}
+	if (tabText) delete tabText;
+
+	SDL_SetRenderTarget(renderer, priorTarget);
+
+	if (tabTextures.size() < index + 1) tabTextures.push_back(tabTexture);
+	else {
+		delete tabTextures[index];
+		tabTextures.erase(tabTextures.begin() + index);
+		tabTextures.insert(tabTextures.begin() + index, tabTexture);
+	}
 }
 
 void CTabControl::DrawDetailTab(int index, bool vTab) {
@@ -257,25 +299,41 @@ void CTabControl::DrawButtonTab(int index, bool vTab) {
 }
 
 void CTabControl::LoadTabRects() {
-	//Temp, add standard handling
-	if (Style != tsButton) return;
-
-	//Button style should try to center the buttons
-	int tabWidthTotal = 0;
-	for (auto tab : tabTextures) tabWidthTotal += tab->width;
-
-	int remWidth = Width - tabWidthTotal;
-	int tabSpacer = (remWidth / tabTextures.size()) / 2;
-
 	int tx = 0;
-	for (auto tab : tabTextures) {
-		tx += tabSpacer;
+	const int TAB_SPACER = 2;
 
-		tab->rect.x = tx;
-		if (TabsOnBottom) tab->rect.y = Height - TAB_BUTTON_HEIGHT - 1;
-		else tab->rect.y = 0;
+	switch (Style) {
+	case tsSimple:
+	case tsDetail:
+		for (auto tab : tabTextures) {
 
-		tx += tab->width + tabSpacer;
+			tx += TAB_SPACER;
+
+			tab->rect.x = tx;
+			if (TabsOnBottom) tab->rect.y = Height - TAB_BUTTON_HEIGHT - 1;
+			else tab->rect.y = 0;
+
+			tx += tab->width + TAB_SPACER;
+		}
+		break;
+	case tsButton:
+		//Button style should try to center the buttons
+		int tabWidthTotal = 0;
+		for (auto tab : tabTextures) tabWidthTotal += tab->width;
+
+		int remWidth = Width - tabWidthTotal;
+		int tabSpacer = (remWidth / tabTextures.size()) / 2;
+
+		for (auto tab : tabTextures) {
+			tx += tabSpacer;
+
+			tab->rect.x = tx;
+			if (TabsOnBottom) tab->rect.y = Height - TAB_BUTTON_HEIGHT - 1;
+			else tab->rect.y = 0;
+
+			tx += tab->width + tabSpacer;
+		}
+		break;
 	}
 }
 

@@ -45,13 +45,13 @@ SDL_Point getBackCoord(SDL_Point coord, int direction) {
 
 
 bool doesPointIntersect(SDL_Rect rect, int x, int y) {
-	if (x >= rect.x && x <= (rect.x + rect.w) && y >= rect.y && y <= (rect.y + rect.h)) return true;
+	if (x >= rect.x && x <= (rect.x + rect.w - 1) && y >= rect.y && y <= (rect.y + rect.h - 1)) return true;
 	return false;
 }
 
 
 bool doesPointIntersect(SDL_Rect rect, SDL_Point point) {
-	if (point.x >= rect.x && point.x <= (rect.x + rect.w) && point.y >= rect.y && point.y <= (rect.y + rect.h)) return true;
+	if (point.x >= rect.x && point.x <= (rect.x + rect.w - 1) && point.y >= rect.y && point.y <= (rect.y + rect.h - 1)) return true;
 	return false;
 }
 

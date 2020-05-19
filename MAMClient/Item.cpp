@@ -168,7 +168,7 @@ std::string Item::getTexturePath(int size) {
 }
 
 
-std::string Item::getName() {
+std::string Item::GetName() {
 	return name;
 }
 
@@ -224,6 +224,38 @@ std::wstring Item::getShopDetails() {
 	details += "Maker " + creator + "\n";
 
 	return StringToWString(details);
+}
+
+Asset Item::GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon) {
+	int boxWidth = 110;
+	Asset detailsTexture(stringToTexture(renderer, getDetails(), gui->font, 0, { 255,255,255,255 }, boxWidth));
+
+	int offsetText = 0;
+	if (showIcon) offsetText = 48;
+	int height = detailsTexture->height + offsetText;
+	Asset finalTexture(new Texture(renderer, nullptr, detailsTexture->width, height));
+
+	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
+	SDL_SetRenderTarget(renderer, finalTexture->getTexture());
+
+	SDL_SetTextureBlendMode(finalTexture->getTexture(), SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+	SDL_RenderClear(renderer);
+
+	if (showIcon) {
+		Asset portrait(new Texture(renderer, getTexturePath(40), true));
+		if (portrait->loaded) {
+			SDL_Rect portRect = { boxWidth / 2 - (portrait->width / 2) , 6, portrait->width, portrait->height };
+			SDL_RenderCopy(renderer, portrait->getTexture(), NULL, &portRect);
+		}
+	}
+
+	SDL_Rect textRect = detailsTexture->rect;
+	textRect.y += offsetText;
+	SDL_RenderCopy(renderer, detailsTexture->getTexture(), nullptr, &textRect);
+
+	SDL_SetRenderTarget(renderer, priorTarget);
+	return finalTexture;
 }
 
 

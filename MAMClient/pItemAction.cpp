@@ -73,7 +73,7 @@ void pItemAction::process() {
 		break;
 	case iaDrop:
 		e.type = CUSTOMEVENT_ITEM;
-		e.user.code = ITEM_DROP;
+		e.user.code = ITEM_REMOVE;
 		e.user.data1 = player->inventory->getItem(itemId);
 		SDL_PushEvent(&e);
 

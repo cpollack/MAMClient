@@ -38,7 +38,7 @@ enum PacketType {
 	//ptDeleteRole = 1053,
 	//ptSkill = 1055,
 	//ptTrade = 1056,
-	//ptConjure = 1057,
+	ptWuxing = 1057,
 	ptBattleAction = 2000,
 	ptNormalAct = 2001, 
 	//ptSpecialAct = 2002, 

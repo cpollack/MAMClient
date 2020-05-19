@@ -20,6 +20,9 @@ CImageBox::CImageBox(CWindow* window, rapidjson::Value& vWidget) : CWidget(windo
 	if (vWidget.HasMember("SkinImage")) SkinImage = vWidget["SkinImage"].GetString();
 	else SkinImage = "";
 
+	if (vWidget.HasMember("DataImage")) DataImage = vWidget["DataImage"].GetString();
+	else DataImage = "";
+
 	if (vWidget.HasMember("Bordered")) Bordered = vWidget["Bordered"].GetBool();
 	if (vWidget.HasMember("BlackBackground")) BlackBackground = vWidget["BlackBackground"].GetBool();
 
@@ -33,7 +36,8 @@ CImageBox::~CImageBox() {
 
 void CImageBox::ReloadAssets() {
 	if (ImageBox) {
-		if (SkinImage.length() > 0) SetImageFromSkin(SkinImage);
+		if (DataImage.length() > 0) SetImageFromFile(DataImage);
+		else if (SkinImage.length() > 0) SetImageFromSkin(SkinImage);
 		else SetImage(nullptr);
 	}
 }
@@ -41,7 +45,8 @@ void CImageBox::ReloadAssets() {
 void CImageBox::Render() {
 	if (!Visible) return;
 	if (!ImageBox) {
-		if (SkinImage.length() > 0) SetImageFromSkin(SkinImage);
+		if (DataImage.length() > 0) SetImageFromFile(DataImage);
+		else if (SkinImage.length() > 0) SetImageFromSkin(SkinImage);
 		else SetImage(nullptr);
 	}
 
@@ -67,12 +72,38 @@ void CImageBox::Render() {
 
 void CImageBox::HandleEvent(SDL_Event& e) {
 	if (!Visible) return;
+	CWidget::HandleEvent(e);
+
+	if (e.type == SDL_MOUSEMOTION) {
+		if (MouseOver) {
+			OnMouseMove(e);
+		}
+	}
+
 	if (e.type == SDL_MOUSEBUTTONDOWN) {
 		int mx, my;
 		SDL_GetMouseState(&mx, &my);
 		if (doesPointIntersect(widgetRect, mx, my)) {
 			OnClick(e);
 		}
+	}
+
+	if (e.type == SDL_MOUSEBUTTONUP) {
+		MouseDown = false;
+		if (Dragging) {
+			Dragging = false;
+			OnDragEnd(e);
+		}
+	}
+}
+
+void CImageBox::SetImageFromFile(std::string fileImage) {
+	DataImage = fileImage;
+	if (!fileImage.size()) return;
+	Texture* sImage = new Texture(renderer, fileImage, true);
+	if (sImage) {
+		SetImage(sImage);
+		delete sImage;
 	}
 }
 
@@ -87,6 +118,7 @@ void CImageBox::SetImageFromSkin(std::string skinImage) {
 
 void CImageBox::SetImage(Texture* image) {
 	SkinImage = "";
+	DataImage = "";
 
 	SDL_Rect oldViewport;
 	SDL_RenderGetViewport(renderer, &oldViewport);
@@ -163,13 +195,65 @@ void CImageBox::BindSprite(Sprite* sprite) {
 	this->sprite = sprite;
 }
 
+void CImageBox::OnMouseMove(SDL_Event& e) {
+	int mx, my;
+	SDL_GetMouseState(&mx, &my);
+
+	if (MouseDown && (abs(mx - ClickPoint.x) >= 5 || abs(my - ClickPoint.y) >= 5)) OnDragStart(e);
+}
+
 void CImageBox::OnClick(SDL_Event& e) {
-	auto iter = eventMap.find("Click");
+	MouseDown = true;
+	ClickPoint = { e.motion.x, e.motion.y };
+
+	if (e.button.button == SDL_BUTTON_LEFT) {
+		if (e.button.clicks == 2) {
+			auto iter = eventMap.find("DoubleClick");
+			if (iter != eventMap.end()) iter->second(e);
+		}
+		else {
+			auto iter = eventMap.find("Click");
+			if (iter != eventMap.end()) iter->second(e);
+		}
+		return;
+	}
+
+	if (e.button.button == SDL_BUTTON_RIGHT) {
+		auto iter = eventMap.find("RightClick");
+		if (iter != eventMap.end()) iter->second(e);
+		return;
+	}
+}
+
+void CImageBox::OnDragStart(SDL_Event& e) {
+	Dragging = true;
+	auto iter = eventMap.find("OnDragStart");
 	if (iter != eventMap.end()) iter->second(e);
+}
+
+void CImageBox::OnDragEnd(SDL_Event& e) {
+	auto iter = eventMap.find("OnDragEnd");
+	if (iter != eventMap.end()) iter->second(e);
+}
+
+void CImageBox::OnFocusLost() {
+	SDL_Event e;
+	SDL_zero(e);
+	e.user.data1 = this;
+
+	if (Dragging) {
+		Dragging = false;
+		OnDragEnd(e);
+	}
+	if (Hovering) {
+		Hovering = false;
+		OnHoverEnd(e);
+	}
 }
 
 void CImageBox::UseBlackBackground(bool use) {
 	BlackBackground = use;
-	if (SkinImage.length() > 0) SetImageFromSkin(SkinImage);
+	if (DataImage.length() > 0) SetImageFromFile(DataImage);
+	else if (SkinImage.length() > 0) SetImageFromSkin(SkinImage);
 	else SetImage(nullptr);
 }

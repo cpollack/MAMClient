@@ -2,6 +2,8 @@
 #include "Client.h"
 #include "pPetInfo.h"
 
+#include "CustomEvents.h"
+
 #include "Player.h"
 #include "Pet.h"
 
@@ -55,6 +57,9 @@ pPetInfo::~pPetInfo() {
 
 
 void pPetInfo::process() {
+	SDL_Event e;
+	SDL_zero(e);
+
 	Pet* pet = nullptr;
 
 	switch (mode) {
@@ -66,6 +71,15 @@ void pPetInfo::process() {
 	case pimUpdate:
 		pet = player->getPet(petId);
 		if (pet) pet->updateInfo(this);
+		break;
+
+	case pimPreview:
+		pet = new Pet(this);
+
+		e.type = CUSTOMEVENT_PET;
+		e.user.code = PET_PREVIEW;
+		e.user.data1 = pet;
+		SDL_PushEvent(&e);
 		break;
 	}
 }

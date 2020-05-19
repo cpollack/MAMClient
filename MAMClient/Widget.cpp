@@ -142,7 +142,34 @@ void CWidget::HandleEvent(SDL_Event& e) {
 		MouseOver = false;
 		if (Visible && doesPointIntersect(SDL_Rect{ X,Y,Width,Height }, SDL_Point{ e.motion.x, e.motion.y })) {
 			MouseOver = true;
+			if (MouseOverStart == 0) MouseOverStart = SDL_GetTicks();
+			if (HoverPoint.x != e.motion.x || HoverPoint.y != e.motion.y) {
+				if (Hovering) {
+					Hovering = false;
+					OnHoverEnd(e);
+				}
+				HoverStart = SDL_GetTicks();
+			}
+			HoverPoint = { e.motion.x, e.motion.y };
 		}
+		else {
+			MouseOverStart = 0;
+			HoverStart = 0;
+			if (Hovering) {
+				Hovering = false;
+				OnHoverEnd(e);
+			}
+		}
+	}
+}
+
+void CWidget::Step() {
+	if (!Hovering && HoverStart > 0 && SDL_GetTicks() - HoverStart >= HoverDelay) {
+		Hovering = true;
+		SDL_Event e;
+		SDL_zero(e);
+		e.user.data1 = this;
+		OnHoverStart(e);
 	}
 }
 
@@ -169,6 +196,18 @@ void CWidget::OnFocus() {
 
 void CWidget::OnFocusLost() {
 	Focused = false;
+}
+
+void CWidget::OnHoverStart(SDL_Event &e) {
+	auto iter = eventMap.find("OnHoverStart");
+	if (iter != eventMap.end()) iter->second(e);
+	std::cout << Name << " Hover Start" << std::endl;
+}
+
+void CWidget::OnHoverEnd(SDL_Event &e) {
+	auto iter = eventMap.find("OnHoverEnd");
+	if (iter != eventMap.end()) iter->second(e);
+	std::cout << Name << " Hover End" << std::endl;
 }
 
 void CWidget::SetFocus(bool focus) {

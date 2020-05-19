@@ -11,7 +11,8 @@ Texture::Texture(SDL_Renderer* aRenderer) {
 
 Texture::Texture(SDL_Renderer* aRenderer, SDL_Texture* txtr, int w, int h) {
 	renderer = aRenderer;
-	texture = txtr;
+	if (txtr) texture = txtr;
+	else texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
 	width = w;
 	height = h;
 	setAnchor(ANCOR_TOPLEFT);

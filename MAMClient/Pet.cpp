@@ -163,3 +163,58 @@ void Pet::useMedicine(Item* item) {
 
 	player->inventory->removeItem(item->GetID());
 }
+
+std::string Pet::getPortraitPath() {
+	std::string look = std::to_string(GetLook());
+	while (look.size() < 4) look.insert(look.begin(), '0');
+	look = "peticon" + look;
+
+	INI ini("INI\\petLook.ini", look);
+	return ini.getEntry("Frame0");
+}
+
+std::string Pet::getDetails() {
+	std::string details;
+
+	details = Name + "\n";
+	details += "Level " + formatInt(Level) + "\n";
+	details += "Loyalty " + formatInt(loyalty > 100 ? 100 : loyalty) + "\n";
+	details += "Life " + formatInt(life_current) + "/" + formatInt(life_max) + "\n";
+	details += "Attack " + formatInt(attack) + "\n";
+	details += "Defence " + formatInt(defence) + "\n";
+	details += "Dexterity " + formatInt(dexterity) + "\n";
+
+	return details;
+}
+
+Asset Pet::GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon) {
+	int boxWidth = 110;
+	Asset detailsTexture(stringToTexture(renderer, getDetails(), gui->font, 0, { 255,255,255,255 }, boxWidth));
+
+	int offsetText = 0;
+	if (showIcon) offsetText = 80;
+	int height = detailsTexture->height + offsetText;
+	Asset finalTexture(new Texture(renderer, nullptr, detailsTexture->width, height));
+
+	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
+	SDL_SetRenderTarget(renderer, finalTexture->getTexture());
+
+	SDL_SetTextureBlendMode(finalTexture->getTexture(), SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+	SDL_RenderClear(renderer);
+
+	if (showIcon) {
+		Asset portrait(new Texture(renderer, getPortraitPath(), true));
+		if (portrait->loaded) {
+			SDL_Rect portRect = { boxWidth / 2 - (portrait->width / 2) , 6, portrait->width, portrait->height };
+			SDL_RenderCopy(renderer, portrait->getTexture(), NULL, &portRect);
+		}
+	}
+
+	SDL_Rect textRect = detailsTexture->rect;
+	textRect.y += offsetText;
+	SDL_RenderCopy(renderer, detailsTexture->getTexture(), nullptr, &textRect);
+
+	SDL_SetRenderTarget(renderer, priorTarget);
+	return finalTexture;
+}

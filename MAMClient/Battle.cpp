@@ -1400,7 +1400,7 @@ Asset Battle::CreateItemMouseover(Item* item) {
 	Asset asset;
 	if (!item) return asset;
 
-	std::string text = item->getName();
+	std::string text = item->GetName();
 	switch (item->getSort()) {
 	case 600:
 		text += "\nReduce HP: " + formatInt(item->getLife());

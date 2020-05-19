@@ -39,6 +39,7 @@ public:
 
 	std::string PlayerRole; //Trimmed role used for 
 
+	Inventory* GetInventory() { return inventory; }
 	Item* equipment[5] = { nullptr };
 	Inventory* inventory;
 

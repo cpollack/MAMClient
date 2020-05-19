@@ -1,6 +1,7 @@
 #ifndef __ITEM_H
 #define __ITEM_H
 
+#include "Define.h"
 #include "Texture.h"
 #include "pItem.h"
 
@@ -43,9 +44,11 @@ public:
 	int Item::getCost();
 	int getLevel() { return level; }
 	std::string getTexturePath(int size);
-	std::string Item::getName();
+	std::string Item::GetName();
 	std::wstring Item::getDetails();
 	std::wstring Item::getShopDetails();
+
+	Asset GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon);
 
 	int Item::getLife();
 	int Item::getMana();

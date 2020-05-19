@@ -419,6 +419,12 @@
     <ClCompile Include="GameObj.cpp">
       <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="WuxingForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="pWuxing.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -753,6 +759,12 @@
     </ClInclude>
     <ClInclude Include="GameObj.h">
       <Filter>Header Files\Core\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="WuxingForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="pWuxing.h">
+      <Filter>Header Files\Packet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

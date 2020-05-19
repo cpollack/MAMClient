@@ -3,6 +3,8 @@
 #include "pItem.h"
 
 #include "Player.h"
+#include "Item.h"
+#include "CustomEvents.h"
 
 pItem::pItem(char* buf, char* encBuf) {
 	description = "Item (Server)";
@@ -47,12 +49,31 @@ pItem::~pItem() {
 
 
 void pItem::process() {
+	Item *item;
+	SDL_Event e;
+
 	switch (mode) {
 	case imInventory:
 		player->addItem(this);
+
+		SDL_zero(e);
+		e.type = CUSTOMEVENT_ITEM;
+		e.user.code = ITEM_ADD;
+		//e.user.data1 = item; //refactor so player add item just takes item ptr?
+		SDL_PushEvent(&e);
 		break;
 	case imEquipment:
 		player->setEquipment(this);
+		break;
+	case imWuxingPreview:
+		// Send item event preview to the wuxing window
+		item = new Item(this);
+
+		SDL_zero(e);
+		e.type = CUSTOMEVENT_ITEM;
+		e.user.code = ITEM_PREVIEW;
+		e.user.data1 = item;
+		SDL_PushEvent(&e);
 		break;
 	}
 }

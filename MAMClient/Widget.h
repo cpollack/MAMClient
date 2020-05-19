@@ -53,8 +53,15 @@ protected:
 	bool Visible = true;	
 	bool ReadOnly;
 	bool MouseOver;
+	bool MouseDown = false;
+	bool Hovering = false;
 	bool held;
 	
+	Uint32 MouseOverStart = 0;
+	Uint32 HoverStart = 0;
+	SDL_Point HoverPoint = { -1,-1 };
+	int HoverDelay = 1000;
+
 	const int DragDelta = 5;
 	bool Dragging;
 	SDL_Rect DragStart;
@@ -93,10 +100,12 @@ public: //Accessors
 	int GetDepth() { return Depth; }
 
 	bool IsMouseOver() { return MouseOver; }
+	void SetHoverDelay(int ms) { HoverDelay = ms; }
 
 public:
 	virtual void Render();
 	virtual void HandleEvent(SDL_Event& e);	
+	virtual void Step();
 	virtual void Load() {}
 	virtual void ReloadAssets() {}
 
@@ -111,7 +120,7 @@ public:
 	virtual void SetText(std::wstring value);
 	virtual void RenderText();
 protected:
-	TTF_Font* font, *fontUni;
+	TTF_Font* font, *fontUni;	
 	SDL_Texture* fontTexture = NULL;
 	SDL_Rect fontRect;
 	SDL_Color fontColor, backColor;
@@ -126,4 +135,7 @@ public:
 
 	virtual void OnFocus();
 	virtual void OnFocusLost();
+
+	virtual void OnHoverStart(SDL_Event &e);
+	virtual void OnHoverEnd(SDL_Event &e);
 };

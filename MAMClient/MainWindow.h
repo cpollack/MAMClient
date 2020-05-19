@@ -122,6 +122,7 @@ private:
 	void btnPet_Click(SDL_Event& e);
 
 	void btnInventory_Click(SDL_Event& e);
+	void btnWuxing_Click(SDL_Event& e);
 	void btnKungfu_Click(SDL_Event& e);
 	void btnTeam_Click(SDL_Event& e);
 	void btnGuild_Click(SDL_Event& e);

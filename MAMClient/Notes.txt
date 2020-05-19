@@ -20,16 +20,21 @@ Major Fix:
 -
 
 Fix:
-- 
+- Window event handling fine tuned.
 
 Enhancement:
-- 
+- List Boxes now have list item hover and drag events
+- Image Boxes now have hover and drag events
 
 Feature:
 - 
 
-Major Change:
-- 
+Major Feature:
+- Wuxing!
+- - Smaller Window
+- - Mouse over to see Item / Pet details
+- - Main ingredient indicator, right click to change main
+- - Automatic preview. See preview of results as you add items to the stove.
 
 
 
