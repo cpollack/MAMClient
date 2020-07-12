@@ -31,6 +31,7 @@ struct PathTile {
 
 class GameObj;
 class pNpcDialogue;
+class CPetMagic;
 class GameMap {
 public:
 	GameMap(pMapInfo* packet);
@@ -108,11 +109,11 @@ public:
 	bool GameMap::isCoordAPortal(SDL_Point aCoord, int* portalId);
 	bool GameMap::isPointAPortal(SDL_Point aPoint, int &portalId);
 
-	std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to);
-	std::vector<SDL_Point> GameMap::generatePath(SDL_Point from, SDL_Point to);
+	std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to, bool flying=false);
+	std::vector<SDL_Point> GameMap::generatePath(SDL_Point from, SDL_Point to, bool flying);
 	PathTile* GameMap::getTileFromList(SDL_Point coord, std::vector<PathTile*> *tileList);
-	std::vector<PathTile*> GameMap::getAdjacentTiles(PathTile sourceTile, SDL_Point destCoord);
-	void GameMap::addAdjacentTile(std::vector<PathTile*> *adjacentTiles, SDL_Point coord);
+	std::vector<PathTile*> GameMap::getAdjacentTiles(PathTile sourceTile, SDL_Point destCoord, bool flying);
+	void GameMap::addAdjacentTile(std::vector<PathTile*> *adjacentTiles, SDL_Point coord, bool flying);
 	SDL_Point GameMap::getAdjCoordByDirection(SDL_Point sourceCoord, int direction);
 	void GameMap::calcTileScores(PathTile* adjTile, SDL_Point to);
 	void GameMap::addTileToOpenList(PathTile* adjTile, std::vector<PathTile*> *openList);
@@ -122,6 +123,9 @@ public:
 
 	int GameMap::getMapId();
 	int GameMap::getMapDoc();
+	bool isPkEnabled() { return (type & 1) == 0; }
+	bool isStealEnabled() { return (type & 2) == 0; }
+	bool isBattleEnabled() { return (type & 8) != 0; }
 
 	void setMapUiRect(int xOffset, int yOffset, int width, int height);
 	void setMapUiRect(SDL_Rect rUI);
@@ -137,6 +141,8 @@ private:
 
 	Colosseum* colosseum = nullptr;
 
+	std::vector<CPetMagic*> petMagics;
+
 	bool mapClicked_left=false, mapClicked_right=false;
 	bool jumpMode = false, checkPortal = false, changingMap = false;
 
@@ -147,6 +153,8 @@ public:
 	void addBattleResult(BattleResult* br);
 	void deleteBattleResult();
 	bool doesBattleResultExist();
+
+	void addPetMagic(CPetMagic* pm) { petMagics.push_back(pm); }
 };
 
 extern GameMap *map;

@@ -3,38 +3,42 @@ Todo:
 Pet accessory info
 Pet Evolve
 Pet Change Accessory
-Pet medals
-clouds
 
 bugs:
 joining team doesnt clear open team options
 team options still visible when in battle
 battle array position is off
 
+
 --------------------
 
 
-Build notes 1.0.18
+Build notes 1.0.19
 
 Major Fix:
--
+- Framerate vastly improved and stabilized.
 
 Fix:
-- Window event handling fine tuned.
-
-Enhancement:
-- List Boxes now have list item hover and drag events
-- Image Boxes now have hover and drag events
-
-Feature:
 - 
 
+Enhancement:
+- Pet medals now display
+
+Feature:
+- Fly on Clouds!
+- - Take off and Land with a simple cloud button click.
+- - Three different clouds (God/Devil/Master)
+- - Fly over any terrain, but you can't land just anywhere.
+- Pet Accessories
+- - Click to select and change pet gear
+- - Equip / Unequip / Swap
+- Evolve your Pet
+- - Evolve your pet with a preview of the evolution
+- - Pet evolve is animated
+- Continuous Battle button, while active/spinning, you will engage in a new battle after the current ends
+
 Major Feature:
-- Wuxing!
-- - Smaller Window
-- - Mouse over to see Item / Pet details
-- - Main ingredient indicator, right click to change main
-- - Automatic preview. See preview of results as you add items to the stove.
+- 
 
 
 

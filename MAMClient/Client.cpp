@@ -619,6 +619,9 @@ void Client::createPacketByType(int type, int size, char* header, char* buffer) 
 	case ptColosseum:
 		packet = new pColosseum(fullDecryptBuffer, fullBuffer);
 		break;
+	case ptPetMagic:
+		packet = new pPetMagic(fullDecryptBuffer, fullBuffer);
+		break;
 
 	default:
 		packet = new Packet(type, size, fullDecryptBuffer, fullBuffer);

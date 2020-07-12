@@ -10,7 +10,8 @@ enum UserInfoEmotion {
 	uieKneel = 4,
 	//unknown = 5,
 	uieHappy = 6,
-	uieBow = 7
+	uieBow = 7,
+	uieFly = 8, //Tentative, need to confirm
 };
 
 class pUserInfo : public Packet {
@@ -24,6 +25,7 @@ public:
 	int pkEnabled;
 	int syndicateId, subGroudId, syndicateRank;
 	BYTE colorSets[25];
+	int z1, z2;
 
 	std::string name, nickName, spouse, guild, subGroup, guildTitle;
 

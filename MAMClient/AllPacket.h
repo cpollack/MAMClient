@@ -10,6 +10,7 @@
 #include "pMapInfo.h"
 #include "pPetInfo.h"
 #include "pPetAction.h"
+#include "pPetMagic.h"
 #include "pPetShop.h"
 #include "pTick.h"
 #include "pWalk.h"

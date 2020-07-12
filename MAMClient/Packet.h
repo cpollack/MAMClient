@@ -71,12 +71,12 @@ enum PacketType {
 	//ptSyndicateCreate = 2053,
 	//ptSndicate = 2054,
 	//ptCallPet = 2056, //withdraw?
-	ptPetShop = 2057
+	ptPetShop = 2057,
 	//ptCasino = 2058
 	//ptCasinoWheel = 2059
 	//ptEffect = 2070,
 	//ptQuiz = 2071,
-	//ptPetMagic = 2072
+	ptPetMagic = 2072,
 };
 
 class Packet {

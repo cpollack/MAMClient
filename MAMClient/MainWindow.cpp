@@ -2,6 +2,7 @@
 #include "MainWindow.h"
 #include "Global.h"
 #include "Define.h"
+#include "Options.h"
 #include "CustomEvents.h"
 #include "SDL_syswm.h"
 
@@ -31,7 +32,10 @@
 #include "VideoFrame.h"
 #include "Dialogue.h"
 
+#include "PetMagic.h" //temp, testing
+
 #include "pBattleState.h"
+#include "pAction.h"
 
 CMainWindow::CMainWindow() :CWindow() {
 	Type = FT_MAIN;
@@ -685,7 +689,9 @@ void CMainWindow::main_init_widgets() {
 	//gaugePetExp = playerInfoFrame->GetPetExpGauge();
 
 	CButton *btnJump = addMainButton2("btnJump", 387, 538, 64, 24, "data/GUI/main/btnWalk.png", "data/GUI/main/btnJump.png");
+	addMainButton2("btnCloud", 368, 540, 20, 20, "data/GUI/main/btnCloud.png", "data/GUI/main/btnCloud.png");
 	addMainButton2("btnFight", 387, 562, 64, 24, "data/GUI/main/btnFight.png", "data/GUI/main/btnFight.png");
+	addMainButton2("btnAutoFight", 368, 562, 20, 20, "data/GUI/main/btnAutoFight.png", "data/GUI/main/btnAutoFight.png");
 
 	//addMainButton2("btnCharacter", 390, 600-60, 60, 60, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
 	//addMainButton2("btnPet", 465, 600-35, 60, 60, "button_pet.jpg", "button_petDown.jpg");
@@ -706,7 +712,7 @@ void CMainWindow::main_init_widgets() {
 
 	MenuBG.reset(new Texture(renderer, "data/GUI/Main/menu_bg.png", true));
 	MenuRight.reset(new Texture(renderer, "data/GUI/Main/menu_right.png", true));
-	btnMenuCollapse = addMainButton2("btnMenuCollapse", 360, Height - 78, 30, 78, "data/GUI/Main/btnMenuCollapse.png", "");
+	btnMenuCollapse = addMainButton2("btnMenuCollapse", 340, Height - 78, 30, 78, "data/GUI/Main/btnMenuCollapse.png", "");
 	btnMenuExpand = addMainButton2("btnMenuExpand", Width - 31, Height - 78, 30, 78, "data/GUI/Main/btnMenuExpand.png", "");
 	btnMenuExpand->SetVisible(false);
 	registerEvent("btnMenuCollapse", "Click", std::bind(&CMainWindow::btnMenuCollapse_Click, this, std::placeholders::_1));
@@ -768,11 +774,14 @@ void CMainWindow::main_init_widgets() {
 
 	btnJump->SetType(ButtonType::btToggle);
 	registerEvent("btnJump", "Click", std::bind(&CMainWindow::btnJump_Click, this, std::placeholders::_1));
+	registerEvent("btnCloud", "Click", std::bind(&CMainWindow::btnCloud_Click, this, std::placeholders::_1));
 	registerEvent("btnFight", "Click", std::bind(&CMainWindow::btnFight_Click, this, std::placeholders::_1));
+	registerEvent("btnAutoFight", "Click", std::bind(&CMainWindow::btnAutoFight_Click, this, std::placeholders::_1));
 
 	registerEvent("btnCharacter", "Click", std::bind(&CMainWindow::btnCharacter_Click, this, std::placeholders::_1));
 	registerEvent("btnPet", "Click", std::bind(&CMainWindow::btnPet_Click, this, std::placeholders::_1));
 
+	registerEvent("btnMap", "Click", std::bind(&CMainWindow::btnMap_Click, this, std::placeholders::_1));
 	registerEvent("btnInventory", "Click", std::bind(&CMainWindow::btnInventory_Click, this, std::placeholders::_1));
 	registerEvent("btnWuxing", "Click", std::bind(&CMainWindow::btnWuxing_Click, this, std::placeholders::_1));
 	registerEvent("btnKungfu", "Click", std::bind(&CMainWindow::btnKungfu_Click, this, std::placeholders::_1));
@@ -828,30 +837,35 @@ void CMainWindow::main_cleanup() {
 
 void CMainWindow::main_render() {
 	//Render target set to game area
-	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
-	SDL_SetRenderTarget(renderer, gameTexture); {
-		SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
-		SDL_RenderClear(renderer);
+	//SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
+	//SDL_SetRenderTarget(renderer, gameTexture);
+	SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
+	SDL_RenderClear(renderer);
 
-		//Battle & Map
-		if (battle) {
-			if (battle->getMode() != BattleMode::bmInit) battle->render();
-			else map->render();
-		}
-		else {
-			if (map) map->render();
-		}
-
-	} SDL_SetRenderTarget(renderer, priorTarget);
-	SDL_RenderCopy(renderer, gameTexture, NULL, &gameRect);
+	//Battle & Map
+	if (battle) {
+		if (battle->getMode() != BattleMode::bmInit) battle->render();
+		else map->render();
+	}
+	else {
+		if (map) map->render();
+	}
+	//SDL_SetRenderTarget(renderer, NULL);
+	//SDL_RenderCopy(renderer, gameTexture, NULL, &gameRect);
 
 	main_render_ui();
 }
 
 void CMainWindow::main_render_ui() {
+	std::string strTicks = "AvgTick: " + std::to_string(AverageTickLength);
+	Asset astTicks(stringToTexture(renderer, strTicks, gui->font, 0, { 255, 255, 255, 255 }, 0));
+	boxRGBA(renderer, Width - astTicks->width, 0, Width, astTicks->height, 0, 0, 0, 255);
+	astTicks->Render(SDL_Point{ Width - astTicks->width, 0 });
+
 	//Menu
 	if (!bMenuHidden || battle) {
-		SDL_Rect menuRect = { Width - MenuBG->width - 10, Height - MenuRight->height + 3, MenuBG->width, MenuBG->height };
+		//Stretch the menuBG an extra 20 pixels 
+		SDL_Rect menuRect = { Width - (MenuBG->width + 20) - 10, Height - MenuRight->height + 3, MenuBG->width, MenuBG->height };
 		SDL_RenderCopy(renderer, MenuBG->texture, NULL, &menuRect);
 		menuRect = { Width - MenuRight->width, Height - MenuRight->height, MenuRight->width, MenuRight->height };
 		SDL_RenderCopy(renderer, MenuRight->texture, NULL, &menuRect);
@@ -1028,6 +1042,10 @@ void CMainWindow::main_step() {
 		if (battle->isOver()) {
 			delete battle;
 			battle = nullptr;
+			if (options.GetRepeatBattle()) {
+				SDL_Event e;
+				btnFight_Click(e);
+			}
 		}
 	}
 	else if (map) map->step();
@@ -1071,13 +1089,60 @@ void CMainWindow::btnJump_Click(SDL_Event& e) {
 	}
 }
 
+void CMainWindow::btnCloud_Click(SDL_Event& e) {
+	std::cout << "Button Cloud Clicked!" << std::endl;
+
+	int action;
+	if (!player->IsFlying()) {
+		//check if player can fly
+		action = amFly;
+		player->TakeOff();
+	}
+	else {
+		if (!map->isCoordWalkable(player->GetCoord())) {
+			messageManager.DoSystemMessage("You can not land here!");
+			return;
+		}
+		action = amLand;
+		player->Land();
+	}
+
+	pAction *pck = new pAction(player->AccountId, player->GetID(), player->getDirection(), player->GetCoord().x, player->GetCoord().y, action);
+	gClient.addPacket(pck);
+}
+
 void CMainWindow::btnFight_Click(SDL_Event& e) {
 	if (battle) return;
 	if (!map || map->IsChangingMap()) return;
 
+	if (!map->isBattleEnabled()) {
+		messageManager.DoSystemMessage("You cannot battle in this location");
+		return;
+	}
+
 	int teamSize = 1;
 	pBattleState* battlePacket = new pBattleState(0, teamSize, player->GetID(), 0);
 	gClient.addPacket(battlePacket);
+}
+
+void CMainWindow::btnAutoFight_Click(SDL_Event& e) {
+	CButton *btn = (CButton*)GetWidget("btnAutoFight");
+	std::cout << "Button AutoFight Clicked!" << std::endl;
+	if (options.GetRepeatBattle()) {
+		options.SetRepeatBattle(false);
+		if (btn) btn->SetRotate(false);
+		return;
+	}
+
+	if (!map) return;
+	btnFight_Click(e);
+	if (!map->isBattleEnabled()) return;
+
+	options.SetRepeatBattle(true);
+	if (btn) {
+		btn->SetRotate(true);
+		btn->SetRotateSpeed(5);
+	}
 }
 
 void CMainWindow::btnCharacter_Click(SDL_Event& e) {
@@ -1090,6 +1155,17 @@ void CMainWindow::btnPet_Click(SDL_Event& e) {
 	if (battle) return;
 	CPetListForm* petForm = new CPetListForm();
 	Windows.push_back(petForm);
+}
+
+void CMainWindow::btnMap_Click(SDL_Event& e) {
+	//testing for pet magic evolve. compose is next!
+	/*CPetMagic *pm = new CPetMagic(renderer, 0);
+	ColorShift cs[3];
+	pm->setCoordinate(player->GetCoord());
+	pm->addSource(54, cs);
+	pm->addDestination(57, cs);
+	map->addPetMagic(pm);
+	pm->start();*/
 }
 
 void CMainWindow::btnInventory_Click(SDL_Event& e) {
@@ -1177,6 +1253,7 @@ void CMainWindow::OnBattle_Start(SDL_Event& e) {
 	if (bMenuHidden) btnMenuExpand_Click(e);
 
 	((CButton*)widgets["btnJump"])->SetVisible(false);
+	((CButton*)widgets["btnCloud"])->SetVisible(false);
 	((CButton*)widgets["btnFight"])->SetVisible(false);
 	((CButton*)widgets["btnMap"])->SetVisible(false);
 	((CButton*)widgets["btnInventory"])->SetVisible(false);
@@ -1193,6 +1270,7 @@ void CMainWindow::OnBattle_End(SDL_Event& e) {
 	//}
 
 	((CButton*)widgets["btnJump"])->SetVisible(true);
+	((CButton*)widgets["btnCloud"])->SetVisible(true);
 	((CButton*)widgets["btnFight"])->SetVisible(true);
 	((CButton*)widgets["btnMap"])->SetVisible(true);
 	((CButton*)widgets["btnInventory"])->SetVisible(true);

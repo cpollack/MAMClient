@@ -4,10 +4,13 @@
 #include "CustomEvents.h"
 
 #include "PromptForm.h"
+#include "EvolveForm.h"
+#include "PetEquipForm.h"
 
 #include "Client.h"
 #include "Player.h"
 #include "Pet.h"
+#include "Item.h"
 #include "INI.h"
 
 #include "pRename.h"
@@ -46,10 +49,30 @@ CPetListForm::CPetListForm() : CWindow("PetListForm.JSON") {
 	registerEvent("btnDrop", "Click", std::bind(&CPetListForm::btnDrop_Click, this, std::placeholders::_1));
 	registerEvent("btnMarch", "Click", std::bind(&CPetListForm::btnMarch_Click, this, std::placeholders::_1));
 	registerEvent("btnChangeAccessory", "Click", std::bind(&CPetListForm::btnChangeAccessory_Click, this, std::placeholders::_1));
+
+	medalatk.reset(new Texture(renderer, "data/GUI/Main/medalatk.tga"));
+	medaldef.reset(new Texture(renderer, "data/GUI/Main/medaldef.tga"));
+	medaldex.reset(new Texture(renderer, "data/GUI/Main/medaldex.tga"));
 }
 
 void CPetListForm::handleEvent(SDL_Event& e) {
 	CWindow::handleEvent(e);
+
+	if (e.type == CUSTOMEVENT_PET) {
+		if (e.user.code == PET_EQUIP || e.user.code == PET_UNEQUIP) {
+			ReloadAccessory();
+		}
+		if (e.user.code == PET_LIFEMAX) {
+			Pet *pet = player->getPetList()[selection];
+			if (pet) gaugeLife->set(pet->GetCurrentLife(), pet->GetMaxLife());
+		}
+	}
+
+	if (e.type == CUSTOMEVENT_WINDOW) {
+		if (e.user.code == WINDOW_EVOLVE) {
+			CloseWindow = true;
+		}
+	}
 
 	if (e.window.windowID != windowID) return;
 
@@ -58,6 +81,30 @@ void CPetListForm::handleEvent(SDL_Event& e) {
 			if (Dropping) DropPet();
 		}
 		Dropping = false;
+	}
+}
+
+void CPetListForm::render() {
+	CWindow::render();
+	if (selection < 0) return;
+	
+	Pet *pet = player->getPetList()[selection];
+	if (!pet) return;
+
+	SDL_Point p = { imgBraveMedals->GetX() + 3, imgBraveMedals->GetY() + 4 };
+	for (int i = 0; i < pet->getMedalAttack(); i++) {
+		medalatk->Render(p);
+		p.x += 20 + i/2;
+	}
+	p = { imgCalmnessMedals->GetX() + 3, imgCalmnessMedals->GetY() + 3 };
+	for (int i = 0; i < pet->getMedalDefence(); i++) {
+		medaldef->Render(p);
+		p.x += 20 + i/2;
+	}
+	p = { imgSpeedMedals->GetX() + 4, imgSpeedMedals->GetY() + 3 };
+	for (int i = 0; i < pet->getMedalDexterity(); i++) {
+		medaldex->Render(p);
+		p.x += 20 + i/2;
 	}
 }
 
@@ -250,12 +297,30 @@ void CPetListForm::LoadPet(int index) {
 	gaugeExperience->set(pet->getExperience(), pet->getLevelUpExperience());
 	lblGeneration->SetText(std::to_string(pet->GetGeneration()));
 	gaugeLife->set(pet->GetCurrentLife(), pet->GetMaxLife());
-	lblAccessory->SetText("");
 
-	//last 0 is placeholder for petitem
-	std::string attack = formatInt(pet->getAttack()) + "(+" + std::to_string(pet->getMedalAttack() * 5) + "% + " + formatInt(0) + ")";
-	std::string defence = formatInt(pet->getDefence()) + "(+" + std::to_string(pet->getMedalDefence() * 5) + "% + " + formatInt(0) + ")";
-	std::string dexterity = formatInt(pet->getDexterity()) + "(+" + std::to_string(pet->getMedalDexterity() * 5) + "% + " + formatInt(0) + ")";
+	ReloadAccessory();
+	//accessory can also alter life? maxLife may need to factor in pet item too
+}
+
+void CPetListForm::ReloadAccessory() {
+	if (selection < 0) return;
+
+	Pet *pet = player->getPetList()[selection];
+	if (!pet) return;
+
+	Item *pItem = pet->getItem();
+	int iAtk = 0, iDef = 0, iDex = 0;
+	if (pItem) {
+		lblAccessory->SetText(pItem->GetName());
+		iAtk = pItem->getAttack();
+		iDef = pItem->getDefence();
+		iDex = pItem->getDexterity();
+	}
+	else lblAccessory->SetText(" ");
+
+	std::string attack = formatInt(pet->getAttack()) + "(+" + std::to_string(pet->getMedalAttack() * 5) + "% + " + formatInt(iAtk) + ")";
+	std::string defence = formatInt(pet->getDefence()) + "(+" + std::to_string(pet->getMedalDefence() * 5) + "% + " + formatInt(iDef) + ")";
+	std::string dexterity = formatInt(pet->getDexterity()) + "(+" + std::to_string(pet->getMedalDexterity() * 5) + "% + " + formatInt(iDex) + ")";
 	fldAttack->SetText(attack);
 	fldDefence->SetText(defence);
 	fldDexterity->SetText(dexterity);
@@ -318,7 +383,24 @@ void CPetListForm::btnChangeName_Click(SDL_Event& e) {
 }
 
 void CPetListForm::btnEvolve_Click(SDL_Event& e) {
+	Pet *pet = player->getPetList()[selection];
+	if (!pet) return;
 
+	if (pet->IsUnevo()) {
+		doPromptError(this, "Error", "This pet cannot evolve.");
+		return;
+	}
+	if (pet->GetEvoNum() >= 2) {
+		doPromptError(this, "Error", "This pet requires special means to evolve.");
+		return;
+	}
+	if (pet->IsSuper()) {
+		doPromptError(this, "Error", "This pet cannot evolve any further.");
+		return;
+	}
+
+	CEvolveForm *form = new CEvolveForm(pet);
+	PushWindow(form);
 }
 
 void CPetListForm::btnSkills_Click(SDL_Event& e) {
@@ -403,7 +485,10 @@ void CPetListForm::btnMarch_Click(SDL_Event& e) {
 }
 
 void CPetListForm::btnChangeAccessory_Click(SDL_Event& e) {
-
+	Pet *pet = player->getPetList()[selection];
+	if (!pet) return;
+	CPetEquipForm *form = new CPetEquipForm(pet);
+	PushWindow(form);
 }
 
 int CPetListForm::GetMarchingPetIndex() {

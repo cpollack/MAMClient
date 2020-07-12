@@ -62,7 +62,6 @@ int main(int argc, char *args[]) {
 	CWindow *topmost;
 	bool lastFocusLost = false;
 	int lastFocus = -1;
-	Uint32 lastTick = 0;
 	Uint32 tickLength = 0;
 	Uint32 tenSec = 0;
 	std::vector<Uint32> ticks;
@@ -73,7 +72,7 @@ int main(int argc, char *args[]) {
 	try {
 #endif
 		while (!quit) {
-			tickLength = SDL_GetTicks();
+			Uint32 thisTick = SDL_GetTicks();
 			gClient.handlePackets();
 
 			// Check for window close at the top of the stack
@@ -175,12 +174,6 @@ int main(int argc, char *args[]) {
 				Windows[i]->step();
 			}
 
-			Uint32 thisTick = SDL_GetTicks();
-			double FPS = (thisTick - lastTick) / 1000.0;
-			double timeNeeded = 1000.0 / FRAMES_PER_SEC;
-			int rem = timeNeeded - FPS;
-			if (rem > 0) SDL_Delay(rem);
-
 			//Render texture to screen
 			mainForm->render();
 			mainForm->renderPresent();
@@ -188,19 +181,26 @@ int main(int argc, char *args[]) {
 				window->render();
 				window->renderPresent();
 			}
-			lastTick = thisTick;
 
-			tickLength = SDL_GetTicks() - tickLength;
+			Uint32 afterRender = SDL_GetTicks();
+			Uint32 tickElapsed = afterRender - thisTick;
+			double timeNeeded = 1000.0 / FRAMES_PER_SEC;
+			if (timeNeeded > tickElapsed) SDL_Delay(timeNeeded - tickElapsed);
+			//std::cout << "Tick Elapsed: " << tickElapsed << std::endl;
+
+			Uint32 now = SDL_GetTicks();
+			tickLength = now - thisTick;
+
 			ticks.push_back(tickLength);
 			if (ticks.size() > 100) ticks.erase(ticks.begin());
-			double avgTicks = 0;
-			for (int i = 0; i < ticks.size(); i++) avgTicks += ticks[i];
-			avgTicks *= 1.0;
-			avgTicks /= ticks.size();
-			if (thisTick - tenSec >= 5000) {
-				gClient.addToDebugLog("Average Ticks: " + std::to_string(avgTicks));
+			AverageTickLength = 0;
+			for (int i = 0; i < ticks.size(); i++) AverageTickLength += ticks[i];
+			AverageTickLength *= 1.0;
+			AverageTickLength /= ticks.size();
+			/*if (thisTick - tenSec >= 5000) {
+				gClient.addToDebugLog("Average Ticks: " + std::to_string(AverageTickLength));
 				tenSec = thisTick;
-			}
+			}*/
 		}
 #ifdef GLOBAL_CATCH
 	}

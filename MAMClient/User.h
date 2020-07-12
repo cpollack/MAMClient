@@ -3,6 +3,7 @@
 #include "Entity.h"
 
 enum { MALE, FEMALE };
+enum { CLOUD_FLY, CLOUD_LIFT, CLOUD_LAND };
 
 class pUserInfo;
 class Sprite;
@@ -25,6 +26,8 @@ public:
 	bool getJumping();
 	bool getWalking();
 
+	virtual void setDirection(int direction, bool forBattle = false);
+
 protected:
 	bool walking = false, jumping = false, isLeavingMap = false;
 	std::vector<SDL_Point> path;
@@ -32,6 +35,7 @@ protected:
 	int lastMoveTick;
 	const int WALK_SPEED = 200;
 	const int JUMP_SPEED = 350;
+	const int FLY_SPEED = 50;
 
 	bool atDestCoord();
 	void getNextDestCoord();
@@ -63,6 +67,7 @@ public:
 	int GetRank() { return Rank;  }
 	void SetRank(int iRank) { Rank = iRank; }
 	std::string GetRankText();
+	bool IsMaster() { return MasterRank > 0; }
 
 	int GetReborns() { return Reborns; }
 	void SetReborns(int iReborns) { Reborns = iReborns; }
@@ -93,4 +98,26 @@ public: //Team
 	bool IsTeamLeader();
 protected: 
 	CTeam *team = nullptr;
+
+protected: //Clouds
+	bool Flying = false, Ascending = false, Descending = false;
+	DWORD CloudInitTime = 0;
+	Sprite *Cloud = nullptr;
+	Asset CloudShadow;
+	const int CLOUD_HEIGHT = 80;
+	const int CLOUD_LIFT_MS = 2000;
+
+	int cloud_bob = 0;
+	bool BOB_UP = true;
+	const int MAX_BOB = 5;
+	const int BOB_MS = 100;
+	DWORD CloudBobTime = 0;
+public:
+	bool GetFlying() { return Flying; }
+	bool IsFlying() { return GetFlying(); }
+	void SetFlying(bool bFly) { Flying = bFly; }
+	void TakeOff();
+	void Land();
+	void LoadCloud(int mode);
+	void RemoveCloud();
 };

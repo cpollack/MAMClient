@@ -381,8 +381,9 @@ void CChat::chatField_Submit(SDL_Event& e) {
 		if (str.compare("/G") == 0 || str.compare("/GUILD") == 0) {
 			SetChannel(ccGuild);
 		}
-		chatField->SetText("");
-		return;
+		//Restrict to PM/GM?
+		//chatField->SetText("");
+		//return;
 	}
 
 	if (chatText[0] == '@') {

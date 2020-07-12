@@ -3,6 +3,7 @@
 #include "pItem.h"
 
 #include "Player.h"
+#include "Pet.h"
 #include "Item.h"
 #include "CustomEvents.h"
 
@@ -52,6 +53,8 @@ void pItem::process() {
 	Item *item;
 	SDL_Event e;
 
+	std::vector<Pet*> petList;
+
 	switch (mode) {
 	case imInventory:
 		player->addItem(this);
@@ -65,10 +68,21 @@ void pItem::process() {
 	case imEquipment:
 		player->setEquipment(this);
 		break;
-	case imWuxingPreview:
-		// Send item event preview to the wuxing window
+	case imPetAccessory:
 		item = new Item(this);
 
+		petList = player->getPetList();
+		for (auto pet : petList) {
+			if (pet->GetID() == ownerId) {
+				pet->setItem(item);
+				break;
+			}
+		}
+		break;
+	case imWuxingPreview:
+		item = new Item(this);
+
+		// Send item event preview to the wuxing window
 		SDL_zero(e);
 		e.type = CUSTOMEVENT_ITEM;
 		e.user.code = ITEM_PREVIEW;

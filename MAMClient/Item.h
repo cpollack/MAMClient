@@ -38,7 +38,10 @@ public:
 	Item(int itemId);
 	~Item();
 
-	int Item::GetID() { return id; }
+	int GetID() { return id; }
+	void SetID(DWORD newId) { id = newId; }
+	bool IsPetItem() { return id > _IDMSK_INVITEM; }
+
 	int Item::getType();
 	int Item::getSort();
 	int Item::getCost();
@@ -48,7 +51,7 @@ public:
 	std::wstring Item::getDetails();
 	std::wstring Item::getShopDetails();
 
-	Asset GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon);
+	Asset GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon, int opacityPerc = 50);
 
 	int Item::getLife();
 	int Item::getMana();

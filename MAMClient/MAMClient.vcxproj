@@ -160,6 +160,7 @@
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="Dropdown.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EvolveForm.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="GameObj.cpp" />
     <ClCompile Include="Global.cpp" />
@@ -187,9 +188,12 @@
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="PetEquipForm.cpp" />
+    <ClCompile Include="PetMagic.cpp" />
     <ClCompile Include="pItemAct.cpp" />
     <ClCompile Include="PlayerInfoFrame.cpp" />
     <ClCompile Include="pPetLevelUp.cpp" />
+    <ClCompile Include="pPetMagic.cpp" />
     <ClCompile Include="pTeam.cpp" />
     <ClCompile Include="pTeamMember.cpp" />
     <ClCompile Include="pUserAttribute.cpp" />
@@ -274,6 +278,7 @@
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="Dropdown.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EvolveForm.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FloatingLabel.h" />
     <ClInclude Include="GameMap.h" />
@@ -282,6 +287,8 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GameLibrary.h" />
+    <ClInclude Include="PetEquipForm.h" />
+    <ClInclude Include="PetMagic.h" />
     <ClInclude Include="PlayerInfoFrame.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="ImageBox.h" />
@@ -303,6 +310,7 @@
     <ClInclude Include="Packet.h" />
     <ClInclude Include="pItemAct.h" />
     <ClInclude Include="pPetLevelUp.h" />
+    <ClInclude Include="pPetMagic.h" />
     <ClInclude Include="pTeam.h" />
     <ClInclude Include="pTeamMember.h" />
     <ClInclude Include="pUserLevelUp.h" />

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Define.h"
 #include "Window.h"
 
 class CImageBox;
@@ -13,7 +14,8 @@ class CPetListForm : public CWindow {
 public:
 	CPetListForm();
 
-	void handleEvent(SDL_Event& e);
+	virtual void handleEvent(SDL_Event& e);
+	virtual void render();
 
 private:
 	void HookWidgets();
@@ -21,6 +23,7 @@ private:
 	void LoadSprite();
 	void SetMarching(int index);
 	void LoadPet(int index);
+	void ReloadAccessory();
 
 	int GetMarchingPetIndex();
 	int selection = -1;
@@ -28,6 +31,8 @@ private:
 	CPromptForm *promptForm = nullptr;
 	void DropPet();
 	bool Dropping = false;
+
+	Asset medalatk, medaldef, medaldex;
 
 public: //Event Hooks
 	void imgPet1_Click(SDL_Event& e);

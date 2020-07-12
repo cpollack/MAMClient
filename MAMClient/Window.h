@@ -99,6 +99,8 @@ protected:
 public: //Accessors
 	SDL_Window* GetWindow();
 	int GetWindowID();
+	void PushWindow(CWindow *pWindow);
+
 	int GetType();
 	int GetWidth();
 	int GetHeight();

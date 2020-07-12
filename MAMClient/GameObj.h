@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Define.h"
+
 class Sprite;
 class GameObj {
 public:
@@ -16,7 +18,7 @@ protected:
 
 	int Type;
 
-	SDL_Point Coord, Position, RenderPos;
+	SDL_Point Coord, Position, RenderPos, SpriteOffset;
 
 public:
 	void SetRenderer(SDL_Renderer* rend) { renderer = rend; }

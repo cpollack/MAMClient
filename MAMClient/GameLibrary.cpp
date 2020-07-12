@@ -109,6 +109,24 @@ std::string animationTypeToString(int animation) {
 	}
 }
 
+std::string EffectToString(int effect) {
+	switch (effect) {
+	case EFFECT_FLASHDOWN: return "FlashDown";
+	case EFFECT_FAINT: return "Faint";
+	case EFFECT_READY: return "Ready";
+	case EFFECT_MIRROR: return "Mirror";
+	case EFFECT_SPHERE: return "Sphere";
+	case EFFECT_HEAL: return "Health";
+	case EFFECT_POISON: return "Poisoning";
+	case EFFECT_THINK: return "Think";
+	case EFFECT_SOULFLY: return "SoulFly";
+	case EFFECT_SOULRETURN: return "SoulReturn";
+	case EFFECT_SOULSHINE: return "SoulShining";
+	}
+
+	return "";
+}
+
 std::string formatInt(int value) {
 	std::string numWithCommas = std::to_string(value);
 	int insertPosition = numWithCommas.length() - 3;
@@ -132,9 +150,17 @@ void showErrorMessage(std::string message) {
 
 void applicationClose() {
 	bExitApplication = true;
-	SDL_Event quitEvent;
-	quitEvent.type = SDL_QUIT;
-	SDL_PushEvent(&quitEvent);
+	customEvent(SDL_QUIT, 0);
+}
+
+void customEvent(Uint32 type, int code, void* data1, void* data2) {
+	SDL_Event e;
+	SDL_zero(e);
+	e.type = type;
+	e.user.code = code;
+	e.user.data1 = data1;
+	e.user.data2 = data2;
+	SDL_PushEvent(&e);
 }
 
 CPromptForm* doPrompt(CWindow* parent, std::string title, std::string message, bool cancel) {

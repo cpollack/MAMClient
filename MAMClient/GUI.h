@@ -66,7 +66,6 @@ public:
 	Texture* invetoryBg;
 	Texture* star_button;
 	Texture* line1, *line2;
-	Texture *medal_attack, *medal_defence, *medal_dexterity;
 
 	SDL_Color fontColor;
 	SDL_Color borderColor;

@@ -1,5 +1,4 @@
-#ifndef _SPRITE_H
-#define _SPRITE_H
+#pragma once
 
 #include "Client.h"
 #include <Windows.h>
@@ -20,7 +19,8 @@ enum SpriteType {
 	stAni,
 	stObject,
 	stEffect,
-	stStatic
+	stStatic,
+	stCloud,
 };
 
 enum RepeatMode {
@@ -98,7 +98,9 @@ public:
 	bool Sprite::finished();
 
 	void SetLoopTimer(int timeMS) { LoopTimer = timeMS; }
+	void SetStartDelay(int del) { StartDelay = del; }
 	void RandomizeTimerDelay();
+	void StopOnNextLoop() { bStopOnNextLoop = true; }
 
 	void setCamera(SDL_Rect c);
 	void SetX(int iX) { x = iX; }
@@ -114,5 +116,8 @@ public:
 	Asset Sprite::getCurrentTexture();
 
 	Sprite* Sprite::copy();
+
+private:
+	int StartDelay = 0;
+	bool bStopOnNextLoop = false;
 };
-#endif

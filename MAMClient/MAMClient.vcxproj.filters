@@ -425,6 +425,18 @@
     <ClCompile Include="pWuxing.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
+    <ClCompile Include="PetEquipForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="EvolveForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="pPetMagic.cpp">
+      <Filter>Source Files\Packet\Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="PetMagic.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -765,6 +777,18 @@
     </ClInclude>
     <ClInclude Include="pWuxing.h">
       <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="PetEquipForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="EvolveForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="pPetMagic.h">
+      <Filter>Header Files\Packet\Pet</Filter>
+    </ClInclude>
+    <ClInclude Include="PetMagic.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

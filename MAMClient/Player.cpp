@@ -151,7 +151,7 @@ void Player::walkTo(SDL_Point coord) {
 	bool canWalk = true;
 	if (team && team->GetLeader() != this) canWalk = false;
 	if (map->isCoordAPortal(Coord)) canWalk = false;
-	if (walking && map->isCoordAPortal(DestCoord)) canWalk = false;
+	if ((walking || Flying) && map->isCoordAPortal(DestCoord)) canWalk = false;
 
 	//Send walking packets
 	std::vector<Packet*> walkPackets;
@@ -489,4 +489,30 @@ Item* Player::GetBodyAccessory() {
 
 Item* Player::GetHeadAccessory() { 
 	return equipment[SLOT_HEAD]; 
+}
+
+int Player::GetNextAvailableItemID() {
+	bool filled[20];
+	for (int i = 0; i < 20; i++) filled[i] = false;
+
+	for (int i = 0; i < inventory->getItemCount(); i++) {
+		int slot = inventory->getItemInSlot(i)->GetID() % 100;
+		filled[slot] = true;
+	}
+
+	for (int i = 0; i < 5; i++) {
+		if (equipment[i]) {
+			int slot = equipment[i]->GetID() % 100;
+			filled[slot] = true;
+		}
+	}
+
+	int openId = -1;
+	for (int i = 0; i < 20; i++) {
+		if (!filled[i]) {
+			openId = _IDMSK_INVITEM + (ID * 100) + i;
+			break;
+		}
+	}
+	return openId;
 }

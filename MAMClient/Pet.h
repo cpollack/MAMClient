@@ -24,6 +24,8 @@ public:
 	int Pet::getLoyalty();
 	void SetLoyalty(int iLoy) { loyalty = iLoy; }
 
+	virtual int GetMaxLife();
+
 	int Pet::getAttack();
 	void SetAttack(int iAttack) { attack = iAttack; }
 
@@ -35,14 +37,19 @@ public:
 	
 	int GetGeneration() { return generation; }
 
+	int GetClass() { return Class; }
 	int GetElement();
 	std::string GetElementText();
+	bool IsUnevo() { return (Class / 10000) == 7; }
+	bool IsSuper() { return (Class / 1000) == 1; }
+	int GetEvoNum() { return (Class % 10000) / 1000; }
 
 	int Pet::getMedalAttack();
 	int Pet::getMedalDefence();
 	int Pet::getMedalDexterity();
 
 	Item* Pet::getItem();
+	void Pet::setItem(Item* pItem) { item = pItem; }
 	void Pet::useItem(int itemId);
 	void Pet::useMedicine(Item* item);
 

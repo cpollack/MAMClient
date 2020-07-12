@@ -136,6 +136,7 @@ public: // Items
 	Item* GetShoe();
 	Item* GetBodyAccessory();
 	Item* GetHeadAccessory();
+	int GetNextAvailableItemID();
 
 private:
 	SDL_Renderer* renderer;

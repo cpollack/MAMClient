@@ -162,6 +162,11 @@ void Sprite::render(int offsetX, int offsetY) {
 		else return;
 	}
 
+	//Delay start of sprite by MS
+	if (started && StartDelay > 0) {
+		if (elapsed < StartDelay) return;
+	}
+
 	//Refactor - Speed respresents length of time to do one full cycle of the sprite
 	//More frames means more detail over the animation, but also more loading
 
@@ -171,6 +176,7 @@ void Sprite::render(int offsetX, int offsetY) {
 	//refactor 2, speed/frameInterval is flat 50ms assumed. 
 
 	int nextFrame = currentFrame;
+	if (bStopOnNextLoop && currentFrame == 0) return;
 
 	if (currentTime - lastFrame > frameInterval) {
 		lastFrame = currentTime;
@@ -223,6 +229,7 @@ void Sprite::start() {
 	lastFrame = startTime;
 	started = true;
 	isFinished = false;
+	bStopOnNextLoop = false;
 }
 
 void Sprite::resume() {
@@ -292,6 +299,9 @@ SDL_Rect Sprite::getRenderRect(int frame) {
 	case stStatic:
 		renderRect = { x, y, sprRect.w, sprRect.h };
 		//renderRect = { x + sprRect.x, y + sprRect.y, sprRect.w, sprRect.h };
+		break;
+	case stCloud:
+		renderRect = { x - (int)(sprRect.w / 2), y - (int)(sprRect.h / 2), sprRect.w, sprRect.h };
 		break;
 	default:
 		renderRect = { x, y, sprRect.w, sprRect.h };

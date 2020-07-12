@@ -77,6 +77,14 @@ void pAction::process() {
 		if (user) {
 			user->setLeaving(true);
 		}
+	case (amFly):
+		user = userManager.getUserById(userId);
+		if (user) user->TakeOff();
+		break;
+	case (amLand):
+		user = userManager.getUserById(userId);
+		if (user) user->Land();
+		break;
 	case (amEmote):
 		user = userManager.getUserById(userId);
 		if (user) {

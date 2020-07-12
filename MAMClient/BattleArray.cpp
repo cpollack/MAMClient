@@ -60,8 +60,11 @@ void BattleArray::Render() {
 		}
 		rect.w = texture->width;
 		rect.h = texture->height;
-		if (allyArray) SDL_RenderCopy(renderer, texture->texture, NULL, &rect);
-		else SDL_RenderCopyEx(renderer, texture->texture, NULL, &rect, 0, NULL, (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL));
+		
+		SDL_RenderCopy(renderer, texture->texture, NULL, &rect);
+
+		//if (allyArray) SDL_RenderCopy(renderer, texture->texture, NULL, &rect);
+		//else SDL_RenderCopyEx(renderer, texture->texture, NULL, &rect, 0, NULL, (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL));
 	}
 
 	//Render battle array text
@@ -143,7 +146,21 @@ void BattleArray::LoadTexture() {
 	imagePath = "ArrayData/" + imagePath;
 
 	texture = new Texture(renderer, imagePath, SDL_Color{ 0,0,0,255 });
+	if (!allyArray) {
+		SDL_Texture *temp = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, texture->width, texture->height);
+
+		SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
+		SDL_SetRenderTarget(renderer, temp);
+
+		SDL_RenderCopyEx(renderer, texture->texture, NULL, NULL, 0, NULL, (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL));
+
+		SDL_SetRenderTarget(renderer, priorTarget);
+
+		SDL_DestroyTexture(texture->texture);
+		texture->texture = temp;
+	}
 	SDL_SetTextureAlphaMod(texture->texture, 192);
 	SDL_SetTextureBlendMode(texture->texture, SDL_BLENDMODE_ADD);
+
 	visible = true;
 }

@@ -2,7 +2,7 @@
 #include "Pet.h"
 #include "Define.h"
 #include "Client.h"
-#include "MainWindow.h"
+#include "CustomEvents.h"
 
 #include "Player.h"
 #include "Inventory.h"
@@ -102,6 +102,15 @@ int Pet::getLoyalty() {
 	return loyalty;
 }
 
+int Pet::GetMaxLife() {
+	int trueMax = life_max;
+	if (item) {
+		trueMax += item->getLife();
+		if (trueMax < 0) trueMax = 1;
+	}
+	return trueMax;
+}
+
 int Pet::getAttack() {
 	return attack;
 }
@@ -138,14 +147,19 @@ void Pet::useItem(int itemId) {
 		return;
 	}
 
+	int oldLife;
+
 	switch (usedItem->getType()) {
-	/*case itWeapon:
-	case itArmor:
-	case itShoes:
 	case itAccessory:
-	case itHeadwear:
-		equipItem(usedItem);
-		break;*/
+		oldLife = GetMaxLife();
+
+		player->inventory->removeItem(itemId, false);
+		usedItem->SetID(_IDMSK_PETITEM + ID);
+		setItem(usedItem);
+
+		customEvent(CUSTOMEVENT_PET, PET_EQUIP, usedItem);
+		if (GetMaxLife() != oldLife) customEvent(CUSTOMEVENT_PET, PET_LIFEMAX);
+		break;
 
 	case itMedicine:
 		useMedicine(usedItem);
@@ -158,7 +172,7 @@ void Pet::useMedicine(Item* item) {
 	int life = item->getLife();
 	if (life != 0) {
 		life_current += life;
-		mainForm->shiftPetHealthGauge(life);
+		customEvent(CUSTOMEVENT_PET, PET_LIFE);
 	}
 
 	player->inventory->removeItem(item->GetID());

@@ -1,5 +1,5 @@
-#ifndef __PPETACTION_H
-#define __PPETACTION_H
+#pragma once
+
 #include "Packet.h"
 
 enum PetAction {
@@ -8,7 +8,9 @@ enum PetAction {
 	paLearnSkill = 4,
 	paForgetSkill = 5,
 	paUseItem = 7,
+	paEvolve = 10,
 	//12 - checkout pet ?
+	paUnequip = 13,
 	//15 - related to wrestle
 	//16 - wrestle
 	//17 - wrestle ?
@@ -18,7 +20,7 @@ enum PetAction {
 	paRemove = 21,
 	//22 ?
 	//25
-	//35 - pet treasure ?
+	//35 ?
 };
 
 class pPetAction : public Packet {
@@ -32,5 +34,3 @@ public:
 	virtual void process();
 	void pPetAction::debugPrint();
 };
-
-#endif

@@ -22,6 +22,7 @@
 
 #include "ShopForm.h"
 #include "Dialogue.h"
+#include "PetMagic.h"
 
 
 GameMap::GameMap(pMapInfo* packet) {
@@ -295,13 +296,13 @@ void GameMap::OnClick(SDL_Event& e) {
 	setMouseCoordinates(mx, my);
 	if (e.button.button == SDL_BUTTON_LEFT) {
 		if (!changingMap) {
-			if (jumpMode) {
+			if (jumpMode && !player->GetFlying()) {
 				//Jump
 				player->jumpTo(SDL_Point{ mouseX, mouseY });
 				checkPortal = true;
 			}
 			else {
-				//Walk
+				//Walking or Flying
 				player->walkTo(SDL_Point{ mouseX, mouseY });
 			}
 		}
@@ -352,11 +353,6 @@ void GameMap::OnMouseMove(SDL_Event& e) {
 void GameMap::render() {
 	SDL_Texture *origTarget = SDL_GetRenderTarget(renderer);
 
-	//SDL_Texture* final_map = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, uiRect.w, uiRect.h);
-	//SDL_SetRenderTarget(renderer, final_map);
-	//SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
-	//SDL_RenderClear(renderer);
-
 	//assume pox x/y is already adjust to min of 0 and max of size-viewable width
 	//this will be handled by set map pos function
 	mapRect.x = cameraX;
@@ -406,39 +402,18 @@ void GameMap::render() {
 
 	//filledPolygonColor(renderer, x, y, 4, (Uint32)0x80FFFFFF);
 
-	//renderMasksSolid();
+
+	//temp, combine with object depth rendering later (like in 2 years)
+	for (auto pm : petMagics) pm->render();
+
 	renderObjects();
 
-	//NPCs
-	/*for (auto npc : npcs) {
-		if (doRectIntersect(npc->getRenderRect(), mapRect)) {
-			npc->render();
-		}
-		else {
-			if (npc->GetSprite()) npc->GetSprite()->stop();
-		}
-	}*/
 
 	if (colosseum) {
 		//colosseum->render(-posX, -posY);
 	}
 
 	renderMasksTransparent();
-
-	//SDL_SetRenderTarget(renderer, origTarget);
-
-	//SDL_RenderCopy(renderer, final_map, NULL, &renderRect);
-	//SDL_DestroyTexture(final_map);
-
-	//Other Users
-	/*std::vector<User*> userList = userManager.getUsers();
-	for (auto user : userList) {
-		if (doRectIntersect(user->getRenderRect(), mapRect)) {
-			user->render();
-		}
-	}*/
-
-	//player->render();
 
 	//Battle Results
 	if (battleResult && !battle) {
@@ -556,6 +531,20 @@ void GameMap::step() {
 	if (!changingMap && (checkPortal || player->getWalking())) {
 		checkForMapChange();
 		checkPortal = false;
+	}
+
+	//Step all PetMagics and remove the completed ones
+	std::vector<CPetMagic*>::iterator itr = petMagics.begin();
+	while (itr != petMagics.end()) {
+		CPetMagic* pm = *itr;
+		if (pm->isFinished()) {
+			if (itr != petMagics.end()) itr++;
+			delete pm;
+		}
+		else {
+			pm->step();
+			itr++;
+		}
 	}
 }
 
@@ -734,12 +723,12 @@ void GameMap::toggleJumpMode() {
 }
 
 
-std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to) {
+std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to, bool flying) {
 	std::vector<SDL_Point> path;
 	if (from.x == to.x && from.y == to.y) return path;
 
 	//Walkable coords may have a straight path
-	if (isCoordWalkable(to)) {
+	if (isCoordWalkable(to) || flying) {
 
 		//Move straight in odd direction 1/3/5/7
 		if (from.x == to.x || from.y == to.y) {
@@ -750,7 +739,7 @@ std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to) {
 				if (from.y < to.y) {
 					for (int i = from.y + 1; i < to.y; i++) {
 						SDL_Point aCoord = { from.x, i };
-						if (!isCoordWalkable(aCoord)) {
+						if (!isCoordWalkable(aCoord) && !flying) {
 							path.clear();
 							break;
 						}
@@ -762,7 +751,7 @@ std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to) {
 				if (from.y > to.y) {
 					for (int i = from.y - 1; i > to.y; i--) {
 						SDL_Point aCoord = { from.x, i };
-						if (!isCoordWalkable(aCoord)) {
+						if (!isCoordWalkable(aCoord) && !flying) {
 							path.clear();
 							break;
 						}
@@ -777,7 +766,7 @@ std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to) {
 				if (from.x < to.x) {
 					for (int i = from.x + 1; i < to.x; i++) {
 						SDL_Point aCoord = { i, from.y };
-						if (!isCoordWalkable(aCoord)) {
+						if (!isCoordWalkable(aCoord) && !flying) {
 							path.clear();
 							break;
 						}
@@ -789,7 +778,7 @@ std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to) {
 				if (from.x > to.x) {
 					for (int i = from.x - 1; i > to.x; i--) {
 						SDL_Point aCoord = { i, from.y };
-						if (!isCoordWalkable(aCoord)) {
+						if (!isCoordWalkable(aCoord) && !flying) {
 							path.clear();
 							break;
 						}
@@ -799,7 +788,7 @@ std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to) {
 				}
 			}
 
-			if (path.size() == 0) return generatePath(from, to); //There was an obstruction, generate a path
+			if (path.size() == 0) return generatePath(from, to, flying); //There was an obstruction, generate a path
 			else return path;
 		}
 
@@ -815,29 +804,29 @@ std::vector<SDL_Point> GameMap::getPath(SDL_Point from, SDL_Point to) {
 				if (aCoord.x > to.x) aCoord.x--;
 				if (aCoord.y < to.y) aCoord.y++;
 				if (aCoord.y > to.y) aCoord.y--;
-				if (!isCoordWalkable(aCoord)) {
+				if (!isCoordWalkable(aCoord) && !flying) {
 					path.clear();
 					break;
 				}
 				path.push_back(aCoord);
 			}
 
-			if (path.size() == 0) return generatePath(from, to); //There was an obstruction, generate a path
+			if (path.size() == 0) return generatePath(from, to, flying); //There was an obstruction, generate a path
 			else return path;
 		}
 
-		return generatePath(from, to);
+		return generatePath(from, to, flying);
 	}
 
 	//optimization for unwalkable?
 	//Need to develop "closest path to point" logic
-	return generatePath(from, to);
+	return generatePath(from, to, flying);
 
 	//return path;
 }
 
 
-std::vector<SDL_Point> GameMap::generatePath(SDL_Point from, SDL_Point to) {
+std::vector<SDL_Point> GameMap::generatePath(SDL_Point from, SDL_Point to, bool flying) {
 	std::vector<SDL_Point> path;
 
 	std::vector<PathTile*> openList, closedList;
@@ -859,7 +848,7 @@ std::vector<SDL_Point> GameMap::generatePath(SDL_Point from, SDL_Point to) {
 		if (dest != nullptr) break;
 
 		std::vector<PathTile*> adjacentTiles;
-		adjacentTiles = getAdjacentTiles(*currentTile, to); //This should first check if dest is 1 of the 8, and only return dest if so
+		adjacentTiles = getAdjacentTiles(*currentTile, to, flying); //This should first check if dest is 1 of the 8, and only return dest if so
 
 		for (auto &adjTile : adjacentTiles) {
 			if (getTileFromList(adjTile->coord, &closedList) != nullptr) {
@@ -941,7 +930,7 @@ PathTile* GameMap::getTileFromList(SDL_Point coord, std::vector<PathTile*> *tile
 }
 
 
-std::vector<PathTile*> GameMap::getAdjacentTiles(PathTile sourceTile, SDL_Point destCoord) {
+std::vector<PathTile*> GameMap::getAdjacentTiles(PathTile sourceTile, SDL_Point destCoord, bool flying) {
 	std::vector<PathTile*> adjacentTiles;
 
 	double changeX, changeY;
@@ -950,7 +939,7 @@ std::vector<PathTile*> GameMap::getAdjacentTiles(PathTile sourceTile, SDL_Point 
 
 	//Check if destination is adjacent
 	if (((int)std::round(changeX) == 1 || (int)std::round(changeX) == 0) && ((int)std::round(changeY) == 1 || (int)std::round(changeY) == 0)) {
-		if (isCoordWalkable(destCoord)) {
+		if (isCoordWalkable(destCoord) || flying) {
 			PathTile* dest = new PathTile;
 			dest->coord = destCoord;
 			adjacentTiles.push_back(dest);
@@ -960,7 +949,7 @@ std::vector<PathTile*> GameMap::getAdjacentTiles(PathTile sourceTile, SDL_Point 
 
 	//Add all adjacent tiles
 	for (int i = 0; i < 8; i++) 
-			addAdjacentTile(&adjacentTiles, getAdjCoordByDirection(sourceTile.coord, i));
+			addAdjacentTile(&adjacentTiles, getAdjCoordByDirection(sourceTile.coord, i), flying);
 
 	return adjacentTiles;
 }
@@ -1003,8 +992,8 @@ SDL_Point GameMap::getAdjCoordByDirection(SDL_Point sourceCoord, int direction) 
 }
 
 
-void GameMap::addAdjacentTile(std::vector<PathTile*> *adjacentTiles, SDL_Point coord) {
-	if (!isCoordWalkable(coord)) return;
+void GameMap::addAdjacentTile(std::vector<PathTile*> *adjacentTiles, SDL_Point coord, bool flying) {
+	if (!isCoordWalkable(coord) && !flying) return;
 
 	PathTile* newTile = new PathTile;
 	newTile->coord = coord;

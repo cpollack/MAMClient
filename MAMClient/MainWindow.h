@@ -116,11 +116,14 @@ public: //Widget Event hooks
 	void btnClose_Click(SDL_Event& e);
 private: 
 	void btnJump_Click(SDL_Event& e);
+	void btnCloud_Click(SDL_Event& e);
 	void btnFight_Click(SDL_Event& e);
+	void btnAutoFight_Click(SDL_Event& e);
 
 	void btnCharacter_Click(SDL_Event& e);
 	void btnPet_Click(SDL_Event& e);
 
+	void btnMap_Click(SDL_Event& e);
 	void btnInventory_Click(SDL_Event& e);
 	void btnWuxing_Click(SDL_Event& e);
 	void btnKungfu_Click(SDL_Event& e);

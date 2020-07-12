@@ -23,6 +23,8 @@ pUserInfo::pUserInfo(int pSize, char* buf, char* encBuf) {
 	getByte(14, &reborns);
 	getByte(15, &rankType);
 	getWord(16, &level);
+	getByte(18, &z1);
+	getByte(19, &z2);
 	getInt(20, &pkEnabled);
 	getInt(24, &syndicateId);
 	getInt(28, &subGroudId);

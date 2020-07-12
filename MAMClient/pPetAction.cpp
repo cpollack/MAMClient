@@ -46,39 +46,23 @@ pPetAction::~pPetAction() {
 void pPetAction::process() {
 	Pet* activePet;
 
-	SDL_Event e;
-	SDL_zero(e);
 	switch (action) {
 	case paSetActive:
 		activePet = player->setActivePet(petId);
-
-		SDL_Event e;
-		SDL_zero(e);
-		e.type = CUSTOMEVENT_PET;
-		e.user.code = PET_MARCHING;
-		SDL_PushEvent(&e);
+		customEvent(CUSTOMEVENT_PET, PET_MARCHING);
 		break;
 
 	case paUseItem:
-		e.type = CUSTOMEVENT_ITEM;
-		e.user.code = ITEM_USE;
-		e.user.data1 = player->inventory->getItem(value);
-		SDL_PushEvent(&e);
-
 		activePet = player->getPet(petId);
 		activePet->useItem(value);
+		customEvent(CUSTOMEVENT_ITEM, ITEM_USE, player->inventory->getItem(value));
 		break;
 
 	case paFullHeal:
 		activePet = player->getActivePet();
 		if (activePet) {
 			activePet->SetLife(value);
-
-			SDL_Event e;
-			SDL_zero(e);
-			e.type = CUSTOMEVENT_PET;
-			e.user.code = PET_LIFE;
-			SDL_PushEvent(&e);
+			customEvent(CUSTOMEVENT_PET, PET_LIFE);
 		}
 		break;
 

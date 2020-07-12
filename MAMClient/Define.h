@@ -59,6 +59,9 @@ enum EffectType {
 	EFFECT_MIRROR,
 	EFFECT_SPHERE,
 	EFFECT_THINK,
+	EFFECT_SOULFLY,
+	EFFECT_SOULRETURN,
+	EFFECT_SOULSHINE,
 };
 
 enum EMOTE {
@@ -86,6 +89,8 @@ enum EMOTE {
 //Battle Info
 const DWORD	_IDMSK_PET		= 0x80000000;
 const DWORD _IDMSK_MONSTER	= 0xC0000000;
+const DWORD _IDMSK_INVITEM = 100000000;
+const DWORD _IDMSK_PETITEM = 1000000000;
 
 enum { OBJ_NONE = 1234, OBJ_MONSTER, OBJ_PET, OBJ_USER, OBJ_ITEM };
 
@@ -93,3 +98,19 @@ enum { OBJTYPE_MONSTER = 0, OBJTYPE_VSPET, OBJTYPE_VSPLAYER, OBJTYPE_FRIENDPET, 
 
 class Texture;
 using Asset = std::shared_ptr<Texture>;
+
+struct ColorShift {
+	BYTE hue;
+	BYTE newHue;
+	BYTE range;
+	BYTE sat;
+	BYTE bright;
+};
+using ColorShifts = std::vector<ColorShift>;
+
+class Sprite;
+struct Effect {
+	int type;
+	Sprite* sprite = nullptr;
+};
+using EffectItr = std::vector<Effect>::iterator;

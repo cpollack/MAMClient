@@ -463,20 +463,6 @@ Sprite* Entity::CreateEffectSprite(int effect) {
 	return sprEffect;
 }
 
-std::string Entity::EffectToString(int effect) {
-	switch (effect) {
-	case EFFECT_FLASHDOWN: return "FlashDown";
-	case EFFECT_FAINT: return "Faint";
-	case EFFECT_READY: return "Ready";
-	case EFFECT_MIRROR: return "Mirror";
-	case EFFECT_SPHERE: return "Sphere";
-	case EFFECT_HEAL: return "Health";
-	case EFFECT_POISON: return "Poisoning";
-	case EFFECT_THINK: return "Think";
-	}
-
-	return "";
-}
 
 Sprite* Entity::addEffect(int eff) {
 	if (eff == EFFECT_NONE) return nullptr;

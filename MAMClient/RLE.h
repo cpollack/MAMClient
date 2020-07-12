@@ -2,6 +2,7 @@
 #define __RLE_H
 
 #include "FreeImagePlus.h"
+#include "Define.h"
 
 struct RLEheader {
 	DWORD id;
@@ -62,16 +63,6 @@ struct WPixel {
 	WPixel(int r, int g, int b) : red(r >> 3), green(g >> 2), blue(b >> 3) {}
 	operator DWORD() const { return (color << 5 & 0x7fc00) | (color << 8 & 0xf80000) | ((color << 3 | (color & 7)) & 0x3ff); }
 };
-
-struct ColorShift {
-	BYTE hue;
-	BYTE newHue;
-	BYTE range;
-	BYTE sat;
-	BYTE bright;
-};
-
-using ColorShifts = std::vector<ColorShift>;
 
 /*struct HSBSet {
 	BYTE hue;

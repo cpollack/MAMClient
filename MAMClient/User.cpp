@@ -65,6 +65,10 @@ User::User(pUserInfo *packet):Entity(mainForm->renderer, packet->userId, packet-
 	case uieBow:
 		Animation = Politeness;
 		break;
+	case uieFly:
+		Animation = SitDown;
+		SetFlying(true);
+		break;
 	default:
 		Animation = StandBy;
 	}
@@ -83,6 +87,71 @@ User::~User() {
 
 void User::render() {
 	if (!map) return;
+
+	//Render cloud before player
+	if (Flying || Ascending || Descending) {
+		if (Ascending) {
+			int elapsed = SDL_GetTicks() - CloudInitTime;
+			double dist = elapsed * CLOUD_HEIGHT / CLOUD_LIFT_MS;
+			if (elapsed >= CLOUD_LIFT_MS) {
+				dist = CLOUD_HEIGHT;
+				Ascending = false;
+				Flying = true;
+				LoadCloud(CLOUD_FLY);
+			}
+
+			if (Cloud->isFinished) {
+				LoadCloud(CLOUD_FLY);
+			}
+
+			SpriteOffset.y = -dist;
+		}
+		else if (Descending) {
+			int elapsed = SDL_GetTicks() - CloudInitTime;
+			double dist = CLOUD_HEIGHT - (elapsed * CLOUD_HEIGHT / CLOUD_LIFT_MS);
+			if (elapsed >= CLOUD_LIFT_MS) {
+				dist = 0;
+				Descending = false;
+				Flying = false;
+				RemoveCloud();
+				setAnimation(StandBy);
+				loadSprite();
+			}
+
+			if (Cloud && Cloud->isFinished) {
+				RemoveCloud();
+			}
+
+			SpriteOffset.y = -dist;
+		}
+		else {
+			int elapsed = SDL_GetTicks() - CloudBobTime;
+			if (elapsed >= BOB_MS) {
+				if (BOB_UP) {
+					if (abs(SpriteOffset.y) - CLOUD_HEIGHT < MAX_BOB) SpriteOffset.y -= 1;
+					else {
+						SpriteOffset.y = -(CLOUD_HEIGHT + MAX_BOB);
+						BOB_UP = false;
+					}
+				}
+				else {
+					if (CLOUD_HEIGHT - abs(SpriteOffset.y) < MAX_BOB) SpriteOffset.y += 1;
+					else {
+						SpriteOffset.y = -(CLOUD_HEIGHT - MAX_BOB);
+						BOB_UP = true;
+					}
+				}
+				CloudBobTime = SDL_GetTicks();
+			}
+		}
+
+		SDL_Point ShadowPos = RenderPos;
+		ShadowPos.y -= SpriteOffset.y;
+		if (CloudShadow.get()) CloudShadow->Render(ShadowPos);
+
+		if (Cloud) Cloud->render(RenderPos.x, RenderPos.y);
+	}
+
 	Entity::render();
 
 	if (Aura) {
@@ -112,7 +181,7 @@ void User::step() {
 		if (atDestCoord()) {
 			if (!path.size()) {
 				walking = false;
-				setAnimation(StandBy);
+				if (!Flying) setAnimation(StandBy);
 				loadSprite();
 			}
 			else {
@@ -174,7 +243,7 @@ void User::jumpTo(SDL_Point coord) {
 }
 
 void User::walkTo(SDL_Point coord) {
-	std::vector<SDL_Point> newPath = map->getPath(Coord, coord);
+	std::vector<SDL_Point> newPath = map->getPath(Coord, coord, (Flying | Ascending) & !Descending);
 
 	if (jumping) {
 		jumping = false;
@@ -189,7 +258,7 @@ void User::walkTo(SDL_Point coord) {
 	if (walking && atDestCoord() || !walking) getNextDestCoord();
 	walking = true;
 
-	setAnimation(Walk);
+	if (!Flying) setAnimation(Walk);
 	setDirectionToCoord(DestCoord);
 	loadSprite();
 }
@@ -217,7 +286,8 @@ void User::takeNextStep() {
 
 	SDL_Point basePos = map->CenterOfCoord(Coord);
 	SDL_Point destPos = map->CenterOfCoord(DestCoord);
-	double movePerc = timeElapsed * 1.0 / WALK_SPEED;
+	int moveSpeed = Flying ? FLY_SPEED : WALK_SPEED;
+	double movePerc = timeElapsed * 1.0 / moveSpeed;
 	if (movePerc > 1.0) movePerc = 1.0;
 
 	double shiftx = (destPos.x - basePos.x) * movePerc;
@@ -247,6 +317,18 @@ bool User::getJumping() {
 
 bool User::getWalking() {
 	return walking;
+}
+
+void User::setDirection(int direction, bool forBattle) {
+	int curDir = Direction;
+	Entity::setDirection(direction, forBattle);
+	if (curDir == Direction) return;
+	if (Flying) {
+		int mode = CLOUD_FLY;
+		if (Ascending) mode = CLOUD_LIFT;
+		else if (Descending) mode = CLOUD_LAND;
+		LoadCloud(mode);
+	}
 }
 
 //Load Aura based on Rank
@@ -426,4 +508,77 @@ bool User::IsTeamLeader() {
 	if (!team) return false;
 	if (team->GetLeader() == this) return true;
 	return false;
+}
+
+void User::TakeOff() {
+	Ascending = true; 
+	Descending = false;
+	Flying = true;
+	LoadCloud(CLOUD_LIFT);
+	CloudInitTime = SDL_GetTicks();
+	setAnimation(SitDown);
+	loadSprite();
+}
+
+void User::Land() {
+	Ascending = false;
+	Descending = true;
+	Flying = false;
+	//SpriteOffset.y = 0;
+	CloudInitTime = SDL_GetTicks();
+	LoadCloud(CLOUD_LAND);
+}
+
+void User::LoadCloud(int mode) {
+	std::string cloudPath = "data/effect/cloud/";
+
+	std::string finalPath;
+	if (Alignment == 2) finalPath = cloudPath + "black/";
+	else finalPath = cloudPath + "white/";
+
+	if (!CloudShadow.get()) {
+		std::string shadowPath = cloudPath + "shadow.tga";
+		CloudShadow.reset(new Texture(renderer, shadowPath));
+		int w = CloudShadow->width / 2;
+		//double h = CloudShadow->height * 0.75;
+		int h = CloudShadow->height / 2;
+		CloudShadow->setPosition(SDL_Point{ -w,-(int)h });
+	}
+
+	std::vector<std::string> files;
+	char buffer[16];
+	if (mode == CLOUD_LIFT || mode == CLOUD_LAND) {
+		for (int i = 0; i < 16; i++) {
+			std::sprintf(buffer, "start%04d.tga", i);
+			files.push_back(finalPath + buffer);
+		}
+		if (mode == CLOUD_LAND) std::reverse(files.begin(), files.end());
+	}
+	else {
+		if (IsMaster()) {
+			finalPath = cloudPath + "color/";
+		}
+
+		int dir = Direction + 1;
+		if (dir >= 8) dir -= 8;
+		int offset = (8 * dir);
+		for (int i = 0; i < 8; i++) {
+			std::sprintf(buffer, "cloud%04d.tga", i + offset);
+			files.push_back(finalPath + buffer);
+		}
+	}
+
+	if (Cloud) delete Cloud;
+	Cloud = nullptr;
+	Cloud = new Sprite(renderer, files, stCloud);
+	Cloud->setFrameInterval(50);
+	if (Ascending || Descending) Cloud->repeatMode = 1;
+	else Cloud->repeatMode = 0;
+	Cloud->start();
+}
+
+void User::RemoveCloud() {
+	CloudShadow.reset();
+	if (Cloud) delete Cloud;
+	Cloud = nullptr;
 }

@@ -556,6 +556,10 @@ int CWindow::GetWindowID() {
 	return SDL_GetWindowID(window);
 }
 
+void CWindow::PushWindow(CWindow *pWindow) {
+	if (pWindow) Windows.push_back(pWindow); 
+}
+
 int CWindow::GetType() {
 	return Type;
 }

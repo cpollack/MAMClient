@@ -7,13 +7,6 @@ GUI::GUI(SDL_Renderer* aRenderer, std::string sName) {
 	skin = sName;
 	guiDirectory = "GUI\\Skins";
 	loadGUI();
-
-	medal_attack = new Texture(gRenderer);
-	medal_attack->loadTexture("GUI\\main\\medal_attack.bmp");
-	medal_defence = new Texture(gRenderer);
-	medal_defence->loadTexture("GUI\\main\\medal_defence.bmp");
-	medal_dexterity = new Texture(gRenderer);
-	medal_dexterity->loadTexture("GUI\\main\\medal_dexterity.bmp");
 }
 
 

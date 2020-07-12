@@ -1,16 +1,10 @@
 #pragma once
 
 #include "GameObj.h"
-#include "RLE.h"
+#include "Define.h"
 
 class Sprite;
 class FloatingLabel;
-
-struct Effect {
-	int type;
-	Sprite* sprite = nullptr;
-};
-using EffectItr = std::vector<Effect>::iterator;
 
 class Entity : public GameObj {
 public:
@@ -57,15 +51,15 @@ public:
 	SDL_Rect GetRenderRect(bool forBattle = false);
 	SDL_Rect GetRenderRect(int frame, bool forBattle = false);
 
-	virtual std::string getRole(int look);
-	virtual void setRole(int look);
+	static std::string getRole(int look);
+	void setRole(int look);
 
 	int GetLook() { return Look; }
 	virtual void SetLook(int iLook);
 
 	int GetFace() { return Face; }
 
-	void setDirection(int direction, bool forBattle = false);
+	virtual void setDirection(int direction, bool forBattle = false);
 	void setDirectionToCoord(SDL_Point coordinate, bool forBattle = false);
 	int getDirection(bool forBattle = false);
 	int getDirectionToCoord(SDL_Point coordinate);
@@ -81,7 +75,6 @@ public:
 	bool IsMousedOver() { return MouseOver; }
 
 	Sprite* CreateEffectSprite(int effect);
-	std::string EffectToString(int effect);
 	Sprite* addEffect(int effect);
 	Sprite* findEffect(int effect);
 	std::vector<Effect>::iterator removeEffect(int effect);
@@ -97,7 +90,7 @@ public: //Attributes
 	void SetLevel(int iLevel) { Level = iLevel; }
 
 	int GetCurrentLife() { return life_current; }
-	int GetMaxLife() { return life_max; }
+	virtual int GetMaxLife() { return life_max; }
 	void SetLife(int iLife) { life_current = iLife; if (life_current < 0) life_current = 0; if (life_current > life_max) life_current = life_max; }
 	void SetMaxLife(int iLife) { life_max = iLife; }
 

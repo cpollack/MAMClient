@@ -42,7 +42,18 @@ void CButton::ReloadAssets() {
 void CButton::Render() {
 	if (!Visible) return;
 	if (!buttonTexture) CreateButtonTexture();
-	SDL_RenderCopy(renderer, buttonTexture, NULL, &widgetRect);
+
+	if (Rotate) {
+		if (RotateStart == 0) RotateStart = SDL_GetTicks();
+
+		DWORD elapsed = SDL_GetTicks() - RotateStart;
+		double angle = (elapsed / RotateSpeed) % 360;
+		SDL_Point center;
+		center.x = widgetRect.w / 2;
+		center.y = widgetRect.h / 2;
+		SDL_RenderCopyEx(renderer, buttonTexture, NULL, &widgetRect, angle, &center, SDL_RendererFlip::SDL_FLIP_NONE);
+	}
+	else SDL_RenderCopy(renderer, buttonTexture, NULL, &widgetRect);
 }
 
 void CButton::HandleEvent(SDL_Event& e) {

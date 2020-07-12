@@ -22,6 +22,9 @@ void Inventory::addItem(pItem* packet) {
 
 
 void Inventory::addItem(Item* item) {
+	//failsafe, don't add the same item
+	for (auto pItem : inventory) if (pItem == item) return;
+
 	inventory.push_back(item);
 }
 

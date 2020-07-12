@@ -226,7 +226,7 @@ std::wstring Item::getShopDetails() {
 	return StringToWString(details);
 }
 
-Asset Item::GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon) {
+Asset Item::GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon, int opacityPerc) {
 	int boxWidth = 110;
 	Asset detailsTexture(stringToTexture(renderer, getDetails(), gui->font, 0, { 255,255,255,255 }, boxWidth));
 
@@ -239,7 +239,8 @@ Asset Item::GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon) {
 	SDL_SetRenderTarget(renderer, finalTexture->getTexture());
 
 	SDL_SetTextureBlendMode(finalTexture->getTexture(), SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
+	int opacity = (opacityPerc / 100.0) * 256;
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, opacity);
 	SDL_RenderClear(renderer);
 
 	if (showIcon) {

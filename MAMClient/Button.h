@@ -35,6 +35,9 @@ public:
 	void Toggle(bool bToggle, bool fireEvent = true);
 	bool GetToggled() { return toggled; }
 
+	void SetRotate(bool bRot) { Rotate = bRot; }
+	void SetRotateSpeed(int iRotSpeed) { RotateSpeed = iRotSpeed; }
+
 private: //Properties
 	bool UseGUI = false;
 	std::string PressedImagePath;
@@ -53,6 +56,10 @@ private:
 	bool held = false;
 	bool toggled = false;
 	bool usingImages = false;
+
+	bool Rotate = false;
+	int RotateSpeed = 50;
+	DWORD RotateStart = 0;
 
 	void OnClick(SDL_Event& e);
 	void OnToggle(SDL_Event& e);

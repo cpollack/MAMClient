@@ -8,8 +8,9 @@ enum ItemMode {
 	imEquipment = 3004,
 	imUnk2 = 3005,
 	imUnk3 = 3006,
+	imPetAccessory = 3007,
 	imUnk4 = 3008, //Related to Pet Shop?
-	imWuxingPreview = 3010  //Related to Wuxing?
+	imWuxingPreview = 3010 
 };
 
 class pItem : public Packet {
