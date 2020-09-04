@@ -18,6 +18,7 @@ public:
 	void SetImageFromSkin(std::string skinImage);
 	void SetImage(Texture* image);
 	void BindSprite(Sprite* sprite);
+	void ClearSprite() { BindSprite(nullptr); }
 
 	void UseBlackBackground(bool use);
 

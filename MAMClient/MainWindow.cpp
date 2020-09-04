@@ -20,32 +20,26 @@
 #include "LogoutForm.h"
 #include "PromptForm.h"
 #include "CharCreateForm.h"
-#include "CharacterForm.h"
-#include "PetListForm.h"
-#include "InventoryForm.h"
-#include "WuxingForm.h"
 
 #include "AssetManager.h"
-#include "PlayerInfoFrame.h"
+#include "MainUI.h"
 #include "Gauge.h"
 #include "ImageBox.h"
 #include "VideoFrame.h"
 #include "Dialogue.h"
 
-#include "PetMagic.h" //temp, testing
+//TEMP
+#include "PetMagic.h" 
+#include "PetComposeForm.h"
+//ENDTEMP
 
 #include "pBattleState.h"
 #include "pAction.h"
 
 CMainWindow::CMainWindow() :CWindow() {
 	Type = FT_MAIN;
-#ifdef SIZE_1024
-	Width = 1024;
-	Height = 768;
-#else
 	Width = 800;
 	Height = 600;
-#endif
 	init();
 	initUI();
 
@@ -613,34 +607,15 @@ void CMainWindow::main_init() {
 	assert(map != nullptr);
 
 	SetTitle("Monster & Me - " + strServer + " - " + std::string(version) + " (" + versionDate + ")");
-#ifndef NEWGUI
-	SetUseClose(true);
-	SetUseMinimize(true);
-	registerEvent("btnClose", "Click", std::bind(&CMainWindow::btnClose_Click, this, std::placeholders::_1));
-	registerEvent("btnMinimize", "Click", std::bind(&CMainWindow::btnMinimize_Click, this, std::placeholders::_1));
-#endif // !NEWGUI
 	Disconnected = false;
 	RelogReady = false;
 
 	//Game Area
-#ifdef NEWGUI
-	gameRect = { 0, 0, 800, 600 };
-#else
-	gameRect = { gui->left->width + 20, gui->topCenter->height + 9, 740, 410 };
-#endif
+	gameRect = { 0, 0, 800, 525 };
 	gameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, gameRect.w, gameRect.h);
 
 	chat = new CChat(this);
-	//chat->SetRenderer(renderer);
 	chat->SetFont(gui->font);
-	//chat->SetWidth(gameRect.w);
-	//chat->SetWidth(350);
-	//chat->SetHeightInLines(7);
-#ifdef NEWGUI
-	//chat->SetPos(SDL_Point{ 0, Height - chat->GetHeight() - 30 });
-#else
-	chat->SetPos(SDL_Point{ 0, gameRect.h - chat->GetHeight() });
-#endif
 	AddWidget(chat);
 
 	// Tell the map the UI boundings are
@@ -650,9 +625,6 @@ void CMainWindow::main_init() {
 	main_init_widgets();
 
 	//Set Default widget values
-#ifndef NEWGUI
-	setPlayerDetailsLabels();
-#endif // !NEWGUI
 	setPlayerHealthGauge(player->GetCurrentLife(), player->GetMaxLife());
 	setPlayerManaGauge(player->GetCurrentMana(), player->GetMaxMana());
 	setPlayerExpGauge(player->experience, player->GetLevelUpExperience());
@@ -664,45 +636,11 @@ void CMainWindow::main_init() {
 }
 
 void CMainWindow::main_init_widgets() {
-#ifdef NEWGUI
 	std::string portraitPath;
 	Texture *txturePortrait;
 
-	playerInfoFrame = new CPlayerInfoFrame(this, "playerInfoFrame", 0, 0);
-	AddWidget(playerInfoFrame);
-
-	//gaugePlayerHealth = playerInfoFrame->GetPlayerHealthGauge();
-	//gaugePlayerMana = playerInfoFrame->GetPlayerManaGauge();
-	//gaugePlayerExp = playerInfoFrame->GetPlayerExpGauge();
-
-	/*petPortrait = new CImageBox(this, "petPortrait", 108, 600);
-	petPortrait->SetWidth(55);
-	petPortrait->SetHeight(69);
-	AddWidget(petPortrait);
-	main_setPetPortrait();*/
-
-	//gaugePetHealth = addMainGauge2("gaugePetHealth", 97, 123, 50, 20, "data/GUI/main/Pet_Health.png");
-	//gaugePetExp = addMainGauge2("gaugePetExp", 108, 137, 38, 20, "data/GUI/main/Pet_Exp.png");
-	//gaugePetHealth = addMainGauge("gaugePetHealth", 164, Height - 90 - 12, 20, 90, "newmain/pethp.tga");
-	//gaugePetExp = addMainGauge("gaugePetExp", 170, Height - 79 - 6, 36, 79, "newmain/petexp.tga");
-	//gaugePetHealth = playerInfoFrame->GetPetLifeGauge();
-	//gaugePetExp = playerInfoFrame->GetPetExpGauge();
-
-	CButton *btnJump = addMainButton2("btnJump", 387, 538, 64, 24, "data/GUI/main/btnWalk.png", "data/GUI/main/btnJump.png");
-	addMainButton2("btnCloud", 368, 540, 20, 20, "data/GUI/main/btnCloud.png", "data/GUI/main/btnCloud.png");
-	addMainButton2("btnFight", 387, 562, 64, 24, "data/GUI/main/btnFight.png", "data/GUI/main/btnFight.png");
-	addMainButton2("btnAutoFight", 368, 562, 20, 20, "data/GUI/main/btnAutoFight.png", "data/GUI/main/btnAutoFight.png");
-
-	//addMainButton2("btnCharacter", 390, 600-60, 60, 60, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
-	//addMainButton2("btnPet", 465, 600-35, 60, 60, "button_pet.jpg", "button_petDown.jpg");
-
-	addMainButton2("btnMap", 448, 532, 60, 60, "data/GUI/main/btnMap.png", "data/GUI/main/btnMap.png");
-	addMainButton2("btnInventory", 504, 532, 60, 60, "data/GUI/main/btnInventory.png", "data/GUI/main/btnInventory.png");
-	addMainButton2("btnWuxing", 562, 532, 60, 60, "data/GUI/main/btnWuxing.png", "data/GUI/main/btnWuxing.png");
-	addMainButton2("btnKungfu", 618, 532, 60, 60, "data/GUI/main/btnKungfu.png", "data/GUI/main/btnKungfu.png");
-	addMainButton2("btnTeam", 674, 532, 60, 60, "data/GUI/main/btnTeam.png", "data/GUI/main/btnTeam.png");
-	//addMainButton2("btnFriend", 684, 532, 60, 60, "data/GUI/main/btnFriend.png", "data/GUI/main/btnFriend.png");
-	addMainButton2("btnGuild", 730, 532, 60, 60, "data/GUI/main/btnGuild.png", "data/GUI/main/btnGuild.png");
+	mainUI = new CMainUI(this);
+	AddWidget(mainUI);
 
 	addMainButton2("btnTeamCreate", 674, 500, 83, 21, "data/GUI/Team/btnTeamCreate.png", "data/GUI/Team/btnTeamCreate.png")->SetVisible(false);
 	addMainButton2("btnTeamJoin", 674, 500, 83, 21, "data/GUI/Team/btnTeamJoin.png", "data/GUI/Team/btnTeamJoin.png")->SetVisible(false);
@@ -710,80 +648,10 @@ void CMainWindow::main_init_widgets() {
 	addMainButton2("btnTeamLeave", 674, 500, 83, 21, "data/GUI/Team/btnTeamLeave.png", "data/GUI/Team/btnTeamLeave.png")->SetVisible(false);
 	addMainButton2("btnTeamDisband", 674, 500, 83, 21, "data/GUI/Team/btnTeamDisband.png", "data/GUI/Team/btnTeamDisband.png")->SetVisible(false);
 
-	MenuBG.reset(new Texture(renderer, "data/GUI/Main/menu_bg.png", true));
-	MenuRight.reset(new Texture(renderer, "data/GUI/Main/menu_right.png", true));
-	btnMenuCollapse = addMainButton2("btnMenuCollapse", 340, Height - 78, 30, 78, "data/GUI/Main/btnMenuCollapse.png", "");
-	btnMenuExpand = addMainButton2("btnMenuExpand", Width - 31, Height - 78, 30, 78, "data/GUI/Main/btnMenuExpand.png", "");
-	btnMenuExpand->SetVisible(false);
-	registerEvent("btnMenuCollapse", "Click", std::bind(&CMainWindow::btnMenuCollapse_Click, this, std::placeholders::_1));
-	registerEvent("btnMenuExpand", "Click", std::bind(&CMainWindow::btnMenuExpand_Click, this, std::placeholders::_1));
-#else
-	//Buttons
-	CButton *btnJump = addMainButton("btnJump", surfaceRect.x + 300, surfaceRect.y + 90, 73, 25, "button_fly_off.jpg", "button_fly_on.jpg");
-
-	addMainButton("btnCharacter", surfaceRect.x + 17, surfaceRect.y + 11, 73, 25, "button_basicMsg.jpg", "button_basicMsgDown.jpg");
-	addMainButton("btnPet", surfaceRect.x + 102, surfaceRect.y + 11, 73, 25, "button_pet.jpg", "button_petDown.jpg");
-
-	addMainButton("btnFight", surfaceRect.x + 290, surfaceRect.y + 5, 38, 38, "fight-2.jpg", "fight-1.jpg");
-	addMainButton("btnChat", surfaceRect.x + 335, surfaceRect.y + 5, 38, 38, "chat-2.jpg", "chat-1.jpg");
-
-	addMainButton("btnDetails", surfaceRect.x + 377, surfaceRect.y, 44, 46, "HeroStatus.jpg", "HeroStatus.jpg");
-	addMainButton("btnChat2", surfaceRect.x + 422, surfaceRect.y, 44, 46, "ChatPanel.jpg", "ChatPanel.jpg");
-	addMainButton("btnKungfu", surfaceRect.x + 467, surfaceRect.y, 44, 46, "SelectMag.jpg", "SelectMag.jpg");
-
-	addMainButton("btnMinMap", surfaceRect.x + 512, surfaceRect.y + 1, 41, 39, "minMap-1.jpg", "minMap-2.jpg");
-	addMainButton("btnJoinTeam", surfaceRect.x + 553, surfaceRect.y + 1, 41, 39, "team-1.jpg", "team-2.jpg");
-	addMainButton("btnInventory", surfaceRect.x + 594, surfaceRect.y + 1, 41, 39, "items-1.jpg", "items-2.jpg");
-	addMainButton("btnPK", surfaceRect.x + 635, surfaceRect.y + 1, 41, 39, "PK-1.jpg", "PK-2.jpg");
-	addMainButton("btnChatHistory", surfaceRect.x + 676, surfaceRect.y + 1, 41, 39, "record-1.jpg", "record-2.jpg");
-	addMainButton("btnFriendList", surfaceRect.x + 717, surfaceRect.y + 1, 41, 39, "email-1.jpg", "email-2.jpg");
-
-	//Labels
-	lblCoordX = addMainLabel("lblCoordX", surfaceRect.x + 220, surfaceRect.y + 10, 20, 14, "", true);
-	lblCoordY = addMainLabel("lblCoordY", surfaceRect.x + 250, surfaceRect.y + 10, 20, 14, "", true);
-
-	int col1 = 382, col2 = 518, col3 = 660;
-	int row1 = 52, row2 = 76, row3 = 100;
-	addMainLabel("lblStaticName", surfaceRect.x + col1, surfaceRect.y + row1, 40, 14, "Name", true);
-	addMainLabel("lblStaticNickName", surfaceRect.x + col1, surfaceRect.y + row2, 60, 14, "Nickname", true);
-	addMainLabel("lblStaticLevel", surfaceRect.x + col1, surfaceRect.y + row3, 35, 14, "Level", true);
-	lblName = addMainLabel("lblName", surfaceRect.x + col1 + 45, surfaceRect.y + row1, 90, 14, "");
-	lblNickName = addMainLabel("lblNickName", surfaceRect.x + col1 + 67, surfaceRect.y + row2, 75, 14, "");
-	lblLevel = addMainLabel("lblLevel", surfaceRect.x + col1 + 37, surfaceRect.y + row3, 95, 14, "");
-
-	addMainLabel("lblStaticSpouse", surfaceRect.x + col2, surfaceRect.y + row1, 45, 14, "Spouse", true);
-	addMainLabel("lblStaticCash", surfaceRect.x + col2, surfaceRect.y + row2, 30, 14, "Cash", true);
-	addMainLabel("lblStaticReputation", surfaceRect.x + col2, surfaceRect.y + row3, 65, 14, "Reputation", true);
-	lblSpouse = addMainLabel("lblSpouse", surfaceRect.x + col2 + 52, surfaceRect.y + row1, 90, 14, "None");
-	lblCash = addMainLabel("lblCash", surfaceRect.x + col2 + 38, surfaceRect.y + row2, 105, 14, "1");
-	lblReputation = addMainLabel("lblReputation", surfaceRect.x + col2 + 73, surfaceRect.y + row3, 75, 14, "2");
-	
-	lblRank = addMainLabel("lblRank", surfaceRect.x + col3, surfaceRect.y + row1, 118, 14, "Mortal", false);
-	addMainLabel("lblStaticGuild", surfaceRect.x + col3, surfaceRect.y + row2, 32, 14, "Guild", true);
-	addMainLabel("lblStaticGuildRank", surfaceRect.x + col3, surfaceRect.y + row3, 50, 14, "Position", true);
-	lblGuild = addMainLabel("lblGuild", surfaceRect.x + col3 + 37, surfaceRect.y + row2, 90, 14, "");
-	lblGuildRank = addMainLabel("lblGuildRank", surfaceRect.x + col3 + 57, surfaceRect.y + row3, 70, 14, "");
-
-	//Guages
-	gaugePlayerHealth = addMainGauge("gaugePlayerHealth", surfaceRect.x + 62, surfaceRect.y + 47, 110, 16, "yellow_slot.jpg");
-	gaugePlayerMana = addMainGauge("gaugePlayerMana", surfaceRect.x + 62, surfaceRect.y + 70, 110, 16, "green_slot.jpg");
-	gaugePlayerExp = addMainGauge("gaugePlayerExp", surfaceRect.x + 62, surfaceRect.y + 93, 110, 16, "green_slot.jpg");
-	gaugePetHealth = addMainGauge("gaugePetHealth", surfaceRect.x + 259, surfaceRect.y + 47, 110, 16, "yellow_slot.jpg");
-	gaugePetExp = addMainGauge("gaugePetExp", surfaceRect.x + 259, surfaceRect.y + 70, 110, 16, "green_slot.jpg");
-#endif
-
-	btnJump->SetType(ButtonType::btToggle);
 	registerEvent("btnJump", "Click", std::bind(&CMainWindow::btnJump_Click, this, std::placeholders::_1));
 	registerEvent("btnCloud", "Click", std::bind(&CMainWindow::btnCloud_Click, this, std::placeholders::_1));
-	registerEvent("btnFight", "Click", std::bind(&CMainWindow::btnFight_Click, this, std::placeholders::_1));
-	registerEvent("btnAutoFight", "Click", std::bind(&CMainWindow::btnAutoFight_Click, this, std::placeholders::_1));
-
-	registerEvent("btnCharacter", "Click", std::bind(&CMainWindow::btnCharacter_Click, this, std::placeholders::_1));
-	registerEvent("btnPet", "Click", std::bind(&CMainWindow::btnPet_Click, this, std::placeholders::_1));
 
 	registerEvent("btnMap", "Click", std::bind(&CMainWindow::btnMap_Click, this, std::placeholders::_1));
-	registerEvent("btnInventory", "Click", std::bind(&CMainWindow::btnInventory_Click, this, std::placeholders::_1));
-	registerEvent("btnWuxing", "Click", std::bind(&CMainWindow::btnWuxing_Click, this, std::placeholders::_1));
 	registerEvent("btnKungfu", "Click", std::bind(&CMainWindow::btnKungfu_Click, this, std::placeholders::_1));
 	registerEvent("btnTeam", "Click", std::bind(&CMainWindow::btnTeam_Click, this, std::placeholders::_1));
 	registerEvent("btnGuild", "Click", std::bind(&CMainWindow::btnGuild_Click, this, std::placeholders::_1));
@@ -825,10 +693,10 @@ void CMainWindow::main_cleanup() {
 		delete battle;
 		battle = nullptr;
 	}
-	/*if (chat) {
-		delete chat;
-		chat = nullptr;
-	}*/ //chat is now a widget
+	if (mainUI) {
+		delete mainUI;
+		mainUI = nullptr;
+	}
 	if (player) {
 		delete player;
 		player = nullptr;
@@ -857,21 +725,22 @@ void CMainWindow::main_render() {
 }
 
 void CMainWindow::main_render_ui() {
+	//Display average ticks
 	std::string strTicks = "AvgTick: " + std::to_string(AverageTickLength);
 	Asset astTicks(stringToTexture(renderer, strTicks, gui->font, 0, { 255, 255, 255, 255 }, 0));
 	boxRGBA(renderer, Width - astTicks->width, 0, Width, astTicks->height, 0, 0, 0, 255);
 	astTicks->Render(SDL_Point{ Width - astTicks->width, 0 });
 
 	//Menu
-	if (!bMenuHidden || battle) {
+	/*if (!bMenuHidden || battle) {
 		//Stretch the menuBG an extra 20 pixels 
 		SDL_Rect menuRect = { Width - (MenuBG->width + 20) - 10, Height - MenuRight->height + 3, MenuBG->width, MenuBG->height };
 		SDL_RenderCopy(renderer, MenuBG->texture, NULL, &menuRect);
 		menuRect = { Width - MenuRight->width, Height - MenuRight->height, MenuRight->width, MenuRight->height };
 		SDL_RenderCopy(renderer, MenuRight->texture, NULL, &menuRect);
-	}
+	}*/
 
-	//Widgets after Menu 
+	//Widgets 
 	for (auto widget : widgets) {
 		widget.second->Render();
 	}
@@ -900,31 +769,31 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 #endif
 
 		if (e.user.code == PLAYER_LIFE) {
-			playerInfoFrame->adjustPlayerHealthGauge(player->GetCurrentLife());
+			mainUI->adjustPlayerHealthGauge(player->GetCurrentLife());
 		}
 		if (e.user.code == PLAYER_LIFEMAX) {
-			playerInfoFrame->setPlayerHealthGauge(player->GetCurrentLife(), player->GetMaxLife());
+			mainUI->setPlayerHealthGauge(player->GetCurrentLife(), player->GetMaxLife());
 		}
 		if (e.user.code == PLAYER_MANA) {
-			playerInfoFrame->adjustPlayerManaGauge(player->GetCurrentMana());
+			mainUI->adjustPlayerManaGauge(player->GetCurrentMana());
 		}
 		if (e.user.code == PLAYER_MANAMAX) {
-			playerInfoFrame->setPlayerManaGauge(player->GetCurrentMana(), player->GetMaxMana());
+			mainUI->setPlayerManaGauge(player->GetCurrentMana(), player->GetMaxMana());
 		}
 		if (e.user.code == PLAYER_LIFEMANA) {
-			playerInfoFrame->adjustPlayerHealthGauge(player->GetCurrentLife());
-			playerInfoFrame->adjustPlayerManaGauge(player->GetCurrentMana());
+			mainUI->adjustPlayerHealthGauge(player->GetCurrentLife());
+			mainUI->adjustPlayerManaGauge(player->GetCurrentMana());
 		}
 		if (e.user.code == PLAYER_EXP) {
-			playerInfoFrame->adjustPlayerExpGauge(player->GetExperience());
+			mainUI->adjustPlayerExpGauge(player->GetExperience());
 		}
 
 		if (e.user.code == PLAYER_LEVEL) {
 #ifndef NEWGUI
 			setPlayerDetailsLabels();
 #endif
-			playerInfoFrame->setPlayerExpGauge(player->GetExperience(), player->GetLevelUpExperience());
-			playerInfoFrame->updatePlayerLevel();
+			mainUI->setPlayerExpGauge(player->GetExperience(), player->GetLevelUpExperience());
+			mainUI->updatePlayerLevel();
 		}
 
 #ifndef NEWGUI
@@ -942,7 +811,7 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 
 	if (e.type == CUSTOMEVENT_PET) {
 		if (e.user.code == PET_MARCHING) {
-			playerInfoFrame->Reload();
+			mainUI->Reload();
 			Pet* pet = player->getActivePet();
 			if (pet) {
 				setPetHealthGauge(pet->GetCurrentLife(), pet->GetMaxLife());
@@ -952,18 +821,18 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 
 		if (e.user.code == PET_LIFE) {
 			Pet* pet = player->getActivePet();
-			if (pet) playerInfoFrame->adjustPetHealthGauge(pet->GetCurrentLife());
+			if (pet) mainUI->adjustPetHealthGauge(pet->GetCurrentLife());
 		}
 		if (e.user.code == PET_EXP) {
 			Pet* pet = player->getActivePet();
-			if (pet) playerInfoFrame->adjustPetExpGauge(pet->getExperience());
+			if (pet) mainUI->adjustPetExpGauge(pet->getExperience());
 		}
 		if (e.user.code == PET_LEVEL) {
 			Pet* pet = player->getActivePet();
 			if (pet) {
-				playerInfoFrame->setPetHealthGauge(pet->GetCurrentLife(), pet->GetMaxLife());
-				playerInfoFrame->setPetExpGauge(pet->getExperience(), pet->getLevelUpExperience());
-				playerInfoFrame->updatePetLevel();
+				mainUI->setPetHealthGauge(pet->GetCurrentLife(), pet->GetMaxLife());
+				mainUI->setPetExpGauge(pet->getExperience(), pet->getLevelUpExperience());
+				mainUI->updatePetLevel();
 			}
 		}
 	}
@@ -1037,26 +906,11 @@ void CMainWindow::main_step() {
 
 	chat->step();
 
-	if (battle) {
-		battle->step();
-		if (battle->isOver()) {
-			delete battle;
-			battle = nullptr;
-			if (options.GetRepeatBattle()) {
-				SDL_Event e;
-				btnFight_Click(e);
-			}
-		}
-	}
+	if (battle) battle->step();
 	else if (map) map->step();
 
 	if (dialogue) {
 		if (dialogue->selection >= 0) {
-			//send npc action packet
-			//pNpcAction* actPack = new pNpcAction(dialogue->selection, 100, 0);
-			//gClient.addPacket(actPack);
-			//Moved to dialogue
-
 			delete dialogue;
 			dialogue = nullptr;
 		}
@@ -1111,53 +965,9 @@ void CMainWindow::btnCloud_Click(SDL_Event& e) {
 	gClient.addPacket(pck);
 }
 
-void CMainWindow::btnFight_Click(SDL_Event& e) {
-	if (battle) return;
-	if (!map || map->IsChangingMap()) return;
-
-	if (!map->isBattleEnabled()) {
-		messageManager.DoSystemMessage("You cannot battle in this location");
-		return;
-	}
-
-	int teamSize = 1;
-	pBattleState* battlePacket = new pBattleState(0, teamSize, player->GetID(), 0);
-	gClient.addPacket(battlePacket);
-}
-
-void CMainWindow::btnAutoFight_Click(SDL_Event& e) {
-	CButton *btn = (CButton*)GetWidget("btnAutoFight");
-	std::cout << "Button AutoFight Clicked!" << std::endl;
-	if (options.GetRepeatBattle()) {
-		options.SetRepeatBattle(false);
-		if (btn) btn->SetRotate(false);
-		return;
-	}
-
-	if (!map) return;
-	btnFight_Click(e);
-	if (!map->isBattleEnabled()) return;
-
-	options.SetRepeatBattle(true);
-	if (btn) {
-		btn->SetRotate(true);
-		btn->SetRotateSpeed(5);
-	}
-}
-
-void CMainWindow::btnCharacter_Click(SDL_Event& e) {
-	if (battle) return;
-	CCharacterForm* charForm = new CCharacterForm();
-	Windows.push_back(charForm);
-}
-
-void CMainWindow::btnPet_Click(SDL_Event& e) {
-	if (battle) return;
-	CPetListForm* petForm = new CPetListForm();
-	Windows.push_back(petForm);
-}
-
 void CMainWindow::btnMap_Click(SDL_Event& e) {
+	CPetComposeForm *frm = new CPetComposeForm();
+	PushWindow(frm);
 	//testing for pet magic evolve. compose is next!
 	/*CPetMagic *pm = new CPetMagic(renderer, 0);
 	ColorShift cs[3];
@@ -1166,18 +976,6 @@ void CMainWindow::btnMap_Click(SDL_Event& e) {
 	pm->addDestination(57, cs);
 	map->addPetMagic(pm);
 	pm->start();*/
-}
-
-void CMainWindow::btnInventory_Click(SDL_Event& e) {
-	if (battle) return;
-	CInventoryForm* invForm = new CInventoryForm();
-	Windows.push_back(invForm);
-}
-
-void CMainWindow::btnWuxing_Click(SDL_Event& e) {
-	if (battle) return;
-	CWuxingForm* wuxForm = new CWuxingForm();
-	Windows.push_back(wuxForm);
 }
 
 void CMainWindow::btnKungfu_Click(SDL_Event& e) {
@@ -1191,41 +989,6 @@ void CMainWindow::btnTeam_Click(SDL_Event& e) {
 
 void CMainWindow::btnGuild_Click(SDL_Event& e) {
 	//
-}
-
-void CMainWindow::btnMenuCollapse_Click(SDL_Event& e) {
-	if (battle) return;
-	bMenuHidden = true;
-	btnMenuCollapse->SetVisible(false);
-	btnMenuExpand->SetVisible(true);
-
-	((CButton*)widgets["btnJump"])->SetVisible(false);
-	((CButton*)widgets["btnFight"])->SetVisible(false);
-	((CButton*)widgets["btnMap"])->SetVisible(false);
-	((CButton*)widgets["btnInventory"])->SetVisible(false);
-	((CButton*)widgets["btnWuxing"])->SetVisible(false);
-	((CButton*)widgets["btnKungfu"])->SetVisible(false);
-	((CButton*)widgets["btnTeam"])->SetVisible(false);
-	//((CButton*)widgets["btnFriend"])->SetVisible(false);
-	((CButton*)widgets["btnGuild"])->SetVisible(false);
-
-	if (ShowingTeamButtons) HideTeamButtons();
-}
-
-void CMainWindow::btnMenuExpand_Click(SDL_Event& e) {
-	bMenuHidden = false;
-	btnMenuCollapse->SetVisible(true);
-	btnMenuExpand->SetVisible(false);
-
-	((CButton*)widgets["btnJump"])->SetVisible(true);
-	((CButton*)widgets["btnFight"])->SetVisible(true);
-	((CButton*)widgets["btnMap"])->SetVisible(true);
-	((CButton*)widgets["btnInventory"])->SetVisible(true);
-	((CButton*)widgets["btnWuxing"])->SetVisible(true);
-	((CButton*)widgets["btnKungfu"])->SetVisible(true);
-	((CButton*)widgets["btnTeam"])->SetVisible(true);
-	//((CButton*)widgets["btnFriend"])->SetVisible(true);
-	((CButton*)widgets["btnGuild"])->SetVisible(true);
 }
 
 void CMainWindow::btnTeamCreate_Click(SDL_Event& e) {
@@ -1250,7 +1013,7 @@ void CMainWindow::btnTeamDisband_Click(SDL_Event& e) {
 
 void CMainWindow::OnBattle_Start(SDL_Event& e) {
 	//bPriorMenuState = bMenuHidden;
-	if (bMenuHidden) btnMenuExpand_Click(e);
+	/*if (bMenuHidden) btnMenuExpand_Click(e);
 
 	((CButton*)widgets["btnJump"])->SetVisible(false);
 	((CButton*)widgets["btnCloud"])->SetVisible(false);
@@ -1260,7 +1023,7 @@ void CMainWindow::OnBattle_Start(SDL_Event& e) {
 	((CButton*)widgets["btnWuxing"])->SetVisible(false);
 	((CButton*)widgets["btnKungfu"])->SetVisible(false);
 	((CButton*)widgets["btnTeam"])->SetVisible(false);
-	((CButton*)widgets["btnGuild"])->SetVisible(false);
+	((CButton*)widgets["btnGuild"])->SetVisible(false);*/
 }
 
 void CMainWindow::OnBattle_End(SDL_Event& e) {
@@ -1269,7 +1032,7 @@ void CMainWindow::OnBattle_End(SDL_Event& e) {
 	//	btnMenuCollapse_Click(e);
 	//}
 
-	((CButton*)widgets["btnJump"])->SetVisible(true);
+	/*((CButton*)widgets["btnJump"])->SetVisible(true);
 	((CButton*)widgets["btnCloud"])->SetVisible(true);
 	((CButton*)widgets["btnFight"])->SetVisible(true);
 	((CButton*)widgets["btnMap"])->SetVisible(true);
@@ -1277,7 +1040,7 @@ void CMainWindow::OnBattle_End(SDL_Event& e) {
 	((CButton*)widgets["btnWuxing"])->SetVisible(true);
 	((CButton*)widgets["btnKungfu"])->SetVisible(true);
 	((CButton*)widgets["btnTeam"])->SetVisible(true);
-	((CButton*)widgets["btnGuild"])->SetVisible(true);
+	((CButton*)widgets["btnGuild"])->SetVisible(true);*/
 }
 
 /* Main Form - Hooks */
@@ -1360,77 +1123,77 @@ void CMainWindow::setMapCoordLabels(SDL_Point coord) {
 }
 
 void CMainWindow::setPlayerHealthGauge(int val) {
-	playerInfoFrame->setPlayerHealthGauge(val);
+	mainUI->setPlayerHealthGauge(val);
 }
 
 
 void CMainWindow::setPlayerHealthGauge(int val, int max) {
-	playerInfoFrame->setPlayerHealthGauge(val, max);
+	mainUI->setPlayerHealthGauge(val, max);
 }
 
 
 void CMainWindow::shiftPlayerHealthGauge(int val) {
-	playerInfoFrame->shiftPlayerHealthGauge(val);
+	mainUI->shiftPlayerHealthGauge(val);
 }
 
 
 void CMainWindow::setPlayerManaGauge(int val) {
-	playerInfoFrame->setPlayerManaGauge(val);
+	mainUI->setPlayerManaGauge(val);
 }
 
 
 void CMainWindow::setPlayerManaGauge(int val, int max) {
-	playerInfoFrame->setPlayerManaGauge(val, max);
+	mainUI->setPlayerManaGauge(val, max);
 }
 
 
 void CMainWindow::shiftPlayerManaGauge(int val) {
-	playerInfoFrame->shiftPlayerManaGauge(val);
+	mainUI->shiftPlayerManaGauge(val);
 }
 
 
 void CMainWindow::setPlayerExpGauge(int val) {
-	playerInfoFrame->setPlayerExpGauge(val);
+	mainUI->setPlayerExpGauge(val);
 }
 
 
 void CMainWindow::setPlayerExpGauge(int val, int max) {
-	playerInfoFrame->setPlayerExpGauge(val, max);
+	mainUI->setPlayerExpGauge(val, max);
 }
 
 
 void CMainWindow::shiftPlayerExpGauge(int val) {
-	playerInfoFrame->shiftPlayerExpGauge(val);
+	mainUI->shiftPlayerExpGauge(val);
 }
 
 
 void CMainWindow::setPetHealthGauge(int val) {
-	playerInfoFrame->setPetHealthGauge(val);
+	mainUI->setPetHealthGauge(val);
 }
 
 
 void CMainWindow::setPetHealthGauge(int val, int max) {
-	playerInfoFrame->setPetHealthGauge(val, max);
+	mainUI->setPetHealthGauge(val, max);
 }
 
 
 void CMainWindow::shiftPetHealthGauge(int val) {
-	playerInfoFrame->shiftPetHealthGauge(val);
+	mainUI->shiftPetHealthGauge(val);
 }
 
 
 void CMainWindow::setPetExpGauge(int val) {
-	playerInfoFrame->setPetExpGauge(val);
+	mainUI->setPetExpGauge(val);
 }
 
 
 void CMainWindow::setPetExpGauge(int val, int max) {
-	playerInfoFrame->setPetExpGauge(val, max);
+	mainUI->setPetExpGauge(val, max);
 }
 
 
 void CMainWindow::shiftPetExpGauge(int val) {
-	playerInfoFrame->shiftPetExpGauge(val);
+	mainUI->shiftPetExpGauge(val);
 }
 
 void CMainWindow::openShop(int sId) {

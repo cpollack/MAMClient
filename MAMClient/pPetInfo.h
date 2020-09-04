@@ -9,8 +9,9 @@ enum PetInfoMode {
 	//2 - retrieve from storage?
 	//3 - trading?
 	//4 - related to pet shop
+	pimPreviewCompose = 5,
 	//6 - cpacknpc checkin
-	pimPreview = 7,
+	pimPreviewWux = 7,
 	//9 - move to storage or query storaged pet
 };
 

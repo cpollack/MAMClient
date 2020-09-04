@@ -83,9 +83,16 @@ void CGauge::Render_Textures() {
 				SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
 			}
 			else {
-				SDL_Rect shiftRect_src = { 0, 0, fillWidth + excess, Height };
-				SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
-				SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+				if (RightFill) {
+					SDL_Rect shiftRect_src = { 0, 0, fillWidth + excess, Height };
+					SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
+					SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+				}
+				else {
+					SDL_Rect shiftRect_src = { 0, 0, fillWidth + excess, Height };
+					SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
+					SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+				}
 			}
 		}
 
@@ -134,9 +141,17 @@ void CGauge::Render_Textures() {
 				SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
 			}
 			else {
-				SDL_Rect shiftRect_src = { 0, 0, ((float)shiftUp / (float)Max * Width) + excess, Height };
-				SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
-				SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+				if (RightFill) {
+					int val = ((float)shiftUp / (float)Max * Width) + excess;
+					SDL_Rect shiftRect_src = { Width - val, 0, val, Height };
+					SDL_Rect shiftRect_dest = { X + shiftRect_src.x, Y, shiftRect_src.w, shiftRect_src.h };
+					SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+				}
+				else {
+					SDL_Rect shiftRect_src = { 0, 0, ((float)shiftUp / (float)Max * Width) + excess, Height };
+					SDL_Rect shiftRect_dest = { X, Y, shiftRect_src.w, shiftRect_src.h };
+					SDL_RenderCopy(renderer, foregroundTexture, &shiftRect_src, &shiftRect_dest);
+				}
 			}
 		}
 
@@ -144,9 +159,22 @@ void CGauge::Render_Textures() {
 		return;
 	}
 
-	SDL_Rect fgRect_src = { 0, 0, (int)(Width * fillPerc), Height };
-	if (Verticle) fgRect_src = { 0, Height - (int)(Height * fillPerc), Width, (int)(Height * fillPerc) };
-	SDL_Rect fgRect_dest = { X, Y + fgRect_src.y, fgRect_src.w, fgRect_src.h };
+	SDL_Rect fgRect_src;
+	SDL_Rect fgRect_dest;
+	if (Verticle) {
+		fgRect_src = { 0, Height - (int)(Height * fillPerc), Width, (int)(Height * fillPerc) };
+		fgRect_dest = { X, Y + fgRect_src.y, fgRect_src.w, fgRect_src.h };
+	}
+	else {
+		if (RightFill) {
+			fgRect_src = { Width - (int)(Width * fillPerc), 0, (int)(Width * fillPerc), Height };
+			fgRect_dest = { X + fgRect_src.x, Y + fgRect_src.y, fgRect_src.w, fgRect_src.h };
+		}
+		else {
+			fgRect_src = { 0, 0, (int)(Width * fillPerc), Height };
+			fgRect_dest = { X, Y + fgRect_src.y, fgRect_src.w, fgRect_src.h };
+		}
+	}
 	SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
 }
 

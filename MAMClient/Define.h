@@ -114,3 +114,7 @@ struct Effect {
 	Sprite* sprite = nullptr;
 };
 using EffectItr = std::vector<Effect>::iterator;
+
+//Fonts
+#define ARIAL		"font\\Arial.ttf"
+#define ARIALUNI	"font\\ArialUni.ttf"

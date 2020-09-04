@@ -1,6 +1,6 @@
 #pragma once
 
-const char version[] = "DEV 1.0.19";
+const char version[] = "ALPHA 1.1.001";
 const char versionDate[] = __DATE__;
 
 extern bool bExitApplication;

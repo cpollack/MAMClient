@@ -353,6 +353,10 @@ void Player::removePet(int petId) {
 }
 
 
+void Player::addItem(Item* item) {
+	inventory->addItem(item);
+}
+
 void Player::addItem(pItem* packet) {
 	inventory->addItem(packet);
 }

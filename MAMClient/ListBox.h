@@ -23,6 +23,7 @@ public:
 	void OnListItemHoverEnd(SDL_Event& e);
 	void OnClick(SDL_Event& e);
 	void SelectionChange(SDL_Event& e);
+	void SelectionClick(SDL_Event &e);
 	void SelectionDblClick(SDL_Event &e);
 	void OnItemDragStart(SDL_Event &e);
 	void OnItemDragEnd(SDL_Event &e);

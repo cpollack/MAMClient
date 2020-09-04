@@ -25,6 +25,7 @@ public:
 	void SetLoyalty(int iLoy) { loyalty = iLoy; }
 
 	virtual int GetMaxLife();
+	bool IsFullLife() { return GetCurrentLife() == GetMaxLife(); }
 
 	int Pet::getAttack();
 	void SetAttack(int iAttack) { attack = iAttack; }

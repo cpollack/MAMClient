@@ -13,7 +13,7 @@
 
 
 CEvolveForm::CEvolveForm(Pet* pPet) : CWindow("EvolveForm.JSON") {
-	Type = FT_INVENTORY;
+	Type = FT_PETEVOLVE;
 	pet = pPet;
 
 	SetTitle("Evolve " + pet->GetName());

@@ -7,7 +7,7 @@ class CLoginForm;
 class CPromptForm;
 class CCharCreateForm;
 
-class CPlayerInfoFrame;
+class CMainUI;
 class CGauge;
 class CImageBox;
 class CVideoFrame;
@@ -117,20 +117,11 @@ public: //Widget Event hooks
 private: 
 	void btnJump_Click(SDL_Event& e);
 	void btnCloud_Click(SDL_Event& e);
-	void btnFight_Click(SDL_Event& e);
-	void btnAutoFight_Click(SDL_Event& e);
-
-	void btnCharacter_Click(SDL_Event& e);
-	void btnPet_Click(SDL_Event& e);
 
 	void btnMap_Click(SDL_Event& e);
-	void btnInventory_Click(SDL_Event& e);
-	void btnWuxing_Click(SDL_Event& e);
 	void btnKungfu_Click(SDL_Event& e);
 	void btnTeam_Click(SDL_Event& e);
 	void btnGuild_Click(SDL_Event& e);
-	void btnMenuCollapse_Click(SDL_Event& e);
-	void btnMenuExpand_Click(SDL_Event& e);
 
 	void btnTeamCreate_Click(SDL_Event& e);
 	void btnTeamJoin_Click(SDL_Event& e);
@@ -147,19 +138,14 @@ private:
 	CPromptForm *dcPromptForm = nullptr;
 	bool Disconnected = false, RelogReady = false;
 
-	CPlayerInfoFrame *playerInfoFrame;
+	//CPlayerInfoFrame *playerInfoFrame;
+	CMainUI *mainUI;
 	CLabel *lblCoordX, *lblCoordY;
 	CLabel *lblName, *lblNickName, *lblLevel;
 	CLabel *lblSpouse, *lblCash, *lblReputation;
 	CLabel *lblRank, *lblGuild, *lblGuildRank;
 	CImageBox *playerPortrait, *petPortrait;
 	CImageBox *imgPortrait;
-	//CGauge *gaugePlayerHealth, *gaugePlayerMana, *gaugePlayerExp;
-	//CGauge *gaugePetHealth, *gaugePetExp;
-	
-	Asset MenuBG, MenuRight;
-	CButton *btnMenuCollapse, *btnMenuExpand;
-	bool bMenuHidden = false, bPriorMenuState;
 
 	User* lastMouseoverUser = nullptr;
 	int userDetailsStartTime;

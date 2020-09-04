@@ -16,7 +16,8 @@ CChat::CChat(CWindow* window) : CWidget(window) {
 	CWidget::SetWidth(320);
 	CWidget::SetHeight(176);
 	SetX(0);
-	SetY(window->GetHeight() - Height);
+	//SetY(window->GetHeight() - Height);
+	SetY(0);
 
 	ChatFrame.reset(new Texture(renderer, "data/GUI/Chat/chat.png"));
 	ChatFrame->setBlendMode(SDL_BLENDMODE_BLEND);

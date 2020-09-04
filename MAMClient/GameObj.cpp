@@ -29,7 +29,7 @@ void GameObj::SetCoord(SDL_Point coord) {
 }
 
 SDL_Rect GameObj::GetRenderRect() {
-	SDL_Rect renderRect;
+	SDL_Rect renderRect = { 0, 0, 0, 0 };
 	if (sprite) {
 		//Always reload the sprite location in case its location became invalid
 		sprite->setLocation(Position.x, Position.y);
@@ -41,7 +41,7 @@ SDL_Rect GameObj::GetRenderRect() {
 }
 
 SDL_Rect GameObj::GetRenderRect(int frame) {
-	SDL_Rect renderRect;
+	SDL_Rect renderRect = { 0, 0, 0, 0 };
 	if (sprite) {
 		//Always reload the sprite location in case its location became invalid
 		sprite->setLocation(Position.x + SpriteOffset.x, Position.y + SpriteOffset.x);

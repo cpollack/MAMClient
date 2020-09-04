@@ -73,7 +73,7 @@ void pPetInfo::process() {
 		if (pet) pet->updateInfo(this);
 		break;
 
-	case pimPreview:
+	case pimPreviewWux:
 		pet = new Pet(this);
 
 		e.type = CUSTOMEVENT_PET;

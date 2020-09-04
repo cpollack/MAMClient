@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5519FEFE-C279-4274-92B0-0BA3A03DD55C}</ProjectGuid>
     <RootNamespace>MAMClient</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -82,7 +82,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(VcpkgRoot)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(VcpkgRoot)include;$(ProjectDir)include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -90,6 +90,7 @@
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_gfx.lib;ws2_32.lib;winmm.lib;FreeImage.lib;FreeImagePlus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(ProjectDir)include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -145,6 +146,7 @@
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="BattleAI.cpp" />
     <ClCompile Include="BattleArray.cpp" />
+    <ClCompile Include="BattleConfigForm.cpp" />
     <ClCompile Include="BattleResult.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -179,6 +181,7 @@
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="INI.cpp" />
     <ClCompile Include="Label.cpp" />
+    <ClCompile Include="MainUI.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapFile.cpp" />
     <ClCompile Include="MessageForm.cpp" />
@@ -188,6 +191,7 @@
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="PetComposeForm.cpp" />
     <ClCompile Include="PetEquipForm.cpp" />
     <ClCompile Include="PetMagic.cpp" />
     <ClCompile Include="pItemAct.cpp" />
@@ -238,6 +242,7 @@
     <ClCompile Include="pWalk.cpp" />
     <ClCompile Include="pWuxing.cpp" />
     <ClCompile Include="RC5.cpp" />
+    <ClCompile Include="RefineItemForm.cpp" />
     <ClCompile Include="RLE.cpp" />
     <ClCompile Include="ShopDataFile.cpp" />
     <ClCompile Include="ShopForm.cpp" />
@@ -263,6 +268,7 @@
     <ClInclude Include="Battle.h" />
     <ClInclude Include="BattleAI.h" />
     <ClInclude Include="BattleArray.h" />
+    <ClInclude Include="BattleConfigForm.h" />
     <ClInclude Include="BattleResult.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="Button.h" />
@@ -287,6 +293,8 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GameLibrary.h" />
+    <ClInclude Include="MainUI.h" />
+    <ClInclude Include="PetComposeForm.h" />
     <ClInclude Include="PetEquipForm.h" />
     <ClInclude Include="PetMagic.h" />
     <ClInclude Include="PlayerInfoFrame.h" />
@@ -356,6 +364,7 @@
     <ClInclude Include="pWalk.h" />
     <ClInclude Include="pWuxing.h" />
     <ClInclude Include="RC5.h" />
+    <ClInclude Include="RefineItemForm.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RLE.h" />
     <ClInclude Include="ShopDataFile.h" />

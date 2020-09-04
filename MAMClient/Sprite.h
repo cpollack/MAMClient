@@ -14,6 +14,7 @@
 
 enum SpriteType {
 	stCharacter,
+	stPet,
 	stMonster,
 	stNpc,
 	stAni,

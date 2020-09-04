@@ -440,17 +440,17 @@ void RLE::reloadColorMap(bool useHslShifts) {
 				colorMap[i].blue = pixel.blue;
 			}
 			else {
-				//Loop through HSL Color Shift sets until we find a matching set
-				bool hslShiftFound = false;
+				//Loop through HSB Color Shift sets until we find a matching set
+				bool hsbShiftFound = false;
 				for (auto shift : colorShifts) {
 					if (shiftHSB(&mapColor, shift)) {
-						hslShiftFound = true;
+						hsbShiftFound = true;
 						break;
 					}
 				}
-				if (!hslShiftFound) continue;
+				if (!hsbShiftFound) continue;
 
-				//The new color uses the shifted hue and static sat, brightness changes are done after
+				//The new color uses the shifted hue and static sat, brightness is conditionally altered
 				newColor.hue = mapColor.hue;
 				newColor.sat = mapColor.sat;
 				pixel = HSBtoRGB(newColor);

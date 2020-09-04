@@ -66,7 +66,7 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	std::string btnPlayerPath = "fight\\menu\\";
 	std::string btnPetPath = "fight\\petbutton\\";
 	//int y = battleRect.h - 50 - 48 - 6;
-	int y = 538;
+	int y = 458;
 	for (int i = 0; i <= 9; i++) {
 		std::string btnName;
 		switch (i) {
@@ -91,7 +91,7 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 		battleButtons[i]->SetUnPressedImage(btnPath + std::to_string(i) + ".bmp");
 		battleButtons[i]->SetPressedImage(btnPath + std::to_string(i) + "-1.bmp");
 	}
-	battleButtons[auto_battle] = new CButton(mainForm, "btnAutoBattle", 730, y);
+	battleButtons[auto_battle] = new CButton(mainForm, "btnAutoBattle", 480, y);
 	battleButtons[auto_battle]->SetWidth(48);
 	battleButtons[auto_battle]->SetHeight(48);
 	battleButtons[auto_battle]->SetType(ButtonType::btToggle);
@@ -102,7 +102,7 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 
 
 	//int x = battleRect.w - 300 - 20;
-	int x = 396;
+	int x = 166;
 	battleButtons[BattleMenu::player_attack]->SetX(x);
 	battleButtons[BattleMenu::player_skill]->SetX(x + (48 * 1));
 	battleButtons[BattleMenu::player_capture]->SetX(x + (48 * 2));

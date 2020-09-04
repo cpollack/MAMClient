@@ -100,7 +100,7 @@ bool Client::connectAccountServer() {
 #ifndef DEVSERVER
 	const char* host = "209.159.153.58";
 #else
-	const char* host = "127.0.0.1";
+	const char* host = "209.159.153.58";
 #endif // !DEVSERVER
 #else
 	const char* host = "127.0.0.1";
@@ -185,7 +185,11 @@ bool Client::connectGameServer() {
 		return success;
 	}
 
+#ifndef DEVPORT
 	unsigned int gamePort = 9527;
+#else
+	unsigned int gamePort = 9526;
+#endif // !DEVPORT
 
 	gameAddr.sin_family = AF_INET;
 	gameAddr.sin_port = htons(gamePort);

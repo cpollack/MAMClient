@@ -61,3 +61,10 @@ Item* Inventory::getItemInSlot(int pos) {
 	if (inventory.size() >= pos && inventory[pos]) return inventory[pos];
 	return nullptr;
 }
+
+Item* Inventory::findItem(std::string name, std::string inventor) {
+	for (auto item : inventory) {
+		if (item->GetName().compare(name) == 0 && item->GetInventor().compare(inventor) == 0) return item;
+	}
+	return nullptr;
+}

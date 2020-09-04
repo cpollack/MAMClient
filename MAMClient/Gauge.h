@@ -21,6 +21,7 @@ public:
 	void SetIncreaseImage(std::string imagePath);
 	void SetUseGUI(bool use);
 	void SetVerticle(bool bVer) { Verticle = bVer; }
+	void SetRightFill(bool rFill) { RightFill = rFill; }
 
 	int GetCurrent() { return Current; }
 	void set(int val);
@@ -47,6 +48,8 @@ private:
 	bool UseGUI = false;
 	bool usingImages = false;
 	bool Verticle = false;
+	bool RightFill = false;
+	bool TopFill = false;
 	std::string backgroundImagePath;
 	std::string foregroundImagePath;
 	std::string decreaseImagePath;

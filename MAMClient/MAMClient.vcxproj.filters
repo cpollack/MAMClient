@@ -30,12 +30,6 @@
     <Filter Include="Source Files\Forms">
       <UniqueIdentifier>{6cb9cd71-dba5-4b44-bb46-c9be8746ae93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Battle">
-      <UniqueIdentifier>{fb63ac97-ad34-40f1-9245-2817b6881817}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Battle">
-      <UniqueIdentifier>{094ec065-dd48-4061-8c21-d82582921eaa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Packet">
       <UniqueIdentifier>{51b43ca9-165e-43eb-a70c-0939837c2a0b}</UniqueIdentifier>
     </Filter>
@@ -90,6 +84,12 @@
     <Filter Include="Source Files\Core\Game Objects">
       <UniqueIdentifier>{b8d7d54e-2753-4b92-accd-0c8c78a545b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Core\Battle">
+      <UniqueIdentifier>{094ec065-dd48-4061-8c21-d82582921eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Battle">
+      <UniqueIdentifier>{fb63ac97-ad34-40f1-9245-2817b6881817}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Widget.cpp">
@@ -123,13 +123,13 @@
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="Battle.cpp">
-      <Filter>Source Files\Battle</Filter>
+      <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
     <ClCompile Include="BattleResult.cpp">
-      <Filter>Source Files\Battle</Filter>
+      <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
     <ClCompile Include="BattleScene.cpp">
-      <Filter>Source Files\Battle</Filter>
+      <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
     <ClCompile Include="Cipher.cpp">
       <Filter>Source Files\Core</Filter>
@@ -399,10 +399,10 @@
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="BattleArray.cpp">
-      <Filter>Source Files\Battle</Filter>
+      <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
     <ClCompile Include="BattleAI.cpp">
-      <Filter>Source Files\Battle</Filter>
+      <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
     <ClCompile Include="PlayerInfoFrame.cpp">
       <Filter>Source Files\Widgets</Filter>
@@ -437,6 +437,18 @@
     <ClCompile Include="PetMagic.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="PetComposeForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="RefineItemForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="MainUI.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleConfigForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Label.h">
@@ -470,13 +482,13 @@
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="Battle.h">
-      <Filter>Header Files\Battle</Filter>
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
     <ClInclude Include="BattleResult.h">
-      <Filter>Header Files\Battle</Filter>
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
     <ClInclude Include="BattleScene.h">
-      <Filter>Header Files\Battle</Filter>
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
     <ClInclude Include="Cipher.h">
       <Filter>Header Files\Core</Filter>
@@ -746,13 +758,13 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="FloatingLabel.h">
-      <Filter>Header Files\Battle</Filter>
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
     <ClInclude Include="BattleArray.h">
-      <Filter>Header Files\Battle</Filter>
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
     <ClInclude Include="BattleAI.h">
-      <Filter>Header Files\Battle</Filter>
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
     <ClInclude Include="PlayerInfoFrame.h">
       <Filter>Header Files\Widgets</Filter>
@@ -789,6 +801,18 @@
     </ClInclude>
     <ClInclude Include="PetMagic.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PetComposeForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="RefineItemForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="MainUI.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleConfigForm.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

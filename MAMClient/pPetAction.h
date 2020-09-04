@@ -8,6 +8,7 @@ enum PetAction {
 	paLearnSkill = 4,
 	paForgetSkill = 5,
 	paUseItem = 7,
+	paCompose = 8,
 	paEvolve = 10,
 	//12 - checkout pet ?
 	paUnequip = 13,
@@ -20,6 +21,7 @@ enum PetAction {
 	paRemove = 21,
 	//22 ?
 	//25
+	paPreviewCompose = 28,
 	//35 ?
 };
 

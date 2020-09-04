@@ -17,6 +17,8 @@ public:
 	int Inventory::getItemCount();
 	Item* Inventory::getItem(int itemId);
 	Item* Inventory::getItemInSlot(int pos);
+
+	Item* findItem(std::string name, std::string inventor);
 };
 
 #endif

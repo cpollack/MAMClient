@@ -147,7 +147,11 @@ void CLoginForm::handleLogin() {
 		//server should not be hardcoded
 
 #ifndef DEVSERVER
+#ifndef DEVPORT
 		gClient.login(fldAccount->GetText(), fldPassword->GetText(), "MythOfOrient");
+#else
+		gClient.login(fldAccount->GetText(), fldPassword->GetText(), "Dev");
+#endif // !DEVPORT
 #else
 		gClient.login(fldAccount->GetText(), fldPassword->GetText(), "HeavenAscent");
 #endif // !DEVSERVER

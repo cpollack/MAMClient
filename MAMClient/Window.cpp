@@ -194,7 +194,9 @@ void CWindow::RemoveWidget(std::string widgetName) {
 }
 
 void CWindow::ClearWidgets() {
-	for (auto widget : widgets) delete widget.second;
+	for (auto widget : widgets) {
+		delete widget.second;
+	}
 	widgets.clear();
 	widgetsByDepth.clear();
 

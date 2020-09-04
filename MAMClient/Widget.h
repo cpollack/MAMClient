@@ -66,12 +66,6 @@ protected:
 	bool Dragging;
 	SDL_Rect DragStart;
 
-	//Text related properties
-	bool Underlined, Bold, Multiline;
-	int TextWrapWidth;
-	std::string Text;
-	std::wstring wText;
-
 public: //Accessors
 	int GetX() { return X; }
 	int GetY() { return Y; }
@@ -91,6 +85,8 @@ public: //Accessors
 	void AddChild(CWidget* widget);
 	void SetVisible(bool visible);
 
+	void SetFont(std::string fontFile);
+	void SetFontSize(int size);
 	void SetFontColor(SDL_Color fc);
 	void SetBackColor(SDL_Color bc);
 
@@ -120,10 +116,20 @@ public:
 	virtual void SetText(std::wstring value);
 	virtual void RenderText();
 protected:
-	TTF_Font* font, *fontUni;	
+	void LoadFont();
+	void LoadFontUni();
+	TTF_Font* font = nullptr, *fontUni = nullptr;	
 	SDL_Texture* fontTexture = NULL;
 	SDL_Rect fontRect;
 	SDL_Color fontColor, backColor;
+
+	//Text related properties
+	int fontSize = 12;
+	std::string strFont, strFontUni;
+	bool Underlined, Bold, Multiline;
+	int TextWrapWidth;
+	std::string Text;
+	std::wstring wText;
 
 protected:
 	std::map<std::string, CWidget*> widgets;

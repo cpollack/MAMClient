@@ -291,6 +291,7 @@ SDL_Rect Sprite::getRenderRect(int frame) {
 	switch (type) {
 	case stCharacter:
 	case stNpc:
+	case stPet:
 	case stMonster:
 	case stEffect:
 		renderRect = { (x - (int)(sprRect.w / 2)), (y - (int)(sprRect.h * 0.75)), sprRect.w, sprRect.h };

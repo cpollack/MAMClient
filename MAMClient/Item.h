@@ -48,6 +48,8 @@ public:
 	int getLevel() { return level; }
 	std::string getTexturePath(int size);
 	std::string Item::GetName();
+	std::string Item::GetCreator() { return creator; }
+	std::string Item::GetInventor() { return creator; }
 	std::wstring Item::getDetails();
 	std::wstring Item::getShopDetails();
 

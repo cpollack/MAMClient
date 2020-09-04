@@ -296,7 +296,12 @@ void GameMap::OnClick(SDL_Event& e) {
 	setMouseCoordinates(mx, my);
 	if (e.button.button == SDL_BUTTON_LEFT) {
 		if (!changingMap) {
-			if (jumpMode && !player->GetFlying()) {
+			//const Uint8 *state = SDL_GetKeyboardState(NULL);
+			bool isJumping = false;
+			//if (state[SDL_SCANCODE_LCTRL]) isJumping = true;
+			if (SDL_GetModState() & KMOD_LCTRL) isJumping = true;
+
+			if (isJumping && !player->GetFlying()) {
 				//Jump
 				player->jumpTo(SDL_Point{ mouseX, mouseY });
 				checkPortal = true;
@@ -486,7 +491,7 @@ void GameMap::renderMasksTransparent() {
 	for (auto user : userList) objects.push_back(user);
 
 	for (auto object : objects) {
-		if (object->GetSprite()->subimages.size() == 0) continue;
+		if (object->GetSprite() && object->GetSprite()->subimages.size() == 0) continue;
 		if (doRectIntersect(object->GetRenderRect(), mapRect)) {
 
 			bool draw = false;

@@ -120,6 +120,7 @@ public: // Pets
 	void Player::removePet(int petId);
 
 public: // Items
+	void addItem(Item* item);
 	void addItem(pItem* packet);
 	void removeItem(Item* item);
 	void Player::useItem(int itemId);

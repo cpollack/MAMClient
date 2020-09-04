@@ -5,9 +5,10 @@
 CWidget::CWidget(CWindow* window) {
 	Window = window;
 	renderer = Window->renderer;
-	font = gui->font;
-	fontUni = gui->fontUni;
-	fontColor = gui->fontColor;
+
+	strFont = ARIAL;
+	strFontUni = ARIALUNI;
+	LoadFont();
 	backColor = { 0, 0, 0, 0 };
 	Loaded = true;
 }
@@ -21,9 +22,9 @@ CWidget::CWidget(CWindow* window, std::string name, int x, int y) {
 	Y = y;
 	widgetRect = SDL_Rect{ X, Y, Width, Height };
 
-	font = gui->font;
-	fontUni = gui->fontUni;
-	fontColor = gui->fontColor;
+	strFont = ARIAL;
+	strFontUni = ARIALUNI;
+	LoadFont();
 	backColor = { 0, 0, 0, 0 };
 	Loaded = true;
 }
@@ -44,9 +45,9 @@ CWidget::CWidget(CWindow* window, rapidjson::Value& vWidget) {
 	if (vWidget.HasMember("ReadOnly")) ReadOnly = vWidget["ReadOnly"].GetBool();
 
 	widgetRect = SDL_Rect{ X, Y, Width, Height };
-	font = gui->font;
-	fontUni = gui->fontUni;
-	fontColor = gui->fontColor; 
+	strFont = ARIAL;
+	strFontUni = ARIALUNI;
+	LoadFont();
 	backColor = { 0, 0, 0, 0 };
 	Loaded = true;
 }
@@ -54,30 +55,55 @@ CWidget::CWidget(CWindow* window, rapidjson::Value& vWidget) {
 
 CWidget::~CWidget() {
 	if (fontTexture) SDL_DestroyTexture(fontTexture);
-
-	//for (auto child : Children) delete child; //child widgets auto added to window widget list, and delete is handled there
+	if (font) TTF_CloseFont(font);
+	if (fontUni) TTF_CloseFont(fontUni);
 }
 
 /*void CWidget::SetRenderer(SDL_Renderer* rend) {
 	renderer = rend;
 }*/
 
+void CWidget::LoadFont() {
+	if (font) {
+		TTF_CloseFont(font);
+		font = nullptr;
+	}
+
+	font = TTF_OpenFont(strFont.c_str(), fontSize);
+	fontColor = gui->fontColor;
+}
+
+void CWidget::LoadFontUni() {
+	if (fontUni) {
+		TTF_CloseFont(fontUni);
+		fontUni = nullptr;
+	}
+
+	fontUni = TTF_OpenFont(strFontUni.c_str(), fontSize);
+	fontColor = gui->fontColor;
+}
+
 void CWidget::SetText(std::string value) {
 	Text = value;
 	wText.clear();
+	if (!font) LoadFont();
 	RenderText();
 }
 
 void CWidget::SetText(std::wstring value) {
 	wText = value;
 	Text.clear();
+	if (!fontUni) LoadFontUni();
 	RenderText();
 }
 
 void CWidget::RenderText() {
 	if (!renderer) return;
 	if (!Loaded) return;
-	if (fontTexture) SDL_DestroyTexture(fontTexture);
+	if (fontTexture) {
+		SDL_DestroyTexture(fontTexture);
+		fontTexture = NULL;
+	}
 	SDL_Surface* lSurface;
 
 	int fontStyle = TTF_STYLE_NORMAL;
@@ -186,7 +212,7 @@ void CWidget::RegisterEvent(std::string eventName, EventFunc evf) {
 void CWidget::RegisterEvent(std::string widgetName, std::string eventName, EventFunc evf) {
 	auto iter = widgets.find(widgetName);
 	if (iter != widgets.end()) {
-		iter->second->RegisterEvent(eventName, evf);
+		if (iter->second) iter->second->RegisterEvent(eventName, evf);
 	}
 }
 
@@ -263,6 +289,16 @@ void CWidget::AddChild(CWidget* widget) {
 
 void CWidget::SetVisible(bool visible) {
 	Visible = visible;
+}
+
+void CWidget::SetFont(std::string fontFile) {
+	strFont = fontFile;
+	LoadFont();
+}
+
+void CWidget::SetFontSize(int size) {
+	fontSize = size;
+	LoadFont();
 }
 
 void CWidget::SetFontColor(SDL_Color fc) {

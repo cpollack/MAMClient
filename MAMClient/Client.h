@@ -4,6 +4,7 @@
 //For local and new server testing
 //#define DEVSERVER
 //#define LOCALSERVER
+#define DEVPORT
 
 #define DEBUG_LOG
 #define DEBUG_PACKET

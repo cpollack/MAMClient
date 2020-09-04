@@ -426,14 +426,21 @@ void CListBox::OnClick(SDL_Event& e) {
 	if (Selected != clickIndex) {
 		Selected = clickIndex;
 		SelectionChange(e);
+		SelectionClick(e);
 	}
 	else if (Selected == clickIndex && clickIndex >= 0) {
 		if (e.button.clicks >= 2) SelectionDblClick(e);
+		else  SelectionClick(e);
 	}
 }
 
 void CListBox::SelectionChange(SDL_Event& e) {
 	auto iter = eventMap.find("SelectionChange");
+	if (iter != eventMap.end()) iter->second(e);
+}
+
+void CListBox::SelectionClick(SDL_Event& e) {
+	auto iter = eventMap.find("SelectionClick");
 	if (iter != eventMap.end()) iter->second(e);
 }
 

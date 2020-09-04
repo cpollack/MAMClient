@@ -57,12 +57,13 @@ void pItem::process() {
 
 	switch (mode) {
 	case imInventory:
-		player->addItem(this);
+		item = new Item(this);
+		player->addItem(item);
 
 		SDL_zero(e);
 		e.type = CUSTOMEVENT_ITEM;
 		e.user.code = ITEM_ADD;
-		//e.user.data1 = item; //refactor so player add item just takes item ptr?
+		e.user.data1 = item;
 		SDL_PushEvent(&e);
 		break;
 	case imEquipment:

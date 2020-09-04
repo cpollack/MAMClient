@@ -4,6 +4,7 @@
 #include "pNpc.h"
 
 #include "ShopDataFile.h"
+#include "RefineItemForm.h"
 
 #include "CustomEvents.h"
 #include "MainWindow.h"
@@ -55,6 +56,7 @@ void NPC::handleEvent(SDL_Event& e) {
 			SDL_Event interact;
 			SDL_zero(interact);
 			interact.type = CUSTOMEVENT_NPC;
+			interact.user.code = NPC_NONE;
 			interact.user.data1 = this;
 			interact.user.data2 = nullptr;
 
@@ -74,7 +76,12 @@ void NPC::handleEvent(SDL_Event& e) {
 					interact.user.data2 = shop;
 				}
 			}
-			if (interact.user.code != NPC_SHOP) {
+			if (Type == 110) {
+				interact.user.code = NPC_REFINE;
+				CRefineItemForm *form = new CRefineItemForm();
+				Windows.push_back(form);
+			}
+			if (interact.user.code == NPC_NONE) {
 				pNpc* npcPack = new pNpc(ID, 0, 0, 0);
 				gClient.addPacket(npcPack);		
 				interact.user.code = NPC_INTERACT;
