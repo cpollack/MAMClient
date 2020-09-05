@@ -1388,7 +1388,7 @@ void Battle::LoadItemList() {
 	int count = player->inventory->getItemCount();
 	for (int i = 0; i < count; i++) {
 		Item* pItem = player->inventory->getItemInSlot(i);
-		if (pItem && (pItem->getSort() == 700 || pItem->getSort() == 600)) { //700:Medicine, 600:Poison
+		if (pItem && (pItem->GetSort() == 700 || pItem->GetSort() == 600)) { //700:Medicine, 600:Poison
 			itemList.push_back(pItem);
 			Asset aItem(new Texture(renderer, pItem->getTexturePath(40), true));
 			itemAssets.push_back(aItem);
@@ -1401,19 +1401,19 @@ Asset Battle::CreateItemMouseover(Item* item) {
 	if (!item) return asset;
 
 	std::string text = item->GetName();
-	switch (item->getSort()) {
+	switch (item->GetSort()) {
 	case 600:
-		text += "\nReduce HP: " + formatInt(item->getLife());
+		text += "\nReduce HP: " + formatInt(item->GetLife());
 		text += "\nPoison";
 		break;
 	case 700:
-		text += "\nIncrease HP: " + formatInt(item->getLife());
-		text += "\nIncrease MP: " + formatInt(item->getMana());
+		text += "\nIncrease HP: " + formatInt(item->GetLife());
+		text += "\nIncrease MP: " + formatInt(item->GetMana());
 		text += "\nMedicine";
 		break;
 	}
 
-	int levelReq = item->getLevel();
+	int levelReq = item->GetLevel();
 	if (player->GetLevel() < levelReq) {
 		text += "\n[Unqualified]";
 	}

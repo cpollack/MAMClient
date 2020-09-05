@@ -312,9 +312,9 @@ void CPetListForm::ReloadAccessory() {
 	int iAtk = 0, iDef = 0, iDex = 0;
 	if (pItem) {
 		lblAccessory->SetText(pItem->GetName());
-		iAtk = pItem->getAttack();
-		iDef = pItem->getDefence();
-		iDex = pItem->getDexterity();
+		iAtk = pItem->GetAttack();
+		iDef = pItem->GetDefence();
+		iDex = pItem->GetDexterity();
 	}
 	else lblAccessory->SetText(" ");
 

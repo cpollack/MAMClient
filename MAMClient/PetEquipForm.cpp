@@ -118,7 +118,7 @@ void CPetEquipForm::UpdateInventory() {
 	for (int i = 0; i < imgItems.size(); i++) {
 		Item* pItem = player->inventory->getItemInSlot(nexItem++);
 		if (pItem) {
-			if (pItem->getType() == itAccessory) {
+			if (pItem->GetType() == itAccessory) {
 				SetItemToImageBox(imgItems[slot++], pItem);
 				localInv.push_back(pItem);
 			}
@@ -186,7 +186,7 @@ void CPetEquipForm::EquipAccessory(Item* pItem) {
 	if (!pItem) return;
 
 	//check level requirement of selected item
-	if (pet->GetLevel() < pItem->getLevel()) {
+	if (pet->GetLevel() < pItem->GetLevel()) {
 		doPromptError(this, "Error", pet->GetName() + " is not strong enough to equip this accessory.");
 		return;
 	}
@@ -213,7 +213,7 @@ void  CPetEquipForm::DoUnequip() {
 
 	player->inventory->addItem(item);
 	pet->setItem(nullptr);
-	if (item->getLife() != 0) customEvent(CUSTOMEVENT_PET, PET_LIFEMAX);
+	if (item->GetLife() != 0) customEvent(CUSTOMEVENT_PET, PET_LIFEMAX);
 	UpdateAccessory();
 	UpdateInventory();
 

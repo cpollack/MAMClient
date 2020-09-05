@@ -8,6 +8,11 @@
 #include "InventoryForm.h"
 #include "WuxingForm.h"
 
+//TEMP
+#include "PetMagic.h" 
+#include "PetComposeForm.h"
+//ENDTEMP
+
 #include "Window.h"
 #include "Gauge.h"
 #include "Label.h"
@@ -106,6 +111,13 @@ void CMainUI::CreateWidgets() {
 	btnWuxing->SetText("Wux");
 	widgets["btnWuxing"] = btnWuxing;
 	RegisterEvent("btnWuxing", "Click", std::bind(&CMainUI::btnWuxing_Click, this, std::placeholders::_1));
+
+	btnKungfu = new CButton(window, "btnKungfu", 535, 566);
+	btnKungfu->SetWidth(24);
+	btnKungfu->SetHeight(16);
+	btnKungfu->SetText("KF");
+	widgets["btnKungfu"] = btnKungfu;
+	RegisterEvent("btnKungfu", "Click", std::bind(&CMainUI::btnKungfu_Click, this, std::placeholders::_1));
 }
 
 void CMainUI::Load() {
@@ -310,6 +322,21 @@ void CMainUI::btnWuxing_Click(SDL_Event& e) {
 	if (battle) return;
 	CWuxingForm* wuxForm = new CWuxingForm();
 	Windows.push_back(wuxForm);
+}
+
+void CMainUI::btnKungfu_Click(SDL_Event& e) {
+	if (battle) return;
+
+	CPetComposeForm* compForm = new CPetComposeForm();
+	Windows.push_back(compForm);
+	//testing for pet magic evolve. compose is next!
+	/*CPetMagic *pm = new CPetMagic(renderer, 0);
+	ColorShift cs[3];
+	pm->setCoordinate(player->GetCoord());
+	pm->addSource(54, cs);
+	pm->addDestination(57, cs);
+	map->addPetMagic(pm);
+	pm->start();*/
 }
 
 void CMainUI::setPlayerHealthGauge(int val) {

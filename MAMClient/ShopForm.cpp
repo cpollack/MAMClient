@@ -156,7 +156,7 @@ CImageBox* CShopForm::createSellImageBox(Item* item) {
 		delete tName;
 	}
 
-	Texture* tCost = stringToTexture(renderer, "$" + formatInt(item->getCost()), gui->font, 0, gui->fontColor, 0);
+	Texture* tCost = stringToTexture(renderer, "$" + formatInt(item->GetCost()), gui->font, 0, gui->fontColor, 0);
 	if (tCost) {
 		tCost->rect.x = 52;
 		tCost->rect.y = 23;
@@ -233,7 +233,7 @@ void CShopForm::btnBuy_Click(SDL_Event& e) {
 	if (!BuyMode || !viewItem) return;
 
 	//buy > confirm, client send buy, server respond 1:iteminfo and 2:itemaction buy with id of recieved item (and cost to dec)
-	promptForm = doPrompt(this, "Purchase Confirmation", "Do you want to buy " + viewItem->GetName() + " for $" + formatInt(viewItem->getCost()) + "?", true);
+	promptForm = doPrompt(this, "Purchase Confirmation", "Do you want to buy " + viewItem->GetName() + " for $" + formatInt(viewItem->GetCost()) + "?", true);
 	Buying = true;
 }
 
@@ -248,7 +248,7 @@ void CShopForm::btnSell_Click(SDL_Event& e) {
 	if (BuyMode || !viewItem) return;
 
 	//sell > confirm, client send sell, server respond with sell, cash += 1/2 value, inventory update to remove
-	promptForm = doPrompt(this, "Sell Confirmation", "Are you sure you want to sell " + viewItem->GetName() + " for $" + formatInt(viewItem->getCost()) +"?", true);
+	promptForm = doPrompt(this, "Sell Confirmation", "Are you sure you want to sell " + viewItem->GetName() + " for $" + formatInt(viewItem->GetCost()) +"?", true);
 	Selling = true;
 }
 

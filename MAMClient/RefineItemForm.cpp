@@ -3,6 +3,8 @@
 
 #include "ImageBox.h"
 #include "Label.h"
+#include "Button.h"
+#include "Dropdown.h"
 
 #include "CustomEvents.h"
 #include "Player.h"
@@ -11,11 +13,26 @@
 #include "pItemAction.h"
 #include "pWuxing.h"
 
+/* Todo:
+	timer gauge
+	refine detail message
+*/
+
 CRefineItemForm::CRefineItemForm() : CWindow("RefineItemForm.JSON") {
 	Type = FT_REFINE;
 
 	HookWidgets();
 	UpdateInventory();
+
+	refineMethods.push_back({ "Basic Tempering", "RoughTemprStone", 2300, 100,  4, 1000 });
+	refineMethods.push_back({ "Skilled Tempering", "PotntTemprStone", 2301, 375,  5, 1500 });
+	refineMethods.push_back({ "Master Tempering", "HeavnTemprStone", 2302, 900,  6, 5000 });
+	refineMethods.push_back({ "Godly Tempering", "GodlyTemprStone", 2303, 2000, 7, 10000 });
+	for (auto rm : refineMethods) ddType->AddRow(rm.method);
+
+	UpdateItemInfo();
+	lblCash->SetText(formatInt(player->GetCash()));
+	lblMessage->SetText("Please select a tempering method.");
 }
 
 void CRefineItemForm::HookWidgets() {
@@ -25,11 +42,19 @@ void CRefineItemForm::HookWidgets() {
 	imgRefineSlot = createImageBox("imgRefineSlot");
 	imgRefineSlot->SetPosition(imgRefine->GetX() + 9, imgRefine->GetY() + 7);
 	imgRefineSlot->SetHoverDelay(0);
+	registerEvent("imgRefineSlot", "DoubleClick", std::bind(&CRefineItemForm::imgRefineSlot_DoubleClick, this, std::placeholders::_1));
+	registerEvent("imgRefineSlot", "OnHoverStart", std::bind(&CRefineItemForm::imgRefineSlot_OnHoverStart, this, std::placeholders::_1));
+	registerEvent("imgRefineSlot", "OnHoverEnd", std::bind(&CRefineItemForm::imgRefineSlot_OnHoverEnd, this, std::placeholders::_1));
 
-	lblCash = (CLabel*)GetWidget("lblCash");
+	lblLevel = (CLabel*)GetWidget("lblLevel");
 	lblAttr = (CLabel*)GetWidget("lblAttr");
+	lblCash = (CLabel*)GetWidget("lblCash");
+	lblMessage = (CLabel*)GetWidget("lblMessage");
 
-	btnBegin = (CButton*)GetWidget("btnUnequip");
+	ddType = (CDropDown*)GetWidget("ddType");
+	registerEvent("ddType", "Change", std::bind(&CRefineItemForm::ddType_Change, this, std::placeholders::_1));
+
+	btnBegin = (CButton*)GetWidget("btnBegin");
 	registerEvent("btnBegin", "Click", std::bind(&CRefineItemForm::btnBegin_Click, this, std::placeholders::_1));
 
 	std::string boxName = "imgItem";
@@ -57,14 +82,20 @@ void CRefineItemForm::handleEvent(SDL_Event& e) {
 			UpdateInventory();
 			Item* addItem = (Item*)e.user.data1;
 			if (addItem) {
-				if (addItem->GetName().compare("TrueTemprStone") == 0 && addItem->GetInventor().compare("¡ùRefinery") == 0) receivedItem = true;
+				if (addItem->GetName().compare(method.itemName) == 0 && addItem->GetInventor().compare("¡ùRefinery") == 0) receivedItem = true;
 				if (addItem->GetID() == itemId) {
 					wuxedItem = true;
 					item = addItem;
 					SetItemToImageBox(imgRefineSlot, item);
-					UpdateAttr();
+					UpdateItemInfo();
 				}
 			}
+		}
+	}
+
+	if (e.type == CUSTOMEVENT_PLAYER) {
+		if (e.user.code == PLAYER_MONEY) {
+			lblCash->SetText(formatInt(player->GetCash()));
 		}
 	}
 
@@ -86,6 +117,7 @@ void CRefineItemForm::render() {
 }
 
 void CRefineItemForm::step() {
+	CWindow::step();
 	if (!refining) return;
 
 	int currentTime = SDL_GetTicks();
@@ -95,7 +127,6 @@ void CRefineItemForm::step() {
 	Item* stone = nullptr;
 	
 	std::vector<PACKET_WUX_SLOT> packetSlots;
-	int itemSlot = 0;
 	int stoneSlot = 1;
 
 	pItemAction* itemActMsg;
@@ -104,18 +135,21 @@ void CRefineItemForm::step() {
 	switch (refineMode) {
 	case 1: //check for refine item
 		std::cout << "Checking for stone." << std::endl;
-		stone = inv->findItem("TrueTemprStone", "¡ùRefinery");
+		stone = inv->findItem(method.itemName, "¡ùRefinery");
 		if (!stone) refineMode = 2;
 		else refineMode = 4;
 		break;
 	case 2: //buy item
 		std::cout << "Buying stone." << std::endl;
 		
-		//check if Spirit stones are enough?
-		//check for full inv
+		if (player->GetCash() < method.cost) {
+			doPrompt(this, "Warning", "You do not have enough spirit stones to refine.");
+			refineMode = 0;
+			btnBegin->SetText("Begin");
+		}
 
 		receivedItem = false;
-		itemActMsg = new pItemAction(refineType, iaBuy);
+		itemActMsg = new pItemAction(method.itemId, iaBuy);
 		gClient.addPacket(itemActMsg);
 		refineMode++;
 		break;
@@ -129,7 +163,7 @@ void CRefineItemForm::step() {
 		std::cout << "Refining item." << std::endl;
 		wuxedItem = false;
 
-		stone = inv->findItem("TrueTemprStone", "¡ùRefinery");
+		stone = inv->findItem(method.itemName, "¡ùRefinery");
 		if (!stone) {
 			refineMode = 2;
 			//What happened? item didn't exist and we have to restart
@@ -152,9 +186,10 @@ void CRefineItemForm::step() {
 			packetSlots.push_back(pws);
 		}
 
-		msgWux = new pWuxing(WUX_MODE_START, 0, packetSlots);
+		msgWux = new pWuxing(WUX_MODE_START, itemSlot, packetSlots);
 		gClient.addPacket(msgWux);
 		refineMode++;
+		wuxCount++;
 		break;
 	case 5: //wait for wux confirmation
 		std::cout << "Waiting for results." << std::endl;
@@ -166,9 +201,17 @@ void CRefineItemForm::step() {
 		std::cout << "Restarting refining process!." << std::endl;
 		bool isMaxed = false;
 
-		//if (lastCoreStat != )
-
-		if (!isMaxed) refineMode = 1;
+		if (lastCoreStat != GetCoreAttr()) {
+			lastCoreStat = GetCoreAttr();
+			refineMode = 1;
+		}
+		else {
+			refineMode = 0;
+			btnBegin->SetText("Begin");
+			//std::string msg = "Refined a total of " + std::to_string(wuxCount) + " times.";
+			//doPrompt(this, "Finished Refining", msg);
+			doPrompt(this, "Complete", "The refining process has completed.");
+		}
 		break;
 	}
 
@@ -184,26 +227,36 @@ CImageBox* CRefineItemForm::createImageBox(std::string name) {
 	return imgBox;
 }
 
-void CRefineItemForm::UpdateAttr() {
-	int val;
-	switch (item->getType()) {
+int CRefineItemForm::GetCoreAttr() {
+	int val = 0;
+	switch (item->GetType()) {
 	case itWeapon:
-		val = item->getAttack();
+		val = item->GetAttack();
 		break;
 	case itArmor:
-		val = item->getDefence();
+		val = item->GetDefence();
 		break;
 	case itShoes:
-		val = item->getDexterity();
+		val = item->GetDexterity();
 		break;
 	case itAccessory:
-		val = item->getMana();
+		val = item->GetMana();
 		break;
 	case itHeadwear:
-		val = item->getLife();
+		val = item->GetLife();
 		break;
 	}
-	lblAttr->SetText(std::to_string(val));
+	return val;
+}
+
+void CRefineItemForm::UpdateItemInfo() {
+	if (!item) {
+		lblAttr->SetText("");
+		lblLevel->SetText("");
+		return;
+	}
+	lblAttr->SetText(formatInt(GetCoreAttr()));
+	lblLevel->SetText(formatInt(item->GetLevel()));
 }
 
 void CRefineItemForm::UpdateInventory() {
@@ -213,7 +266,7 @@ void CRefineItemForm::UpdateInventory() {
 	for (int i = 0; i < imgItems.size(); i++) {
 		Item* pItem = player->inventory->getItemInSlot(nexItem++);
 		if (pItem) {
-			if (pItem->GetID() != itemId && pItem->getType() >= itWeapon && pItem->getType() <= itHeadwear) {
+			if (pItem->GetID() != itemId && pItem->GetType() >= itWeapon && pItem->GetType() <= itHeadwear) {
 				SetItemToImageBox(imgItems[slot++], pItem);
 				localInv.push_back(pItem);
 			}
@@ -223,6 +276,14 @@ void CRefineItemForm::UpdateInventory() {
 	for (int i = slot; i < imgItems.size(); i++) {
 		SetItemToImageBox(imgItems[i], nullptr);
 	}
+}
+
+RefineMethod CRefineItemForm::GetMethod(std::string strMethod) {
+	for (auto nextMethod : refineMethods) {
+		if (nextMethod.method.compare(strMethod) == 0) return nextMethod;
+	}
+
+	return { "", "", 0, 0, 0 };
 }
 
 void CRefineItemForm::SetItemToImageBox(CImageBox* imgBox, Item* item) {
@@ -237,16 +298,44 @@ void CRefineItemForm::SetItemToImageBox(CImageBox* imgBox, Item* item) {
 }
 
 void CRefineItemForm::btnBegin_Click(SDL_Event& e) {
-	//CloseWindow = true;
-	if (!refining) {
-		refining = true;
-		refineMode = 1;
-	}
-	else {
+	if (refining) {
 		refining = false;
 		refineMode = 0;
 		lastRefineTick = 0;
+		btnBegin->SetText("Begin");
+		return;
 	}
+
+	if (player->GetInventory()->getItemCount() >= 14) {
+		doPrompt(this, "Warning", "Your inventory is too full to refine. Please make space first.");
+		return;
+	}
+
+	std::string strMethod = ddType->GetSelection();
+	if (strMethod.empty()) {
+		doPrompt(this, "Error", "Please select a refining method");
+		return;
+	}
+
+	method = GetMethod(strMethod);
+	if (method.method.empty()) {
+		doPrompt(this, "Error", "The selected method (" + strMethod + ") is not valid. Please choose another.");
+		return;
+	}
+	if (player->GetWuxing() < method.minWuxing) {
+		doPrompt(this, "Warning", "Your wuxing knowledge is not high enough to use this refining method.");
+		return;
+	}
+
+	btnBegin->SetText("Stop");
+	refining = true;
+	refineMode = 1;
+	wuxCount = 0;
+	lastCoreStat = GetCoreAttr();
+}
+
+void CRefineItemForm::ddType_Change(SDL_Event& e) {
+	//
 }
 
 void CRefineItemForm::imgItem_DoubleClick(SDL_Event& e) {
@@ -258,8 +347,26 @@ void CRefineItemForm::imgItem_DoubleClick(SDL_Event& e) {
 
 	item = clickItem;
 	itemId = item->GetID();
+	switch (item->GetType()) {
+	case itWeapon:
+		itemSlot = 2;
+		break;
+	case itArmor:
+		itemSlot = 0;
+		break;
+	case itShoes:
+		itemSlot = 5;
+		break;
+	case itAccessory:
+		itemSlot = 3;
+		break;
+	case itHeadwear:
+		itemSlot = 7;
+		break;
+	}
+
 	SetItemToImageBox(imgRefineSlot, item);
-	UpdateAttr();
+	UpdateItemInfo();
 	UpdateInventory();
 }
 
@@ -274,6 +381,23 @@ void CRefineItemForm::imgItem_OnHoverStart(SDL_Event& e) {
 }
 
 void CRefineItemForm::imgItem_OnHoverEnd(SDL_Event& e) {
+	hoverTexture.reset();
+}
+
+void CRefineItemForm::imgRefineSlot_DoubleClick(SDL_Event& e) {
+	if (!item) return;
+	SetItemToImageBox(imgRefineSlot, nullptr);
+	item = nullptr;
+	itemId = 0;
+	UpdateInventory();
+}
+
+void CRefineItemForm::imgRefineSlot_OnHoverStart(SDL_Event& e) {
+	if (!item) return;
+	hoverTexture = item->GetMouseoverTexture(renderer, false, 75);
+}
+
+void CRefineItemForm::imgRefineSlot_OnHoverEnd(SDL_Event& e) {
 	hoverTexture.reset();
 }
 

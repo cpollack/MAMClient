@@ -77,9 +77,14 @@ void NPC::handleEvent(SDL_Event& e) {
 				}
 			}
 			if (Type == 110) {
-				interact.user.code = NPC_REFINE;
-				CRefineItemForm *form = new CRefineItemForm();
-				Windows.push_back(form);
+				if (player->GetWuxing() < 1000) {
+					doPrompt(mainForm, "Alert", "You do not have enough wuxing knowledge to understand this.");
+				}
+				else {
+					interact.user.code = NPC_REFINE;
+					CRefineItemForm* form = new CRefineItemForm();
+					Windows.push_back(form);
+				}
 			}
 			if (interact.user.code == NPC_NONE) {
 				pNpc* npcPack = new pNpc(ID, 0, 0, 0);

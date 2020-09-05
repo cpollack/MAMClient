@@ -82,7 +82,7 @@ void CInventoryForm::handleEvent(SDL_Event& e) {
 	if (e.type == CUSTOMEVENT_ITEM) {
 		if (e.user.code == ITEM_USE) {
 			UpdateInventory();
-			if (e.user.data1 && ((Item*)e.user.data1)->getType() <= 4) UpdateEquipment();
+			if (e.user.data1 && ((Item*)e.user.data1)->GetType() <= 4) UpdateEquipment();
 		}
 		if (e.user.code == ITEM_REMOVE) {
 			UpdateInventory();
@@ -328,7 +328,7 @@ void CInventoryForm::btnUse_Click(SDL_Event& e) {
 void CInventoryForm::btnPetUse_Click(SDL_Event& e) {
 	if (!viewItem) return;
 
-	if (viewItem->getType() == itMedicine) {
+	if (viewItem->GetType() == itMedicine) {
 		pPetAction* itemAction = new pPetAction(player->getActivePet()->GetID(), viewItem->GetID(), paUseItem);
 		gClient.addPacket(itemAction);
 		LoadViewItem(nullptr);
@@ -438,7 +438,7 @@ void CInventoryForm::UseItem(Item* item) {
 	UsingItem = true;
 
 	std::string message = "Are you sure you wish to ";
-	if (item->getType() <= 4) message += "Equip ";
+	if (item->GetType() <= 4) message += "Equip ";
 	else message += "Use ";
 	message += "[" + item->GetName() + "]?";
 	promptForm = doPrompt(this, "Confirm", message, true);

@@ -1,10 +1,8 @@
-22:37:5 Beginning Login
-22:37:5 Connected to Account Server
-22:37:6 Connected to the Game Server
-22:37:6 Loading player data from packet
-22:37:7 Loading Map WaterCity
-22:37:7 First Map Loaded
-22:37:8 Login Success, loading game
-22:37:8 Initializing Main
-22:37:9 Loading Map WaterCitySuburb
-22:37:28 Loading Map WaterCity
+22:32:29 Beginning Login
+22:32:29 Connected to Account Server
+22:32:30 Connected to the Game Server
+22:32:30 Loading player data from packet
+22:32:31 Loading Map WaterCity
+22:32:31 First Map Loaded
+22:32:32 Login Success, loading game
+22:32:32 Initializing Main

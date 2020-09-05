@@ -33,6 +33,8 @@ public:
 	void AddRow(std::string row);
 	void SetValue(int row);
 
+	std::string GetSelection();
+
 private: //Properties
 	bool Detailed;
 

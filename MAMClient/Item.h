@@ -28,7 +28,6 @@ private:
 	int life, mana, attack, defence, dexterity;
 
 	std::string bigPath, smallPath;
-	//Texture* smallTexture = nullptr, *bigTexture = nullptr;
 
 	void Item::setType();
 
@@ -42,24 +41,25 @@ public:
 	void SetID(DWORD newId) { id = newId; }
 	bool IsPetItem() { return id > _IDMSK_INVITEM; }
 
-	int Item::getType();
-	int Item::getSort();
-	int Item::getCost();
-	int getLevel() { return level; }
+	int GetType();
+	int GetSort();
+	int GetCost();
 	std::string getTexturePath(int size);
-	std::string Item::GetName();
-	std::string Item::GetCreator() { return creator; }
-	std::string Item::GetInventor() { return creator; }
-	std::wstring Item::getDetails();
-	std::wstring Item::getShopDetails();
+	std::string GetName();
+	std::string GetCreator() { return creator; }
+	std::string GetInventor() { return creator; }
+	std::wstring getDetails();
+	std::wstring getShopDetails();
 
 	Asset GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon, int opacityPerc = 50);
 
-	int Item::getLife();
-	int Item::getMana();
-	int Item::getAttack();
-	int Item::getDefence();
-	int Item::getDexterity();
+	int GetLevel();
+	int GetRealLevel();
+	int GetLife();
+	int GetMana();
+	int GetAttack();
+	int GetDefence();
+	int GetDexterity();
 };
 
 #endif

@@ -145,17 +145,17 @@ void Item::setType() {
 	}
 }
 
-int Item::getType() {
+int Item::GetType() {
 	return type;
 }
 
 
-int Item::getSort() {
+int Item::GetSort() {
 	return sort;
 }
 
 
-int Item::getCost() {
+int Item::GetCost() {
 	return cost;
 }
 
@@ -259,23 +259,32 @@ Asset Item::GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon, int opaci
 	return finalTexture;
 }
 
+int Item::GetLevel() {
+	int lvl = level;
+	if (level > 1000000) lvl = 1000000;
+	return lvl;
+}
 
-int Item::getLife() {
+int Item::GetRealLevel() {
+	return level;
+}
+
+int Item::GetLife() {
 	return life;
 }
 
-int Item::getMana() {
+int Item::GetMana() {
 	return mana;
 }
 
-int Item::getAttack() {
+int Item::GetAttack() {
 	return attack;
 }
 
-int Item::getDefence() {
+int Item::GetDefence() {
 	return defence;
 }
 
-int Item::getDexterity() {
+int Item::GetDexterity() {
 	return dexterity;
 }

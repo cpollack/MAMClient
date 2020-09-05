@@ -64,6 +64,7 @@ private:
 	CGauge *gaugePetHealth, *gaugePetExp;
 	CButton *btnBattle, *btnBattleRepeat, *btnBattleConfig;
 	CButton *btnPlayer, *btnPet, *btnInventory, *btnWuxing;
+	CButton *btnKungfu, *btnTeam, *btnSocial, *btnOptions;
 	CLabel *lblPlayerLevel, *lblPetLevel;
 
 private:
@@ -75,6 +76,7 @@ private:
 	void btnPet_Click(SDL_Event& e);
 	void btnInventory_Click(SDL_Event& e);
 	void btnWuxing_Click(SDL_Event& e);
+	void btnKungfu_Click(SDL_Event& e);
 
 	bool MouseOverPlayer, MouseOverPet;
 	bool btnPlayer_Down = false;

@@ -44,8 +44,6 @@ public:
 	CButton* addMainButton(std::string name, std::string text, int x, int y, int w, int h);
 	CButton* addMainButton(std::string name, int x, int y, int w, int h, std::string pressed, std::string unpressed);
 	CButton* addMainButton2(std::string name, int x, int y, int w, int h, std::string pressed, std::string unpressed);
-	CGauge* addMainGauge(std::string name, int x, int y, int w, int h, std::string foreground);
-	CGauge* addMainGauge2(std::string name, int x, int y, int w, int h, std::string foreground);
 
 private: //Init
 	void init_init();
@@ -118,8 +116,6 @@ private:
 	void btnJump_Click(SDL_Event& e);
 	void btnCloud_Click(SDL_Event& e);
 
-	void btnMap_Click(SDL_Event& e);
-	void btnKungfu_Click(SDL_Event& e);
 	void btnTeam_Click(SDL_Event& e);
 	void btnGuild_Click(SDL_Event& e);
 
@@ -128,10 +124,6 @@ private:
 	void btnTeamManage_Click(SDL_Event& e);
 	void btnTeamLeave_Click(SDL_Event& e);
 	void btnTeamDisband_Click(SDL_Event& e);
-
-	//Custom event hooks
-	void OnBattle_Start(SDL_Event& e);
-	void OnBattle_End(SDL_Event& e);
 
 	SDL_Texture* gameTexture;
 	SDL_Rect gameRect;

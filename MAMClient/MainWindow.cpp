@@ -28,11 +28,6 @@
 #include "VideoFrame.h"
 #include "Dialogue.h"
 
-//TEMP
-#include "PetMagic.h" 
-#include "PetComposeForm.h"
-//ENDTEMP
-
 #include "pBattleState.h"
 #include "pAction.h"
 
@@ -250,38 +245,6 @@ CButton* CMainWindow::addMainButton2(std::string name, int x, int y, int w, int 
 	return btn;
 }
 
-CGauge* CMainWindow::addMainGauge(std::string name, int x, int y, int w, int h, std::string foreground) {
-	CGauge *gauge = new CGauge(this, name, x, y);
-	//gauge->SetRenderer(renderer);
-	gauge->SetWidth(w);
-	gauge->SetHeight(h);
-	gauge->SetForegroundImage(foreground);
-#ifdef NEWGUI
-	std::string background = foreground.substr(0, foreground.find_first_of('.')) + "2" + foreground.substr(foreground.find_first_of('.'), std::string::npos);
-	gauge->SetBackgroundImage(background);
-	gauge->SetVerticle(true);
-#else
-	gauge->SetUseGUI(true);
-	gauge->SetBackgroundImage("bg_slot.jpg");
-	gauge->SetIncreaseImage("orange_slot.jpg");
-	gauge->SetDecreaseImage("red_slot.jpg");
-#endif
-	AddWidget(gauge);
-	return gauge;
-}
-
-CGauge* CMainWindow::addMainGauge2(std::string name, int x, int y, int w, int h, std::string foreground) {
-	CGauge *gauge = new CGauge(this, name, x, y);
-	gauge->SetWidth(w);
-	gauge->SetHeight(h);
-	gauge->SetForegroundImage(foreground);
-	std::string background = foreground.substr(0, foreground.find_first_of('.')) + "_Back" + foreground.substr(foreground.find_first_of('.'), std::string::npos);
-	gauge->SetBackgroundImage(background);
-	//gauge->SetVerticle(true);
-	AddWidget(gauge);
-	return gauge;
-}
-
 /*
   Main Window Flow:
   Initialize
@@ -293,7 +256,7 @@ CGauge* CMainWindow::addMainGauge2(std::string name, int x, int y, int w, int h,
 */
 
 
-/* Main Form i Init Begin */
+/* Main Form - Init Begin */
 
 void CMainWindow::init_init() {
 	SetUseClose(false);
@@ -651,8 +614,6 @@ void CMainWindow::main_init_widgets() {
 	registerEvent("btnJump", "Click", std::bind(&CMainWindow::btnJump_Click, this, std::placeholders::_1));
 	registerEvent("btnCloud", "Click", std::bind(&CMainWindow::btnCloud_Click, this, std::placeholders::_1));
 
-	registerEvent("btnMap", "Click", std::bind(&CMainWindow::btnMap_Click, this, std::placeholders::_1));
-	registerEvent("btnKungfu", "Click", std::bind(&CMainWindow::btnKungfu_Click, this, std::placeholders::_1));
 	registerEvent("btnTeam", "Click", std::bind(&CMainWindow::btnTeam_Click, this, std::placeholders::_1));
 	registerEvent("btnGuild", "Click", std::bind(&CMainWindow::btnGuild_Click, this, std::placeholders::_1));
 
@@ -692,10 +653,6 @@ void CMainWindow::main_cleanup() {
 	if (battle) {
 		delete battle;
 		battle = nullptr;
-	}
-	if (mainUI) {
-		delete mainUI;
-		mainUI = nullptr;
 	}
 	if (player) {
 		delete player;
@@ -752,22 +709,7 @@ void CMainWindow::main_render_ui() {
 }
 
 void CMainWindow::main_handleEvent(SDL_Event& e) {
-	if (e.type == CUSTOMEVENT_BATTLE) {
-		if (e.user.code == BATTLE_START) OnBattle_Start(e);
-		if (e.user.code == BATTLE_END) OnBattle_End(e);
-	}
-
 	if (e.type == CUSTOMEVENT_PLAYER) {
-#ifndef NEWGUI
-		if (e.user.code == PLAYER_RENAME) {
-			lblNickName->SetText(player->getNickName());
-		}
-
-		if (e.user.code == PLAYER_UPDATE) {
-			setPlayerDetailsLabels();
-		}
-#endif
-
 		if (e.user.code == PLAYER_LIFE) {
 			mainUI->adjustPlayerHealthGauge(player->GetCurrentLife());
 		}
@@ -789,21 +731,10 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		}
 
 		if (e.user.code == PLAYER_LEVEL) {
-#ifndef NEWGUI
-			setPlayerDetailsLabels();
-#endif
 			mainUI->setPlayerExpGauge(player->GetExperience(), player->GetLevelUpExperience());
 			mainUI->updatePlayerLevel();
 		}
 
-#ifndef NEWGUI
-		if (e.user.code == PLAYER_MONEY) {
-			lblCash->SetText(formatInt(player->GetCash()));
-		}
-		if (e.user.code == PLAYER_REPUTATION) {
-			lblReputation->SetText(formatInt(player->GetReputation()));
-		}
-#endif
 		if (e.user.code == PLAYER_TEAM) {
 			if (ShowingTeamButtons) ShowTeamButtons(); //updates appropriate visible team buttons
 		}
@@ -852,18 +783,6 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 			return;
 		}
 	}
-
-	/*if (chat) {
-		SDL_Event e2 = e;
-		if (e2.type == SDL_MOUSEMOTION || e2.type == SDL_MOUSEBUTTONDOWN || e2.type == SDL_MOUSEBUTTONUP) {
-			e2.motion.x -= gameRect.x;
-			e2.motion.y -= gameRect.y;
-			chat->handleEvent(e2);
-			if (chat->IsMouseOver() && chat->IsBlockMouse()) return;
-		}
-
-		chat->handleEvent(e2);
-	}*/
 
 	//Dialogue sits ontop of window and widgets
 	if (dialogue) {
@@ -965,23 +884,6 @@ void CMainWindow::btnCloud_Click(SDL_Event& e) {
 	gClient.addPacket(pck);
 }
 
-void CMainWindow::btnMap_Click(SDL_Event& e) {
-	CPetComposeForm *frm = new CPetComposeForm();
-	PushWindow(frm);
-	//testing for pet magic evolve. compose is next!
-	/*CPetMagic *pm = new CPetMagic(renderer, 0);
-	ColorShift cs[3];
-	pm->setCoordinate(player->GetCoord());
-	pm->addSource(54, cs);
-	pm->addDestination(57, cs);
-	map->addPetMagic(pm);
-	pm->start();*/
-}
-
-void CMainWindow::btnKungfu_Click(SDL_Event& e) {
-	//
-}
-
 void CMainWindow::btnTeam_Click(SDL_Event& e) {
 	if (ShowingTeamButtons) HideTeamButtons();
 	else ShowTeamButtons();
@@ -1009,38 +911,6 @@ void CMainWindow::btnTeamLeave_Click(SDL_Event& e) {
 
 void CMainWindow::btnTeamDisband_Click(SDL_Event& e) {
 	CTeam::Leave();
-}
-
-void CMainWindow::OnBattle_Start(SDL_Event& e) {
-	//bPriorMenuState = bMenuHidden;
-	/*if (bMenuHidden) btnMenuExpand_Click(e);
-
-	((CButton*)widgets["btnJump"])->SetVisible(false);
-	((CButton*)widgets["btnCloud"])->SetVisible(false);
-	((CButton*)widgets["btnFight"])->SetVisible(false);
-	((CButton*)widgets["btnMap"])->SetVisible(false);
-	((CButton*)widgets["btnInventory"])->SetVisible(false);
-	((CButton*)widgets["btnWuxing"])->SetVisible(false);
-	((CButton*)widgets["btnKungfu"])->SetVisible(false);
-	((CButton*)widgets["btnTeam"])->SetVisible(false);
-	((CButton*)widgets["btnGuild"])->SetVisible(false);*/
-}
-
-void CMainWindow::OnBattle_End(SDL_Event& e) {
-	//if (bPriorMenuState != bMenuHidden) { //it was hidden
-	//	bMenuHidden = false;
-	//	btnMenuCollapse_Click(e);
-	//}
-
-	/*((CButton*)widgets["btnJump"])->SetVisible(true);
-	((CButton*)widgets["btnCloud"])->SetVisible(true);
-	((CButton*)widgets["btnFight"])->SetVisible(true);
-	((CButton*)widgets["btnMap"])->SetVisible(true);
-	((CButton*)widgets["btnInventory"])->SetVisible(true);
-	((CButton*)widgets["btnWuxing"])->SetVisible(true);
-	((CButton*)widgets["btnKungfu"])->SetVisible(true);
-	((CButton*)widgets["btnTeam"])->SetVisible(true);
-	((CButton*)widgets["btnGuild"])->SetVisible(true);*/
 }
 
 /* Main Form - Hooks */

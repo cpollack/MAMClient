@@ -229,7 +229,7 @@ int Player::GetAttack() {
 	int atk = attack;
 
 	for (int i = 0; i < EQUIPMENT_SLOTS; i++) {
-		if (equipment[i]) atk += equipment[i]->getAttack();
+		if (equipment[i]) atk += equipment[i]->GetAttack();
 	}
 
 	return atk < 0 ? 0 : atk;
@@ -247,7 +247,7 @@ int Player::GetDefence() {
 	int def = defence;
 
 	for (int i = 0; i < EQUIPMENT_SLOTS; i++) {
-		if (equipment[i]) def += equipment[i]->getDefence();
+		if (equipment[i]) def += equipment[i]->GetDefence();
 	}
 
 	return def < 0 ? 0 : def;
@@ -261,7 +261,7 @@ int Player::GetDexterity() {
 	int dex = dexterity;
 
 	for (int i = 0; i < EQUIPMENT_SLOTS; i++) {
-		if (equipment[i]) dex += equipment[i]->getDexterity();
+		if (equipment[i]) dex += equipment[i]->GetDexterity();
 	}
 
 	return dex < 0 ? 0 : dex;
@@ -374,7 +374,7 @@ void Player::useItem(int itemId) {
 		return;
 	}
 
-	switch (usedItem->getType()) {
+	switch (usedItem->GetType()) {
 	case itWeapon:
 	case itArmor:
 	case itShoes:
@@ -393,13 +393,13 @@ void Player::useItem(int itemId) {
 
 
 void Player::useMedicine(Item* item) {
-	int life = item->getLife();
+	int life = item->GetLife();
 	if (life != 0) {
 		SetLife(life_current + life);
 		mainForm->shiftPlayerHealthGauge(life);
 	}
 
-	int mana = item->getMana();
+	int mana = item->GetMana();
 	if (mana != 0) {
 		SetMana(mana_current + mana);
 		mainForm->shiftPlayerManaGauge(mana);
@@ -411,8 +411,8 @@ void Player::useMedicine(Item* item) {
 
 void Player::setEquipment(pItem* packet) {
 	Item* newItem = new Item(packet);
-	if (newItem->getType() > 4) {
-		std::cout << "Error: Set Equipment - Not a valid item type: " << newItem->getType() << std::endl;
+	if (newItem->GetType() > 4) {
+		std::cout << "Error: Set Equipment - Not a valid item type: " << newItem->GetType() << std::endl;
 		return;
 	}
 
@@ -421,7 +421,7 @@ void Player::setEquipment(pItem* packet) {
 
 
 void Player::equipItem(Item* item) {
-	int slot = item->getType();
+	int slot = item->GetType();
 	Item* itemInSlot = equipment[slot];
 	inventory->removeItem(item->GetID(), false);
 	equipment[slot] = item;
@@ -442,7 +442,7 @@ void Player::unequipItem(int slot) {
 
 
 void Player::unequipItem(Item* item) {
-	int slot = item->getType();
+	int slot = item->GetType();
 	Item* itemInSlot = equipment[slot];
 	equipment[slot] = nullptr;
 	if (itemInSlot) {
@@ -458,7 +458,7 @@ void Player::sellItem(int itemId) {
 		return;
 	}
 
-	int cost = sItem->getCost();
+	int cost = sItem->GetCost();
 	cash += (cost / 2);
 	inventory->removeItem(itemId, true);
 }
@@ -471,7 +471,7 @@ void Player::buyItem(int itemId) {
 		return;
 	}
 
-	int cost = bItem->getCost();
+	int cost = bItem->GetCost();
 	cash -= cost;
 }
 

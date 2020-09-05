@@ -336,6 +336,12 @@ void CDropDown::SetValue(int row) {
 	OnChange(e);
 }
 
+std::string CDropDown::GetSelection() {
+	if (selectedRow == -1) return "";
+
+	return rows[selectedRow].text;
+}
+
 ddRow::ddRow(SDL_Renderer* renderer, std::string txt) {
 	this->renderer = renderer;
 	setText(txt);

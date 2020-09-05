@@ -105,7 +105,7 @@ int Pet::getLoyalty() {
 int Pet::GetMaxLife() {
 	int trueMax = life_max;
 	if (item) {
-		trueMax += item->getLife();
+		trueMax += item->GetLife();
 		if (trueMax < 0) trueMax = 1;
 	}
 	return trueMax;
@@ -149,7 +149,7 @@ void Pet::useItem(int itemId) {
 
 	int oldLife;
 
-	switch (usedItem->getType()) {
+	switch (usedItem->GetType()) {
 	case itAccessory:
 		oldLife = GetMaxLife();
 
@@ -169,7 +169,7 @@ void Pet::useItem(int itemId) {
 
 
 void Pet::useMedicine(Item* item) {
-	int life = item->getLife();
+	int life = item->GetLife();
 	if (life != 0) {
 		life_current += life;
 		customEvent(CUSTOMEVENT_PET, PET_LIFE);
