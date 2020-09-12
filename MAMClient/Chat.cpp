@@ -70,7 +70,7 @@ CChat::CChat(CWindow* window) : CWidget(window) {
 }
 
 CChat::~CChat() {
-
+	for (auto msg : messages) delete msg;
 }
 
 void CChat::Render() {

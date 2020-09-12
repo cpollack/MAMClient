@@ -30,6 +30,10 @@ Cipher::Cipher() {
 	second = 0;
 }
 
+Cipher::~Cipher() {
+	if (key1) delete[] key1;
+	if (key2) delete[] key2;
+}
 
 BYTE Cipher::encrypt(BYTE val, bool useSeed) {
 	BYTE encryptVal;

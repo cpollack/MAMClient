@@ -66,7 +66,6 @@ void Entity::render_effects(SDL_Point point) {
 		if (effect->isFinished) {
 			itr = removeEffect(effect);
 			if (itr != effects.end()) itr++;
-			delete effect;
 		}
 		else itr++;
 	}
@@ -489,6 +488,7 @@ std::vector<Effect>::iterator Entity::removeEffect(int effect) {
 	std::vector<Effect>::iterator itr;
 	for (itr = effects.begin(); itr != effects.end(); itr++) {
 		if (itr->type == effect) {
+			delete itr->sprite;
 			return effects.erase(itr);
 		}
 	}
@@ -498,6 +498,7 @@ std::vector<Effect>::iterator Entity::removeEffect(Sprite* sprEffect) {
 	std::vector<Effect>::iterator itr;
 	for (itr = effects.begin(); itr != effects.end(); itr++) {
 		if (itr->sprite == sprEffect) {
+			delete itr->sprite;
 			return effects.erase(itr);
 		}
 	}

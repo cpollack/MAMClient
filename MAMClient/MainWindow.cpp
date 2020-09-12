@@ -583,6 +583,7 @@ void CMainWindow::main_init() {
 
 	// Tell the map the UI boundings are
 	map->setMapUiRect(gameRect);
+	map->setMapPos(player->GetPosition().x, player->GetPosition().y);
 
 	//Generate all the widgets for this mode
 	main_init_widgets();
@@ -774,6 +775,8 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 			GameMode = GAMEMODE_NONE;
 		}
 	}
+
+	if (e.type == CUSTOMEVENT_BATTLE) mainUI->HandleEvent(e);
 
 	//After Disconnect Prompt
 	if (e.type == CUSTOMEVENT_WINDOW) {

@@ -3,7 +3,7 @@
 
 class Cipher {
 private:
-	BYTE *key1, *key2;
+	BYTE *key1 = nullptr, *key2 = nullptr;
 	BYTE seedKey1[256], seedKey2[256];
 	int cipherSeed;
 
@@ -14,6 +14,7 @@ public:
 	int second;
 
 	Cipher();
+	~Cipher();
 	BYTE Cipher::encrypt(BYTE val, bool useSeed);
 	BYTE Cipher::decrypt(BYTE val, bool useSeed);
 	void Cipher::seed(int newSeed);

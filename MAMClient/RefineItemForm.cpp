@@ -5,6 +5,7 @@
 #include "Label.h"
 #include "Button.h"
 #include "Dropdown.h"
+#include "Gauge.h"
 
 #include "CustomEvents.h"
 #include "Player.h"
@@ -27,12 +28,15 @@ CRefineItemForm::CRefineItemForm() : CWindow("RefineItemForm.JSON") {
 	refineMethods.push_back({ "Basic Tempering", "RoughTemprStone", 2300, 100,  4, 1000 });
 	refineMethods.push_back({ "Skilled Tempering", "PotntTemprStone", 2301, 375,  5, 1500 });
 	refineMethods.push_back({ "Master Tempering", "HeavnTemprStone", 2302, 900,  6, 5000 });
-	refineMethods.push_back({ "Godly Tempering", "GodlyTemprStone", 2303, 2000, 7, 10000 });
+	refineMethods.push_back({ "Godly Tempering", "GodlyTemprStone", 2303, 2500, 7, 10000 });
 	for (auto rm : refineMethods) ddType->AddRow(rm.method);
 
 	UpdateItemInfo();
 	lblCash->SetText(formatInt(player->GetCash()));
 	lblMessage->SetText("Please select a tempering method.");
+	gaugeProgress->set(0, 100);
+	gaugeProgress->UseCustomLabel(true);
+	gaugeProgress->SetLabel("0 / 0 seconds");
 }
 
 void CRefineItemForm::HookWidgets() {
@@ -56,6 +60,8 @@ void CRefineItemForm::HookWidgets() {
 
 	btnBegin = (CButton*)GetWidget("btnBegin");
 	registerEvent("btnBegin", "Click", std::bind(&CRefineItemForm::btnBegin_Click, this, std::placeholders::_1));
+
+	gaugeProgress = (CGauge*)GetWidget("gaugeProgress");
 
 	std::string boxName = "imgItem";
 	int toX = imgInventory->GetX() + 24;
@@ -121,7 +127,9 @@ void CRefineItemForm::step() {
 	if (!refining) return;
 
 	int currentTime = SDL_GetTicks();
-	if (currentTime - lastRefineTick < delayMs) return;
+	int progress = 0;
+	float fProgress = 0.0;
+	std::stringstream s;
 
 	Inventory* inv = player->GetInventory();
 	Item* stone = nullptr;
@@ -138,8 +146,24 @@ void CRefineItemForm::step() {
 		stone = inv->findItem(method.itemName, "¡ùRefinery");
 		if (!stone) refineMode = 2;
 		else refineMode = 4;
+		lastRefineTick = SDL_GetTicks();
+		gaugeProgress->set(0);
 		break;
 	case 2: //buy item
+		if (lastRefineTick > 0 && currentTime - lastRefineTick < (method.temperTime * 1000)) {
+			progress = ((float)(currentTime - lastRefineTick) * 1.0) / ((float)method.temperTime * 1000) * 100;
+			gaugeProgress->set(progress);
+			fProgress = (progress * 1.0 / 100) * method.temperTime;
+			s << std::setprecision(1) << std::fixed << fProgress << " / " << method.temperTime << " seconds";
+			gaugeProgress->SetLabel(s.str());
+			break;
+		}
+		else {
+			lastRefineTick = 0;
+			gaugeProgress->set(100);
+			gaugeProgress->SetLabel(std::to_string(method.temperTime) + " / " + std::to_string(method.temperTime) + " seconds");
+		}
+			
 		std::cout << "Buying stone." << std::endl;
 		
 		if (player->GetCash() < method.cost) {
@@ -160,6 +184,20 @@ void CRefineItemForm::step() {
 		}
 		break;
 	case 4: //wux item
+		if (lastRefineTick > 0 && currentTime - lastRefineTick < (method.temperTime * 1000)) {
+			progress = ((float)(currentTime - lastRefineTick) * 1.0) / ((float)method.temperTime * 1000) * 100;
+			gaugeProgress->set(progress);
+			fProgress = (progress * 1.0 / 100) * method.temperTime;
+			s << std::setprecision(1) << std::fixed << fProgress << " / " << method.temperTime << " seconds";
+			gaugeProgress->SetLabel(s.str());
+			break;
+		}
+		else {
+			lastRefineTick = 0;
+			gaugeProgress->set(100);
+			gaugeProgress->SetLabel(std::to_string(method.temperTime) + " / " + std::to_string(method.temperTime) + " seconds");
+		}
+
 		std::cout << "Refining item." << std::endl;
 		wuxedItem = false;
 
@@ -201,6 +239,7 @@ void CRefineItemForm::step() {
 		std::cout << "Restarting refining process!." << std::endl;
 		bool isMaxed = false;
 
+		lastRefineTick = 0;
 		if (lastCoreStat != GetCoreAttr()) {
 			lastCoreStat = GetCoreAttr();
 			refineMode = 1;
@@ -214,8 +253,6 @@ void CRefineItemForm::step() {
 		}
 		break;
 	}
-
-	lastRefineTick = SDL_GetTicks();
 }
 
 CImageBox* CRefineItemForm::createImageBox(std::string name) {
@@ -335,7 +372,17 @@ void CRefineItemForm::btnBegin_Click(SDL_Event& e) {
 }
 
 void CRefineItemForm::ddType_Change(SDL_Event& e) {
-	//
+	if (ddType->GetSelection().size() == 0) {
+		lblMessage->SetText("Please select a tempering method.");
+		return;
+	}
+
+	RefineMethod tempMethod = GetMethod(ddType->GetSelection());
+
+	std::stringstream s;
+	s << "Consume " << std::to_string(tempMethod.cost) << " spirit stones to create a " << tempMethod.itemName;
+	s << " for refining your item. Requires a minimum wuxing knowledge of " << std::to_string(tempMethod.minWuxing) << ".";
+	lblMessage->SetText(s.str());
 }
 
 void CRefineItemForm::imgItem_DoubleClick(SDL_Event& e) {

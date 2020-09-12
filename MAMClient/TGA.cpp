@@ -13,6 +13,11 @@ TGA::TGA(std::string file, unsigned char *wdfBuffer, int size) {
 
 	//Use FI library to generate the bitmap structure
 	FIBITMAP *fiBitmap = FreeImage_Allocate(width, height, 32);
+	if (!fiBitmap) {
+		std::cout << "Failed to FI Allocate in TGA() for file: " << file << std::endl;
+		return;
+	}
+
 	FIMEMORY *destStream = FreeImage_OpenMemory();
 
 	//copy image data to bitmap here

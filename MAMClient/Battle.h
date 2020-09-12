@@ -36,15 +36,14 @@ enum BattleMode {
 enum BattleMenu {
 	player_attack,
 	player_skill,
-	player_capture,
+	player_defend,
 	player_item,
 	player_run,
+	player_capture,
 	player_switch,
-	player_defend,
 	pet_attack,
 	pet_skill,
 	pet_defend,
-	auto_battle,
 };
 
 class BattleArray;
@@ -88,7 +87,6 @@ private:
 	bool battleEnd = false;
 	bool victory = false;
 	bool running = false;
-	bool autoBattle = false;
 	int battleEndTimer;
 
 	int doc;
@@ -116,7 +114,6 @@ private:
 	std::vector<Asset> numbers;
 	SDL_Rect tensRect, onesRect;
 
-	//battle buttons are 48x48
 	std::map<int, CButton*> battleButtons;
 	int playerAction = -1, petAction = -1;
 	bool playerButton_pressed = false, petButton_pressed = false;
@@ -181,13 +178,15 @@ public:
 
 public:
 	void btnPlayerAttack_Click(SDL_Event& e);
+	void btnPlayerSkill_Click(SDL_Event& e);
 	void btnPlayerDefend_Click(SDL_Event& e);
-	void btnPlayerCapture_Click(SDL_Event& e);
 	void btnPlayerItem_Click(SDL_Event& e);
 	void btnPlayerRun_Click(SDL_Event& e);
+	void btnPlayerCapture_Click(SDL_Event& e);
+	void btnPlayerSwitch_Click(SDL_Event& e);
 	void btnPetAttack_Click(SDL_Event& e);
+	void btnPetSkill_Click(SDL_Event& e);
 	void btnPetDefend_Click(SDL_Event& e);
-	void btnAutoBattle_Click(SDL_Event& e);
 
 };
 

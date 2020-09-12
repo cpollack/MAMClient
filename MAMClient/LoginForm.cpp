@@ -146,15 +146,15 @@ void CLoginForm::handleLogin() {
 	case lsLogin:
 		//server should not be hardcoded
 
+#ifndef NEWSERVER
 #ifndef DEVSERVER
-#ifndef DEVPORT
 		gClient.login(fldAccount->GetText(), fldPassword->GetText(), "MythOfOrient");
 #else
 		gClient.login(fldAccount->GetText(), fldPassword->GetText(), "Dev");
-#endif // !DEVPORT
+#endif // !DEVSERVER
 #else
 		gClient.login(fldAccount->GetText(), fldPassword->GetText(), "HeavenAscent");
-#endif // !DEVSERVER
+#endif // !NEWSERVER
 		
 
 		//if (cbMemorize->isChecked()) {

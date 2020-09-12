@@ -8,7 +8,8 @@
 #include "Define.h"
 #include "Options.h"
 
-#include "GUI.h"
+//#include "GUI.h"
+#include "MainUI.h"
 #include "Texture.h"
 #include "AssetManager.h"
 #include "MainWindow.h"
@@ -38,10 +39,8 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	doc = mapDoc;
 	this->actorCount = actorCount;
 	mode = bmInit;
-	autoBattle = options.GetAutoBattle();
 	battleAI.reset(new BattleAI);
 
-#ifdef NEWGUI
 	battleRect = { 0, 0, 800, 600 };
 
 	std::string num = std::to_string(rand() % 48);
@@ -51,77 +50,53 @@ Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount) {
 	num = std::to_string(rand() % 18);
 	while (num.length() < 3) num.insert(num.begin(), '0');
 	std::string scenePath = "data/fightBG/scene/scene" + num + ".tga";
-#else
-	battleRect = {0, 0, 740, 410};
-
-	INI fightBg("INI\\FIGHTBGDATA.ini", "FIGHTBG" + std::to_string(doc));
-	std::string scenePath = fightBg.getEntry("FIGHTBG0");
-	std::string backdropPath;
-#endif
 	renderRect = { 0, 0, battleRect.w, battleRect.h };
 	tScene = new Texture(renderer, scenePath);
 	if (backdropPath.length() > 0) tBackdrop = new Texture(renderer, backdropPath);
 
 	//Load button textures
-	std::string btnPlayerPath = "fight\\menu\\";
-	std::string btnPetPath = "fight\\petbutton\\";
-	//int y = battleRect.h - 50 - 48 - 6;
-	int y = 458;
+	std::string battleButtonPath = "data/GUI/Battle/";
 	for (int i = 0; i <= 9; i++) {
 		std::string btnName;
 		switch (i) {
 		case 0: btnName = "btnPlayerAttack"; break;
 		case 1: btnName = "btnPlayerSkill"; break;
-		case 2: btnName = "btnPlayerCapture"; break;
+		case 2: btnName = "btnPlayerDefend"; break;
 		case 3: btnName = "btnPlayerItem"; break;
 		case 4: btnName = "btnPlayerRun"; break;
-		case 5: btnName = "btnPlayerSwitch"; break;
-		case 6: btnName = "btnPlayerDefend"; break;
+		case 5: btnName = "btnPlayerCapture"; break;
+		case 6: btnName = "btnPlayerSwitch"; break;
 		case 7: btnName = "btnPetAttack"; break;
 		case 8: btnName = "btnPetSkill"; break;
 		case 9: btnName = "btnPetDefend"; break;
 		}
 
-		battleButtons[i] = new CButton(mainForm, btnName, 0, y);
-		battleButtons[i]->SetWidth(48);
-		battleButtons[i]->SetHeight(48);
-		std::string btnPath;
-		if (i < 7) btnPath = btnPlayerPath;
-		else btnPath = btnPetPath;
-		battleButtons[i]->SetUnPressedImage(btnPath + std::to_string(i) + ".bmp");
-		battleButtons[i]->SetPressedImage(btnPath + std::to_string(i) + "-1.bmp");
+		battleButtons[i] = new CButton(mainForm, btnName, 0, 0);
+		battleButtons[i]->SetWidth(slotWidth);
+		battleButtons[i]->SetHeight(slotHeight);
+		battleButtons[i]->SetUnPressedImage(battleButtonPath + btnName + ".png");
 	}
-	battleButtons[auto_battle] = new CButton(mainForm, "btnAutoBattle", 480, y);
-	battleButtons[auto_battle]->SetWidth(48);
-	battleButtons[auto_battle]->SetHeight(48);
-	battleButtons[auto_battle]->SetType(ButtonType::btToggle);
-	battleButtons[auto_battle]->SetUnPressedImage("fight/AutoOff.bmp");
-	battleButtons[auto_battle]->SetPressedImage("fight/AutoOn.bmp");
-	battleButtons[auto_battle]->Load();
-	battleButtons[auto_battle]->Toggle(autoBattle);
 
+	battleButtons[BattleMenu::player_attack]->SetPosition(skillSlotPoint[0]);
+	battleButtons[BattleMenu::player_skill]->SetPosition(skillSlotPoint[1]);
+	battleButtons[BattleMenu::player_defend]->SetPosition(skillSlotPoint[2]);
+	battleButtons[BattleMenu::player_item]->SetPosition(skillSlotPoint[3]);
+	battleButtons[BattleMenu::player_run]->SetPosition(skillSlotPoint[4]);
+	battleButtons[BattleMenu::player_capture]->SetPosition(itemSlotPoint[0]);
 
-	//int x = battleRect.w - 300 - 20;
-	int x = 166;
-	battleButtons[BattleMenu::player_attack]->SetX(x);
-	battleButtons[BattleMenu::player_skill]->SetX(x + (48 * 1));
-	battleButtons[BattleMenu::player_capture]->SetX(x + (48 * 2));
-	battleButtons[BattleMenu::player_defend]->SetX(x + (48 * 3));
-	battleButtons[BattleMenu::player_item]->SetX(x + (48 * 4));
-	battleButtons[BattleMenu::player_run]->SetX(x + (48 * 5));
-
-	battleButtons[BattleMenu::pet_attack]->SetX(x);
-	battleButtons[BattleMenu::pet_skill]->SetX(x + (48 * 1));
-	battleButtons[BattleMenu::pet_defend]->SetX(x + (48 * 2));
+	battleButtons[BattleMenu::pet_attack]->SetPosition(skillSlotPoint[0]);
+	battleButtons[BattleMenu::pet_skill]->SetPosition(skillSlotPoint[1]);
+	battleButtons[BattleMenu::pet_defend]->SetPosition(skillSlotPoint[2]);
 
 	battleButtons[BattleMenu::player_attack]->RegisterEvent("Click", std::bind(&Battle::btnPlayerAttack_Click, this, std::placeholders::_1));
+	battleButtons[BattleMenu::player_skill]->RegisterEvent("Click", std::bind(&Battle::btnPlayerSkill_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::player_defend]->RegisterEvent("Click", std::bind(&Battle::btnPlayerDefend_Click, this, std::placeholders::_1));
-	battleButtons[BattleMenu::player_capture]->RegisterEvent("Click", std::bind(&Battle::btnPlayerCapture_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::player_item]->RegisterEvent("Click", std::bind(&Battle::btnPlayerItem_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::player_run]->RegisterEvent("Click", std::bind(&Battle::btnPlayerRun_Click, this, std::placeholders::_1));
+	battleButtons[BattleMenu::player_capture]->RegisterEvent("Click", std::bind(&Battle::btnPlayerCapture_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::pet_attack]->RegisterEvent("Click", std::bind(&Battle::btnPetAttack_Click, this, std::placeholders::_1));
+	battleButtons[BattleMenu::pet_skill]->RegisterEvent("Click", std::bind(&Battle::btnPetSkill_Click, this, std::placeholders::_1));
 	battleButtons[BattleMenu::pet_defend]->RegisterEvent("Click", std::bind(&Battle::btnPetDefend_Click, this, std::placeholders::_1));
-	battleButtons[BattleMenu::auto_battle]->RegisterEvent("Click", std::bind(&Battle::btnAutoBattle_Click, this, std::placeholders::_1));
 
 	//Load number textures
 	SDL_Color colorKey;
@@ -158,6 +133,7 @@ Battle::~Battle() {
 	delete enemyArray;
 
 	delete tScene;
+	if (tBackdrop) delete tBackdrop;
 	numbers.clear(); //Not required, but explicitly freeing numbers
 
 	for (auto ally : allies) ally->CleanupBattle();
@@ -205,7 +181,7 @@ void Battle::render() {
 	if (enemyArray) enemyArray->Render();
 
 	//Render timer
-	if (!autoBattle && (mode == bmTurnPlayer || mode == bmTurnPet)) {
+	if (!options.GetAutoBattle() && (mode == bmTurnPlayer || mode == bmTurnPet)) {
 		if (countDown > 0) {
 			int tensPos = countDown / 10;
 			int onesPos = countDown % 10;
@@ -259,16 +235,16 @@ void Battle::render() {
 
 void Battle::render_ui() {
 	//Draw Battle Buttons
-	battleButtons[BattleMenu::auto_battle]->Render();
 
 	if (mode == bmTurnPlayer) {
 		if (!selectTarget && !selectItem) {
 			battleButtons[BattleMenu::player_attack]->Render();
 			battleButtons[BattleMenu::player_skill]->Render();
-			battleButtons[BattleMenu::player_capture]->Render();
-			battleButtons[BattleMenu::player_item]->Render();
 			battleButtons[BattleMenu::player_defend]->Render();
+			battleButtons[BattleMenu::player_item]->Render();
 			battleButtons[BattleMenu::player_run]->Render();
+			battleButtons[BattleMenu::player_capture]->Render();
+			//battleButtons[BattleMenu::player_switch]->Render();
 		}
 		if (selectItem) {
 			render_items();
@@ -449,15 +425,14 @@ bool Battle::handleEvent(SDL_Event& e) {
 	e2.motion.x = mx;
 	e2.motion.y = my;
 
-	battleButtons[BattleMenu::auto_battle]->HandleEvent(e2);
-
 	if (mode == bmTurnPlayer) {
 		battleButtons[BattleMenu::player_attack]->HandleEvent(e2);
 		battleButtons[BattleMenu::player_skill]->HandleEvent(e2);
-		battleButtons[BattleMenu::player_capture]->HandleEvent(e2);
-		battleButtons[BattleMenu::player_item]->HandleEvent(e2);
 		battleButtons[BattleMenu::player_defend]->HandleEvent(e2);
+		battleButtons[BattleMenu::player_item]->HandleEvent(e2);
 		battleButtons[BattleMenu::player_run]->HandleEvent(e2);
+		battleButtons[BattleMenu::player_capture]->HandleEvent(e2);
+		//battleButtons[BattleMenu::player_switch]->HandleEvent(e2);
 	}
 
 	if (mode == bmTurnPet) {
@@ -597,7 +572,7 @@ void Battle::step() {
 	if (mode == bmTurnPlayer) {
 		//Button event callbacks set action flags
 
-		if (autoBattle) {
+		if (options.GetAutoBattle()) {
 			selectedTarget = battleAI->GetNextTarget(player, enemies);
 			if (selectedTarget) playerAction = BattleAction::baAttack;
 		}
@@ -636,7 +611,7 @@ void Battle::step() {
 	if (mode == bmTurnPet) {
 		//Button event callbacks set action flags
 
-		if (autoBattle) {
+		if (options.GetAutoBattle()) {
 			selectedTarget = battleAI->GetNextTarget(pet, enemies);
 			if (selectedTarget) petAction = BattleAction::baAttack;
 		}
@@ -776,6 +751,10 @@ void Battle::btnPlayerAttack_Click(SDL_Event& e) {
 	clickToAttack = false;
 }
 
+void Battle::btnPlayerSkill_Click(SDL_Event& e) {
+	// Under Development
+}
+
 void Battle::btnPlayerDefend_Click(SDL_Event& e) {
 	mode = bmTurnPet;
 	playerButton_pressed = true;
@@ -784,12 +763,6 @@ void Battle::btnPlayerDefend_Click(SDL_Event& e) {
 	pBattleAction* battleAct = new pBattleAction(playerAction, round, player->GetID(), 0, 0, player->AccountId);
 	actions.push_back(battleAct);
 	if (player->IsAlive()) player->addEffect(EFFECT_READY);
-}
-
-void Battle::btnPlayerCapture_Click(SDL_Event& e) {
-	selectTarget = true;
-	playerButton_pressed = true;
-	playerAction = baCapture;
 }
 
 void Battle::btnPlayerItem_Click(SDL_Event& e) {
@@ -814,11 +787,25 @@ void Battle::btnPlayerRun_Click(SDL_Event& e) {
 	if (pet && pet->IsAlive()) pet->addEffect(EFFECT_READY);
 }
 
+void Battle::btnPlayerCapture_Click(SDL_Event& e) {
+	selectTarget = true;
+	playerButton_pressed = true;
+	playerAction = baCapture;
+}
+
+void Battle::btnPlayerSwitch_Click(SDL_Event& e) {
+	// Under Development
+}
+
 void Battle::btnPetAttack_Click(SDL_Event& e) {
 	selectTarget = true;
 	petButton_pressed = true;
 	petAction = baAttack;
 	clickToAttack = false;
+}
+
+void Battle::btnPetSkill_Click(SDL_Event& e) {
+	// Under Development
 }
 
 void Battle::btnPetDefend_Click(SDL_Event& e) {
@@ -829,11 +816,6 @@ void Battle::btnPetDefend_Click(SDL_Event& e) {
 	pBattleAction* battleAct = new pBattleAction(petAction, round, pet->GetBattleId(), 0, 0, player->AccountId);
 	actions.push_back(battleAct);
 	if (pet && pet->IsAlive()) pet->addEffect(EFFECT_READY);
-}
-
-void Battle::btnAutoBattle_Click(SDL_Event& e) {
-	autoBattle = !autoBattle;
-	options.SetAutoBattle(autoBattle);
 }
 
 void Battle::handlePacket(Packet* packet) {

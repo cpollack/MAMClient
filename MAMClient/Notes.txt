@@ -16,29 +16,23 @@ battle array position is off
 Build notes 1.0.19
 
 Major Fix:
-- Framerate vastly improved and stabilized.
+- 
 
 Fix:
 - 
 
 Enhancement:
-- Pet medals now display
+- 
+
+Major Enhancement:
+- The Main UI has been entirely overhauled and redesigned.
 
 Feature:
-- Fly on Clouds!
-- - Take off and Land with a simple cloud button click.
-- - Three different clouds (God/Devil/Master)
-- - Fly over any terrain, but you can't land just anywhere.
-- Pet Accessories
-- - Click to select and change pet gear
-- - Equip / Unequip / Swap
-- Evolve your Pet
-- - Evolve your pet with a preview of the evolution
-- - Pet evolve is animated
-- Continuous Battle button, while active/spinning, you will engage in a new battle after the current ends
+- 
 
 Major Feature:
-- 
+- Refinery!
+- Composing
 
 
 

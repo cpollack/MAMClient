@@ -25,7 +25,7 @@ pEnemyInfo::pEnemyInfo(int pSize, char* buf, char* encBuf) {
 
 
 pEnemyInfo::~pEnemyInfo() {
-
+	if (enemy) delete[] enemy;
 }
 
 

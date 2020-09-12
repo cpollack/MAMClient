@@ -385,7 +385,12 @@ void CGauge::AdjustTo(int val) {
 
 
 void CGauge::updateLabel() {
+	if (CustomLabel) return;
 	std::string labelText;
 	labelText = std::to_string(Current) + "/" + std::to_string(Max);
 	SetText(labelText);
+}
+
+void CGauge::SetLabel(std::string label) {
+	SetText(label);
 }

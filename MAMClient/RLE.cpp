@@ -143,6 +143,7 @@ bool RLE::load() {
 	float elapsed = (SDL_GetTicks() - start) / 10000.0;
 	//std::cout << "RLE Load Time: " << elapsed << std::endl;
 
+	delete[] data;
 	loaded = true;
 	return true;
 }
@@ -305,6 +306,10 @@ void RLE::createBitmap() {
 	//pixels = new BYTE[header->width * header->height * 4];
 
 	FIBITMAP *fiBitmap = FreeImage_Allocate(header->width, header->height, 32);
+	if (!fiBitmap) {
+		std::cout << "RLE Failed to create a bitmap. (" << fileName << ")" << std::endl;
+		return;
+	}
 	
 	BYTE *bits = nullptr;
 	BYTE alpha;

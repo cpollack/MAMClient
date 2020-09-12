@@ -23,6 +23,7 @@
 #include "Player.h"
 #include "Pet.h"
 
+#include "CustomEvents.h"
 #include "MessageManager.h"
 
 #include "pBattleState.h"
@@ -69,6 +70,16 @@ void CMainUI::CreateWidgets() {
 	btnBattle->SetUnPressedImage("data/GUI/Main/btnBattle.png");
 	widgets["btnBattle"] = btnBattle;
 	RegisterEvent("btnBattle", "Click", std::bind(&CMainUI::btnBattle_Click, this, std::placeholders::_1));
+	btnBattleAuto = new CButton(window, "btnBattleAuto", 370, 532);
+	btnBattleAuto->SetWidth(60);
+	btnBattleAuto->SetHeight(30);
+	btnBattleAuto->SetUnPressedImage("data/GUI/Main/btnBattle_AutoOff.png");
+	btnBattleAuto->SetPressedImage("data/GUI/Main/btnBattle_AutoOn.png");
+	btnBattleAuto->SetType(ButtonType::btToggle);
+	btnBattleAuto->Toggle(options.GetAutoBattle(), false);
+	btnBattleAuto->SetVisible(false);
+	widgets["btnBattleAuto"] = btnBattleAuto;
+	RegisterEvent("btnBattleAuto", "Click", std::bind(&CMainUI::btnBattleAuto_Click, this, std::placeholders::_1));
 	btnBattleRepeat = new CButton(window, "btnBattleRepeat", 372, 562);
 	btnBattleRepeat->SetWidth(28);
 	btnBattleRepeat->SetHeight(23);
@@ -84,40 +95,23 @@ void CMainUI::CreateWidgets() {
 	widgets["btnBattleConfig"] = btnBattleConfig;
 	RegisterEvent("btnBattleConfig", "Click", std::bind(&CMainUI::btnBattleConfig_Click, this, std::placeholders::_1));
 
-	btnPlayer = new CButton(window, "btnPlayer", 535, 542);
-	btnPlayer->SetWidth(24);
-	btnPlayer->SetHeight(16);
-	btnPlayer->SetText("Pla");
-	widgets["btnPlayer"] = btnPlayer;
+	btnPlayer = addMenuButton("btnPlayer", menuPoint[0], "btnMenuPlayer.png");
+	btnPet = addMenuButton("btnPet", menuPoint[1], "btnMenuPet.png");
+	btnInventory = addMenuButton("btnInventory", menuPoint[2], "btnMenuInventory.png");
+	btnKungfu = addMenuButton("btnKungfu", menuPoint[3], "btnMenuKungfu.png");
+	btnWuxing = addMenuButton("btnWuxing", menuPoint[4], "btnMenuWuxing.png");
+	btnTeam = addMenuButton("btnTeam", menuPoint[5], "btnMenuTeam.png");
+	btnSocial = addMenuButton("btnSocial", menuPoint[6], "btnMenuSocial.png");
+	btnOptions = addMenuButton("btnOptions", menuPoint[7], "btnMenuOptions.png");
+
 	RegisterEvent("btnPlayer", "Click", std::bind(&CMainUI::btnPlayer_Click, this, std::placeholders::_1));
-
-	btnPet = new CButton(window, "btnPet", 569, 542);
-	btnPet->SetWidth(24);
-	btnPet->SetHeight(16);
-	btnPet->SetText("Pet");
-	widgets["btnPet"] = btnPet;
 	RegisterEvent("btnPet", "Click", std::bind(&CMainUI::btnPet_Click, this, std::placeholders::_1));
-
-	btnInventory = new CButton(window, "btnInventory", 603, 542);
-	btnInventory->SetWidth(24);
-	btnInventory->SetHeight(16);
-	btnInventory->SetText("Inv");
-	widgets["btnInventory"] = btnInventory;
 	RegisterEvent("btnInventory", "Click", std::bind(&CMainUI::btnInventory_Click, this, std::placeholders::_1));
-
-	btnWuxing = new CButton(window, "btnWuxing", 637, 542);
-	btnWuxing->SetWidth(24);
-	btnWuxing->SetHeight(16);
-	btnWuxing->SetText("Wux");
-	widgets["btnWuxing"] = btnWuxing;
-	RegisterEvent("btnWuxing", "Click", std::bind(&CMainUI::btnWuxing_Click, this, std::placeholders::_1));
-
-	btnKungfu = new CButton(window, "btnKungfu", 535, 566);
-	btnKungfu->SetWidth(24);
-	btnKungfu->SetHeight(16);
-	btnKungfu->SetText("KF");
-	widgets["btnKungfu"] = btnKungfu;
 	RegisterEvent("btnKungfu", "Click", std::bind(&CMainUI::btnKungfu_Click, this, std::placeholders::_1));
+	RegisterEvent("btnWuxing", "Click", std::bind(&CMainUI::btnWuxing_Click, this, std::placeholders::_1));
+	RegisterEvent("btnTeam", "Click", std::bind(&CMainUI::btnTeam_Click, this, std::placeholders::_1));
+	RegisterEvent("btnSocial", "Click", std::bind(&CMainUI::btnSocial_Click, this, std::placeholders::_1));
+	RegisterEvent("btnOptions", "Click", std::bind(&CMainUI::btnOptions_Click, this, std::placeholders::_1));
 }
 
 void CMainUI::Load() {
@@ -173,6 +167,18 @@ void CMainUI::Render() {
 
 void CMainUI::HandleEvent(SDL_Event& e) {
 	CWidget::HandleEvent(e); //Mouseover
+
+	if (e.type == CUSTOMEVENT_BATTLE) {
+		if (e.user.code == BATTLE_START) {
+			btnBattle->SetVisible(false);
+			btnBattleAuto->SetVisible(true);
+			btnBattleAuto->Toggle(options.GetAutoBattle(), false);
+		}
+		if (e.user.code == BATTLE_END) {
+			btnBattle->SetVisible(true);
+			btnBattleAuto->SetVisible(false);
+		}
+	}
 
 	for (auto widget : widgets) widget.second->HandleEvent(e);
 
@@ -253,6 +259,16 @@ CGauge* CMainUI::addGauge(std::string name, int x, int y, int w, int h, std::str
 	return gauge;
 }
 
+CButton* CMainUI::addMenuButton(std::string name, SDL_Point point, std::string imgPath) {
+	std::string prefix = "data/GUI/Main/MenuButtons/";
+	CButton* btnMenu = new CButton(Window, name, point.x, point.y);
+	btnMenu->SetUnPressedImage(prefix + imgPath);
+	btnMenu->SetWidth(menuBtnWidth);
+	btnMenu->SetHeight(menuBtnHeight);
+	widgets[name] = btnMenu;
+	return btnMenu;
+}
+
 bool CMainUI::IsAssetPixel(Asset asset, Uint32 *pixels, SDL_Point point) {
 	if (!asset || !pixels) return false;
 	if (point.x < 0 || point.y < 0) return false;
@@ -275,6 +291,10 @@ void CMainUI::btnBattle_Click(SDL_Event& e) {
 	int teamSize = 1;
 	pBattleState* battlePacket = new pBattleState(0, teamSize, player->GetID(), 0);
 	gClient.addPacket(battlePacket);
+}
+
+void CMainUI::btnBattleAuto_Click(SDL_Event& e) {
+	options.SetAutoBattle(btnBattleAuto->GetToggled());
 }
 
 void CMainUI::btnBattleRepeat_Toggle(SDL_Event& e) {
@@ -318,12 +338,6 @@ void CMainUI::btnInventory_Click(SDL_Event& e) {
 	Windows.push_back(invForm);
 }
 
-void CMainUI::btnWuxing_Click(SDL_Event& e) {
-	if (battle) return;
-	CWuxingForm* wuxForm = new CWuxingForm();
-	Windows.push_back(wuxForm);
-}
-
 void CMainUI::btnKungfu_Click(SDL_Event& e) {
 	if (battle) return;
 
@@ -337,6 +351,27 @@ void CMainUI::btnKungfu_Click(SDL_Event& e) {
 	pm->addDestination(57, cs);
 	map->addPetMagic(pm);
 	pm->start();*/
+}
+
+void CMainUI::btnWuxing_Click(SDL_Event& e) {
+	if (battle) return;
+	CWuxingForm* wuxForm = new CWuxingForm();
+	Windows.push_back(wuxForm);
+}
+
+void CMainUI::btnTeam_Click(SDL_Event& e) {
+	if (battle) return;
+	//
+}
+
+void CMainUI::btnSocial_Click(SDL_Event& e) {
+	if (battle) return;
+	//
+}
+
+void CMainUI::btnOptions_Click(SDL_Event& e) {
+	if (battle) return;
+	//
 }
 
 void CMainUI::setPlayerHealthGauge(int val) {

@@ -16,6 +16,7 @@ class CImageBox;
 class CLabel;
 class CButton;
 class CDropDown;
+class CGauge;
 class Item;
 class CRefineItemForm : public CWindow {
 public:
@@ -72,6 +73,7 @@ private: //Widgets
 	CLabel *lblMessage, *lblLevel, *lblAttr, *lblCash;
 	CButton *btnBegin;
 	CDropDown* ddType;
+	CGauge* gaugeProgress;
 
 	std::vector<CImageBox*> imgItems;
 };

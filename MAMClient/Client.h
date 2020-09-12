@@ -2,9 +2,9 @@
 #define __CLIENT_H
 
 //For local and new server testing
-//#define DEVSERVER
+//#define NEWSERVER
 //#define LOCALSERVER
-#define DEVPORT
+#define DEVSERVER
 
 #define DEBUG_LOG
 #define DEBUG_PACKET

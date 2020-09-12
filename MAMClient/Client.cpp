@@ -97,11 +97,11 @@ bool Client::connectAccountServer() {
 
 	//load host dynamically from config
 #ifndef LOCALSERVER
-#ifndef DEVSERVER
+#ifndef NEWSERVER
 	const char* host = "209.159.153.58";
 #else
 	const char* host = "209.159.153.58";
-#endif // !DEVSERVER
+#endif // !NEWSERVER
 #else
 	const char* host = "127.0.0.1";
 #endif // !LOCALSERVER
@@ -161,11 +161,11 @@ bool Client::connectGameServer() {
 	bool success = true;
 	//load host dynamically from config
 #ifndef LOCALSERVER
-#ifndef DEVSERVER
+#ifndef NEWSERVER
 	const char* host = "209.159.153.58";
 #else
 	const char* host = "127.0.0.1";
-#endif // !DEVSERVER
+#endif // !NEWSERVER
 #else
 	const char* host = "127.0.0.1";
 #endif // !LOCALSERVER
@@ -185,11 +185,11 @@ bool Client::connectGameServer() {
 		return success;
 	}
 
-#ifndef DEVPORT
+#ifndef DEVSERVER
 	unsigned int gamePort = 9527;
 #else
 	unsigned int gamePort = 9526;
-#endif // !DEVPORT
+#endif // !DEVSERVER
 
 	gameAddr.sin_family = AF_INET;
 	gameAddr.sin_port = htons(gamePort);
@@ -401,11 +401,14 @@ int Client::receivePacket(void *ptr) {
 			int size = (decHeader[0] & 0xFF) | (decHeader[1] << 8);
 			int type = (decHeader[2] & 0xFF) | (decHeader[3] << 8);
 
-			int payloadSize = size - 4;
-			char* buffer = new char[size - 4];
-			if (client->activeSocket) recvBytes = recv(*client->activeSocket, buffer, payloadSize, 0);
-			if (recvBytes == payloadSize) {
-				client->createPacketByType(type, size, packetHeader, buffer);
+			if (size > 0) {
+				int payloadSize = size - 4;
+				char* buffer = new char[size - 4];
+				if (client->activeSocket) recvBytes = recv(*client->activeSocket, buffer, payloadSize, 0);
+				if (recvBytes == payloadSize) {
+					client->createPacketByType(type, size, packetHeader, buffer);
+				}
+				delete[] buffer;
 			}
 		}
 
@@ -441,6 +444,7 @@ void Client::sendPacket() {
 		Packet* nextPacket = sendPackets[i];
 		bufferSize += nextPacket->getLength();
 	}
+	if (bufferSize == 0) return;
 
 	sendBuffer = new BYTE[bufferSize];
 	int bufferPos = 0;
@@ -463,6 +467,7 @@ void Client::sendPacket() {
 		}
 		delete nextPacket;
 	}
+	delete[] sendBuffer;
 
 	if (useSeedAfterSend) {
 		decryptCipher.reset();
@@ -630,6 +635,9 @@ void Client::createPacketByType(int type, int size, char* header, char* buffer) 
 	default:
 		packet = new Packet(type, size, fullDecryptBuffer, fullBuffer);
 	}
+
+	delete[] fullBuffer;
+	delete[] fullDecryptBuffer;
 
 	if (!closeThread && packet) {
 		SDL_LockMutex(packetMutex);

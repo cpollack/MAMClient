@@ -20,6 +20,10 @@ public:
 	void SetDecreaseImage(std::string imagePath);
 	void SetIncreaseImage(std::string imagePath);
 	void SetUseGUI(bool use);
+
+	void UseCustomLabel(bool use) { CustomLabel = use; }
+	void SetLabel(std::string label);
+
 	void SetVerticle(bool bVer) { Verticle = bVer; }
 	void SetRightFill(bool rFill) { RightFill = rFill; }
 
@@ -45,6 +49,7 @@ private:
 
 	bool Loaded = false;
 	bool ShowLabel = false;
+	bool CustomLabel = false;
 	bool UseGUI = false;
 	bool usingImages = false;
 	bool Verticle = false;
