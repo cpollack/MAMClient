@@ -18,6 +18,7 @@ public:
 	CPetComposeForm();
 
 	virtual void handleEvent(SDL_Event& e);
+	virtual void render();
 
 private:
 	void HookWidgets();
@@ -38,6 +39,8 @@ private:
 	Item *accessory = nullptr;
 
 	std::vector<Pet*> pets;
+	Asset medalatk, medaldef, medaldex;
+	Asset hoverTexture;
 
 public: //Event Hooks
 	void imgSrcMain_Click(SDL_Event& e);
@@ -46,7 +49,8 @@ public: //Event Hooks
 	void imgSrcMinor_DoubleClick(SDL_Event& e);
 	void imgDstMain_Click(SDL_Event& e);
 	void imgDstMinor_Click(SDL_Event& e);
-	void imgAccessory_MouseOver(SDL_Event& e);
+	void imgAccessory_OnHoverStart(SDL_Event& e);
+	void imgAccessory_OnHoverEnd(SDL_Event& e);
 
 	void listPets_MouseOver(SDL_Event& e);
 	void listPets_SelectionClick(SDL_Event& e);

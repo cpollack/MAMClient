@@ -20,6 +20,7 @@
 
 CCharacterForm::CCharacterForm() : CWindow("CharacterForm.JSON") {
 	Type = FT_CHARACTER;
+	SetParentFromStack();
 
 	HookWidgets();
 	LoadPortrait();

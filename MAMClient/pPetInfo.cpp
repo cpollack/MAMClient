@@ -73,6 +73,15 @@ void pPetInfo::process() {
 		if (pet) pet->updateInfo(this);
 		break;
 
+	case pimPreviewCompose:
+		pet = new Pet(this);
+
+		e.type = CUSTOMEVENT_PET;
+		e.user.code = PET_PREVIEW;
+		e.user.data1 = pet;
+		SDL_PushEvent(&e);
+		break;
+
 	case pimPreviewWux:
 		pet = new Pet(this);
 
@@ -81,6 +90,7 @@ void pPetInfo::process() {
 		e.user.data1 = pet;
 		SDL_PushEvent(&e);
 		break;
+
 	}
 }
 

@@ -1,17 +1,14 @@
 #include "stdafx.h"
 #include "MainUI.h"
 
+#include "Global.h"
+
 //Subforms triggered by buttons
 #include "BattleConfigForm.h"
 #include "CharacterForm.h"
 #include "PetListForm.h"
 #include "InventoryForm.h"
 #include "WuxingForm.h"
-
-//TEMP
-#include "PetMagic.h" 
-#include "PetComposeForm.h"
-//ENDTEMP
 
 #include "Window.h"
 #include "Gauge.h"
@@ -22,6 +19,7 @@
 #include "GameMap.h"
 #include "Player.h"
 #include "Pet.h"
+#include "Team.h"
 
 #include "CustomEvents.h"
 #include "MessageManager.h"
@@ -112,6 +110,44 @@ void CMainUI::CreateWidgets() {
 	RegisterEvent("btnTeam", "Click", std::bind(&CMainUI::btnTeam_Click, this, std::placeholders::_1));
 	RegisterEvent("btnSocial", "Click", std::bind(&CMainUI::btnSocial_Click, this, std::placeholders::_1));
 	RegisterEvent("btnOptions", "Click", std::bind(&CMainUI::btnOptions_Click, this, std::placeholders::_1));
+
+	btnTeamCreate = new CButton(window, "btnTeamCreate", 674, 500);
+	btnTeamCreate->SetWidth(83);
+	btnTeamCreate->SetHeight(21);
+	btnTeamCreate->SetUnPressedImage("data/GUI/Team/btnTeamCreate.png");
+	btnTeamCreate->SetPressedImage("data/GUI/Team/btnTeamCreate.png");
+	widgets["btnTeamCreate"] = btnTeamCreate;
+	btnTeamJoin = new CButton(window, "btnTeamJoin", 674, 500);
+	btnTeamJoin->SetWidth(83);
+	btnTeamJoin->SetHeight(21);
+	btnTeamJoin->SetUnPressedImage("data/GUI/Team/btnTeamJoin.png");
+	btnTeamJoin->SetPressedImage("data/GUI/Team/btnTeamJoin.png");
+	widgets["btnTeamJoin"] = btnTeamJoin;
+	btnTeamManage = new CButton(window, "btnTeamManage", 674, 500);
+	btnTeamManage->SetWidth(83);
+	btnTeamManage->SetHeight(21);
+	btnTeamManage->SetUnPressedImage("data/GUI/Team/btnTeamManage.png");
+	btnTeamManage->SetPressedImage("data/GUI/Team/btnTeamManage.png");
+	widgets["btnTeamManage"] = btnTeamManage;
+	btnTeamLeave = new CButton(window, "btnTeamLeave", 674, 500);
+	btnTeamLeave->SetWidth(83);
+	btnTeamLeave->SetHeight(21);
+	btnTeamLeave->SetUnPressedImage("data/GUI/Team/btnTeamLeave.png");
+	btnTeamLeave->SetPressedImage("data/GUI/Team/btnTeamLeave.png");
+	widgets["btnTeamLeave"] = btnTeamLeave;
+	btnTeamDisband = new CButton(window, "btnTeamDisband", 674, 500);
+	btnTeamDisband->SetWidth(83);
+	btnTeamDisband->SetHeight(21);
+	btnTeamDisband->SetUnPressedImage("data/GUI/Team/btnTeamDisband.png");
+	btnTeamDisband->SetPressedImage("data/GUI/Team/btnTeamDisband.png");
+	widgets["btnTeamDisband"] = btnTeamDisband;
+	HideTeamButtons();
+
+	RegisterEvent("btnTeamCreate", "Click", std::bind(&CMainUI::btnTeamCreate_Click, this, std::placeholders::_1));
+	RegisterEvent("btnTeamJoin", "Click", std::bind(&CMainUI::btnTeamJoin_Click, this, std::placeholders::_1));
+	RegisterEvent("btnTeamManage", "Click", std::bind(&CMainUI::btnTeamManage_Click, this, std::placeholders::_1));
+	RegisterEvent("btnTeamLeave", "Click", std::bind(&CMainUI::btnTeamLeave_Click, this, std::placeholders::_1));
+	RegisterEvent("btnTeamDisband", "Click", std::bind(&CMainUI::btnTeamDisband_Click, this, std::placeholders::_1));
 }
 
 void CMainUI::Load() {
@@ -167,6 +203,12 @@ void CMainUI::Render() {
 
 void CMainUI::HandleEvent(SDL_Event& e) {
 	CWidget::HandleEvent(e); //Mouseover
+
+	if (e.type == CUSTOMEVENT_PLAYER) {
+		if (e.user.code == PLAYER_TEAM) {
+			if (ShowingTeamButtons) ShowTeamButtons(); //updates appropriate visible team buttons
+		}
+	}
 
 	if (e.type == CUSTOMEVENT_BATTLE) {
 		if (e.user.code == BATTLE_START) {
@@ -315,63 +357,75 @@ void CMainUI::btnBattleRepeat_Toggle(SDL_Event& e) {
 }
 
 void CMainUI::btnBattleConfig_Click(SDL_Event& e) {
-	if (battle) return;
+	if (battle || options.GetRepeatBattle()) return;
 	CBattleConfigForm* bcForm = new CBattleConfigForm();
 	Windows.push_back(bcForm);
 }
 
 void CMainUI::btnPlayer_Click(SDL_Event& e) {
-	if (battle) return;
+	if (battle || options.GetRepeatBattle()) return;
 	CCharacterForm* charForm = new CCharacterForm();
 	Windows.push_back(charForm);
 }
 
 void CMainUI::btnPet_Click(SDL_Event& e) {
-	if (battle) return;
+	if (battle || options.GetRepeatBattle()) return;
 	CPetListForm* petForm = new CPetListForm();
 	Windows.push_back(petForm);
 }
 
 void CMainUI::btnInventory_Click(SDL_Event& e) {
-	if (battle) return;
+	if (battle || options.GetRepeatBattle()) return;
 	CInventoryForm* invForm = new CInventoryForm();
 	Windows.push_back(invForm);
 }
 
 void CMainUI::btnKungfu_Click(SDL_Event& e) {
-	if (battle) return;
-
-	CPetComposeForm* compForm = new CPetComposeForm();
-	Windows.push_back(compForm);
-	//testing for pet magic evolve. compose is next!
-	/*CPetMagic *pm = new CPetMagic(renderer, 0);
-	ColorShift cs[3];
-	pm->setCoordinate(player->GetCoord());
-	pm->addSource(54, cs);
-	pm->addDestination(57, cs);
-	map->addPetMagic(pm);
-	pm->start();*/
+	if (battle || options.GetRepeatBattle()) return;
+	//
 }
 
 void CMainUI::btnWuxing_Click(SDL_Event& e) {
-	if (battle) return;
+	if (battle || options.GetRepeatBattle()) return;
 	CWuxingForm* wuxForm = new CWuxingForm();
 	Windows.push_back(wuxForm);
 }
 
 void CMainUI::btnTeam_Click(SDL_Event& e) {
-	if (battle) return;
-	//
+	if (battle || options.GetRepeatBattle()) return;
+
+	if (ShowingTeamButtons) HideTeamButtons();
+	else ShowTeamButtons();
 }
 
 void CMainUI::btnSocial_Click(SDL_Event& e) {
-	if (battle) return;
+	if (battle || options.GetRepeatBattle()) return;
 	//
 }
 
 void CMainUI::btnOptions_Click(SDL_Event& e) {
-	if (battle) return;
+	if (battle || options.GetRepeatBattle()) return;
 	//
+}
+
+void CMainUI::btnTeamCreate_Click(SDL_Event& e) {
+	CTeam::Create();
+}
+
+void CMainUI::btnTeamJoin_Click(SDL_Event& e) {
+	GameMode = GAMEMODE_SELECTTEAM;
+}
+
+void CMainUI::btnTeamManage_Click(SDL_Event& e) {
+	//
+}
+
+void CMainUI::btnTeamLeave_Click(SDL_Event& e) {
+	CTeam::Leave();
+}
+
+void CMainUI::btnTeamDisband_Click(SDL_Event& e) {
+	CTeam::Leave();
 }
 
 void CMainUI::setPlayerHealthGauge(int val) {
@@ -489,4 +543,44 @@ void CMainUI::updatePetLevel() {
 		lblPetLevel->SetText(std::to_string(pPet->GetLevel()));
 	}
 	else lblPetLevel->SetText("");
+}
+
+void CMainUI::ShowTeamButtons() {
+	HideTeamButtons();
+
+	std::vector<CButton*> teamBtns;
+	if (player->GetTeam()) {
+		if (player->GetTeam()->GetLeader() == player) {
+			teamBtns.push_back(btnTeamManage);
+			teamBtns.push_back(btnTeamDisband);
+		}
+		else teamBtns.push_back(btnTeamLeave);
+	}
+	else {
+		teamBtns.push_back(btnTeamCreate);
+		teamBtns.push_back(btnTeamJoin);
+	}
+
+	if (teamBtns.size() > 1) {
+		teamBtns[0]->SetX(432);
+		teamBtns[0]->SetVisible(true);
+
+		teamBtns[1]->SetX(516);
+		teamBtns[1]->SetVisible(true);
+	}
+	else {
+		teamBtns[0]->SetX(474);
+		teamBtns[0]->SetVisible(true);
+	}
+
+	ShowingTeamButtons = true;
+}
+
+void CMainUI::HideTeamButtons() {
+	btnTeamCreate->SetVisible(false);
+	btnTeamJoin->SetVisible(false);
+	btnTeamManage->SetVisible(false);
+	btnTeamLeave->SetVisible(false);
+	btnTeamDisband->SetVisible(false);
+	ShowingTeamButtons = false;
 }

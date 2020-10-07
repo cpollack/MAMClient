@@ -18,6 +18,7 @@ CGauge::CGauge(CWindow* window, rapidjson::Value& vWidget) : CWidget(window, vWi
 	if (!vWidget.IsObject()) return;
 
 	if (vWidget.HasMember("ShowLabel")) ShowLabel = vWidget["ShowLabel"].GetBool();
+	if (vWidget.HasMember("Verticle")) Verticle = vWidget["Verticle"].GetBool();
 }
 
 
@@ -182,8 +183,16 @@ void CGauge::Render_Draw() {
 	// BG > FG > Text
 	SDL_RenderCopy(renderer, backgroundTexture, NULL, &widgetRect);
 
-	SDL_Rect fgRect_src = { 0, 0, ((Width - 4) * fillPerc), Height - 4 };
-	SDL_Rect fgRect_dest = { X + 2, Y + 2, fgRect_src.w, fgRect_src.h };
+	SDL_Rect fgRect_src;
+	SDL_Rect fgRect_dest;
+	if (Verticle) {
+		fgRect_src = { 0, (Height - 4) - (int)((Height - 4) * fillPerc), Width - 4, (int)((Height - 4) * fillPerc) };
+		fgRect_dest = { X + 2, Y + 2 + fgRect_src.y, fgRect_src.w, fgRect_src.h };
+	}
+	else {
+		fgRect_src = { 0, 0, (int)((Width - 4) * fillPerc), Height - 4 };
+		fgRect_dest = { X + 2, Y + 2, fgRect_src.w, fgRect_src.h };
+	}
 	SDL_RenderCopy(renderer, foregroundTexture, &fgRect_src, &fgRect_dest);
 
 	if (ShowLabel) {

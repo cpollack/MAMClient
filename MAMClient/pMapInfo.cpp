@@ -56,7 +56,15 @@ void pMapInfo::process() {
 		firstMap = false;
 	}
 
-	map = new GameMap(this);
+	try {
+		map = new GameMap(this);
+	}
+	catch (...) {
+		gClient.addToDebugLog("Map '" + std::string(mapName) + "' failed to load. Terminating application.");
+		showErrorMessage("Map '" + std::string(mapName) + "' failed to load. To application will now shut down.");
+		applicationClose();
+		return;
+	}
 	if (!firstMap) map->setMapUiRect(mapUiRect);
 	if (jumpMode) map->toggleJumpMode();
 	player->SetCoord(SDL_Point{ mapX, mapY });

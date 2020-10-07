@@ -67,6 +67,7 @@ CWindow::CWindow(std::string jsonFile) {
 	}
 
 	loadDocument(document);
+	SetParentFromStack();
 }
 
 
@@ -487,9 +488,11 @@ void CWindow::handleEvent(SDL_Event& e)
 }
 
 void CWindow::step() {
-	for (auto widget : widgets) {
-		eventWidget = widget.second;
-		widget.second->Step();
+	if (widgets.size()) {
+		for (auto widget : widgets) {
+			eventWidget = widget.second;
+			widget.second->Step();
+		}
 	}
 	eventWidget = nullptr;
 }
@@ -576,6 +579,20 @@ int CWindow::GetHeight() {
 
 void CWindow::SetParent(CWindow* wParent) {
 	parent = wParent;
+	if (!parent) return;
+
+	int parentX, parentY;
+	SDL_GetWindowPosition(parent->GetWindow(), &parentX, &parentY);
+	int newX = parentX + (parent->GetWidth() / 2) - (Width / 2);
+	int newY = parentY + (parent->GetHeight() / 2) - (Height / 2);
+	SDL_SetWindowPosition(GetWindow(), newX, newY);
+}
+
+void CWindow::SetParentFromStack() {
+	CWindow* top = nullptr;
+	if (Windows.size()) top = Windows.back();
+	else top = mainWindow;
+	SetParent(top);
 }
 
 void CWindow::SetTitle(std::string title) {

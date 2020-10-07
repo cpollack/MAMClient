@@ -122,11 +122,14 @@ std::string EffectToString(int effect) {
 	case EFFECT_SOULFLY: return "SoulFly";
 	case EFFECT_SOULRETURN: return "SoulReturn";
 	case EFFECT_SOULSHINE: return "SoulShining";
+	case EFFECT_DESTROY: return "Destroy";
+	case EFFECT_LEVEL: return "LevelUp";
 	}
 
 	return "";
 }
 
+// Formats an integer with commas: 1000 > 1,000
 std::string formatInt(int value) {
 	std::string numWithCommas = std::to_string(value);
 	int insertPosition = numWithCommas.length() - 3;
@@ -135,6 +138,20 @@ std::string formatInt(int value) {
 		insertPosition -= 3;
 	}
 	return numWithCommas;
+}
+
+//Formats a float with commas to a given decimal precision (rounded): 9876.54321 > 9,876.54
+std::string formatFloat(float value, int precision) {
+	if (precision < 0) precision = 0;
+	float trimmed = (int)(value * pow(10, precision) + 0.5) / pow(10, precision);
+	std::string strTrimmed = std::to_string(trimmed);
+	std::string decimals = "";
+	if (precision > 0) {
+		if (strTrimmed.find('.') == std::string::npos) decimals = ".";
+		else decimals = strTrimmed.substr(strTrimmed.find('.'), precision + 1);
+		while (decimals.length() < precision) decimals.push_back('0');
+	}
+	return formatInt((int)trimmed) + decimals;
 }
 
 bool fileExist(std::string file) {
@@ -167,7 +184,7 @@ CPromptForm* doPrompt(CWindow* parent, std::string title, std::string message, b
 	CPromptForm* promptForm = new CPromptForm(cancel);
 	promptForm->SetParent(parent);
 	promptForm->SetTitle(title);
-	promptForm->SetMessage(message);
+	promptForm->SetMessage(StringToWString(message));
 	Windows.push_back(promptForm);
 	return promptForm;
 }

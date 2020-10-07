@@ -39,9 +39,24 @@ void Pet::updateInfo(pPetInfo* packet) {
 
 	life_current = packet->life_current;
 	life_max = packet->life_max;
+	
 	attack = packet->attack;
 	defence = packet->defence;
 	dexterity = packet->dexterity;
+
+	if (packet->mode == pimPreviewCompose) {
+		composeChance = (int)packet->name[0];
+		attackRate = (int)packet->name[1];
+		defenceRate = (int)packet->name[2];
+		dexterityRate = (int)packet->name[3];
+		growth = ((float*)packet->name)[1];
+		lifeGrowth = ((float*)packet->name)[2];
+	}
+	else {
+		UpdateRates();
+		UpdateGrowth();
+		UpdateLifeGrowth();
+	}
 
 	medal_attack = packet->medal_attack;
 	medal_defence = packet->medal_defence;
@@ -70,19 +85,19 @@ int Pet::GetElement() {
 std::string Pet::GetElementText() {
 	std::string strElement;
 	switch (Element) {
-	case 2:
+	case ELEMENT_WATER:
 		strElement = "Water";
 		break;
-	case 3:
+	case ELEMENT_FIRE:
 		strElement = "Fire";
 		break;
-	case 4:
+	case ELEMENT_METAL:
 		strElement = "Metal";
 		break;
-	case 5:
+	case ELEMENT_WOOD:
 		strElement = "Wood";
 		break;
-	case 6:
+	case ELEMENT_EARTH:
 		strElement = "Earth";
 		break;
 	}
@@ -111,16 +126,30 @@ int Pet::GetMaxLife() {
 	return trueMax;
 }
 
-int Pet::getAttack() {
+void Pet::UpdateLifeGrowth() {
+	lifeGrowth = (life_max * 1.0) / (Level - 1);
+}
+
+int Pet::GetAttack() {
 	return attack;
 }
 
-int Pet::getDefence() {
+int Pet::GetDefence() {
 	return defence;
 }
 
-int Pet::getDexterity() {
+int Pet::GetDexterity() {
 	return dexterity;
+}
+
+void Pet::UpdateRates() {
+	attackRate = attack / ((attack + defence + dexterity) * 1.0) * 100;
+	defenceRate = defence / ((attack + defence + dexterity) * 1.0) * 100;
+	dexterityRate =  dexterity / ((attack + defence + dexterity) * 1.0) * 100;
+}
+
+void Pet::UpdateGrowth() {
+	growth = ((attack + defence + dexterity) * 1.0) / (Level - 1);
 }
 
 int Pet::getMedalAttack() {

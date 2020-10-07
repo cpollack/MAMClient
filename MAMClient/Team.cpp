@@ -51,8 +51,8 @@ User* CTeam::GetMember(int position) {
 }
 
 User* CTeam::GetNextInLine(User *user) {
+	if (members.size() <= 1) return nullptr;
 	if (members[0] == user) return nullptr;
-	if (members.size() == 1) return nullptr;
 
 	User *nextInLine = members[0];
 	for (int i = 1; i < members.size(); i++) {
@@ -75,6 +75,7 @@ void CTeam::AddMember(User *pUser) {
 }
 
 void CTeam::RemoveMember(User *pUser) {
+	if (members.size() == 0) return;
 	std::vector<User*>::iterator itr = members.begin();
 	while (itr != members.end()) {
 		if (*itr == pUser) {

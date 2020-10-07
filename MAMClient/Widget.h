@@ -89,6 +89,7 @@ public: //Accessors
 	void SetFontSize(int size);
 	void SetFontColor(SDL_Color fc);
 	void SetBackColor(SDL_Color bc);
+	void SetUseBackground(bool use) { UseBackground = use; }
 
 	CWidget* GetParent();
 
@@ -122,6 +123,7 @@ protected:
 	SDL_Texture* fontTexture = NULL;
 	SDL_Rect fontRect;
 	SDL_Color fontColor, backColor;
+	bool UseBackground = false;
 
 	//Text related properties
 	int fontSize = 12;

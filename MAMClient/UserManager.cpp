@@ -44,6 +44,8 @@ void UserManager::stepAllUsers() {
 		++next_it;
 		if (it->second->leaveMap())
 		{
+			CTeam* team = it->second->GetTeam();
+			if (team) it->second->LeaveTeam();
 			delete it->second;
 			Users.erase(it);
 		}

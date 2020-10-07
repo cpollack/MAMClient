@@ -43,10 +43,10 @@ public: //Event Hooks
 
 	void btnChangeName_Click(SDL_Event& e);
 	void btnEvolve_Click(SDL_Event& e);
+	void btnCompose_Click(SDL_Event& e);
 	void btnSkills_Click(SDL_Event& e);
-	void btnRegister_Click(SDL_Event& e);
 	void btnCatalog_Click(SDL_Event& e);
-	void btnEvaluate_Click(SDL_Event& e);
+	void btnRegister_Click(SDL_Event& e);
 	void btnPetStall_Click(SDL_Event& e);
 	void btnDrop_Click(SDL_Event& e);
 	void btnMarch_Click(SDL_Event& e);
@@ -61,6 +61,6 @@ private: //Widgets
 	CLabel *lblLevel, *lblGeneration, *lblAccessory;
 	CGauge *gaugeLoyalty, *gaugeExperience, *gaugeLife;
 	
-	CButton *btnChangeName, *btnEvolve, *btnSkills, *btnRegister, *btnCatalog;
-	CButton *btnEvaluate, *btnPetStall, *btnDrop, *btnMarch, *btnChangeAccessory;
+	CButton *btnChangeName, *btnEvolve, *btnCompose, *btnSkills, *btnCatalog;
+	CButton *btnRegister, *btnPetStall, *btnDrop, *btnMarch, *btnChangeAccessory;
 };

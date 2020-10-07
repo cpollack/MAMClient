@@ -26,23 +26,32 @@ public:
 
 	virtual int GetMaxLife();
 	bool IsFullLife() { return GetCurrentLife() == GetMaxLife(); }
+	void UpdateLifeGrowth();
+	float GetLifeGrowth() { return lifeGrowth; }
 
-	int Pet::getAttack();
+	int GetAttack();
 	void SetAttack(int iAttack) { attack = iAttack; }
+	float GetAttackRate() { return attackRate; }
 
-	int Pet::getDefence();
+	int GetDefence();
 	void SetDefence(int iDef) { defence = iDef; }
+	float GetDefenceRate() { return defenceRate; }
 
-	int Pet::getDexterity();
+	int GetDexterity();
 	void SetDexterity(int iDex) { dexterity = iDex; }
-	
+	float GetDexterityRate() { return dexterityRate; }
+
+	void UpdateRates();
+	void UpdateGrowth();
+	float GetGrowth() { return growth; }
+
 	int GetGeneration() { return generation; }
 
 	int GetClass() { return Class; }
 	int GetElement();
 	std::string GetElementText();
-	bool IsUnevo() { return (Class / 10000) == 7; }
-	bool IsSuper() { return (Class / 1000) == 1; }
+	bool IsUnevo() { return (Class / 10000) == UNEVOPET; }
+	bool IsSuper() { return (Class / 1000) == SUPERPET; }
 	int GetEvoNum() { return (Class % 10000) / 1000; }
 
 	int Pet::getMedalAttack();
@@ -58,6 +67,9 @@ public:
 	std::string getDetails();
 	Asset GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon);
 
+	//Specific to compose
+	int GetComposeChance() { return composeChance; }
+
 private:
 	int owner;
 
@@ -65,13 +77,17 @@ private:
 
 	int Class;
 	int experience, nextLevelExp, generation, loyalty;
+	int composeChance;
 
 	int attack, defence, dexterity;
+	float attackRate, defenceRate, dexterityRate;
 	int medal_attack, medal_defence, medal_dexterity;
+
+	float growth, lifeGrowth;
 
 	Item *item = nullptr;
 	int skillCount;
 	int skills[5];
 
-	void Pet::setElement();
+	void setElement();
 };

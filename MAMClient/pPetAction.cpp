@@ -67,7 +67,8 @@ void pPetAction::process() {
 		break;
 
 	case paRemove:
-		player->removePet(value);
+		player->removePet(petId);
+		customEvent(CUSTOMEVENT_PET, PET_REMOVE);
 		break;
 	}
 }

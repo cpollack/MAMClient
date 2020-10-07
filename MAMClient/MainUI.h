@@ -59,6 +59,18 @@ public: //Labels
 	void updatePlayerLevel();
 	void updatePetLevel();
 
+private: //Team Buttons
+	CButton *btnTeamCreate, *btnTeamJoin, *btnTeamManage, *btnTeamLeave, *btnTeamDisband;
+	bool ShowingTeamButtons;
+	void ShowTeamButtons();
+	void HideTeamButtons();
+
+	void btnTeamCreate_Click(SDL_Event& e);
+	void btnTeamJoin_Click(SDL_Event& e);
+	void btnTeamManage_Click(SDL_Event& e);
+	void btnTeamLeave_Click(SDL_Event& e);
+	void btnTeamDisband_Click(SDL_Event& e);
+
 private:
 	CWindow* window;
 	CGauge *gaugePlayerHealth, *gaugePlayerMana, *gaugePlayerExp;

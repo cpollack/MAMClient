@@ -134,8 +134,10 @@ void CWidget::RenderText() {
 
 		SDL_Texture* priorTarget = SDL_GetRenderTarget(renderer);
 		SDL_SetRenderTarget(renderer, fontTexture);
-		//SDL_SetRenderDrawColor(renderer, backColor.r, backColor.g, backColor.b, backColor.a);
-		//SDL_RenderClear(renderer);
+		if (UseBackground) {
+			SDL_SetRenderDrawColor(renderer, backColor.r, backColor.g, backColor.b, backColor.a);
+			SDL_RenderClear(renderer);
+		}
 		SDL_SetTextureBlendMode(fontTexture, SDL_BLENDMODE_BLEND);
 		SDL_Texture *tempTexture = SDL_CreateTextureFromSurface(renderer, lSurface);
 
@@ -308,6 +310,7 @@ void CWidget::SetFontColor(SDL_Color fc) {
 
 void CWidget::SetBackColor(SDL_Color bc) {
 	backColor = bc;
+	UseBackground = true;
 	RenderText();
 }
 

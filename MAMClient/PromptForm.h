@@ -10,6 +10,7 @@ public:
 	CPromptForm(bool allowCancel);
 
 	void SetMessage(std::string message);
+	void SetMessage(std::wstring message);
 	void SetType(int type);
 
 private: //Event handlers

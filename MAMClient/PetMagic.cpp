@@ -6,6 +6,8 @@
 #include "Sprite.h"
 #include "GameMap.h"
 
+#include "pPetMagic.h"
+
 CPetMagic::CPetMagic(SDL_Renderer *r, int mode) {
 	renderer = r;
 	this->mode = mode;
@@ -47,17 +49,30 @@ void CPetMagic::step() {
 		source[0].coordinate = coordinate;
 		source[0].position = map->CenterOfCoord(coordinate);
 		//check for mode evolve versus compose?
-		addEffect(source[0], EFFECT_SOULFLY);
-		addEffect(source[0], EFFECT_SOULFLY, 600);
-		addEffect(source[0], EFFECT_SOULSHINE);
-		if (sourceCount > 1) {
+		if (mode == pmEvolve) {
+			addEffect(source[0], EFFECT_SOULFLY);
+			addEffect(source[0], EFFECT_SOULFLY, 600);
+			addEffect(source[0], EFFECT_SOULSHINE);
+			if (sourceCount > 1) {
+				source[0].position.x -= 60;
+				source[1].coordinate = coordinate;
+				source[1].position = map->CenterOfCoord(coordinate);
+				source[1].position.x += 60;
+				addEffect(source[1], EFFECT_SOULFLY);
+				addEffect(source[1], EFFECT_SOULFLY, 600);
+				addEffect(source[1], EFFECT_SOULSHINE);
+			}
+		}
+		else if (mode == pmCompose) {
 			source[0].position.x -= 60;
 			source[1].coordinate = coordinate;
 			source[1].position = map->CenterOfCoord(coordinate);
 			source[1].position.x += 60;
-			addEffect(source[1], EFFECT_SOULFLY);
-			addEffect(source[1], EFFECT_SOULFLY, 600);
-			addEffect(source[1], EFFECT_SOULSHINE);
+
+			addEffect(source[0], EFFECT_HEAL);
+			addEffect(source[0], EFFECT_DESTROY);
+			addEffect(source[1], EFFECT_HEAL);
+			addEffect(source[1], EFFECT_DESTROY);
 		}
 
 		state = PETMAGIC_SOURCE;
@@ -77,17 +92,33 @@ void CPetMagic::step() {
 	if (state == PETMAGIC_INITDEST) {
 		dest[0].coordinate = coordinate;
 		dest[0].position = map->CenterOfCoord(coordinate);
-		addEffect(dest[0], EFFECT_SOULRETURN);
-		addEffect(dest[0], EFFECT_SOULRETURN, 500);
-		addEffect(dest[0], EFFECT_SOULSHINE);
-		if (destCount > 1) {
-			dest[0].position.x -= 60;
-			dest[1].coordinate = coordinate;
-			dest[1].position = map->CenterOfCoord(coordinate);
-			dest[1].position.x += 60;
-			addEffect(dest[1], EFFECT_SOULRETURN);
-			addEffect(dest[1], EFFECT_SOULRETURN, 500);
-			addEffect(dest[1], EFFECT_SOULSHINE);
+		if (mode == pmEvolve) {
+			addEffect(dest[0], EFFECT_SOULRETURN);
+			addEffect(dest[0], EFFECT_SOULRETURN, 500);
+			addEffect(dest[0], EFFECT_SOULSHINE);
+			if (destCount > 1) {
+				dest[0].position.x -= 60;
+				dest[1].coordinate = coordinate;
+				dest[1].position = map->CenterOfCoord(coordinate);
+				dest[1].position.x += 60;
+				addEffect(dest[1], EFFECT_SOULRETURN);
+				addEffect(dest[1], EFFECT_SOULRETURN, 500);
+				addEffect(dest[1], EFFECT_SOULSHINE);
+			}
+		}
+		else if (mode == pmCompose) {
+			addEffect(dest[0], EFFECT_SOULFLY);
+			addEffect(dest[0], EFFECT_LEVEL);
+			addEffect(dest[0], EFFECT_READY);
+			if (destCount > 1) {
+				dest[0].position.x -= 60;
+				dest[1].coordinate = coordinate;
+				dest[1].position = map->CenterOfCoord(coordinate);
+				dest[1].position.x += 60;
+				addEffect(dest[1], EFFECT_SOULFLY);
+				addEffect(dest[1], EFFECT_LEVEL);
+				addEffect(dest[1], EFFECT_READY);
+			}
 		}
 
 		state = PETMAGIC_DEST;

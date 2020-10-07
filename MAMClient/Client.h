@@ -4,7 +4,7 @@
 //For local and new server testing
 //#define NEWSERVER
 //#define LOCALSERVER
-#define DEVSERVER
+//#define DEVSERVER
 
 #define DEBUG_LOG
 #define DEBUG_PACKET

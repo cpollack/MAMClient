@@ -195,7 +195,7 @@ void User::step() {
 		}
 	}
 
-	if (team && !IsTeamLeader()) {
+	if (!leaveMap() && team && !IsTeamLeader()) {
 		User *nextUser = team->GetNextInLine(this);
 		if (nextUser) {
 			SDL_Point backCoord = getBackCoord(nextUser->GetCoord(), nextUser->getDirection());
@@ -490,8 +490,8 @@ void User::LeaveTeam() {
 	if (!team) return;
 
 	if (team->GetLeader() == this) {
-		for (int i = 1; i < team->GetMemberCount(); i++) {
-			User *member = team->GetMember(i + 1);
+		while (team->GetMemberCount() >= 2) {
+			User* member = team->GetMember(2);
 			if (member && member != this) {
 				member->LeaveTeam();
 			}

@@ -90,6 +90,15 @@ void CPromptForm::SetMessage(std::string message) {
 	//recenter window
 }
 
+void CPromptForm::SetMessage(std::wstring message) {
+	lblMessage->SetText(message);
+
+	//lblMessage->GetTextRect();
+	//resize window as needed
+
+	//recenter window
+}
+
 void CPromptForm::SetType(int type) {
 	promptType = type;
 }

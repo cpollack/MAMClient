@@ -105,6 +105,7 @@ void Texture::loadResource(std::string filePath, int anchor) {
 	load1 = SDL_GetTicks() - start;
 	if (surface == NULL)
 	{
+		gClient.addToDebugLog("Texture::loadResource() Failed to load image " + filePath + "! SDL Error: " + SDL_GetError());
 		printf("Unable to load image %s! SDL Error: %s\n", filePath, SDL_GetError());
 	}
 	else {
@@ -267,6 +268,7 @@ void Texture::loadSurface() {
 
 	if (surface == NULL)
 	{
+		gClient.addToDebugLog("Texture::loadSurface() Failed to load: " + file + " SDL Error: " + SDL_GetError());
 		printf("Unable to load image %s! SDL Error: %s\n", file, SDL_GetError());
 		skip = true;
 		loadFailed = true;

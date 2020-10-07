@@ -37,3 +37,16 @@ Major Feature:
 
 
 -------------------------------
+
+Reported Issues:
+
+(X)Female button missing during character creation
+(X)Character create confirm window gets stuck on screen
+
+(ruthrox) game crashes when leaving Inn in WC
+
+(X)Windows do not open relative to parent position
+Can click buttons to open windows between battle when on auto
+
+Wuxing - Pet info hover is stats after medals
+Pet Info - stats with medals as well (confirm old client)

@@ -155,5 +155,6 @@ protected: //GUI textures
 	CButton *btnMinimize;
 };
 
+extern CWindow* mainWindow;
 extern std::vector<CWindow*> Windows;
 extern std::vector<CWindow*> QueueWindows;

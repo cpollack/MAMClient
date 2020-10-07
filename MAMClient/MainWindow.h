@@ -116,14 +116,7 @@ private:
 	void btnJump_Click(SDL_Event& e);
 	void btnCloud_Click(SDL_Event& e);
 
-	void btnTeam_Click(SDL_Event& e);
 	void btnGuild_Click(SDL_Event& e);
-
-	void btnTeamCreate_Click(SDL_Event& e);
-	void btnTeamJoin_Click(SDL_Event& e);
-	void btnTeamManage_Click(SDL_Event& e);
-	void btnTeamLeave_Click(SDL_Event& e);
-	void btnTeamDisband_Click(SDL_Event& e);
 
 	SDL_Texture* gameTexture;
 	SDL_Rect gameRect;
@@ -141,10 +134,6 @@ private:
 
 	User* lastMouseoverUser = nullptr;
 	int userDetailsStartTime;
-
-	bool ShowingTeamButtons;
-	void ShowTeamButtons();
-	void HideTeamButtons();
 
 public: // Main form hooks
 	void setPlayerDetailsLabels();

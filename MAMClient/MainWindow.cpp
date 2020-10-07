@@ -535,7 +535,7 @@ void CMainWindow::details_init() {
 }
 
 void CMainWindow::details_cleanup() {
-	//
+	//create form self cleans
 }
 
 void CMainWindow::details_render() {
@@ -615,14 +615,7 @@ void CMainWindow::main_init_widgets() {
 	registerEvent("btnJump", "Click", std::bind(&CMainWindow::btnJump_Click, this, std::placeholders::_1));
 	registerEvent("btnCloud", "Click", std::bind(&CMainWindow::btnCloud_Click, this, std::placeholders::_1));
 
-	registerEvent("btnTeam", "Click", std::bind(&CMainWindow::btnTeam_Click, this, std::placeholders::_1));
 	registerEvent("btnGuild", "Click", std::bind(&CMainWindow::btnGuild_Click, this, std::placeholders::_1));
-
-	registerEvent("btnTeamCreate", "Click", std::bind(&CMainWindow::btnTeamCreate_Click, this, std::placeholders::_1));
-	registerEvent("btnTeamJoin", "Click", std::bind(&CMainWindow::btnTeamJoin_Click, this, std::placeholders::_1));
-	registerEvent("btnTeamManage", "Click", std::bind(&CMainWindow::btnTeamManage_Click, this, std::placeholders::_1));
-	registerEvent("btnTeamLeave", "Click", std::bind(&CMainWindow::btnTeamLeave_Click, this, std::placeholders::_1));
-	registerEvent("btnTeamDisband", "Click", std::bind(&CMainWindow::btnTeamDisband_Click, this, std::placeholders::_1));
 }
 
 void CMainWindow::main_setPetPortrait() {
@@ -734,10 +727,6 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 		if (e.user.code == PLAYER_LEVEL) {
 			mainUI->setPlayerExpGauge(player->GetExperience(), player->GetLevelUpExperience());
 			mainUI->updatePlayerLevel();
-		}
-
-		if (e.user.code == PLAYER_TEAM) {
-			if (ShowingTeamButtons) ShowTeamButtons(); //updates appropriate visible team buttons
 		}
 	}
 
@@ -887,76 +876,11 @@ void CMainWindow::btnCloud_Click(SDL_Event& e) {
 	gClient.addPacket(pck);
 }
 
-void CMainWindow::btnTeam_Click(SDL_Event& e) {
-	if (ShowingTeamButtons) HideTeamButtons();
-	else ShowTeamButtons();
-}
-
 void CMainWindow::btnGuild_Click(SDL_Event& e) {
 	//
 }
 
-void CMainWindow::btnTeamCreate_Click(SDL_Event& e) {
-	CTeam::Create();
-}
-
-void CMainWindow::btnTeamJoin_Click(SDL_Event& e) {
-	GameMode = GAMEMODE_SELECTTEAM;
-}
-
-void CMainWindow::btnTeamManage_Click(SDL_Event& e) {
-	//
-}
-
-void CMainWindow::btnTeamLeave_Click(SDL_Event& e) {
-	CTeam::Leave();
-}
-
-void CMainWindow::btnTeamDisband_Click(SDL_Event& e) {
-	CTeam::Leave();
-}
-
 /* Main Form - Hooks */
-
-void CMainWindow::ShowTeamButtons() {
-	HideTeamButtons();
-
-	std::vector<CButton*> teamBtns;
-	if (player->GetTeam()) {
-		if (player->GetTeam()->GetLeader() == player) {
-			teamBtns.push_back((CButton*)GetWidget("btnTeamManage"));
-			teamBtns.push_back((CButton*)GetWidget("btnTeamDisband"));
-		}
-		else teamBtns.push_back((CButton*)GetWidget("btnTeamLeave"));
-	}
-	else {
-		teamBtns.push_back((CButton*)GetWidget("btnTeamCreate"));
-		teamBtns.push_back((CButton*)GetWidget("btnTeamJoin"));
-	}
-
-	if (teamBtns.size() > 1) {
-		teamBtns[0]->SetX(632);
-		teamBtns[0]->SetVisible(true);
-
-		teamBtns[1]->SetX(716);
-		teamBtns[1]->SetVisible(true);
-	}
-	else {
-		teamBtns[0]->SetX(674);
-		teamBtns[0]->SetVisible(true);
-	}
-
-	ShowingTeamButtons = true;
-}
-
-void CMainWindow::HideTeamButtons() {
-	((CButton*)GetWidget("btnTeamCreate"))->SetVisible(false);
-	((CButton*)GetWidget("btnTeamJoin"))->SetVisible(false);
-	((CButton*)GetWidget("btnTeamManage"))->SetVisible(false);
-	((CButton*)GetWidget("btnTeamLeave"))->SetVisible(false);
-	((CButton*)GetWidget("btnTeamDisband"))->SetVisible(false);
-	ShowingTeamButtons = false;
-}
 
 void CMainWindow::setPlayerDetailsLabels() {
 	if (!player) return;

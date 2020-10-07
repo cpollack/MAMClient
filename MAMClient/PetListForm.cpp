@@ -5,6 +5,7 @@
 
 #include "PromptForm.h"
 #include "EvolveForm.h"
+#include "PetComposeForm.h"
 #include "PetEquipForm.h"
 
 #include "Client.h"
@@ -41,10 +42,11 @@ CPetListForm::CPetListForm() : CWindow("PetListForm.JSON") {
 
 	registerEvent("btnChangeName", "Click", std::bind(&CPetListForm::btnChangeName_Click, this, std::placeholders::_1));
 	registerEvent("btnEvolve", "Click", std::bind(&CPetListForm::btnEvolve_Click, this, std::placeholders::_1));
+	registerEvent("btnCompose", "Click", std::bind(&CPetListForm::btnCompose_Click, this, std::placeholders::_1));
 	registerEvent("btnSkills", "Click", std::bind(&CPetListForm::btnSkills_Click, this, std::placeholders::_1));
 	registerEvent("btnRegister", "Click", std::bind(&CPetListForm::btnRegister_Click, this, std::placeholders::_1));
 	registerEvent("btnCatalog", "Click", std::bind(&CPetListForm::btnCatalog_Click, this, std::placeholders::_1));
-	registerEvent("btnEvaluate", "Click", std::bind(&CPetListForm::btnEvaluate_Click, this, std::placeholders::_1));
+	registerEvent("btnRegister", "Click", std::bind(&CPetListForm::btnRegister_Click, this, std::placeholders::_1));
 	registerEvent("btnPetStall", "Click", std::bind(&CPetListForm::btnPetStall_Click, this, std::placeholders::_1));
 	registerEvent("btnDrop", "Click", std::bind(&CPetListForm::btnDrop_Click, this, std::placeholders::_1));
 	registerEvent("btnMarch", "Click", std::bind(&CPetListForm::btnMarch_Click, this, std::placeholders::_1));
@@ -53,6 +55,8 @@ CPetListForm::CPetListForm() : CWindow("PetListForm.JSON") {
 	medalatk.reset(new Texture(renderer, "data/GUI/Main/medalatk.tga"));
 	medaldef.reset(new Texture(renderer, "data/GUI/Main/medaldef.tga"));
 	medaldex.reset(new Texture(renderer, "data/GUI/Main/medaldex.tga"));
+
+	SetParentFromStack();
 }
 
 void CPetListForm::handleEvent(SDL_Event& e) {
@@ -72,6 +76,9 @@ void CPetListForm::handleEvent(SDL_Event& e) {
 		if (e.user.code == WINDOW_EVOLVE) {
 			CloseWindow = true;
 		}
+		if (e.user.code == WINDOW_COMPOSE) {
+			CloseWindow = true;
+		}
 	}
 
 	if (e.window.windowID != windowID) return;
@@ -88,6 +95,7 @@ void CPetListForm::render() {
 	CWindow::render();
 	if (selection < 0) return;
 	
+	if (!player) return;
 	Pet *pet = player->getPetList()[selection];
 	if (!pet) return;
 
@@ -146,11 +154,11 @@ void CPetListForm::HookWidgets() {
 
 	btnChangeName = (CButton*)GetWidget("btnChangeName");
 	btnEvolve = (CButton*)GetWidget("btnEvolve");
+	btnCompose = (CButton*)GetWidget("btnCompose");
 	btnSkills = (CButton*)GetWidget("btnSkills");
-	btnRegister = (CButton*)GetWidget("btnRegister");
 	btnCatalog = (CButton*)GetWidget("btnCatalog");
 
-	btnEvaluate = (CButton*)GetWidget("btnEvaluate");
+	btnRegister = (CButton*)GetWidget("btnRegister");
 	btnPetStall = (CButton*)GetWidget("btnPetStall");
 	btnDrop = (CButton*)GetWidget("btnDrop");
 	btnMarch = (CButton*)GetWidget("btnMarch");
@@ -318,9 +326,9 @@ void CPetListForm::ReloadAccessory() {
 	}
 	else lblAccessory->SetText(" ");
 
-	std::string attack = formatInt(pet->getAttack()) + "(+" + std::to_string(pet->getMedalAttack() * 5) + "% + " + formatInt(iAtk) + ")";
-	std::string defence = formatInt(pet->getDefence()) + "(+" + std::to_string(pet->getMedalDefence() * 5) + "% + " + formatInt(iDef) + ")";
-	std::string dexterity = formatInt(pet->getDexterity()) + "(+" + std::to_string(pet->getMedalDexterity() * 5) + "% + " + formatInt(iDex) + ")";
+	std::string attack = formatInt(pet->GetAttack()) + "(+" + std::to_string(pet->getMedalAttack() * 5) + "% + " + formatInt(iAtk) + ")";
+	std::string defence = formatInt(pet->GetDefence()) + "(+" + std::to_string(pet->getMedalDefence() * 5) + "% + " + formatInt(iDef) + ")";
+	std::string dexterity = formatInt(pet->GetDexterity()) + "(+" + std::to_string(pet->getMedalDexterity() * 5) + "% + " + formatInt(iDex) + ")";
 	fldAttack->SetText(attack);
 	fldDefence->SetText(defence);
 	fldDexterity->SetText(dexterity);
@@ -403,11 +411,12 @@ void CPetListForm::btnEvolve_Click(SDL_Event& e) {
 	PushWindow(form);
 }
 
-void CPetListForm::btnSkills_Click(SDL_Event& e) {
-
+void CPetListForm::btnCompose_Click(SDL_Event& e) {
+	CPetComposeForm* compForm = new CPetComposeForm();
+	PushWindow(compForm);
 }
 
-void CPetListForm::btnRegister_Click(SDL_Event& e) {
+void CPetListForm::btnSkills_Click(SDL_Event& e) {
 
 }
 
@@ -415,7 +424,7 @@ void CPetListForm::btnCatalog_Click(SDL_Event& e) {
 
 }
 
-void CPetListForm::btnEvaluate_Click(SDL_Event& e) {
+void CPetListForm::btnRegister_Click(SDL_Event& e) {
 
 }
 

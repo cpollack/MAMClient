@@ -6,6 +6,16 @@ enum GAMEMODE {
 	GAMEMODE_JOINTEAM,
 };
 
+enum ELEMENT {
+	ELEMENT_WATER = 2,
+	ELEMENT_FIRE = 3,
+	ELEMENT_METAL = 4,
+	ELEMENT_WOOD = 5,
+	ELEMENT_EARTH = 6,
+};
+#define SUPERPET 1;
+#define UNEVOPET 7;
+
 enum ChatChannel {
 	ccNone = 0,
 	nnUnknown = 2000,
@@ -21,6 +31,7 @@ enum ChatChannel {
 	ccBroadcast = 2010,
 	ccGM = 2011,
 	ccHidden = 2101,
+	ccAlert = 2102,
 	ccVendor = 2104,
 	cWebsite = 2105
 };
@@ -62,6 +73,8 @@ enum EffectType {
 	EFFECT_SOULFLY,
 	EFFECT_SOULRETURN,
 	EFFECT_SOULSHINE,
+	EFFECT_DESTROY,
+	EFFECT_LEVEL,
 };
 
 enum EMOTE {
@@ -87,8 +100,8 @@ enum EMOTE {
 };
 
 //Battle Info
-const DWORD	_IDMSK_PET		= 0x80000000;
-const DWORD _IDMSK_MONSTER	= 0xC0000000;
+const DWORD	_IDMSK_PET	   = 0x80000000;
+const DWORD _IDMSK_MONSTER = 0xC0000000;
 const DWORD _IDMSK_INVITEM = 100000000;
 const DWORD _IDMSK_PETITEM = 1000000000;
 

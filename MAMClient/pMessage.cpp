@@ -5,6 +5,7 @@
 #include <ctime>
 
 #include "MessageManager.h"
+#include "Window.h"
 
 pMessage::pMessage(int size, char *buf, char* encBuf) {
 	description = "Chat Message (Server)";
@@ -106,8 +107,8 @@ pMessage::~pMessage() {
 }
 
 void pMessage::process() {
-	//chat->AddMessage(this);
-	messageManager.Push(this);
+	if (channel == ccAlert) doPromptError(Windows.size() > 0 ? Windows.back() : nullptr, "Alert", message);
+	else messageManager.Push(this);
 }
 
 

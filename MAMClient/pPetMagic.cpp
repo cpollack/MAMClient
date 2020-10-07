@@ -9,7 +9,7 @@
 
 pPetMagic::pPetMagic(char *buf, char* encBuf) {
 	description = "Pet Magic (Server)";
-	type = ptPetAction;
+	type = ptPetMagic;
 	initBuffer(96);
 	memcpy(buffer, buf, size);
 	memcpy(encryptedBuffer, encBuf, size);

@@ -37,6 +37,7 @@ CMainWindow* mainForm;
 CChat* chat;
 MessageManager messageManager;
 
+CWindow* mainWindow;
 std::vector<CWindow*> Windows;
 std::vector<CWindow*> QueueWindows;
 void *focusedWindow;
@@ -53,6 +54,7 @@ int main(int argc, char *args[]) {
 
 	//chat = new CChat(); initialized in formMain
 	mainForm = new CMainWindow();
+	mainWindow = mainForm;
 	focusedWindow = mainForm;
 
 	//CTestForm* testForm = new CTestForm();
@@ -118,6 +120,7 @@ int main(int argc, char *args[]) {
 
 							//Window stack should be raised in order
 							for (auto window : Windows) {
+								if (window->CloseWindow) continue;
 								window->raise();
 								lastFocus = window->GetWindowID();
 							}

@@ -63,6 +63,7 @@ void CCharCreateForm::handleEvent(SDL_Event& e) {
 	if (e.window.windowID != windowID) return;
 
 	if (e.type == CUSTOMEVENT_WINDOW) {
+		//Character Successfully Created
 		if (e.user.code == WINDOW_CLOSE_PROMPT_OK) {
 			if (CUSTOMEVENT_WINDOW != ((Uint32)-1)) {
 				SDL_Event event;
@@ -74,6 +75,7 @@ void CCharCreateForm::handleEvent(SDL_Event& e) {
 				event.user.data2 = nullptr;
 				SDL_PushEvent(&event);
 			}
+			CloseWindow = true;
 		}
 		if (e.user.code == WINDOW_CLOSE_PROMPT_ERROR) {
 			//Stay in character creator

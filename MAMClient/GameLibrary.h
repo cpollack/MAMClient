@@ -16,7 +16,10 @@ std::vector<std::string> getSpriteFramesFromAni(std::string role, int animation,
 std::string animationTypeToString(int animation);
 std::string EffectToString(int effect);
 
+//Strings
 std::string formatInt(int value);
+std::string formatFloat(float value, int precision = 2);
+
 bool fileExist(std::string file);
 void showErrorMessage(std::string message);
 void applicationClose();

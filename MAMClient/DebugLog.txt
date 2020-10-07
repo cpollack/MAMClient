@@ -1,8 +1,31 @@
-20:57:18 Beginning Login
-20:57:18 Connected to Account Server
-20:57:18 Connected to the Game Server
-20:57:19 Loading player data from packet
-20:57:20 Loading Map WaterCity
-20:57:20 First Map Loaded
-20:57:21 Login Success, loading game
-20:57:21 Initializing Main
+20:51:45 Beginning Login
+20:51:45 Connected to Account Server
+20:51:45 Connected to the Game Server
+20:51:46 Loading player data from packet
+20:51:46 Loading Map WaterCityInn
+20:51:46 First Map Loaded
+20:51:46 Login Success, loading game
+20:51:46 Initializing Main
+20:51:47 Loading Map WaterCity
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00119.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00120.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00121.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00122.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00123.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00124.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00125.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00126.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00127.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00128.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00129.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00130.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00131.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00132.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00133.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00134.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00135.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00136.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00137.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00138.tga SDL Error: 
+20:51:48 Texture::loadSurface() Failed to load: data/cartoon/cartoon00139.tga SDL Error: 
+20:59:0 Loading Map WaterCitySuburb
