@@ -120,6 +120,7 @@ public:
 
 protected: // Widgets and Events
 	std::map<std::string, CWidget*> widgets;
+	std::map<std::string, CWidget*>::iterator widgetsItr;
 	CWidget* eventWidget = nullptr; //The current widget being processed for events
 public: CWidget *focusedWidget = nullptr;
 protected: typedef std::function<void(SDL_Event&)> EventFunc;

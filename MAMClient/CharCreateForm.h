@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "Define.h"
 
 class Sprite;
 class CField;
@@ -21,7 +22,7 @@ public:
 	void btnOk_Click(SDL_Event& e);
 	void btnBack_Click(SDL_Event& e);
 
-	void ddStyle_OnChange(SDL_Event& e);
+	void ddStyle_Change(SDL_Event& e);
 	void btnReset_Click(SDL_Event& e);
 
 	void btnLifeDown_Click(SDL_Event& e);
@@ -45,9 +46,10 @@ private:
 	CImageBox* imgCharacter;
 	Sprite* sprite = nullptr;
 	
-	int style = 1;
+	int character;
+	int style = 0;
 	int look;
-	char hsbSet[25];
+	ColorShifts shifts;
 
 	void setLabel(std::string name, int value);
 };

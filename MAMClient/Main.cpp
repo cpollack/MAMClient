@@ -19,7 +19,7 @@
 //Temp
 #include "TestForm.h"
 
-#define FRAMES_PER_SEC 60;
+#define FRAMES_PER_SEC 60
 
 bool init();
 void close();
@@ -51,6 +51,10 @@ int main(int argc, char *args[]) {
 		close();
 		return -1;
 	}	
+
+	FPSmanager fpsManager;
+	SDL_initFramerate(&fpsManager);
+	SDL_setFramerate(&fpsManager, FRAMES_PER_SEC);
 
 	//chat = new CChat(); initialized in formMain
 	mainForm = new CMainWindow();
@@ -185,10 +189,12 @@ int main(int argc, char *args[]) {
 				window->renderPresent();
 			}
 
-			Uint32 afterRender = SDL_GetTicks();
-			Uint32 tickElapsed = afterRender - thisTick;
-			double timeNeeded = 1000.0 / FRAMES_PER_SEC;
-			if (timeNeeded > tickElapsed) SDL_Delay(timeNeeded - tickElapsed);
+			SDL_framerateDelay(&fpsManager);
+
+			//Uint32 afterRender = SDL_GetTicks();
+			//Uint32 tickElapsed = afterRender - thisTick;
+			//double timeNeeded = 1000.0 / FRAMES_PER_SEC;
+			//if (timeNeeded > tickElapsed) SDL_Delay(timeNeeded - tickElapsed);
 			//std::cout << "Tick Elapsed: " << tickElapsed << std::endl;
 
 			Uint32 now = SDL_GetTicks();

@@ -115,6 +115,10 @@ bool Client::connectAccountServer() {
 		return success;
 	}
 	
+	if (activeSocket) {
+		closesocket(*activeSocket);
+		activeSocket = nullptr;
+	}
 	if ((accountSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET) {
 		std::cout << "Could not create socket: " << WSAGetLastError() << std::endl;
 		WSACleanup();

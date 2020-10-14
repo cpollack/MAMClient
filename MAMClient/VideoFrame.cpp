@@ -56,11 +56,84 @@ void CVideoFrame::Render() {
 		return;
 	}*/
 	lastFrame = curTick;
-	
-	AVPacket packet;
 
-	uvPitch = vCodecCtx->width / 2;
 	bool frameHandled = false;
+	uvPitch = vCodecCtx->width / 2;
+
+	//new test
+	/*int vidStreamCount = packets.size() ? 1 : 0;
+	while (true) {
+		if (av_read_frame(pFormatCtx, &packet) >= 0) {
+			if (packet.stream_index == videoStream) vidStreamCount++;
+			packets.push_back(packet);
+			if (vidStreamCount > 1) break;
+		}
+		else break;
+	}
+	if (packets.size() == 0) {
+		if (Repeat) {
+			repeatCount++;
+			av_seek_frame(pFormatCtx, videoStream, 0, AVSEEK_FLAG_FRAME);
+		}
+		else {
+			if (repeatCount == 0) {
+				repeatCount++;
+				PlaybackFinished = true;
+			}
+		}
+	}
+	else {
+		vidStreamCount = 0;
+		while (packets.size()) {
+			packet = packets[0];
+
+			// Update Video Frame
+			if (packet.stream_index == videoStream) {
+				if (vidStreamCount > 1) break;
+				packets.erase(packets.begin());
+
+				// Decode video frame
+				avcodec_send_packet(vCodecCtx, &packet);
+				avcodec_receive_frame(vCodecCtx, vFrame);
+
+				AVFrame frame;
+				frame.data[0] = yPlane;
+				frame.data[1] = uPlane;
+				frame.data[2] = vPlane;
+				frame.linesize[0] = vCodecCtx->width;
+				frame.linesize[1] = uvPitch;
+				frame.linesize[2] = uvPitch;
+
+				// Convert the image into YUV format that SDL uses
+				sws_scale(sws_ctx, (uint8_t const* const*)vFrame->data,
+					vFrame->linesize, 0, vCodecCtx->height, frame.data,
+					frame.linesize);
+
+				SDL_UpdateYUVTexture(VideoFrame, NULL, yPlane, vCodecCtx->width, uPlane, uvPitch, vPlane, uvPitch);
+
+				frameHandled = true;
+				skipFrame = true;
+			}
+
+			//Update Audio Frame
+			if (packet.stream_index == audioStream) {
+				packets.erase(packets.begin());
+				if (!avcodec_send_packet(aCodecCtx, &packet)) {
+					avcodec_receive_frame(aCodecCtx, aFrame);
+					SDL_QueueAudio(audioDevice, aFrame->data[0], aFrame->linesize[0]);
+				}
+			}
+
+			// Free the packet that was allocated by av_read_frame
+			av_packet_unref(&packet);
+		}
+	}*/
+
+
+	// Tutorial 5 - how to sync audio and video
+	// http://dranger.com/ffmpeg/ffmpegtutorial_all.html
+	// Not a priority fix for now
+
 	while (true) {
 		if (av_read_frame(pFormatCtx, &packet) >= 0) {
 			// Update Video Frame
@@ -85,6 +158,7 @@ void CVideoFrame::Render() {
 				SDL_UpdateYUVTexture(VideoFrame, NULL, yPlane, vCodecCtx->width, uPlane, uvPitch, vPlane, uvPitch);
 
 				frameHandled = true;
+				skipFrame = true;
 			}
 
 			//Update Audio Frame
@@ -97,7 +171,6 @@ void CVideoFrame::Render() {
 
 			// Free the packet that was allocated by av_read_frame
 			av_packet_unref(&packet);
-
 			if (frameHandled) break;
 		}
 		else {
@@ -109,8 +182,7 @@ void CVideoFrame::Render() {
 			else {
 				if (repeatCount == 0) {
 					repeatCount++;
-					SDL_Event e;
-					PlaybackComplete(e);
+					PlaybackFinished = true;
 				}
 				break;
 			}
@@ -124,6 +196,13 @@ void CVideoFrame::HandleEvent(SDL_Event& e) {
 	//
 }
 
+void CVideoFrame::Step() {
+	if (PlaybackFinished && !Repeat) {
+		SDL_Event e;
+		PlaybackComplete(e);
+		PlaybackFinished = false;
+	}
+}
 
 void CVideoFrame::SetVideo(std::string filePath) {
 	if (filePath.length() == 0) return;
@@ -144,7 +223,12 @@ void CVideoFrame::SetRepeat(bool repeat) {
 void CVideoFrame::loadVideo() {
 	repeatCount = 0;
 	Ready = false;
+	PlaybackFinished = false;
 	lastFrame = 0;
+	skipFrame = false;
+	getNext = true;
+
+	SDL_ClearQueuedAudio(audioDevice);
 
 	ERROR_CODE = 0;
 	int avError;
@@ -172,6 +256,7 @@ void CVideoFrame::loadVideo() {
 	for (int i = 0; i < pFormatCtx->nb_streams; i++) {
 		int decoderType = avcodec_find_decoder(pFormatCtx->streams[i]->codecpar->codec_id)->type;
 		if (decoderType == AVMEDIA_TYPE_VIDEO) {
+			pFormatCtx->streams[i]->r_frame_rate;
 			videoStream = i;
 		}
 		if (decoderType == AVMEDIA_TYPE_AUDIO) {
@@ -199,7 +284,11 @@ void CVideoFrame::loadVideo() {
 void CVideoFrame::initVideoStream() {
 	// Get a pointer to the codec context for the video stream
 	AVCodecParameters *pCodecParOrig = NULL;
-	pCodecParOrig = pFormatCtx->streams[videoStream]->codecpar;
+	
+	vStream = pFormatCtx->streams[videoStream];
+	pCodecParOrig = vStream->codecpar;
+	//vStream->r_frame_rate.num = 60;
+	vStream->time_base.num = 60;
 
 	// Find the decoder for the video stream
 	AVCodec *pCodec = NULL;
@@ -243,10 +332,11 @@ void CVideoFrame::initVideoStream() {
 		fprintf(stderr, "SDL: could not create texture - exiting\n");
 		return;
 	}
+	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
 	SDL_SetRenderTarget(renderer, VideoFrame);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	SDL_SetRenderTarget(renderer, NULL);
+	SDL_SetRenderTarget(renderer, priorTarget);
 
 	// initialize SWS context for software scaling
 	sws_ctx = sws_getContext(vCodecCtx->width, vCodecCtx->height,

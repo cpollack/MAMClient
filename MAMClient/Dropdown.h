@@ -34,6 +34,7 @@ public:
 	void SetValue(int row);
 
 	std::string GetSelection();
+	int GetSelectedRow() { return selectedRow; }
 
 private: //Properties
 	bool Detailed;

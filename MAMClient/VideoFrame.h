@@ -35,6 +35,7 @@ public:
 
 	void Render();
 	void HandleEvent(SDL_Event& e);
+	void Step();
 
 	void SetVideo(std::string filePath);
 	void SetRepeat(bool repeat);
@@ -60,9 +61,14 @@ private:
 
 	int ERROR_CODE = 0;
 	AVFormatContext *pFormatCtx;
+	std::vector<AVPacket> packets;
+	AVPacket packet;
+	bool getNext = true;
+	int frameRes;
 
 	//Video
 	int videoStream;
+	AVStream* vStream = NULL;
 	AVCodecContext *vCodecCtx = NULL;
 	AVFrame *vFrame = NULL;
 	struct SwsContext *sws_ctx = NULL;
@@ -77,5 +83,7 @@ private:
 	AVCodecContext *aCodecCtx = NULL;
 	AVFrame *aFrame = NULL;
 
+	bool PlaybackFinished;
 	int lastFrame = 0;
+	bool skipFrame = false;
 };

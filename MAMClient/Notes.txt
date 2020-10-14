@@ -1,8 +1,6 @@
 
 Todo:
 Pet accessory info
-Pet Evolve
-Pet Change Accessory
 
 bugs:
 joining team doesnt clear open team options
@@ -13,26 +11,29 @@ battle array position is off
 --------------------
 
 
-Build notes 1.0.19
+Build notes 1.1.003
 
 Major Fix:
 - 
 
 Fix:
-- 
+- Fixed a rogue crash that happened sometimes when widgets were cleared during event handling thanks to an invalidated iterator.
+- Character select videos flickered when transition between flourish and idle animation.
+- Character styles did not change when changing dropdown
+- Selected style coloring rules during character creation did not carry over to created character for some types.
+- Unable to log in after finishing character creation without restarting client.
 
 Enhancement:
 - 
 
 Major Enhancement:
-- The Main UI has been entirely overhauled and redesigned.
+- 
 
 Feature:
 - 
 
 Major Feature:
-- Refinery!
-- Composing
+-
 
 
 
@@ -40,13 +41,11 @@ Major Feature:
 
 Reported Issues:
 
-(X)Female button missing during character creation
-(X)Character create confirm window gets stuck on screen
+mutex active socket to prevent thread crash
 
 (ruthrox) game crashes when leaving Inn in WC
 
-(X)Windows do not open relative to parent position
-Can click buttons to open windows between battle when on auto
+character selection - avi videos play too quickly
 
 Wuxing - Pet info hover is stats after medals
 Pet Info - stats with medals as well (confirm old client)

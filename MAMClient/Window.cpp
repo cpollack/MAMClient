@@ -199,6 +199,7 @@ void CWindow::ClearWidgets() {
 		delete widget.second;
 	}
 	widgets.clear();
+	widgetsItr = widgets.end();
 	widgetsByDepth.clear();
 
 	btnClose = nullptr;
@@ -476,13 +477,15 @@ void CWindow::handleEvent(SDL_Event& e)
 		}
 	}
 
-	for (auto widget : widgets) {
-		eventWidget = widget.second;
+	widgetsItr = widgets.begin();
+	while (widgetsItr != widgets.end()) {
+		eventWidget = widgetsItr->second;
 		bool doEvents = true;
 		if (eventWidget->GetParent() && eventWidget->GetParent()->WidgetType == wtTabControl) {
 			if (((CTabControl*)eventWidget->GetParent())->GetVisibleTab() != eventWidget->GetTabItem()) doEvents = false;
 		}
 		if (doEvents) eventWidget->HandleEvent(e);
+		if (widgetsItr != widgets.end()) widgetsItr++;
 	}
 	eventWidget = nullptr;
 }

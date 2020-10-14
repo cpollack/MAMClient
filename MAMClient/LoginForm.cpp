@@ -38,6 +38,8 @@ CLoginForm::CLoginForm() : CWindow("LoginForm.JSON") {
 		FocusWidget("fldPassword");
 	}
 	else FocusWidget("fldAccount");
+
+	loginState = lsNone;
 }
 
 CLoginForm::~CLoginForm() {
