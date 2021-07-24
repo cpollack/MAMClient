@@ -1,6 +1,6 @@
 #pragma once
 
-#include "include/rapidjson/document.h"
+#include "../include/rapidjson/document.h"
 
 enum FormType {
 	FT_DEFAULT = 0,

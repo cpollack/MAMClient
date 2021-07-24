@@ -3,7 +3,7 @@
 #include "Client.h"
 #include "Define.h"
 
-#include "include/rapidjson/document.h"
+#include "../include/rapidjson/document.h"
 #include <functional>
 
 class CWindow;

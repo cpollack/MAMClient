@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "resource.h"
+#include "../resource.h"
 #include "Window.h"
 #include "GUI.h"
 #include "Define.h"
@@ -18,7 +18,7 @@
 #include "ListBox.h"
 
 #include "SDL_syswm.h"
-#include "include/rapidjson/filereadstream.h"
+#include "../include/rapidjson/filereadstream.h"
 
 using namespace rapidjson;
 

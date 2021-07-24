@@ -92,727 +92,727 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Widget.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="Label.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="Gauge.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="Client.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Field.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="CheckBox.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="Battle.cpp">
-      <Filter>Source Files\Core\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleResult.cpp">
-      <Filter>Source Files\Core\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleScene.cpp">
-      <Filter>Source Files\Core\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="Cipher.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Packet.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="src\Define.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameMap.cpp">
-      <Filter>Source Files\Core</Filter>
+    <ClCompile Include="src\Global.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RC5.cpp">
-      <Filter>Source Files\Core</Filter>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pMapInfo.cpp">
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CustomEvents.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\Button.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\CheckBox.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\Dropdown.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\Field.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\Gauge.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\ImageBox.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\Label.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\ListBox.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\MainUI.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\PlayerInfoFrame.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\TabControl.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\VideoFrame.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\Widget.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widgets\Panel.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\Packet.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="pTick.cpp">
+    <ClCompile Include="src\Packet\pColor.cpp">
       <Filter>Source Files\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="pNpcInfo.cpp">
+    <ClCompile Include="src\Packet\pColosseum.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pFriend.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pItem.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pItemAction.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pMapInfo.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pMessage.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pRename.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pTeam.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pTeamMember.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pTick.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pUserAttribute.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pWuxing.cpp">
+      <Filter>Source Files\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\nNpcDialogue.cpp">
       <Filter>Source Files\Packet\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="pNpc.cpp">
+    <ClCompile Include="src\Packet\pNpcInfo.cpp">
       <Filter>Source Files\Packet\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="nNpcDialogue.cpp">
+    <ClCompile Include="src\Packet\pNpc.cpp">
       <Filter>Source Files\Packet\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="Dialogue.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="pNpcAction.cpp">
+    <ClCompile Include="src\Packet\pNpcAction.cpp">
       <Filter>Source Files\Packet\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="pGSConnect.cpp">
-      <Filter>Source Files\Packet\Login</Filter>
-    </ClCompile>
-    <ClCompile Include="pLoginRequest.cpp">
-      <Filter>Source Files\Packet\Login</Filter>
-    </ClCompile>
-    <ClCompile Include="pLoginResponse.cpp">
-      <Filter>Source Files\Packet\Login</Filter>
-    </ClCompile>
-    <ClCompile Include="pRole.cpp">
-      <Filter>Source Files\Packet\Login</Filter>
-    </ClCompile>
-    <ClCompile Include="RLE.cpp">
-      <Filter>Source Files\Core\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="INI.cpp">
-      <Filter>Source Files\Core\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WDF.cpp">
-      <Filter>Source Files\Core\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MapFile.cpp">
-      <Filter>Source Files\Core\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pBattleState.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="pEnemyInfo.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="pFighterInfo.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="pBattleAction.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="pBattleRound.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="pBattleResult.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="pItem.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="TGA.cpp">
-      <Filter>Source Files\Core\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Panel.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLibrary.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="pItemAction.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="pColor.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="pColosseum.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="Colosseum.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageBox.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="LogoutForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="Chat.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="pMessage.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetManager.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="pFriend.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Core\Game Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Pet.cpp">
-      <Filter>Source Files\Core\Game Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="NPC.cpp">
-      <Filter>Source Files\Core\Game Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Core\Game Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="User.cpp">
-      <Filter>Source Files\Core\Game Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="UserManager.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="TestForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="Global.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VideoFrame.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="LoginForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="PromptForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="CharCreateForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="Dropdown.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageManager.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Define.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="pAction.cpp">
+    <ClCompile Include="src\Packet\pAction.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
-    <ClCompile Include="pDirection.cpp">
+    <ClCompile Include="src\Packet\pDirection.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
-    <ClCompile Include="pEmotion.cpp">
+    <ClCompile Include="src\Packet\pEmotion.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
-    <ClCompile Include="pPlayerInfo.cpp">
+    <ClCompile Include="src\Packet\pPlayerInfo.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
-    <ClCompile Include="pUserInfo.cpp">
+    <ClCompile Include="src\Packet\pUserInfo.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
-    <ClCompile Include="pWalk.cpp">
+    <ClCompile Include="src\Packet\pUserLevelUp.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
-    <ClCompile Include="TabControl.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="pRename.cpp">
-      <Filter>Source Files\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="PetListForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomEvents.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InventoryForm.cpp">
-      <Filter>Source Files\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="pUserPoint.cpp">
+    <ClCompile Include="src\Packet\pUserPoint.cpp">
       <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
-    <ClCompile Include="pUserAttribute.cpp">
-      <Filter>Source Files\Packet</Filter>
+    <ClCompile Include="src\Packet\pWalk.cpp">
+      <Filter>Source Files\Packet\User</Filter>
     </ClCompile>
-    <ClCompile Include="pPetAction.cpp">
+    <ClCompile Include="src\Packet\pPetAction.cpp">
       <Filter>Source Files\Packet\Pet</Filter>
     </ClCompile>
-    <ClCompile Include="pPetShop.cpp">
+    <ClCompile Include="src\Packet\pPetInfo.cpp">
       <Filter>Source Files\Packet\Pet</Filter>
     </ClCompile>
-    <ClCompile Include="pPetInfo.cpp">
+    <ClCompile Include="src\Packet\pPetLevelUp.cpp">
       <Filter>Source Files\Packet\Pet</Filter>
     </ClCompile>
-    <ClCompile Include="pPetLevelUp.cpp">
+    <ClCompile Include="src\Packet\pPetMagic.cpp">
       <Filter>Source Files\Packet\Pet</Filter>
     </ClCompile>
-    <ClCompile Include="pUserLevelUp.cpp">
-      <Filter>Source Files\Packet\User</Filter>
+    <ClCompile Include="src\Packet\pPetShop.cpp">
+      <Filter>Source Files\Packet\Pet</Filter>
     </ClCompile>
-    <ClCompile Include="ListBox.cpp">
-      <Filter>Source Files\Widgets</Filter>
+    <ClCompile Include="src\Packet\pGSConnect.cpp">
+      <Filter>Source Files\Packet\Login</Filter>
     </ClCompile>
-    <ClCompile Include="ShopForm.cpp">
+    <ClCompile Include="src\Packet\pLoginResponse.cpp">
+      <Filter>Source Files\Packet\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pLoginRequest.cpp">
+      <Filter>Source Files\Packet\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pRole.cpp">
+      <Filter>Source Files\Packet\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pBattleState.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pBattleAction.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pBattleResult.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pBattleRound.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pEnemyInfo.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pFighterInfo.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pItemAct.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Packet\pNormalAct.cpp">
+      <Filter>Source Files\Packet\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\BattleConfigForm.cpp">
       <Filter>Source Files\Forms</Filter>
     </ClCompile>
-    <ClCompile Include="ShopDataFile.cpp">
-      <Filter>Source Files\Core\Files</Filter>
+    <ClCompile Include="src\Forms\CharacterForm.cpp">
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
-    <ClCompile Include="ItemDataFile.cpp">
-      <Filter>Source Files\Core\Files</Filter>
+    <ClCompile Include="src\Forms\CharCreateForm.cpp">
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
-    <ClCompile Include="pNormalAct.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
+    <ClCompile Include="src\Forms\EvolveForm.cpp">
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
-    <ClCompile Include="pItemAct.cpp">
-      <Filter>Source Files\Packet\Battle</Filter>
+    <ClCompile Include="src\Forms\InventoryForm.cpp">
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>Source Files\Core\Game Objects</Filter>
+    <ClCompile Include="src\Forms\LoginForm.cpp">
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
-    <ClCompile Include="Options.cpp">
-      <Filter>Source Files\Core</Filter>
+    <ClCompile Include="src\Forms\LogoutForm.cpp">
+      <Filter>Source Files\Forms</Filter>
     </ClCompile>
-    <ClCompile Include="BattleArray.cpp">
+    <ClCompile Include="src\Forms\MainWindow.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\MessageForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\PetComposeForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\PetEquipForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\PetListForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\PromptForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\RefineItemForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\ShopForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\TestForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\Window.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Forms\WuxingForm.cpp">
+      <Filter>Source Files\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Battle\BattleAI.cpp">
       <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
-    <ClCompile Include="BattleAI.cpp">
+    <ClCompile Include="src\Core\Battle\BattleArray.cpp">
       <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerInfoFrame.cpp">
-      <Filter>Source Files\Widgets</Filter>
+    <ClCompile Include="src\Core\Battle\BattleResult.cpp">
+      <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
-    <ClCompile Include="Team.cpp">
-      <Filter>Source Files\Core</Filter>
+    <ClCompile Include="src\Core\Battle\BattleScene.cpp">
+      <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
-    <ClCompile Include="pTeam.cpp">
-      <Filter>Source Files\Packet</Filter>
+    <ClCompile Include="src\Core\Battle\Battle.cpp">
+      <Filter>Source Files\Core\Battle</Filter>
     </ClCompile>
-    <ClCompile Include="pTeamMember.cpp">
-      <Filter>Source Files\Packet</Filter>
+    <ClCompile Include="src\Core\Files\INI.cpp">
+      <Filter>Source Files\Core\Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObj.cpp">
+    <ClCompile Include="src\Core\Files\ItemDataFile.cpp">
+      <Filter>Source Files\Core\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Files\MapFile.cpp">
+      <Filter>Source Files\Core\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Files\RLE.cpp">
+      <Filter>Source Files\Core\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Files\ShopDataFile.cpp">
+      <Filter>Source Files\Core\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Files\TGA.cpp">
+      <Filter>Source Files\Core\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Files\WDF.cpp">
+      <Filter>Source Files\Core\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\GameObjects\GameObj.cpp">
       <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="WuxingForm.cpp">
-      <Filter>Source Files\Forms</Filter>
+    <ClCompile Include="src\Core\GameObjects\Monster.cpp">
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="pWuxing.cpp">
-      <Filter>Source Files\Packet</Filter>
+    <ClCompile Include="src\Core\GameObjects\NPC.cpp">
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="PetEquipForm.cpp">
-      <Filter>Source Files\Forms</Filter>
+    <ClCompile Include="src\Core\GameObjects\Pet.cpp">
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="EvolveForm.cpp">
-      <Filter>Source Files\Forms</Filter>
+    <ClCompile Include="src\Core\GameObjects\Player.cpp">
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="pPetMagic.cpp">
-      <Filter>Source Files\Packet\Pet</Filter>
+    <ClCompile Include="src\Core\GameObjects\User.cpp">
+      <Filter>Source Files\Core\Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="PetMagic.cpp">
+    <ClCompile Include="src\Core\GameObjects\Entity.cpp">
+      <Filter>Source Files\Core\Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\AssetManager.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="PetComposeForm.cpp">
-      <Filter>Source Files\Forms</Filter>
+    <ClCompile Include="src\Core\Chat.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="RefineItemForm.cpp">
-      <Filter>Source Files\Forms</Filter>
+    <ClCompile Include="src\Core\Cipher.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="MainUI.cpp">
-      <Filter>Source Files\Widgets</Filter>
+    <ClCompile Include="src\Core\Client.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="BattleConfigForm.cpp">
-      <Filter>Source Files\Forms</Filter>
+    <ClCompile Include="src\Core\Colosseum.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Dialogue.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\GameLibrary.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\GameMap.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\GUI.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Inventory.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Item.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\MessageManager.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Options.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\PetMagic.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\RC5.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Sprite.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Team.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Text.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Texture.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\UserManager.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Label.h">
+    <ClInclude Include="src\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CustomEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Widgets\Dropdown.h">
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Widget.h">
+    <ClInclude Include="src\Widgets\Field.h">
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
+    <ClInclude Include="src\Widgets\Gauge.h">
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Gauge.h">
+    <ClInclude Include="src\Widgets\ImageBox.h">
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Client.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Field.h">
+    <ClInclude Include="src\Widgets\Label.h">
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="CheckBox.h">
+    <ClInclude Include="src\Widgets\ListBox.h">
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Battle.h">
-      <Filter>Header Files\Core\Battle</Filter>
+    <ClInclude Include="src\Widgets\MainUI.h">
+      <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="BattleResult.h">
-      <Filter>Header Files\Core\Battle</Filter>
+    <ClInclude Include="src\Widgets\PlayerInfoFrame.h">
+      <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="BattleScene.h">
-      <Filter>Header Files\Core\Battle</Filter>
+    <ClInclude Include="src\Widgets\TabControl.h">
+      <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Cipher.h">
-      <Filter>Header Files\Core</Filter>
+    <ClInclude Include="src\Widgets\VideoFrame.h">
+      <Filter>Header Files\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Packet.h">
+    <ClInclude Include="src\Widgets\Widget.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Widgets\Button.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Widgets\CheckBox.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Widgets\Panel.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\AllPacket.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="GameMap.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="RC5.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="pMapInfo.h">
+    <ClInclude Include="src\Packet\Packet.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pTick.h">
+    <ClInclude Include="src\Packet\pColor.h">
       <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pNpcInfo.h">
-      <Filter>Header Files\Packet\NPC</Filter>
+    <ClInclude Include="src\Packet\pColosseum.h">
+      <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pNpc.h">
-      <Filter>Header Files\Packet\NPC</Filter>
+    <ClInclude Include="src\Packet\pFriend.h">
+      <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pNpcDialogue.h">
-      <Filter>Header Files\Packet\NPC</Filter>
+    <ClInclude Include="src\Packet\pItem.h">
+      <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Dialogue.h">
-      <Filter>Header Files\Core</Filter>
+    <ClInclude Include="src\Packet\pItemAction.h">
+      <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pNpcAction.h">
-      <Filter>Header Files\Packet\NPC</Filter>
+    <ClInclude Include="src\Packet\pMapInfo.h">
+      <Filter>Header Files\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="pLoginRequest.h">
+    <ClInclude Include="src\Packet\pMessage.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pRename.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pTeam.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pTeamMember.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pTick.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pWuxing.h">
+      <Filter>Header Files\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pBattleState.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pBattleAction.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pBattleResult.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pBattleRound.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pNormalAct.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pItemAct.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pEnemyInfo.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pFighterInfo.h">
+      <Filter>Header Files\Packet\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pGSConnect.h">
       <Filter>Header Files\Packet\Login</Filter>
     </ClInclude>
-    <ClInclude Include="pGSConnect.h">
+    <ClInclude Include="src\Packet\pRole.h">
       <Filter>Header Files\Packet\Login</Filter>
     </ClInclude>
-    <ClInclude Include="pLoginResponse.h">
+    <ClInclude Include="src\Packet\pLoginResponse.h">
       <Filter>Header Files\Packet\Login</Filter>
     </ClInclude>
-    <ClInclude Include="pRole.h">
+    <ClInclude Include="src\Packet\pLoginRequest.h">
       <Filter>Header Files\Packet\Login</Filter>
     </ClInclude>
-    <ClInclude Include="INI.h">
-      <Filter>Header Files\Core\Files</Filter>
+    <ClInclude Include="src\Packet\pNpcInfo.h">
+      <Filter>Header Files\Packet\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="WDF.h">
-      <Filter>Header Files\Core\Files</Filter>
+    <ClInclude Include="src\Packet\pNpc.h">
+      <Filter>Header Files\Packet\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="RLE.h">
-      <Filter>Header Files\Core\Files</Filter>
+    <ClInclude Include="src\Packet\pNpcAction.h">
+      <Filter>Header Files\Packet\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="MapFile.h">
-      <Filter>Header Files\Core\Files</Filter>
+    <ClInclude Include="src\Packet\pNpcDialogue.h">
+      <Filter>Header Files\Packet\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pBattleState.h">
-      <Filter>Header Files\Packet\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="pEnemyInfo.h">
-      <Filter>Header Files\Packet\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="pFighterInfo.h">
-      <Filter>Header Files\Packet\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="pBattleAction.h">
-      <Filter>Header Files\Packet\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="pBattleRound.h">
-      <Filter>Header Files\Packet\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="pBattleResult.h">
-      <Filter>Header Files\Packet\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="pItem.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="TGA.h">
-      <Filter>Header Files\Core\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Panel.h">
-      <Filter>Header Files\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLibrary.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="pItemAction.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="pColor.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="pColosseum.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="Colosseum.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageBox.h">
-      <Filter>Header Files\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="LogoutForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="pMessage.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="Chat.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetManager.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="pFriend.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="NPC.h">
-      <Filter>Header Files\Core\Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Pet.h">
-      <Filter>Header Files\Core\Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\Core\Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Core\Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="User.h">
-      <Filter>Header Files\Core\Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="UserManager.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="TestForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="Global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VideoFrame.h">
-      <Filter>Header Files\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="MainWindow.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="MessageForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="PromptForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="CharCreateForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="Dropdown.h">
-      <Filter>Header Files\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="MessageManager.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Define.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pWalk.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
-    <ClInclude Include="pUserInfo.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
-    <ClInclude Include="pPlayerInfo.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
-    <ClInclude Include="pEmotion.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
-    <ClInclude Include="pDirection.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
-    <ClInclude Include="pAction.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
-    <ClInclude Include="TabControl.h">
-      <Filter>Header Files\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="pRename.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="PetListForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InventoryForm.h">
-      <Filter>Header Files\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="pUserPoint.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
-    <ClInclude Include="pUserAttribute.h">
-      <Filter>Header Files\Packet\User</Filter>
-    </ClInclude>
-    <ClInclude Include="pPetAction.h">
+    <ClInclude Include="src\Packet\pPetShop.h">
       <Filter>Header Files\Packet\Pet</Filter>
     </ClInclude>
-    <ClInclude Include="pPetInfo.h">
+    <ClInclude Include="src\Packet\pPetAction.h">
       <Filter>Header Files\Packet\Pet</Filter>
     </ClInclude>
-    <ClInclude Include="pPetShop.h">
+    <ClInclude Include="src\Packet\pPetInfo.h">
       <Filter>Header Files\Packet\Pet</Filter>
     </ClInclude>
-    <ClInclude Include="pPetLevelUp.h">
+    <ClInclude Include="src\Packet\pPetLevelUp.h">
       <Filter>Header Files\Packet\Pet</Filter>
     </ClInclude>
-    <ClInclude Include="ListBox.h">
-      <Filter>Header Files\Widgets</Filter>
+    <ClInclude Include="src\Packet\pPetMagic.h">
+      <Filter>Header Files\Packet\Pet</Filter>
     </ClInclude>
-    <ClInclude Include="ShopForm.h">
+    <ClInclude Include="src\Packet\pAction.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pDirection.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pEmotion.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pPlayerInfo.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pUserInfo.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pUserAttribute.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pUserLevelUp.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pUserPoint.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pWalk.h">
+      <Filter>Header Files\Packet\User</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\CharacterForm.h">
       <Filter>Header Files\Forms</Filter>
     </ClInclude>
-    <ClInclude Include="ShopDataFile.h">
-      <Filter>Header Files\Core\Files</Filter>
+    <ClInclude Include="src\Forms\CharCreateForm.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
-    <ClInclude Include="ItemDataFile.h">
-      <Filter>Header Files\Core\Files</Filter>
+    <ClInclude Include="src\Forms\EvolveForm.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
-    <ClInclude Include="pNormalAct.h">
-      <Filter>Header Files\Packet\Battle</Filter>
+    <ClInclude Include="src\Forms\InventoryForm.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
-    <ClInclude Include="pItemAct.h">
-      <Filter>Header Files\Packet\Battle</Filter>
+    <ClInclude Include="src\Forms\LoginForm.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>Header Files\Core\Game Objects</Filter>
+    <ClInclude Include="src\Forms\LogoutForm.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
-    <ClInclude Include="Options.h">
-      <Filter>Header Files\Core</Filter>
+    <ClInclude Include="src\Forms\MainWindow.h">
+      <Filter>Header Files\Forms</Filter>
     </ClInclude>
-    <ClInclude Include="FloatingLabel.h">
+    <ClInclude Include="src\Forms\MessageForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\PetComposeForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\PetEquipForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\PetListForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\PromptForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\RefineItemForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\ShopForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\TestForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\Window.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\WuxingForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Forms\BattleConfigForm.h">
+      <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Battle\BattleAI.h">
       <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="BattleArray.h">
+    <ClInclude Include="src\Core\Battle\BattleArray.h">
       <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="BattleAI.h">
+    <ClInclude Include="src\Core\Battle\BattleResult.h">
       <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerInfoFrame.h">
-      <Filter>Header Files\Widgets</Filter>
+    <ClInclude Include="src\Core\Battle\BattleScene.h">
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="Team.h">
-      <Filter>Header Files\Core</Filter>
+    <ClInclude Include="src\Core\Battle\Battle.h">
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="pTeam.h">
-      <Filter>Header Files\Packet</Filter>
+    <ClInclude Include="src\Core\Battle\FloatingLabel.h">
+      <Filter>Header Files\Core\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="AllPacket.h">
-      <Filter>Header Files\Packet</Filter>
+    <ClInclude Include="src\Core\Files\INI.h">
+      <Filter>Header Files\Core\Files</Filter>
     </ClInclude>
-    <ClInclude Include="pTeamMember.h">
-      <Filter>Header Files\Packet</Filter>
+    <ClInclude Include="src\Core\Files\ItemDataFile.h">
+      <Filter>Header Files\Core\Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObj.h">
+    <ClInclude Include="src\Core\Files\MapFile.h">
+      <Filter>Header Files\Core\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Files\RLE.h">
+      <Filter>Header Files\Core\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Files\ShopDataFile.h">
+      <Filter>Header Files\Core\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Files\TGA.h">
+      <Filter>Header Files\Core\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Files\WDF.h">
+      <Filter>Header Files\Core\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameObjects\Monster.h">
       <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="WuxingForm.h">
-      <Filter>Header Files\Forms</Filter>
+    <ClInclude Include="src\Core\GameObjects\NPC.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="pWuxing.h">
-      <Filter>Header Files\Packet</Filter>
+    <ClInclude Include="src\Core\GameObjects\Pet.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="PetEquipForm.h">
-      <Filter>Header Files\Forms</Filter>
+    <ClInclude Include="src\Core\GameObjects\Player.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="EvolveForm.h">
-      <Filter>Header Files\Forms</Filter>
+    <ClInclude Include="src\Core\GameObjects\User.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="pPetMagic.h">
-      <Filter>Header Files\Packet\Pet</Filter>
+    <ClInclude Include="src\Core\GameObjects\Entity.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="PetMagic.h">
+    <ClInclude Include="src\Core\GameObjects\GameObj.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\AssetManager.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="PetComposeForm.h">
-      <Filter>Header Files\Forms</Filter>
+    <ClInclude Include="src\Core\Chat.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="RefineItemForm.h">
-      <Filter>Header Files\Forms</Filter>
+    <ClInclude Include="src\Core\Cipher.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="MainUI.h">
-      <Filter>Header Files\Widgets</Filter>
+    <ClInclude Include="src\Core\Client.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="BattleConfigForm.h">
-      <Filter>Header Files\Forms</Filter>
+    <ClInclude Include="src\Core\Colosseum.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="pUserLevelUp.h">
-      <Filter>Header Files\Packet\User</Filter>
+    <ClInclude Include="src\Core\Dialogue.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameLibrary.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameMap.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GUI.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Inventory.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Item.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\MessageManager.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Options.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\PetMagic.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\RC5.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Sprite.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Team.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Text.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Texture.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\UserManager.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
