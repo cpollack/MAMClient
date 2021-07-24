@@ -4,7 +4,7 @@
 
 class pNpcAction : public Packet {
 public:
-	int option, mode, val1;
+	int option, mode;
 
 	pNpcAction(int option, int mode, int val1);
 	~pNpcAction();

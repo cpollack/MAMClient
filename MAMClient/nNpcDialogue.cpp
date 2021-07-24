@@ -12,7 +12,7 @@ pNpcDialogue::pNpcDialogue(int size, char *buf, char* encBuf) {
 	memcpy(buffer, buf, size);
 	memcpy(encryptedBuffer, encBuf, size);
 
-	getByte(0, &unk1);
+	getByte(0, &unk1); //These come from the player, currently unknown
 	getByte(1, &unk2);
 	getByte(2, &unk3);
 	getByte(3, &unk4);

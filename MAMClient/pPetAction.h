@@ -16,8 +16,8 @@ enum PetAction {
 	//16 - wrestle
 	//17 - wrestle ?
 	paFullHeal = 18,
-	//19
-	//20
+	paExp = 19,
+	paLoyalty = 20,
 	paRemove = 21,
 	//22 ?
 	//25

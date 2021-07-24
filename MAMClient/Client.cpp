@@ -428,11 +428,13 @@ int Client::receivePacket(void *ptr) {
 }
 
 
+/// Send all packets currently in the queue, runs on a separate thread.
 void Client::sendPacket() {
 	if (gameSocket == 0) return;
 
 	std::vector<Packet*> sendPackets;
 
+	// Grab all packets currently in the queue
 	SDL_LockMutex(sendMutex);
 	while (sendQueue.size() > 0) {
 		sendPackets.push_back(sendQueue.front());
@@ -442,6 +444,7 @@ void Client::sendPacket() {
 
 	if (sendPackets.size() == 0) return;
 
+	// Get length of entire packet buffer
 	BYTE *sendBuffer;
 	int bufferSize = 0;
 	for (int i = 0; i < sendPackets.size(); i++) {
@@ -450,6 +453,7 @@ void Client::sendPacket() {
 	}
 	if (bufferSize == 0) return;
 
+	// Copy packet data into byte buffer for sending
 	sendBuffer = new BYTE[bufferSize];
 	int bufferPos = 0;
 	for (int i = 0; i < sendPackets.size(); i++) {
@@ -461,18 +465,19 @@ void Client::sendPacket() {
 		}
 	}
 
+	// Send buffer
 	int bytesSent = send(gameSocket, (char*)sendBuffer, bufferSize, 0);
+
+	// Delete sent packets
 	for (int i = 0; i < sendPackets.size(); i++) {
 		Packet* nextPacket = sendPackets[i];
 		if (bytesSent == SOCKET_ERROR)
 			printf("Client: send() error %ld.\n", WSAGetLastError());
-		else {
-			//if (socketDebug) nextPacket->debugPrint();
-		}
 		delete nextPacket;
 	}
 	delete[] sendBuffer;
 
+	// Initial packets encryptions are unseeded, check if we need to reset the cipher after sending
 	if (useSeedAfterSend) {
 		decryptCipher.reset();
 		useSeed = true;

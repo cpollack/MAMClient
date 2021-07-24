@@ -386,6 +386,7 @@ void CRefineItemForm::ddType_Change(SDL_Event& e) {
 }
 
 void CRefineItemForm::imgItem_DoubleClick(SDL_Event& e) {
+	if (refining) return;
 	int pos = stoi(eventWidget->Name.substr(7, std::string::npos)) - 1;
 	if (pos >= localInv.size()) return;
 
@@ -432,6 +433,7 @@ void CRefineItemForm::imgItem_OnHoverEnd(SDL_Event& e) {
 }
 
 void CRefineItemForm::imgRefineSlot_DoubleClick(SDL_Event& e) {
+	if (refining) return;
 	if (!item) return;
 	SetItemToImageBox(imgRefineSlot, nullptr);
 	item = nullptr;

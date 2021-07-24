@@ -198,9 +198,7 @@ std::wstring Item::getDetails() {
 
 	details += "Price $ " + formatInt(cost) + "\n";
 	details += "Maker " + creator + "\n";
-	int reqLevel = level;
-	if (reqLevel > 1000000) reqLevel = 1000000;
-	details += "Lvl Required " + formatInt(reqLevel);
+	details += "Lvl Required " + formatInt(GetLevel());
 	
 	return StringToWString(details);
 }
@@ -219,7 +217,7 @@ std::wstring Item::getShopDetails() {
 	details += "Defence +" + formatInt(defence) + "\n";
 	details += "Dexterity +" + formatInt(dexterity) + "\n";
 
-	details += "Lvl Required " + formatInt(level) + "\n";
+	details += "Lvl Required " + formatInt(GetLevel()) + "\n";
 	details += "Price $ " + formatInt(cost) + "\n";
 	details += "Maker " + creator + "\n";
 
@@ -261,12 +259,16 @@ Asset Item::GetMouseoverTexture(SDL_Renderer *renderer, bool showIcon, int opaci
 
 int Item::GetLevel() {
 	int lvl = level;
-	if (level > 1000000) lvl = 1000000;
+	if (level > 1000000) lvl -= 1000000;
 	return lvl;
 }
 
 int Item::GetRealLevel() {
 	return level;
+}
+
+bool Item::IsMagicalItem() {
+	return level > 1000000;
 }
 
 int Item::GetLife() {

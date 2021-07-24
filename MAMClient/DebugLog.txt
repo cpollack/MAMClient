@@ -1,12 +1,30 @@
-20:18:30 Beginning Login
-20:18:30 Connected to Account Server
-20:18:31 Connected to the Game Server
-20:18:31 Login Success, loading game
-20:18:37 Beginning Login
-20:18:37 Connected to Account Server
-20:18:37 Connected to the Game Server
-20:18:38 Loading player data from packet
-20:18:38 Loading Map Skypass50F
-20:18:38 First Map Loaded
-20:18:38 Login Success, loading game
-20:18:38 Initializing Main
+20:34:10 Beginning Login
+20:34:10 Connected to Account Server
+20:34:11 Connected to the Game Server
+20:34:11 Loading player data from packet
+20:34:12 Loading Map WaterCityInn
+20:34:12 First Map Loaded
+20:34:12 Login Success, loading game
+20:34:12 Initializing Main
+20:34:14 Loading Map WaterCity
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00119.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00120.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00121.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00122.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00123.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00124.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00125.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00126.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00127.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00128.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00129.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00130.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00131.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00132.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00133.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00134.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00135.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00136.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00137.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00138.tga SDL Error: 
+20:34:14 Texture::loadSurface() Failed to load: data/cartoon/cartoon00139.tga SDL Error: 

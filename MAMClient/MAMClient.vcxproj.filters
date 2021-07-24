@@ -730,9 +730,6 @@
     <ClInclude Include="pPetLevelUp.h">
       <Filter>Header Files\Packet\Pet</Filter>
     </ClInclude>
-    <ClInclude Include="pUserLevelUp.h">
-      <Filter>Header Files\Packet</Filter>
-    </ClInclude>
     <ClInclude Include="ListBox.h">
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
@@ -813,6 +810,9 @@
     </ClInclude>
     <ClInclude Include="BattleConfigForm.h">
       <Filter>Header Files\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="pUserLevelUp.h">
+      <Filter>Header Files\Packet\User</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

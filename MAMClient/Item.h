@@ -55,6 +55,7 @@ public:
 
 	int GetLevel();
 	int GetRealLevel();
+	bool IsMagicalItem();
 	int GetLife();
 	int GetMana();
 	int GetAttack();

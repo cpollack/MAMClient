@@ -45,52 +45,51 @@ CWindow::CWindow(int w, int h) {
 	initUI();
 }
 
-
-CWindow::CWindow(std::string jsonFile) {
-	Type = FT_DEFAULT;
-	std::string path = "JSON/" + jsonFile;
-
-	Document document;
+/*
 	if (jsonFile.compare("LoginForm.JSON") == 0) {
 		DWORD size = 0;
 		const char* data = NULL;
 		LoadJSONResource(IDR_LOGINFORM, size, data);
 		document.Parse(data);
-	}
-	else {
-		char readBuffer[65536];
+*/
 
-		FILE* fp = fopen(path.c_str(), "rb");
-		FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-		document.ParseStream<0, UTF8<>, FileReadStream>(is);
-		fclose(fp);
-	}
+
+/// <summary>
+/// Create a new window from a json file.
+/// </summary>
+/// <param name="jsonFile">JSON document containing all window and widget properties.</param>
+CWindow::CWindow(std::string jsonFile) {
+	Type = FT_DEFAULT;
+	std::string path = "JSON/" + jsonFile;
+
+	Document document;
+	char* readBuffer = new char[65536];
+
+	//Load JSON document to buffer for parsing
+	FILE* fp = fopen(path.c_str(), "rb");
+	FileReadStream is(fp, readBuffer, sizeof(readBuffer));	
+	document.ParseStream<0, UTF8<>, FileReadStream>(is);
+	fclose(fp);
+	delete[] readBuffer;
 
 	loadDocument(document);
 	SetParentFromStack();
 }
 
-
 CWindow::~CWindow() {
 	ClearWidgets();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-
-	if (topCenter_s) delete topCenter_s;
-	if (bottomCenter) delete bottomCenter;
-	if (left) delete left;
-	if (right) delete right;
-	if (topLeft_s) delete topLeft_s;
-	if (topRight_s) delete topRight_s;
-	if (bottomLeft) delete bottomLeft;
-	if (bottomRight) delete bottomRight;
 }
 
-
+/// <summary>
+/// Create and initialize all widgets specified in the JSON document
+/// </summary>
+/// <param name="document">A RapidJSON document</param>
 void CWindow::loadDocument(Document& document) {
 	if (!document.IsObject()) return;
-
 	if (!document.HasMember("Window")) return;
+
 	Value vDocObject = document.GetObject();
 	Value vWindow = vDocObject["Window"].GetObject();
 

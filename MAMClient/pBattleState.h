@@ -8,7 +8,8 @@ typedef enum BattleState {
 	bsUnknown1 = 1, //pk battle
 	bsConfirmStart = 2, //npc battle
 	bsEnd = 3,
-	bsUnknown2 = 6
+	//bsUnknown1 = 4,
+	//bsUnknown2 = 6
 }BattleState;
 
 

@@ -29,7 +29,7 @@ CLoginForm::CLoginForm() : CWindow("LoginForm.JSON") {
 	fldAccount = (CField*)GetWidget("fldAccount");
 	fldPassword = (CField*)GetWidget("fldPassword");
 
-	//Load remembered login from config
+	//Load remembered last login from config
 	std::string defaultLogin = "";
 	gClient.configIni->getEntry("DefaultLogin", &defaultLogin);
 	if (defaultLogin.length()) {
