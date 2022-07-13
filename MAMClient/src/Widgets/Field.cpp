@@ -43,8 +43,17 @@ void CField::Render() {
 	SDL_Rect fieldRect = { X, Y, Width, Height };
 	SDL_RenderCopy(renderer, fieldTexture, NULL, &fieldRect);
 
-	//Render the actual text
 	SDL_Rect textRect{ X + 5, Y + ((Height / 2) - (fontRect.h / 2)), fontRect.w, fontRect.h };
+
+	//Render Highlight Box
+	if (highlightRange.first != highlightRange.second) {
+		SDL_Point hpointA, hpointB;
+		TTF_SizeText(font, Text.substr(0, highlightRange.first).c_str(), &hpointA.x, &hpointA.y);
+		TTF_SizeText(font, Text.substr(highlightRange.first, highlightRange.second - highlightRange.first).c_str(), &hpointB.x, &hpointB.y);
+		boxRGBA(renderer, textRect.x + hpointA.x, textRect.y, textRect.x + hpointA.x + hpointB.x, textRect.y + textRect.h, 38, 79, 120, 255);
+	}
+
+	//Render the actual text	
 	if (Text.length() == 0) {
 		if (hintTexture) {
 			SDL_Rect hintRect2 = { X + 5, Y + ((Height / 2) - (hintRect.h / 2)), hintRect.w, hintRect.h };
@@ -61,12 +70,17 @@ void CField::Render() {
 		int nextFrame = cursorFrame % 60;
 		if (nextFrame < 30) {
 			int cursorX = 0;
-			if (cursorPos == Text.size()) {
-				cursorX = textRect.x + textRect.w;
-			}
-
+			
 			if (cursorPos == 0) {
 				cursorX = textRect.x;
+			}
+			else if (cursorPos == Text.size()) {
+				cursorX = textRect.x + textRect.w;
+			}
+			else {
+				std::string subStr = Text.substr(0, cursorPos);
+				TTF_SizeText(font, subStr.c_str(), &cursorX, nullptr);
+				cursorX += textRect.x;
 			}
 
 			int fontHeight = TTF_FontHeight(font);
@@ -271,19 +285,22 @@ void CField::OnFocus() {
 	SDL_StartTextInput();
 	cursorPos = Text.size();
 	cursorFrame = 0;
+	highlightRange = { cursorPos , cursorPos };
 }
 
 
 void CField::OnFocusLost() {
 	Focused = false;
+	highlightRange = { cursorPos , cursorPos };
+	
 	SDL_StopTextInput();
+
 	SDL_Event e;
-	OnChange(e);
+	OnChange(e);	
 }
 
 
 void CField::OnClick(SDL_Event& e) {
-	//if (!Focused) SetFocus(true);
 	if (!Focused) {
 		if (CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
 			SDL_Event event;
@@ -305,11 +322,42 @@ void CField::OnKeyDown(SDL_Event& e) {
 	//Backspace
 	if (e.key.keysym.sym == SDLK_BACKSPACE && Text.length() > 0)
 	{
-		Text.pop_back();
-		if (IsPassword) passwordText.pop_back();
-		RenderText();
-		cursorPos--;
+		if (highlightRange.first == highlightRange.second) {
+			if (cursorPos == Text.length()) {
+				Text.pop_back();
+				if (IsPassword) passwordText.pop_back();
+			}
+			else {
+				if (cursorPos > 0) {
+					Text.erase(cursorPos - 1, 1);
+					if (IsPassword) passwordText.erase(cursorPos - 1, 1);
+				}
+			}
+
+			cursorPos--;
+		}
+		else {
+			Text.erase(highlightRange.first, highlightRange.second - highlightRange.first);
+			if (IsPassword) passwordText.erase(highlightRange.first, highlightRange.second - highlightRange.first + 1);
+			cursorPos = highlightRange.first;			
+		}
+
 		if (cursorPos < 0) cursorPos = 0;
+		highlightRange = { cursorPos, cursorPos };
+
+		RenderText();		
+		return;
+	}
+
+	//Delete
+	if (e.key.keysym.sym == SDLK_DELETE && Text.length() > 0)
+	{		
+		Text.erase(highlightRange.first, max(highlightRange.second - highlightRange.first,1));
+		if (IsPassword) passwordText.erase(highlightRange.first, max(highlightRange.second - highlightRange.first,1));
+		cursorPos = highlightRange.first;
+		highlightRange = { cursorPos, cursorPos };
+
+		RenderText();
 		return;
 	}
 
@@ -322,6 +370,38 @@ void CField::OnKeyDown(SDL_Event& e) {
 	//'Tab'
 	if (e.key.keysym.sym == SDLK_TAB) {
 		OnTab(e);
+		return;
+	}
+
+	if (e.key.keysym.sym == SDLK_LEFT) {
+		int oldPos = cursorPos--;
+		if (cursorPos < 0) cursorPos = 0;
+
+		const Uint8* keystate = SDL_GetKeyboardState(NULL);
+		if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) {
+			if (highlightRange.first == oldPos) highlightRange.first = cursorPos;
+			else highlightRange.second = cursorPos;
+		}
+		else {
+			highlightRange = { cursorPos, cursorPos };
+		}
+		std::cout << "Highlight Range: " << highlightRange.first << "," << highlightRange.second << std::endl;
+		return;
+	}
+
+	if (e.key.keysym.sym == SDLK_RIGHT) {
+		int oldPos = cursorPos++;
+		if (cursorPos > Text.size()) cursorPos = Text.size();
+
+		const Uint8* keystate = SDL_GetKeyboardState(NULL);
+		if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT]) {
+			if (highlightRange.second == oldPos) highlightRange.second = cursorPos;
+			else highlightRange.first = cursorPos;
+		}
+		else {
+			highlightRange = { cursorPos, cursorPos };
+		}
+		std::cout << "Highlight Range: " << highlightRange.first << "," << highlightRange.second << std::endl;
 		return;
 	}
 }
@@ -346,7 +426,8 @@ void CField::OnTextInput(SDL_Event& e) {
 	}
 
 	RenderText();
-	cursorPos += newText.length();
+	if (cursorPos == Text.length() - 1)
+		cursorPos += newText.length();
 }
 
 

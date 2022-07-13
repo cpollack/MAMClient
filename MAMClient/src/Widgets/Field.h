@@ -30,6 +30,7 @@ protected:
 	bool held = false;
 	int cursorPos = 0;
 	int cursorFrame = 0;
+	std::pair<int, int> highlightRange{ 0,0 };
 
 	SDL_Texture *fieldTexture = NULL;
 	void RenderFieldTexture();
