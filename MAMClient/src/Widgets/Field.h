@@ -56,6 +56,7 @@ protected:
 	void OnFocusLost();
 
 	void OnClick(SDL_Event& e);
+	void OnMouseMove(SDL_Event& e);
 	void OnKeyDown(SDL_Event& e);
 	void OnTextInput(SDL_Event& e);
 	void OnSubmit(SDL_Event& e);

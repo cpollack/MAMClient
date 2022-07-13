@@ -282,10 +282,8 @@ void CField::OnFocus() {
 	std::cout << "Field " << Name << " start text input." << std::endl;
 	Focused = true;
 	Window->focus();
-	SDL_StartTextInput();
-	cursorPos = Text.size();
-	cursorFrame = 0;
-	highlightRange = { cursorPos , cursorPos };
+	SDL_StartTextInput();	
+	cursorFrame = 0;	
 }
 
 
@@ -314,7 +312,25 @@ void CField::OnClick(SDL_Event& e) {
 		}
 	}
 
-	//click to set cursor position?
+	//Set cursor position to mouse position
+	int mx;
+	SDL_GetMouseState(&mx, NULL);
+	mx -= (X + 5);	//Text offset position
+	int textWidth{}, textCount{};
+	TTF_MeasureText(font, Text.c_str(), mx, &textWidth, &textCount);
+	mx -= textWidth;
+	cursorPos = textCount;
+	if (mx > 0) {
+		int charWidth{};
+		TTF_SizeText(font, Text.substr(textCount, 1).c_str(), &charWidth, NULL);
+		if (mx > charWidth / 2) cursorPos++;
+	}
+	highlightRange = { cursorPos , cursorPos };
+}
+
+
+void CField::OnMouseMove(SDL_Event& e) {
+	if (!held) return;	//We only care about mose movement when dragging to highlight
 }
 
 
@@ -385,7 +401,7 @@ void CField::OnKeyDown(SDL_Event& e) {
 		else {
 			highlightRange = { cursorPos, cursorPos };
 		}
-		std::cout << "Highlight Range: " << highlightRange.first << "," << highlightRange.second << std::endl;
+		
 		return;
 	}
 
@@ -401,7 +417,7 @@ void CField::OnKeyDown(SDL_Event& e) {
 		else {
 			highlightRange = { cursorPos, cursorPos };
 		}
-		std::cout << "Highlight Range: " << highlightRange.first << "," << highlightRange.second << std::endl;
+		
 		return;
 	}
 }
