@@ -350,6 +350,8 @@ void CField::OnMouseMove(SDL_Event& e) {
 
 
 int CField::GetMouseCursorPos() {
+	if (Text.length() == 0) return 0;
+
 	int pos{};
 	int mx;
 
