@@ -55,6 +55,7 @@ protected:
 	void OnFocus();
 	void OnFocusLost();
 
+	void OnMouseDown(SDL_Event& e);
 	void OnClick(SDL_Event& e);
 	void OnMouseMove(SDL_Event& e);
 	void OnKeyDown(SDL_Event& e);
@@ -62,4 +63,7 @@ protected:
 	void OnSubmit(SDL_Event& e);
 	void OnTab(SDL_Event &e);
 	void OnChange(SDL_Event& e);
+
+private:
+	int GetMouseCursorPos();
 };

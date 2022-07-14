@@ -50,7 +50,7 @@ void CField::Render() {
 		SDL_Point hpointA, hpointB;
 		TTF_SizeText(font, Text.substr(0, highlightRange.first).c_str(), &hpointA.x, &hpointA.y);
 		TTF_SizeText(font, Text.substr(highlightRange.first, highlightRange.second - highlightRange.first).c_str(), &hpointB.x, &hpointB.y);
-		boxRGBA(renderer, textRect.x + hpointA.x, textRect.y, textRect.x + hpointA.x + hpointB.x, textRect.y + textRect.h, 38, 79, 120, 255);
+		boxRGBA(renderer, textRect.x + hpointA.x, textRect.y, textRect.x + hpointA.x + hpointB.x, textRect.y + textRect.h, 11, 104, 217, 255);
 	}
 
 	//Render the actual text	
@@ -65,7 +65,7 @@ void CField::Render() {
 	}
 
 	//Render cursor
-	if (Focused) {
+	if (Focused && highlightRange.first == highlightRange.second) {
 		cursorFrame++;
 		int nextFrame = cursorFrame % 60;
 		if (nextFrame < 30) {
@@ -99,7 +99,7 @@ void CField::HandleEvent(SDL_Event& e) {
 		SDL_GetMouseState(&mx, &my);
 
 		if (DoesPointIntersect(SDL_Point{ mx, my })) {
-			held = true;
+			OnMouseDown(e);			
 		}
 		else {
 			if (Focused) {
@@ -128,6 +128,14 @@ void CField::HandleEvent(SDL_Event& e) {
 			}
 		}
 		held = false;
+	}
+
+	if (Focused && e.type == SDL_MOUSEMOTION) {
+		int mx, my;
+		SDL_GetMouseState(&mx, &my);
+		if (DoesPointIntersect(SDL_Point{ mx, my })) {
+			OnMouseMove(e);
+		}
 	}
 
 	if (Focused && e.type == SDL_KEYDOWN)
@@ -297,8 +305,7 @@ void CField::OnFocusLost() {
 	OnChange(e);	
 }
 
-
-void CField::OnClick(SDL_Event& e) {
+void CField::OnMouseDown(SDL_Event& e) {
 	if (!Focused) {
 		if (CUSTOMEVENT_WIDGET != ((Uint32)-1)) {
 			SDL_Event event;
@@ -312,25 +319,56 @@ void CField::OnClick(SDL_Event& e) {
 		}
 	}
 
-	//Set cursor position to mouse position
-	int mx;
-	SDL_GetMouseState(&mx, NULL);
-	mx -= (X + 5);	//Text offset position
-	int textWidth{}, textCount{};
-	TTF_MeasureText(font, Text.c_str(), mx, &textWidth, &textCount);
-	mx -= textWidth;
-	cursorPos = textCount;
-	if (mx > 0) {
-		int charWidth{};
-		TTF_SizeText(font, Text.substr(textCount, 1).c_str(), &charWidth, NULL);
-		if (mx > charWidth / 2) cursorPos++;
-	}
+	held = true;
+	cursorPos = GetMouseCursorPos();
 	highlightRange = { cursorPos , cursorPos };
 }
 
 
+void CField::OnClick(SDL_Event& e) {	
+	held = false;
+}
+
+
 void CField::OnMouseMove(SDL_Event& e) {
-	if (!held) return;	//We only care about mose movement when dragging to highlight
+	if (!held) {
+		return;	//We only care about mose movement when dragging to highlight
+	}
+
+	int newPos = GetMouseCursorPos();
+	if (highlightRange.first == highlightRange.second) {
+		if (newPos < highlightRange.first) highlightRange.first = newPos;
+		else highlightRange.second = newPos;
+	}
+	else if (newPos < cursorPos) {
+		highlightRange.first = newPos;
+	}
+	else {
+		highlightRange.second = newPos;
+	}	
+}
+
+
+int CField::GetMouseCursorPos() {
+	int pos{};
+	int mx;
+
+	SDL_GetMouseState(&mx, NULL);
+	mx -= (X + 5);	//Text offset position
+
+	int textWidth{}, textCount{};
+	TTF_MeasureText(font, Text.c_str(), mx, &textWidth, &textCount);
+	mx -= textWidth;
+	pos = textCount;
+
+	//Move cursor to next character if mouse is atleast halfway past the character
+	if (mx > 0) {
+		int charWidth{};
+		TTF_SizeText(font, Text.substr(textCount, 1).c_str(), &charWidth, NULL);
+		if (mx > charWidth / 2) pos++;
+	}
+
+	return pos;
 }
 
 
@@ -424,12 +462,20 @@ void CField::OnKeyDown(SDL_Event& e) {
 
 void CField::OnTextInput(SDL_Event& e) {
 	std::string newText = e.text.text;
+
+	if (highlightRange.first != highlightRange.second) {
+		Text.erase(highlightRange.first, highlightRange.second - highlightRange.first);
+		if (IsPassword) passwordText.erase(highlightRange.first, highlightRange.second - highlightRange.first + 1);
+		cursorPos = highlightRange.first;
+		highlightRange = { cursorPos, cursorPos };
+	}
+
 	if (IsPassword) {
-		passwordText += newText;
-		Text = "";
+		passwordText.insert(cursorPos, newText);
+		Text.clear();
 		for (int i = 0; i < passwordText.length(); i++) Text.push_back('*');
 	}
-	else Text += newText;
+	else Text.insert(cursorPos, newText);	
 
 	if (MaxLength > 0 && Text.length() > MaxLength) {
 		Text = Text.substr(0, MaxLength);
@@ -441,9 +487,11 @@ void CField::OnTextInput(SDL_Event& e) {
 		}
 	}
 
-	RenderText();
-	if (cursorPos == Text.length() - 1)
-		cursorPos += newText.length();
+	cursorPos += newText.length();
+	if (cursorPos > Text.size()) cursorPos = Text.size();
+	highlightRange = { cursorPos, cursorPos };
+
+	RenderText();	
 }
 
 
