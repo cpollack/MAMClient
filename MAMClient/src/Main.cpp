@@ -16,10 +16,6 @@
 #include "Global.h"
 #include "CustomEvents.h"
 
-//Temp
-#include "TestForm.h"
-#include "RLE.h"
-
 #define FRAMES_PER_SEC 60
 
 bool init();
@@ -61,9 +57,6 @@ int main(int argc, char *args[]) {
 	mainForm = new CMainWindow();
 	mainWindow = mainForm;
 	focusedWindow = mainForm;
-
-	//CTestForm* testForm = new CTestForm();
-	//Windows.push_back(testForm);
 
 	bool quit = false;
 	CWindow *topmost;
