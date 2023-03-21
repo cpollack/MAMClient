@@ -449,6 +449,12 @@
     <ClCompile Include="src\Core\UserManager.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Packet\pAiNpcInfo.cpp">
+      <Filter>Source Files\Packet\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\GameObjects\Fighter.cpp">
+      <Filter>Source Files\Core\Game Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -813,6 +819,15 @@
     </ClInclude>
     <ClInclude Include="src\Core\UserManager.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Packet\pAiNpcInfo.h">
+      <Filter>Header Files\Packet\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Fighter.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameObjects\Fighter.h">
+      <Filter>Header Files\Core\Game Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

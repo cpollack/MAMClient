@@ -230,6 +230,11 @@ void GameMap::addNpc(pNpcInfo* packet) {
 	npcs.push_back(newNpc);
 }
 
+void GameMap::addNpc(pAiNpcInfo* packet) {
+	NPC* newNpc = new NPC(packet);
+	npcs.push_back(newNpc);
+}
+
 
 void GameMap::addColosseum(pColosseum* packet) {
 	colosseum = new Colosseum(packet);
@@ -371,20 +376,20 @@ void GameMap::render() {
 	SDL_Rect finalRect;
 	int finalX;
 	if (tMap->width < uiRect.w) {
-		finalRect.x = mapOffsetX;
+		finalRect.x = uiRect.x + mapOffsetX;
 		finalRect.w = tMap->width;
 	}
 	else {
-		finalRect.x = 0;
+		finalRect.x = uiRect.x;
 		finalRect.w = uiRect.w;
 	}
 
 	if (tMap->height < uiRect.h) {
-		finalRect.y = mapOffsetY;
+		finalRect.y = uiRect.y + mapOffsetY;
 		finalRect.h = tMap->height;
 	}
 	else {
-		finalRect.y = 0;
+		finalRect.y = uiRect.y;
 		finalRect.h = uiRect.h;
 	}
 
@@ -407,6 +412,7 @@ void GameMap::render() {
 
 	//filledPolygonColor(renderer, x, y, 4, (Uint32)0x80FFFFFF);
 
+	SDL_RenderSetViewport(renderer, &uiRect);
 
 	//temp, combine with object depth rendering later (like in 2 years)
 	for (auto pm : petMagics) pm->render();
@@ -419,6 +425,8 @@ void GameMap::render() {
 	}
 
 	renderMasksTransparent();
+
+	SDL_RenderSetViewport(renderer, NULL);
 
 	//Battle Results
 	if (battleResult && !battle) {
@@ -1066,7 +1074,7 @@ void GameMap::createDialogue(pNpcDialogue* packet) {
 	std::string name = "";
 	if (dialogueNpc) name = dialogueNpc->GetName();
 
-	dialogue = new Dialogue(mainForm, packet, name, (map->uiRect.w / 2), 10);
+	dialogue = new Dialogue(mainForm, packet, name, uiRect.x + (map->uiRect.w / 2), (map->uiRect.y));
 	dialogue->setWindowOffset(SDL_Point{ uiRect.x, uiRect.y });
 }
 

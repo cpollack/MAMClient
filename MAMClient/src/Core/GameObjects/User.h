@@ -26,20 +26,20 @@ public:
 	bool getJumping();
 	bool getWalking();
 
-	virtual void setDirection(int direction, bool forBattle = false);
+	virtual void setDirection(int direction);
 
 protected:
 	bool walking = false, jumping = false, isLeavingMap = false;
 	std::vector<SDL_Point> path;
-	SDL_Point DestCoord;
+	//SDL_Point DestCoord; Destination coord is always the front of the path
 	int lastMoveTick;
 	const int WALK_SPEED = 200;
 	const int JUMP_SPEED = 350;
 	const int FLY_SPEED = 50;
 
-	bool atDestCoord();
-	void getNextDestCoord();
-	virtual void takeNextStep();
+	bool AtDestCoord();
+	SDL_Point GetDestCoord();
+	virtual void MoveAlongPath();
 	void clearPath();
 
 protected:

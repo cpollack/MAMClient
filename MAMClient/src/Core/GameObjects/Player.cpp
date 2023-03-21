@@ -51,7 +51,6 @@ void Player::setPlayerInfo(pPlayerInfo* packet) {
 	Spouse = (char*)packet->spouse;
 
 	ID = packet->userId;
-	BattleID = ID;
 	Level = packet->level;
 	experience = packet->experience;
 	life_current = packet->life_current;
@@ -104,22 +103,23 @@ void Player::render() {
 
 
 void Player::step() {
-	if (walking && atDestCoord() && path.size() == 0) {
+	//Cache current walking so we know when it completes during step phase
+	bool wasWalking = walking;
+	User::step();
+
+	if (wasWalking && !walking) {
 		lastPositionPacket = timeGetTime();
-		pAction *packet = new pAction(AccountId, ID, Direction, DestCoord.x, DestCoord.y, amNone);
+		pAction* packet = new pAction(AccountId, ID, Direction, Coord.x, Coord.y, amNone);
 		gClient.addPacket(packet);
 	}
 
-	User::step();
-
 	if (walking) {
-		Packet* packet = nullptr;
 		DWORD systemTime = timeGetTime();
 		if (systemTime - lastPositionPacket >= 2000) {
 			lastPositionPacket = systemTime;
-			packet = new pAction(AccountId, ID, Direction, DestCoord.x, DestCoord.y, amNone);
+			auto packet = new pAction(AccountId, ID, Direction, path[0].x, path[0].y, amNone);
+			gClient.addPacket(packet);
 		}
-		if (packet) gClient.addPacket(packet);
 	}
 }
 
@@ -151,7 +151,6 @@ void Player::walkTo(SDL_Point coord) {
 	bool canWalk = true;
 	if (team && team->GetLeader() != this) canWalk = false;
 	if (map->isCoordAPortal(Coord)) canWalk = false;
-	if ((walking || Flying) && map->isCoordAPortal(DestCoord)) canWalk = false;
 
 	//Send walking packets
 	std::vector<Packet*> walkPackets;
@@ -173,7 +172,7 @@ void Player::walkTo(SDL_Point coord) {
 		DWORD systemTime = timeGetTime();
 		if (systemTime - lastPositionPacket >= 2000) {
 			lastPositionPacket = systemTime;
-			pAction* movePacket = new pAction(AccountId, ID, Direction, DestCoord.x, DestCoord.y, amNone);
+			pAction* movePacket = new pAction(AccountId, ID, Direction, path[0].x, path[0].y, amNone);
 			walkPackets.push_back(movePacket);
 		}
 	}
@@ -185,8 +184,8 @@ void Player::SetCoord(SDL_Point coord) {
 	map->setMapPos(Position.x, Position.y);
 }
 
-void Player::takeNextStep() {
-	User::takeNextStep();
+void Player::MoveAlongPath() {
+	User::MoveAlongPath();
 	map->setMapPos(Position.x, Position.y);
 }
 

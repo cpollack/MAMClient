@@ -606,7 +606,7 @@ void CListBox::AddItem(std::string text) {
 	CImageBox* imgItem = new CImageBox(Window, Name, 0, 0);
 	imgItem->SetWidth(itemTexture->width);
 	imgItem->SetHeight(itemTexture->height);
-	imgItem->SetAnchor(ANCOR_TOPLEFT);
+	imgItem->SetAnchor(ANCHOR_TOPLEFT);
 	imgItem->SetImage(itemTexture);
 	AddItem(imgItem);
 }

@@ -252,7 +252,7 @@ void CGauge::CreateGaugeTexture() {
 	if (usingImages) {
 		if (backgroundImage) delete backgroundImage;
 		if (UseGUI) {
-			backgroundImage = gui->getSkinTexture(renderer, backgroundImagePath, Anchor::ANCOR_TOPLEFT);
+			backgroundImage = gui->getSkinTexture(renderer, backgroundImagePath, Anchor::ANCHOR_TOPLEFT);
 		}
 		else {
 			backgroundImage = new Texture(renderer, backgroundImagePath);
@@ -270,7 +270,7 @@ void CGauge::CreateGaugeTexture() {
 	if (usingImages) {
 		if (foregroundImage) delete foregroundImage;
 		if (UseGUI) {
-			foregroundImage = gui->getSkinTexture(renderer, foregroundImagePath, Anchor::ANCOR_TOPLEFT);
+			foregroundImage = gui->getSkinTexture(renderer, foregroundImagePath, Anchor::ANCHOR_TOPLEFT);
 		}
 		else {
 			foregroundImage = new Texture(renderer, foregroundImagePath);
@@ -289,10 +289,10 @@ void CGauge::CreateGaugeTexture() {
 	if (usingImages) {
 		if (UseGUI) {
 			if (increaseImage) delete increaseImage;
-			if (increaseImagePath.length()) increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::ANCOR_TOPLEFT);
+			if (increaseImagePath.length()) increaseImage = gui->getSkinTexture(renderer, increaseImagePath, Anchor::ANCHOR_TOPLEFT);
 			if (increaseImage) increaseTexture = increaseImage->texture;
 			if (decreaseImage) delete decreaseImage;
-			if (decreaseImagePath.length())decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::ANCOR_TOPLEFT);
+			if (decreaseImagePath.length())decreaseImage = gui->getSkinTexture(renderer, decreaseImagePath, Anchor::ANCHOR_TOPLEFT);
 			if (decreaseImage) decreaseTexture = decreaseImage->texture;
 		}
 		else {

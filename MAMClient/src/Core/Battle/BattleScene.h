@@ -6,11 +6,11 @@
 #include <queue>
 #include <string>
 
-class Entity;
+class Fighter;
 enum AnimType;
 
 const int default_ally_dir = 4;
-const int default_monster_dir = 0;
+const int default_enemy_dir = 0;
 
 enum bsType {
 	bsMoveTo,
@@ -33,7 +33,7 @@ class Texture;
 struct bsPerform {
 	bsPerform() { SDL_zero(boundEvent); }
 
-	Entity* actor;
+	Fighter* actor;
 	int animation;
 	int effect = 0;
 	int direction;
@@ -50,27 +50,27 @@ struct bsPerform {
 };
 
 struct bsActor {
-	Entity* actor;
+	Fighter* actor;
 	std::queue<bsPerform*> performances;
 };
 
 class BattleScene {
 private:
-	std::vector<Entity*> cast;
+	std::vector<Fighter*> cast;
 	std::vector<bsActor*> actors, newActors;
-	Entity* reactor;
+	Fighter* reactor;
 	int reaction;
 	SDL_Point lookTo;
 
 	bool started = false, finished = false;
 
 public:
-	BattleScene(std::vector<Entity*> allies, std::vector<Entity*> enemies);
+	BattleScene(std::vector<Fighter*> allies, std::vector<Fighter*> enemies);
 	~BattleScene();
 
-	void BattleScene::setReactor(Entity* target, int action);
-	bsPerform* BattleScene::addAction(Entity* source, bsType type, AnimType action, SDL_Point target, std::vector<std::string> floatingLabels);
-	bsPerform* BattleScene::addAction(Entity* source, bsType type, AnimType action, SDL_Point target);
+	void BattleScene::setReactor(Fighter* target, int action);
+	bsPerform* BattleScene::addAction(Fighter* source, bsType type, AnimType action, SDL_Point target, std::vector<std::string> floatingLabels);
+	bsPerform* BattleScene::addAction(Fighter* source, bsType type, AnimType action, SDL_Point target);
 
 	void BattleScene::start();
 	bool BattleScene::isStarted();

@@ -13,11 +13,11 @@ class Battle;
 class BattleScene;
 class BattleAI;
 
-class Entity;
+class Fighter;
 class Player;
 class Pet;
 
-enum bsType;
+//enum bsType;
 struct FloatingLabel;
 
 enum BattleMode {
@@ -57,23 +57,24 @@ class pColor;
 class Item;
 
 struct bAction {
-	Entity* source;
-	Entity* target;
+	Fighter* source;
+	Fighter* target;
 	int action;
 	SDL_Point target_position;
 };
 
 struct LessThanByY {
-	bool operator()(Entity* lhs, Entity* rhs);
+	bool operator()(Fighter* lhs, Fighter* rhs);
 };
 
 class Battle {
 public:
 	Battle::Battle(SDL_Renderer *r, int mapDoc, int actorCount);
 	Battle::~Battle();
+	CButton* CreateButton(std::string btnName, BattleMenu menuPos, int imageIndex, bool isPlayer, SDL_Point point);
 	void render();
 	void render_ui();
-	void render_focusBox(Entity* entity);
+	void render_focusBox(Fighter* fighter);
 	void render_items();
 	bool handleEvent(SDL_Event& e);
 	void step();
@@ -92,16 +93,16 @@ private:
 	int doc;
 	SDL_Rect battleRect;// = { 0, 0, 740, 410 };
 	SDL_Rect renderRect;
-	Texture *tScene = nullptr, *tBackdrop = nullptr;
+	Texture *tBattleBG = nullptr;
 	std::shared_ptr<BattleAI> battleAI;
 
-	std::priority_queue<Entity*, std::vector<Entity*>, LessThanByY> drawActors;
-	std::vector<Entity*> allies;
+	std::priority_queue<Fighter*, std::vector<Fighter*>, LessThanByY> drawActors;
+	std::vector<Fighter*> allies;
 	int allyCount = 0;
-	std::vector<Entity*> enemies;
-	Entity* captureTarget = nullptr;
+	std::vector<Fighter*> enemies;
+	Fighter* captureTarget = nullptr;
 	int enemyCount = 0;
-	Entity *focusedActor = nullptr; //used with mouseover
+	Fighter* focusedActor = nullptr; //used with mouseover
 	int actorCount = 0;
 
 	BattleArray* allyArray = nullptr;
@@ -118,10 +119,11 @@ private:
 	int playerAction = -1, petAction = -1;
 	bool playerButton_pressed = false, petButton_pressed = false;
 	bool selectTarget = false, selectItem = false;
-	Pet* pet = nullptr;
-	Entity *selectedTarget = nullptr;
+	Fighter* playerFighter = nullptr;
+	Fighter* petFighter = nullptr;
+	Fighter* selectedTarget = nullptr;
 	Item* selectedItem = nullptr;
-	std::vector<Entity*> animateActors, currentlyAnimating;
+	std::vector<Fighter*> animateActors, currentlyAnimating;
 	
 	Sprite *crow = nullptr; //Used to show autobattle delay
 	SDL_Texture* chatBubble = NULL;
@@ -166,13 +168,12 @@ public:
 	bool Battle::isOver();
 	int Battle::getMode();
 	bool IsReady() { return mode != BattleMode::bmInit; }
-	Entity* Battle::getActorById(int actorId);
+	Fighter* Battle::getActorById(int actorId);
 
 	void Battle::loadBattleArray(BattleArray** bArray, int arrayId, bool bAlly);
 	//SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, bool isSource);
 
 	bool Battle::doesMouseIntersect(SDL_Rect aRect, int x, int y);
-	//bsType Battle::getSceneTypeFromAction(int action);
 
 	void Battle::makeChatBubbleTexture();
 

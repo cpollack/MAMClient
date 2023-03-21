@@ -34,6 +34,7 @@
 #include "pNpc.h"
 #include "pNpcDialogue.h"
 #include "pNpcAction.h"
+#include "pAiNpcInfo.h"
 
 #include "pBattleState.h"
 #include "pEnemyInfo.h"

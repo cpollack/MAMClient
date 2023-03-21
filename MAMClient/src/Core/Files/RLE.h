@@ -51,14 +51,14 @@ struct HSB {
 
 struct WPixel {
 	union {
-		WORD color;				// 16bit
+		WORD color{ 0 };		// 16bit
 		struct {
-			WORD blue : 5;		// 5bit
+			WORD blue : 5 ;		// 5bit
 			WORD green : 6;		// 6bit
 			WORD red : 5;		// 5bit
 		};
 	};
-	WPixel() {}
+	WPixel() { color = 0; }
 	WPixel(WORD c) { color = (WORD)((c >> 8 & 0xf800) | (c >> 5 & 0x7e0) | (c >> 3 & 0x1f)); }
 	WPixel(int r, int g, int b) : red(r >> 3), green(g >> 2), blue(b >> 3) {}
 	operator DWORD() const { return (color << 5 & 0x7fc00) | (color << 8 & 0xf80000) | ((color << 3 | (color & 7)) & 0x3ff); }

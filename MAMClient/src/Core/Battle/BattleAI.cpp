@@ -2,13 +2,13 @@
 #include "BattleAI.h"
 #include "Battle.h"
 
-#include "Entity.h"
+#include "Fighter.h"
 
-Entity* BattleAI::GetNextTarget(Entity* entity, std::vector<Entity*> Enemies) {
-	if (!entity) return nullptr;
+Fighter* BattleAI::GetNextTarget(Fighter* fighter, std::vector<Fighter*> Enemies) {
+	if (!fighter) return nullptr;
 
 	for (auto enemy : Enemies) {
-		if (enemy && enemy->IsAlive()) return enemy;
+		if (enemy && fighter->IsAlive()) return enemy;
 	}
 
 	return nullptr;

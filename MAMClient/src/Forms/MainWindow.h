@@ -111,7 +111,7 @@ private: // Main
 	void main_render_ui();
 
 public: //Widget Event hooks
-	void btnClose_Click(SDL_Event& e);
+	virtual void btnClose_Click(SDL_Event& e);
 private: 
 	void btnJump_Click(SDL_Event& e);
 	void btnCloud_Click(SDL_Event& e);
@@ -125,10 +125,7 @@ private:
 
 	//CPlayerInfoFrame *playerInfoFrame;
 	CMainUI *mainUI;
-	CLabel *lblCoordX, *lblCoordY;
-	CLabel *lblName, *lblNickName, *lblLevel;
-	CLabel *lblSpouse, *lblCash, *lblReputation;
-	CLabel *lblRank, *lblGuild, *lblGuildRank;
+	
 	CImageBox *playerPortrait, *petPortrait;
 	CImageBox *imgPortrait;
 

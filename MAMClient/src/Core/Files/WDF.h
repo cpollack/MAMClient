@@ -20,8 +20,8 @@ typedef struct WDF_Entry {
 
 struct WdfHeader {
 	DWORD id;
-	int number;
-	unsigned offset;
+	int number{0};
+	unsigned offset{0};
 public:
 	WdfHeader() : id('WDFP') {};
 };

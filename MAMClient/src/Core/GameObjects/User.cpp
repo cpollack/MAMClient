@@ -178,29 +178,17 @@ void User::step() {
 	}
 
 	if (walking) {
-		if (atDestCoord()) {
-			if (!path.size()) {
-				walking = false;
-				if (!Flying) setAnimation(StandBy);
-				loadSprite();
-			}
-			else {
-				getNextDestCoord();
-				setDirection(map->getDirectionToCoord(Coord, DestCoord));
-				loadSprite();
-			}
-		}
-		else {
-			takeNextStep();
-		}
+		MoveAlongPath();
 	}
 
+	//When in a team, follow the leader
 	if (!leaveMap() && team && !IsTeamLeader()) {
 		User *nextUser = team->GetNextInLine(this);
 		if (nextUser) {
 			SDL_Point backCoord = getBackCoord(nextUser->GetCoord(), nextUser->getDirection());
 			if ((Coord.x != backCoord.x || Coord.y != backCoord.y) && map->isCoordWalkable(backCoord)) {
-				if (backCoord.x != DestCoord.x || backCoord.y != DestCoord.y) User::walkTo(backCoord);
+				auto destCoord = GetDestCoord();
+				if (backCoord.x != destCoord.x || backCoord.y != destCoord.y) User::walkTo(backCoord);
 			}
 		}
 	}
@@ -229,7 +217,6 @@ void User::jumpTo(SDL_Point coord) {
 	if (walking) {
 		walking = false;
 		path.clear();
-		DestCoord = { 0,0 };
 	}
 
 	jumping = true;
@@ -243,50 +230,67 @@ void User::jumpTo(SDL_Point coord) {
 }
 
 void User::walkTo(SDL_Point coord) {
-	std::vector<SDL_Point> newPath = map->getPath(Coord, coord, (Flying | Ascending) & !Descending);
-
 	if (jumping) {
 		jumping = false;
-		//Clear Flashdown?
 	}
 
-	path.clear();
-	if (newPath.size() == 0) return;
+	std::vector<SDL_Point> newPath = map->getPath(path.size() > 0 ? path[0] : Coord, coord, (Flying || Ascending) && !Descending);
 
-	path = newPath;
-	//When User is already walking, do not overwrite the current destination coord
-	if (walking && atDestCoord() || !walking) getNextDestCoord();
-	walking = true;
+	if (newPath.size() == 0) {
+		if (walking) {
+			if (path.size() > 1) path.erase(path.begin() + 1, path.end());
+		}
+		else setDirectionToCoord(coord);
+		return;
+	}
+
+	//Start new path from next coordinate destination in the existing path
+	if (path.size() > 0) {
+		auto front = path[0];
+		path = newPath;
+		path.insert(path.begin(), front);
+	}
+	else {
+		path = newPath;
+	}
+
+	//Only reset last move timestamp when we are not moving, otherwise the character will boomerang
+	if (!walking) lastMoveTick = timeGetTime();
+	walking = true;	
 
 	if (!Flying) setAnimation(Walk);
-	setDirectionToCoord(DestCoord);
+	setDirectionToCoord(path[0]);
 	loadSprite();
 }
 
-bool User::atDestCoord() {
-	if (Coord.x == DestCoord.x && Coord.y == DestCoord.y) return true;
+bool User::AtDestCoord() {
+	auto destCoord = GetDestCoord();
+	if (Coord.x == destCoord.x && Coord.y == destCoord.y) return true;
 	return false;
 }
 
-void User::getNextDestCoord() {
-	if (!path.size()) return;
-	DestCoord = path[0];
-	path.erase(path.begin());
-	lastMoveTick = timeGetTime();
+SDL_Point User::GetDestCoord() {
+	if (!path.size()) return { 0, 0 };
+	auto destCoord = path[0];
+	//path.erase(path.begin());
+	//lastMoveTick = timeGetTime();
 
 	//If the next Coord is a map portal, end path traversal on portal
-	if (map->isCoordAPortal(DestCoord)) {
+	if (map->isCoordAPortal(destCoord)) {
 		clearPath();
 	}
+	return destCoord;
 }
 
-void User::takeNextStep() {
+void User::MoveAlongPath() 
+{
+	auto nextCoord = path[0];
+	auto basePos = map->CenterOfCoord(Coord);
+	auto destPos = map->CenterOfCoord(nextCoord);
+	float moveSpeed = Flying ? FLY_SPEED : WALK_SPEED;
+	
 	int systemTime = timeGetTime();
 	int timeElapsed = systemTime - lastMoveTick;
-
-	SDL_Point basePos = map->CenterOfCoord(Coord);
-	SDL_Point destPos = map->CenterOfCoord(DestCoord);
-	int moveSpeed = Flying ? FLY_SPEED : WALK_SPEED;
 	double movePerc = timeElapsed * 1.0 / moveSpeed;
 	if (movePerc > 1.0) movePerc = 1.0;
 
@@ -294,7 +298,27 @@ void User::takeNextStep() {
 	double shifty = (destPos.y - basePos.y) * movePerc;
 	Position.x = basePos.x + shiftx;
 	Position.y = basePos.y + shifty;
-	if (Position.x == destPos.x && Position.y == destPos.y) SetCoord(DestCoord);
+	if (Position.x == destPos.x && Position.y == destPos.y)
+	{
+		lastMoveTick = systemTime;
+		path.erase(path.begin());
+		SetCoord(nextCoord);
+
+		if (path.size() > 0) {			
+			//Turn character towards the next coord in the path
+			int dir = map->getDirectionToCoord(Coord, path[0]);
+			if (dir != Direction)
+			{
+				setDirection(dir);
+				loadSprite();
+			}
+		}
+		else {
+			walking = false;
+			if (!Flying) setAnimation(StandBy);
+			loadSprite();
+		}		
+	}
 }
 
 void User::clearPath() {
@@ -319,9 +343,9 @@ bool User::getWalking() {
 	return walking;
 }
 
-void User::setDirection(int direction, bool forBattle) {
+void User::setDirection(int direction) {
 	int curDir = Direction;
-	Entity::setDirection(direction, forBattle);
+	Entity::setDirection(direction);
 	if (curDir == Direction) return;
 	if (Flying) {
 		int mode = CLOUD_FLY;

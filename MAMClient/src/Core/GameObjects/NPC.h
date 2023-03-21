@@ -8,6 +8,7 @@
 #include "Label.h"
 
 class pNpcInfo;
+class pAiNpcInfo;
 
 /*
 Types:
@@ -22,14 +23,16 @@ Pawnshop - 106
 class NPC : public Entity {
 public:
 	NPC(pNpcInfo* packet);
+	NPC(pAiNpcInfo* packet);
 	~NPC();
 
 	void render();
 	void handleEvent(SDL_Event& e);
 
 private:
-	void loadSprite();
+	virtual void loadSprite();
 
+	bool isAiNpc{ false };
 	int Type;
 
 private:

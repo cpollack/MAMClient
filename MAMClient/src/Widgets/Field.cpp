@@ -364,7 +364,7 @@ int CField::GetMouseCursorPos() {
 	pos = textCount;
 
 	//Move cursor to next character if mouse is atleast halfway past the character
-	if (mx > 0) {
+	if (textCount < Text.length() && mx > 0) {
 		int charWidth{};
 		TTF_SizeText(font, Text.substr(textCount, 1).c_str(), &charWidth, NULL);
 		if (mx > charWidth / 2) pos++;

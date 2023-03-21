@@ -1,11 +1,11 @@
 #pragma once
 
-class Entity;
+class Fighter;
 
 class BattleAI {
 public:
 	BattleAI() {}
 	~BattleAI() {}
 
-	Entity* GetNextTarget(Entity* entity, std::vector<Entity*> Enemies);
+	Fighter* GetNextTarget(Fighter* fighter, std::vector<Fighter*> Enemies);
 };

@@ -2,15 +2,17 @@
 #include "BattleArray.h"
 
 #include "Texture.h"
-#include "Entity.h"
+#include "Fighter.h"
 
 bool BattleArray::Load(const char *file, int t, bool bAlly) {
-	std::ifstream is(file, std::fstream::binary);
+	std::ifstream is(file, std::fstream::binary | std::fstream::ate);
 	if (!is.is_open()) return false;
 
-	is.read((char*)&header, sizeof(BattleArrayHeader));
+	//is.read((char*)&header, sizeof(BattleArrayHeader));
+	int sz = is.tellg();
+	is.seekg(sz - (20 * 4));
 
-	for (int i = 0; i < 10; i++) is.read((char*)&entry[i], sizeof(BattleArrayEntry));
+	for (int i = 0; i < 20; i++) is.read((char*)&entry[i], sizeof(int));
 
 	allyArray = bAlly;
 	LoadTexture();
@@ -102,26 +104,41 @@ void BattleArray::Render() {
 SDL_Point BattleArray::GetPosition(int pos, bool bAlly) {
 	if (pos < 0 || pos > 9) return{ -1, -1 };
 
-	if (bAlly) { //Ally array is 'inverted' from enemy array
+	/*if (bAlly) { //Ally array is 'inverted' from enemy array
 		if (pos > 4) {
 			pos = 14 - pos;
 		}
 		else {
 			pos = 4 - pos;
 		}
-	}
+	}*/
 
-	SDL_Point p = { entry[pos].x, entry[pos].y };
+	//SDL_Point p = { entry[pos].x, entry[pos].y };
 
-	if (bAlly) {
+	/*if (bAlly) {
 		p.x = 800 - ((header.tileOffsetX - p.x) * header.tileWidth);
 		p.y = 600 - ((header.tileOffsetY - p.y) * header.tileHeight);
 	}
 	else {
 		p.x = 800 - (p.x * header.tileWidth);
 		p.y = 600 - (p.y * header.tileHeight);
+	}*/
+
+	//740,410
+	//x0 x1 x2 x3 x4 y0 y1 y2 y3 y4
+	//x5 x6 x7 x8 x9 y5 y6 y7 y8 y9
+	if (bAlly) {
+		if (pos < 5)
+			return { 740 - (46 * (15 - entry[pos]) + 46), 25 * entry[5+pos] + 25 };
+		else 
+			return { 740 - (46 * (15 - entry[5+pos]) + 46), 25 * entry[10+pos] + 25 };
 	}
-	return p;
+	else {
+		if (pos < 5)
+			return { 740 - (46 * entry[pos]), 25 * (15 - entry[5+pos]) };
+		else
+			return { 740 - (46 * entry[5+pos]), 25 * (15 - entry[10+pos]) };
+	}
 }
 
 SDL_Point BattleArray::GetTargetPosition(int pos, bool bAlly) {
@@ -129,15 +146,21 @@ SDL_Point BattleArray::GetTargetPosition(int pos, bool bAlly) {
 
 	SDL_Point p = GetPosition(pos, bAlly);
 
-	if (bAlly) {
+	/*if (bAlly) {
 		p.x += header.tileWidth;
 		p.y -= header.tileHeight;
 	}
 	else {
 		p.x -= header.tileWidth;
 		p.y += header.tileHeight;
+	}*/
+	
+	if (bAlly) {
+		return { p.x - 46, p.y - 25};
 	}
-	return p;
+	else {
+		return { p.x + 46, p.y + 25 };
+	}
 }
 
 void BattleArray::LoadTexture() {

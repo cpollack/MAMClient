@@ -15,12 +15,20 @@ typedef enum BattleState {
 
 class pBattleState : public Packet {
 public:
-	int state, actors;
-	int userId;
-	int formation, allyFormation, enemyFormation;
+	typedef struct
+	{
+		BYTE bState;
+		BYTE bActors;
+		DWORD idUser;
+		DWORD dwFormation;
+		DWORD idEnemy;
+	}MSG_Info;
+	MSG_Info* m_pInfo;
+
+	int allyFormation, enemyFormation;
 
 	pBattleState(char *buf, char* encBuf);
-	pBattleState(int code, int aSize, int uId, int form);
+	pBattleState(int state, int actors, int idUser, int formation, int idEnemy);
 	~pBattleState();
 
 	virtual void process();

@@ -30,6 +30,7 @@ struct PathTile {
 };
 
 class GameObj;
+class pAiNpcInfo;
 class pNpcDialogue;
 class CPetMagic;
 class GameMap {
@@ -57,12 +58,8 @@ private:
 public:
 	SDL_Renderer* renderer;
 	SDL_Rect renderRect;
-	
-#ifdef NEWGUI
-	SDL_Rect uiRect = { 0, 0, 800, 600 };
-#else
-	SDL_Rect uiRect = { 0, 0, 740, 410 };
-#endif
+
+	SDL_Rect uiRect = { 28, 57, 740, 410 };
 	int uiX, uiY;
 
 	SDL_Texture* tileTexture;
@@ -91,6 +88,7 @@ public:
 	bool IsChangingMap() { return changingMap; }
 
 	void GameMap::addNpc(pNpcInfo* packet);
+	void GameMap::addNpc(pAiNpcInfo* packet);
 	void createDialogue(pNpcDialogue* packet);
 	void GameMap::addColosseum(pColosseum* packet);
 

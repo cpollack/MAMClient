@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "NPC.h"
 #include "pNpcInfo.h"
+#include "pAiNpcInfo.h"
 #include "pNpc.h"
+#include "pBattleState.h"
 
 #include "ShopDataFile.h"
 #include "RefineItemForm.h"
@@ -33,6 +35,31 @@ NPC::NPC(pNpcInfo* packet):Entity(mainForm->renderer, packet->id, packet->name, 
 	NameplateBackground = true;
 }
 
+NPC::NPC(pAiNpcInfo* packet) :Entity(mainForm->renderer, packet->m_pInfo->id, packet->m_pInfo->szName, packet->m_pInfo->wLook) {
+	renderer = map->renderer;
+	Name.assign(packet->m_pInfo->szName);
+	Name.append(" [" + std::to_string(packet->m_pInfo->wLevel) + "]");
+	nameLabel = stringToTexture(renderer, Name, gui->font, 0, SDL_Color{ 255,255,0,255 }, 0);
+
+	ID = packet->m_pInfo->id;
+	Type = packet->m_pInfo->wType;
+	Look = packet->m_pInfo->wLook;
+	setDirection(packet->m_pInfo->wDir);
+
+	SetCoord(SDL_Point{ packet->m_pInfo->wCellX, packet->m_pInfo->wCellY });
+
+	for (int i = 0; i < 15; i += 5) {
+		ColorShift shift;
+		memcpy(&shift, packet->m_pInfo->bColorSets + i, 5);
+		colorShifts.push_back(shift);
+	}	
+	
+	setAnimation(StandBy);
+	Entity::loadSprite();
+	NameplateBackground = true;
+	isAiNpc = true;
+}
+
 
 NPC::~NPC() {
 	//
@@ -61,11 +88,26 @@ void NPC::handleEvent(SDL_Event& e) {
 			interact.user.data2 = nullptr;
 
 			//Change direction
-			int newDir = getDirectionToCoord(player->GetCoord()) + 1;
-			if (newDir == 8) newDir = 0;
-			setDirection(newDir);
-			loadSprite();
-			addEffect(EFFECT_THINK);
+			
+			if (isAiNpc) {
+				setDirection(getDirectionToCoord(player->GetCoord()));
+				Entity::loadSprite();
+				
+				//spawn battle				
+				pBattleState* packet = new pBattleState(bsStart, 1, player->GetID(), 0, ID);
+				gClient.addPacket(packet);
+				interact.user.code = NPC_BATTLE;
+
+			}
+			else {
+				//Direction must be offset for NPC animation mapping
+				int newDir = getDirectionToCoord(player->GetCoord()) + 1;
+				if (newDir == 8) newDir = 0;
+				setDirection(newDir);
+
+				loadSprite();
+				addEffect(EFFECT_THINK);
+			}
 
 			if (Type >= 100 && Type <= 102) {
 				CShopDataFile shopFile;

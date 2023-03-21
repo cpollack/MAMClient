@@ -52,7 +52,7 @@ public:
 
 	virtual void SetCoord(SDL_Point coord);
 protected: 
-	void takeNextStep();
+	void MoveAlongPath();
 	
 public:
 	void setPlayerInfo(pPlayerInfo* packet);

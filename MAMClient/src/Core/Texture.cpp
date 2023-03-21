@@ -5,7 +5,7 @@
 
 Texture::Texture(SDL_Renderer* aRenderer) {
 	renderer = aRenderer;
-	setAnchor(ANCOR_TOPLEFT);
+	setAnchor(ANCHOR_TOPLEFT);
 }
 
 
@@ -15,14 +15,14 @@ Texture::Texture(SDL_Renderer* aRenderer, SDL_Texture* txtr, int w, int h) {
 	else texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
 	width = w;
 	height = h;
-	setAnchor(ANCOR_TOPLEFT);
+	setAnchor(ANCHOR_TOPLEFT);
 }
 
 
 Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, bool load) {
 	renderer = aRenderer;
 	file = filePath;
-	setAnchor(ANCOR_TOPLEFT);
+	setAnchor(ANCHOR_TOPLEFT);
 	if (load) Load();
 }
 
@@ -30,7 +30,7 @@ Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, bool load) {
 Texture::Texture(SDL_Renderer* aRenderer, std::string filePath, SDL_Color aColorKey, bool load) {
 	renderer = aRenderer;
 	file = filePath;
-	setAnchor(ANCOR_TOPLEFT);
+	setAnchor(ANCHOR_TOPLEFT);
 	useColorKey = true;
 	colorKey = aColorKey;
 	if (load) Load();
@@ -117,11 +117,11 @@ void Texture::loadResource(std::string filePath, int anchor) {
 		height = surface->h;
 
 		int x;
-		if (anchor == Anchor::ANCOR_TOPRIGHT || anchor == Anchor::ANCOR_BOTTOMLEFT) x = -width;
+		if (anchor == Anchor::ANCHOR_TOPRIGHT || anchor == Anchor::ANCHOR_BOTTOMLEFT) x = -width;
 		else x = 0;
 
 		int y;
-		if (anchor == Anchor::ANCOR_BOTTOMLEFT || anchor == Anchor::ANCOR_BOTTOMLEFT) y = -height;
+		if (anchor == Anchor::ANCHOR_BOTTOMLEFT || anchor == Anchor::ANCHOR_BOTTOMLEFT) y = -height;
 		else y = 0;
 
 		rect = { x, y, width, height };
@@ -391,11 +391,11 @@ void Texture::setAnchor(int aAnchor) {
 	anchor = aAnchor;
 
 	int x;
-	if (anchor == Anchor::ANCOR_TOPRIGHT || anchor == Anchor::ANCOR_BOTTOMLEFT) x = -width;
+	if (anchor == Anchor::ANCHOR_TOPRIGHT || anchor == Anchor::ANCHOR_BOTTOMLEFT) x = -width;
 	else x = 0;
 
 	int y;
-	if (anchor == Anchor::ANCOR_BOTTOMLEFT || anchor == Anchor::ANCOR_BOTTOMLEFT) y = -height;
+	if (anchor == Anchor::ANCHOR_BOTTOMLEFT || anchor == Anchor::ANCHOR_BOTTOMLEFT) y = -height;
 	else y = 0;
 
 	rect = { x, y, width, height };

@@ -4,10 +4,11 @@
 
 #include "Define.h"
 #include "CustomEvents.h"
+#include "Fighter.h"
 #include "Player.h"
 #include "Pet.h"
 
-BattleScene::BattleScene(std::vector<Entity*> allies, std::vector<Entity*> enemies) {
+BattleScene::BattleScene(std::vector<Fighter*> allies, std::vector<Fighter*> enemies) {
 	cast = enemies;
 	cast.insert(cast.end(), allies.begin(), allies.end());
 }
@@ -20,20 +21,20 @@ BattleScene::~BattleScene() {
 }
 
 
-void BattleScene::setReactor(Entity* target, int action) {
+void BattleScene::setReactor(Fighter* target, int action) {
 	reactor = target;
 	reaction = action;
 }
 
 
-bsPerform* BattleScene::addAction(Entity* source, bsType type, AnimType action, SDL_Point target, std::vector<std::string> floatingLabels) {
+bsPerform* BattleScene::addAction(Fighter* source, bsType type, AnimType action, SDL_Point target, std::vector<std::string> floatingLabels) {
 	bsPerform* performance = new bsPerform;
 	performance->actor = source;
 	performance->type = type;
 	performance->animation = action;
 	performance->targetPoint = target;
-	if (type == bsMoveTo) performance->direction = getDirection(source->GetBattlePos(), target);
-	else performance->direction = source->getDirection(true);
+	if (type == bsMoveTo) performance->direction = getDirection(source->GetPosition(), target);
+	else performance->direction = source->getDirection();
 	performance->floatingLabels = floatingLabels;
 	
 	//Check if actor exists, and add if not
@@ -56,14 +57,14 @@ bsPerform* BattleScene::addAction(Entity* source, bsType type, AnimType action, 
 }
 
 
-bsPerform* BattleScene::addAction(Entity* source, bsType type, AnimType action, SDL_Point target) {
+bsPerform* BattleScene::addAction(Fighter* source, bsType type, AnimType action, SDL_Point target) {
 	bsPerform* performance = new bsPerform;
 	performance->actor = source;
 	performance->type = type;
 	performance->animation = action;
 	performance->targetPoint = target;
-	if (type == bsMoveTo) performance->direction = getDirection(source->GetBattlePos(), target);
-	else performance->direction = source->getDirection(true);
+	if (type == bsMoveTo) performance->direction = getDirection(source->GetPosition(), target);
+	else performance->direction = source->getDirection();
 	//performance->battleYell = bYell;
 
 	//Check if actor exists, and add if not
@@ -209,33 +210,33 @@ void BattleScene::perform(bsActor* actor) {
 }
 
 bool BattleScene::perform_moveTo(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 	SDL_Point target = perform->targetPoint;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
-		actor->setAnimation(Walk, true);
-		actor->setDirection(getDirection(actor->GetBattlePos(), target), true);
-		actor->loadSprite(true);
+		actor->setAnimation(Walk);
+		actor->setDirection(getDirection(actor->GetPosition(), target));
+		actor->loadSprite();
 	}
 
 	float dtMove = 30.0;
-	float distance = sqrtf( powf((target.x - actor->GetBattlePos().x),2) + powf((target.y - actor->GetBattlePos().y), 2));
+	float distance = sqrtf( powf((target.x - actor->GetPosition().x),2) + powf((target.y - actor->GetPosition().y), 2));
 	float dtRem = distance - dtMove;
 
-	SDL_Point battlePos = actor->GetBattlePos();
-	if (actor->GetBattlePos().x != target.x || actor->GetBattlePos().y != target.y) {
+	SDL_Point battlePos = actor->GetPosition();
+	if (actor->GetPosition().x != target.x || actor->GetPosition().y != target.y) {
 		if (dtMove < distance) {
-			battlePos.x = ((dtMove * target.x) + (dtRem * actor->GetBattlePos().x)) / distance;
-			battlePos.y = ((dtMove * target.y) + (dtRem * actor->GetBattlePos().y)) / distance;
+			battlePos.x = ((dtMove * target.x) + (dtRem * actor->GetPosition().x)) / distance;
+			battlePos.y = ((dtMove * target.y) + (dtRem * actor->GetPosition().y)) / distance;
 		}
 		else {
 			battlePos.x = target.x;
 			battlePos.y = target.y;
 		}
-		actor->SetBattlePos(battlePos);
-		actor->GetSprite(true)->setLocation(actor->GetBattlePos().x, actor->GetBattlePos().y);
+		actor->SetPosition(battlePos);
+		actor->GetSprite()->setLocation(actor->GetPosition().x, actor->GetPosition().y);
 	}
 	else return true;
 
@@ -244,29 +245,29 @@ bool BattleScene::perform_moveTo(bsPerform* perform) {
 
 
 bool BattleScene::perform_fadeTo(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 	SDL_Point target = perform->targetPoint;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
-		perform->startPoint = { actor->GetBattlePos().x, actor->GetBattlePos().y };
-		actor->setDirection(getDirection(actor->GetBattlePos(), target), true);
-		actor->setAnimation(Walk, true);
-		actor->loadSprite(true);
+		perform->startPoint = { actor->GetPosition().x, actor->GetPosition().y };
+		actor->setDirection(getDirection(actor->GetPosition(), target));
+		actor->setAnimation(Walk);
+		actor->loadSprite();
 	}
 
 	float dtMove = 10.0;
 	float origDistance = sqrtf(powf((target.x - perform->startPoint.x), 2) + powf((target.y - perform->startPoint.y), 2));
-	float distance = sqrtf(powf((target.x - actor->GetBattlePos().x), 2) + powf((target.y - actor->GetBattlePos().y), 2));
+	float distance = sqrtf(powf((target.x - actor->GetPosition().x), 2) + powf((target.y - actor->GetPosition().y), 2));
 	
 	float falpha = (distance / origDistance) * 255.0;
 	BYTE alpha = (BYTE)falpha;
 	if (actor->findEffect(EFFECT_SPHERE)) actor->findEffect(EFFECT_SPHERE)->setAlpha(alpha);
-	else actor->GetSprite(true)->setAlpha(alpha);
+	else actor->GetSprite()->setAlpha(alpha);
 	
 	float dtRem = distance - dtMove;
-	SDL_Point battlePos = actor->GetBattlePos();
+	SDL_Point battlePos = actor->GetPosition();
 	if (battlePos.x != target.x || battlePos.y != target.y) {
 		if (dtMove < distance) {
 			battlePos.x = ((dtMove * target.x) + (dtRem * battlePos.x)) / distance;
@@ -276,12 +277,12 @@ bool BattleScene::perform_fadeTo(bsPerform* perform) {
 			battlePos.x = target.x;
 			battlePos.y = target.y;
 		}
-		actor->SetBattlePos(battlePos);
-		actor->GetSprite(true)->setLocation(actor->GetBattlePos().x, actor->GetBattlePos().y);
+		actor->SetPosition(battlePos);
+		actor->GetSprite()->setLocation(actor->GetPosition().x, actor->GetPosition().y);
 	}
 	else {
 		if (actor->findEffect(EFFECT_SPHERE)) actor->findEffect(EFFECT_SPHERE)->setAlpha(0xFF);
-		else actor->GetSprite(true)->setAlpha(0xFF);
+		else actor->GetSprite()->setAlpha(0xFF);
 		return true;
 	}
 
@@ -290,28 +291,28 @@ bool BattleScene::perform_fadeTo(bsPerform* perform) {
 
 
 bool BattleScene::perform_standBy(bsPerform* perform) {
-	Entity* actor = perform->actor;
-	actor->setAnimation(StandBy, true);
-	if (actor->IsEnemy()) actor->setDirection(default_monster_dir, true);
-	else actor->setDirection(default_ally_dir, true);
-	actor->loadSprite(true);
+	Fighter* actor = perform->actor;
+	actor->setAnimation(StandBy);
+	if (actor->IsEnemy()) actor->setDirection(default_enemy_dir);
+	else actor->setDirection(default_ally_dir);
+	actor->loadSprite();
 	return true;
 }
 
 
 bool BattleScene::perform_action(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 	SDL_Point target = perform->targetPoint;
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
-		actor->setAnimation(perform->animation, true);
-		if (actor->IsEnemy()) actor->setDirection(default_monster_dir, true);
-		else actor->setDirection(default_ally_dir, true);
-		actor->loadSprite(true);
-		actor->GetSprite(true)->setLocation(actor->GetBattlePos().x, actor->GetBattlePos().y);
-		actor->GetSprite(true)->repeatMode = 1;
-		actor->GetSprite(true)->start();
+		actor->setAnimation(perform->animation);
+		if (actor->IsEnemy()) actor->setDirection(default_enemy_dir);
+		else actor->setDirection(default_ally_dir);
+		actor->loadSprite();
+		actor->GetSprite()->setLocation(actor->GetPosition().x, actor->GetPosition().y);
+		actor->GetSprite()->repeatMode = 1;
+		actor->GetSprite()->start();
 
 		while (perform->floatingLabels.size() > 0) {
 			reactor->addFloatingLabel(perform->floatingLabels[0]);
@@ -324,20 +325,20 @@ bool BattleScene::perform_action(bsPerform* perform) {
 		updateAudience();
 	}
 
-	if (actor->GetSprite(true)->repeatCount >= 1) return true;
+	if (actor->GetSprite()->repeatCount >= 1) return true;
 
 	return false;
 }
 
 
 bool BattleScene::perform_reaction(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 	
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
-		actor->setAnimation(perform->animation, true);
-		actor->loadSprite(true);
+		actor->setAnimation(perform->animation);
+		actor->loadSprite();
 	}
 
 	int elapsedTime = SDL_GetTicks() - perform->startTime;
@@ -348,22 +349,22 @@ bool BattleScene::perform_reaction(bsPerform* perform) {
 
 
 bool BattleScene::perform_faint(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
-		actor->setAnimation(perform->animation, true);
-		actor->loadSprite(true);
-		actor->GetSprite(true)->repeatMode = 1;
-		actor->GetSprite(true)->start();
+		actor->setAnimation(perform->animation);
+		actor->loadSprite();
+		actor->GetSprite()->repeatMode = 1;
+		actor->GetSprite()->start();
 		actor->SetAlive(false);
 	}
 
 	int elapsedTime = SDL_GetTicks() - perform->startTime;
-	if (actor->GetSprite(true)->repeatCount >= 1) {
-		actor->setAnimation(Lie, true);
-		actor->loadSprite(true);
+	if (actor->GetSprite()->repeatCount >= 1) {
+		actor->setAnimation(Lie);
+		actor->loadSprite();
 		actor->addEffect(EFFECT_FAINT);
 		return true;
 	}
@@ -373,21 +374,21 @@ bool BattleScene::perform_faint(bsPerform* perform) {
 
 
 bool BattleScene::perform_captureBegin(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
 
-		actor->setAnimation(StandBy, true);
-		actor->setDirection(1, true);
-		actor->loadSprite(true);
+		actor->setAnimation(StandBy);
+		actor->setDirection(1);
+		actor->loadSprite();
 		actor->addEffect(EFFECT_MIRROR);
 
-		reactor->setAnimation(Cast, true);
-		reactor->loadSprite(true);
-		reactor->GetSprite(true)->repeatMode = 2;
-		reactor->GetSprite(true)->start();
+		reactor->setAnimation(Cast);
+		reactor->loadSprite();
+		reactor->GetSprite()->repeatMode = 2;
+		reactor->GetSprite()->start();
 	}
 
 	int currentTicks = (SDL_GetTicks() - perform->startTime);
@@ -396,11 +397,11 @@ bool BattleScene::perform_captureBegin(bsPerform* perform) {
 	//spin in a circle with mirror above
 	if (currentSecs < 1) {
 		int intervalSize = 1000 / 24; //two rotations
-		int newDir = default_monster_dir + (currentTicks / intervalSize);
+		int newDir = default_enemy_dir + (currentTicks / intervalSize);
 		while (newDir > 7) newDir -= 8;
-		if (actor->getDirection(true) != newDir) {
-			actor->setDirection(newDir, true);
-			actor->loadSprite(true);
+		if (actor->getDirection() != newDir) {
+			actor->setDirection(newDir);
+			actor->loadSprite();
 		}
 	}
 	else return true;
@@ -410,23 +411,24 @@ bool BattleScene::perform_captureBegin(bsPerform* perform) {
 
 
 bool BattleScene::perform_captureDrag(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* player = reactor;
+	Fighter* actor = perform->actor;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
 
-		actor->setAnimation(StandBy, true);
-		actor->setDirection(1, true);
-		actor->loadSprite(true);
+		actor->setAnimation(StandBy);
+		actor->setDirection(1);
+		actor->loadSprite();
 		actor->addEffect(EFFECT_SPHERE);
-		actor->SetInvisible(true);
+		actor->SetVisible(false);
 
-		reactor->setAnimation(Cast, true);
-		reactor->loadSprite(true);
-		reactor->GetSprite(true)->repeatMode = 2;
-		reactor->GetSprite(true)->speed = 500;
-		reactor->GetSprite(true)->start();
+		reactor->setAnimation(Cast);
+		reactor->loadSprite();
+		reactor->GetSprite()->repeatMode = 2;
+		reactor->GetSprite()->speed = 500;
+		reactor->GetSprite()->start();
 	}
 
 	int currentTicks = (SDL_GetTicks() - perform->startTime);
@@ -437,13 +439,13 @@ bool BattleScene::perform_captureDrag(bsPerform* perform) {
 		SDL_Point target;
 		target.x = ((player->GetBattleBasePos().x - actor->GetBattleBasePos().x) / 2) + actor->GetBattleBasePos().x;
 		target.y = ((player->GetBattleBasePos().y - actor->GetBattleBasePos().y) / 2) + actor->GetBattleBasePos().y;
-		float distance = sqrtf(powf((target.x - actor->GetBattlePos().x), 2) + powf((target.y - actor->GetBattlePos().y), 2));
+		float distance = sqrtf(powf((target.x - actor->GetPosition().x), 2) + powf((target.y - actor->GetPosition().y), 2));
 
 		float dtMove = 5.0;
 		float speed = 6.0;
 		float dtRem = distance - dtMove;
 
-		SDL_Point battlePos = actor->GetBattlePos();
+		SDL_Point battlePos = actor->GetPosition();
 		if (battlePos.x != target.x || battlePos.y != target.y) {
 			//Move the orb to the middle
 			if (dtMove < distance) {
@@ -464,9 +466,9 @@ bool BattleScene::perform_captureDrag(bsPerform* perform) {
 				battlePos.x = target.x;
 				battlePos.y = target.y;
 			}
-			actor->SetBattlePos(battlePos);
+			actor->SetPosition(battlePos);
 
-			actor->GetSprite(true)->setLocation(actor->GetBattlePos().x, actor->GetBattlePos().y);
+			actor->GetSprite()->setLocation(actor->GetPosition().x, actor->GetPosition().y);
 		}
 	}
 
@@ -476,7 +478,7 @@ bool BattleScene::perform_captureDrag(bsPerform* perform) {
 		midPoint.x = ((player->GetBattleBasePos().x - actor->GetBattleBasePos().x) / 2) + actor->GetBattleBasePos().x;
 		midPoint.y = ((player->GetBattleBasePos().y - actor->GetBattleBasePos().y) / 2) + actor->GetBattleBasePos().y;
 		float midPoint_distance = sqrtf(powf((player->GetBattleBasePos().x - midPoint.x), 2) + powf((player->GetBattleBasePos().y - midPoint.y), 2));
-		float distance = sqrtf(powf((player->GetBattleBasePos().x - actor->GetBattlePos().x), 2) + powf((player->GetBattleBasePos().y - actor->GetBattlePos().y), 2));
+		float distance = sqrtf(powf((player->GetBattleBasePos().x - actor->GetPosition().x), 2) + powf((player->GetBattleBasePos().y - actor->GetPosition().y), 2));
 
 		float maxMove = 30.0;
 
@@ -489,8 +491,8 @@ bool BattleScene::perform_captureDrag(bsPerform* perform) {
 		SDL_Point battlePos;
 		battlePos.x = ((dtMove * player->GetBattleBasePos().x) + (dtRem * midPoint.x)) / distance;
 		battlePos.y = ((dtMove * player->GetBattleBasePos().y) + (dtRem * midPoint.y)) / distance;
-		actor->SetBattlePos(battlePos);
-		actor->GetSprite(true)->setLocation(actor->GetBattlePos().x, actor->GetBattlePos().y);
+		actor->SetPosition(battlePos);
+		actor->GetSprite()->setLocation(actor->GetPosition().x, actor->GetPosition().y);
 	}
 
 	//
@@ -503,8 +505,8 @@ bool BattleScene::perform_captureDrag(bsPerform* perform) {
 
 
 bool BattleScene::perform_captureSuccess(bsPerform* perform) {
-	Entity* player = reactor;
-	Entity* actor = perform->actor;
+	Fighter* player = reactor;
+	Fighter* actor = perform->actor;
 	SDL_Point target = perform->targetPoint;
 
 	if (!perform->started) {
@@ -521,14 +523,14 @@ bool BattleScene::perform_captureSuccess(bsPerform* perform) {
 
 	float dtMove = 2.5;
 	float speed = 6.0;
-	float distance = sqrtf(powf((target.x - actor->GetBattlePos().x), 2) + powf((target.y - actor->GetBattlePos().y), 2));
+	float distance = sqrtf(powf((target.x - actor->GetPosition().x), 2) + powf((target.y - actor->GetPosition().y), 2));
 	float dtRem = distance - dtMove;
 
 	float alphaPerc = distance / midPointDistance;
 	BYTE alpha = (BYTE)((float)alphaPerc * 255.0);
 	if (actor->findEffect(EFFECT_SPHERE)) actor->findEffect(EFFECT_SPHERE)->setAlpha(alpha);
 
-	SDL_Point battlePos = actor->GetBattlePos();
+	SDL_Point battlePos = actor->GetPosition();
 	if (battlePos.x != target.x || battlePos.y != target.y) {
 		if (dtMove < distance) {
 			//actor->pos.x = (int)(((dtMove * target.x) + (dtRem * actor->pos.x)) / distance + 0.5);
@@ -549,13 +551,13 @@ bool BattleScene::perform_captureSuccess(bsPerform* perform) {
 			battlePos.y = target.y;
 		}
 
-		actor->SetBattlePos(battlePos);
-		actor->GetSprite(true)->setLocation(battlePos.x, battlePos.y);
+		actor->SetPosition(battlePos);
+		actor->GetSprite()->setLocation(battlePos.x, battlePos.y);
 	}
 	else {
 		EffectItr itr = actor->removeEffect(EFFECT_SPHERE);
-		player->setAnimation(StandBy, true);
-		player->loadSprite(true);
+		player->setAnimation(StandBy);
+		player->loadSprite();
 		return true;
 	}
 
@@ -564,18 +566,18 @@ bool BattleScene::perform_captureSuccess(bsPerform* perform) {
 
 
 bool BattleScene::perform_captureAngry(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
-		actor->setAnimation(perform->animation, true);
-		actor->loadSprite(true);
-		actor->SetInvisible(false);
+		actor->setAnimation(perform->animation);
+		actor->loadSprite();
+		actor->SetVisible(true);
 		EffectItr itr = actor->removeEffect(EFFECT_SPHERE);
 
-		reactor->setAnimation(StandBy, true);
-		reactor->loadSprite(true);
+		reactor->setAnimation(StandBy);
+		reactor->loadSprite();
 	}
 
 	int currentTicks = (SDL_GetTicks() - perform->startTime);
@@ -584,26 +586,26 @@ bool BattleScene::perform_captureAngry(bsPerform* perform) {
 	//Spin in reverse
 	if (currentSecs == 0) {
 		int intervalSize = 1000 / 24; //two rotations
-		int newDir = default_monster_dir - (currentTicks / intervalSize);
+		int newDir = default_enemy_dir - (currentTicks / intervalSize);
 		while (newDir < 0) newDir += 8;
-		if (actor->getDirection(true) != newDir) {
-			actor->setDirection(newDir, true);
-			actor->loadSprite(true);
-			actor->GetSprite(true)->setLocation(actor->GetBattlePos().x, actor->GetBattlePos().y);
+		if (actor->getDirection() != newDir) {
+			actor->setDirection(newDir);
+			actor->loadSprite();
+			actor->GetSprite()->setLocation(actor->GetPosition().x, actor->GetPosition().y);
 		}
 	}
 
 	if (currentSecs == 1) {
 		EffectItr itr = actor->removeEffect(EFFECT_MIRROR);
 		actor->SetBattleYell(perform->battleYell);
-		actor->setDirection(default_monster_dir, true);
-		actor->loadSprite(true);
+		actor->setDirection(default_enemy_dir);
+		actor->loadSprite();
 	}
 
 	if (currentSecs >= 2) {
 		actor->SetBattleYell("");
-		reactor->setAnimation(StandBy, true);
-		reactor->loadSprite(true);
+		reactor->setAnimation(StandBy);
+		reactor->loadSprite();
 		return true;
 	}
 
@@ -612,20 +614,20 @@ bool BattleScene::perform_captureAngry(bsPerform* perform) {
 
 
 bool BattleScene::perform_captureFail(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 	SDL_Point target = perform->targetPoint;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
-		actor->setAnimation(Walk, true);
-		actor->setDirection(getDirection(actor->GetBattlePos(), target), true);
-		actor->loadSprite(true);
+		actor->setAnimation(Walk);
+		actor->setDirection(getDirection(actor->GetPosition(), target));
+		actor->loadSprite();
 		EffectItr itr = actor->removeEffect(EFFECT_SPHERE);
 		EffectItr itr2 = actor->removeEffect(EFFECT_MIRROR);
 	}
 
-	SDL_Point battlePos = actor->GetBattlePos();
+	SDL_Point battlePos = actor->GetPosition();
 	float dtMove = 20.0;
 	float distance = sqrtf(powf((target.x - battlePos.x), 2) + powf((target.y - battlePos.y), 2));
 	float dtRem = distance - dtMove;
@@ -639,7 +641,7 @@ bool BattleScene::perform_captureFail(bsPerform* perform) {
 			battlePos.x = target.x;
 			battlePos.y = target.y;
 		}
-		actor->SetBattlePos(battlePos);
+		actor->SetPosition(battlePos);
 	}
 	else return true;
 
@@ -647,20 +649,20 @@ bool BattleScene::perform_captureFail(bsPerform* perform) {
 }
 
 bool BattleScene::perform_useItem(bsPerform* perform) {
-	Entity* actor = perform->actor;
+	Fighter* actor = perform->actor;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
 
-		actor->setAnimation(Cast, true);
-		actor->loadSprite(true);
-		actor->GetSprite(true)->repeatMode = 1;
-		actor->GetSprite(true)->speed = 500; //Make cast faster, more like a 'throw'
-		actor->GetSprite(true)->start();
+		actor->setAnimation(Cast);
+		actor->loadSprite();
+		actor->GetSprite()->repeatMode = 1;
+		actor->GetSprite()->speed = 500; //Make cast faster, more like a 'throw'
+		actor->GetSprite()->start();
 
-		reactor->setAnimation(reaction, true);
-		reactor->loadSprite(true);
+		reactor->setAnimation(reaction);
+		reactor->loadSprite();
 		reactor->addEffect(perform->effect);
 		while (perform->floatingLabels.size() > 0) {
 			reactor->addFloatingLabel(perform->floatingLabels[0]);
@@ -672,11 +674,11 @@ bool BattleScene::perform_useItem(bsPerform* perform) {
 	int currentSecs = currentTicks / 1000;
 
 	if (currentSecs >= 1) {
-		actor->setAnimation(StandBy, true);
-		actor->loadSprite(true);
+		actor->setAnimation(StandBy);
+		actor->loadSprite();
 
-		reactor->setAnimation(StandBy, true);
-		reactor->loadSprite(true);
+		reactor->setAnimation(StandBy);
+		reactor->loadSprite();
 		return true;
 	}
 
@@ -685,14 +687,14 @@ bool BattleScene::perform_useItem(bsPerform* perform) {
 
 
 bool BattleScene::perform_victory(bsPerform* perform) {
-	Entity* player = reactor;
-	Entity* actor = perform->actor;
+	Fighter* player = reactor;
+	Fighter* actor = perform->actor;
 
 	if (!perform->started) {
 		perform->started = true;
 		perform->startTime = SDL_GetTicks();
-		actor->setAnimation(perform->animation, true);
-		actor->loadSprite(true);
+		actor->setAnimation(perform->animation);
+		actor->loadSprite();
 	}
 
 	int currentTicks = (SDL_GetTicks() - perform->startTime);
@@ -700,8 +702,8 @@ bool BattleScene::perform_victory(bsPerform* perform) {
 
 	if (currentSecs < 2) {
 		actor->SetBattleYell(perform->battleYell);
-		actor->setDirection(default_ally_dir, true);
-		actor->loadSprite(true);
+		actor->setDirection(default_ally_dir);
+		actor->loadSprite();
 	}
 	else {
 		actor->SetBattleYell("");
@@ -787,17 +789,17 @@ void BattleScene::updateAudience(bool reset) {
 			}
 
 			if (isAudience) {
-				actor->setDirection(getDirection(actor->GetBattlePos(), lookTo), true);
-				actor->loadSprite(true);
+				actor->setDirection(getDirection(actor->GetPosition(), lookTo));
+				actor->loadSprite();
 			}
 		}
 	}
 	else {
 		//reset to default look directions
 		for (auto actor : cast) {
-			if (actor->IsEnemy()) actor->setDirection(default_monster_dir, true);
-			else actor->setDirection(default_ally_dir, true);
-			actor->loadSprite(true);
+			if (actor->IsEnemy()) actor->setDirection(default_enemy_dir);
+			else actor->setDirection(default_ally_dir);
+			actor->loadSprite();
 		}
 	}
 }

@@ -1,5 +1,12 @@
 #pragma once
 
+typedef unsigned char BYTE;
+typedef unsigned short WORD;
+typedef unsigned long  DWORD;
+
+const int _MAX_NAMESIZE = 16;
+
+
 enum PacketType {
 	ptGsConnect = 1002,
 	ptMessage = 1004, //change to Talk
@@ -77,6 +84,7 @@ enum PacketType {
 	//ptEffect = 2070,
 	//ptQuiz = 2071,
 	ptPetMagic = 2072,
+	ptAiNpcInfo = 2080,
 };
 
 class Packet {
@@ -95,7 +103,8 @@ protected:
 	void Packet::addWord(int pos, WORD val);
 	void Packet::addDWord(int pos, DWORD val);
 	void Packet::addInt(int pos, int val);
-	void Packet::addString(int pos, char *str, int len);
+	void Packet::addString(int pos, char* str, int len);
+	void Packet::addBytes(int pos, BYTE *arr, int len);
 
 	void Packet::getByte(int pos, BYTE *val);
 	void Packet::getByte(int pos, int *val);

@@ -6,12 +6,10 @@
 #include "Sprite.h"
 #include "GameMap.h"
 #include "Battle.h"
-#include "FloatingLabel.h"
 #include "Options.h"
 
 Entity::Entity(SDL_Renderer* r, int id, std::string name, int look) : GameObj(r) {
 	ID = id;
-	BattleID = id;
 	Name = name;
 	Look = look;
 	setRole(Look);
@@ -21,32 +19,20 @@ Entity::Entity(SDL_Renderer* r, int id, std::string name, int look) : GameObj(r)
 }
 
 Entity::~Entity() {
-	CleanupBattle();
 	if (sprite) delete sprite; sprite = nullptr;
 	for (auto effect : effects) if (effect.sprite) delete effect.sprite;
-}
-
-void Entity::CleanupBattle() {
-	if (BattleSprite) delete BattleSprite; BattleSprite = nullptr;
-	ArrayPos = -1;
-	BattlePos_Base = { 0,0 };
-	BattlePos = { 0,0 };
-	TargetingPos = { 0,0 };
-	alive = true;
-	defending = false;
-	floatingLabels.clear();
-	clearEffects();
 }
 
 void Entity::render() {
 	GameObj::render();
 
 	render_effects(RenderPos);
+	
 
 	//render_aura()?
 }
 
-void Entity::render_battle() {
+/*void Entity::render_battle() {
 	if (!BattleSprite) return;
 
 	if (!BattleSprite->started) BattleSprite->start();
@@ -56,7 +42,7 @@ void Entity::render_battle() {
 
 	render_effects(BattlePos);
 	render_floatingLabels();
-}
+}*/
 
 void Entity::render_effects(SDL_Point point) {
 	std::vector<Effect>::iterator itr = effects.begin();
@@ -68,32 +54,6 @@ void Entity::render_effects(SDL_Point point) {
 			if (itr != effects.end()) itr++;
 		}
 		else itr++;
-	}
-}
-
-void Entity::render_floatingLabels() {
-	if (floatingLabels.size() == 0)  return;
-
-	for (int i = 0; i < floatingLabels.size(); i++) {
-		if (!floatingLabels[i].started) {
-			floatingLabels[i].started = true;
-			floatingLabels[i].startTime = SDL_GetTicks();
-		}
-		else {
-			SDL_Point p;
-			p = floatingLabels[i].text->getPosition();
-			p.x -= 1; p.y -= 1;
-			floatingLabels[i].text->setPosition(p);
-		}
-		floatingLabels[i].text->Render();
-	}
-
-	//Remove expired labels
-	std::vector<FloatingLabel>::iterator itr;
-	for (itr = floatingLabels.begin(); itr != floatingLabels.end();) {
-		int timeElapsed = (SDL_GetTicks() - itr->startTime) / 1000;
-		if (timeElapsed >= 2) itr = floatingLabels.erase(itr);
-		else ++itr;
 	}
 }
 
@@ -162,29 +122,6 @@ void Entity::handleEvent(SDL_Event& e) {
 	}
 }
 
-void Entity::handleEvent_battle(SDL_Event& e) {
-	if (!BattleSprite) return;
-
-	SDL_Rect sprRect = GetRenderRect(true);
-
-	if (e.type == SDL_MOUSEMOTION) {
-		if (doesPointIntersect(sprRect, e.motion.x, e.motion.y)) {
-			//Only focus a npc when its 'solid' pixels are moused over
-			SDL_Point getPixel = { e.motion.x - sprRect.x, e.motion.y - sprRect.y };
-
-			Asset currentTexture = BattleSprite->getCurrentTexture();
-			Uint32 pixel = currentTexture->getPixel(getPixel);
-			Uint8 alpha = currentTexture->getPixelAlpha(pixel);
-
-			if (alpha >= 64) {
-				MouseOver = true;
-			}
-			else MouseOver = false;
-		}
-		else MouseOver = false;
-	}
-}
-
 std::string Entity::getRole(int look) {
 	INI roleINI("INI/Roles.ini", "RolesInfo");
 	std::string entry = "Role" + std::to_string(look);
@@ -201,27 +138,20 @@ void Entity::SetLook(int iLook) {
 	//effects?
 }
 
-void Entity::setDirection(int direction, bool forBattle) {
-	if (!forBattle) {
-		Direction = direction;
+void Entity::setDirection(int direction) {
+	Direction = direction;
 
-		sprDirection = direction + 1;
-		if (sprDirection > 7) sprDirection -= 8;
-	}
-	else {
-		BattleSprDirection = direction + 1;
-		if (BattleSprDirection > 7) BattleSprDirection -= 8;
-	}
+	sprDirection = direction + 1;
+	if (sprDirection > 7) sprDirection -= 8;
 }
 
-void Entity::setDirectionToCoord(SDL_Point coordinate, bool forBattle) {
+void Entity::setDirectionToCoord(SDL_Point coordinate) {
 	int newDirection = getDirectionToCoord(coordinate);
-	setDirection(newDirection, forBattle);
+	setDirection(newDirection);
 }
 
-int Entity::getDirection(bool forBattle) {
-	if (!forBattle) return Direction;
-	else return BattleSprDirection;
+int Entity::getDirection() {
+	return Direction;
 }
 
 int Entity::getDirectionToCoord(SDL_Point coordinate) {
@@ -268,54 +198,46 @@ void Entity::SetEmotion(int emotion) {
 	setAnimation(anim);
 }
 
-void Entity::setAnimation(int animation, bool forBattle) {
-	if (!forBattle) Animation = animation;
-	else BattleAnimation = animation;
+void Entity::setAnimation(int animation) {
+	Animation = animation;
 }
 
-void Entity::setColorShifts(ColorShifts shifts, bool forBattle) {
-	//Set last anim to -1 to force a reload
-	if (!forBattle) {
-		colorShifts.clear();
-		colorShifts = shifts;
-		lastSpriteAnimation = -1;
-	}
-	else {
-		BattleColorShifts.clear();
-		BattleColorShifts = shifts;
-		lastBattleAnimation = -1;
-	}
+void Entity::setColorShifts(ColorShifts shifts) {
+	//Set last anim to -1 to force a reload{
+	colorShifts.clear();
+	colorShifts = shifts;
+	lastSpriteAnimation = -1;
 }
 
-void Entity::loadSprite(bool forBattle) {
+void Entity::loadSprite() {
 	Sprite *destSprite = nullptr;
 	int DestAnimation = -1;
-	if (!forBattle) {
-		if (lastSpriteAnimation == Animation && lastSpriteDirection == sprDirection) return;
-		lastSpriteAnimation = Animation;
-		lastSpriteDirection = sprDirection;
-		DestAnimation = Animation;
+	
+	if (lastSpriteAnimation == Animation && lastSpriteDirection == sprDirection) return;
+	lastSpriteAnimation = Animation;
+	lastSpriteDirection = sprDirection;
+	DestAnimation = Animation;
 
-		if (sprite) delete sprite; sprite = nullptr;
-		if (Animation < 0 || sprDirection < 0) return;
+	if (sprite) delete sprite; sprite = nullptr;
+	if (Animation < 0 || sprDirection < 0) return;
 
-		if (Role.length() == 0) setRole(Look);
+	if (Role.length() == 0) setRole(Look);
 
-		std::vector<std::string> frames = getSpriteFramesFromAni(Role, Animation, sprDirection);
-		if (!frames.size()) return;
+	std::vector<std::string> frames = getSpriteFramesFromAni(Role, Animation, sprDirection);
+	if (!frames.size()) return;
 
-		std::vector<Asset> textures;
-		for (auto frame : frames) {
-			Asset texture(new Texture(renderer, frame));
-			textures.push_back(texture);
-		}
-
-		if (options.IsColorDisabled(Look)) sprite = new Sprite(renderer, textures, stCharacter);
-		else sprite = new Sprite(renderer, textures, stCharacter, colorShifts);
-		sprite->setLocation(Position.x, Position.y);
-		destSprite = sprite;
+	std::vector<Asset> textures;
+	for (auto frame : frames) {
+		Asset texture(new Texture(renderer, frame));
+		textures.push_back(texture);
 	}
-	else {
+
+	if (options.IsColorDisabled(Look)) sprite = new Sprite(renderer, textures, stCharacter);
+	else sprite = new Sprite(renderer, textures, stCharacter, colorShifts);
+	sprite->setLocation(Position.x, Position.y);
+	destSprite = sprite;
+
+	/*else {
 		if (lastBattleAnimation == BattleAnimation && lastBattleDirection == BattleSprDirection) return;
 		lastBattleAnimation = BattleAnimation;
 		lastBattleDirection = BattleSprDirection;
@@ -339,7 +261,7 @@ void Entity::loadSprite(bool forBattle) {
 		else BattleSprite = new Sprite(renderer, textures, stCharacter, BattleColorShifts);
 		BattleSprite->setLocation(BattlePos.x, BattlePos.y);
 		destSprite = BattleSprite;
-	}
+	}*/
 
 	
 	switch (DestAnimation) {
@@ -360,28 +282,14 @@ void Entity::loadSprite(bool forBattle) {
 	}
 }
 
-SDL_Rect Entity::GetRenderRect(bool forBattle) {
-	if (!forBattle) return GameObj::GetRenderRect();
-
-	SDL_Rect renderRect;
-	if (BattleSprite) {
-		//Always reload the sprite location in case its location became invalid
-		BattleSprite->setLocation(BattlePos.x, BattlePos.y);
-		renderRect = BattleSprite->getRenderRect();
-	}
-	return renderRect;
+bool Entity::Visible()
+{ 
+	return sprite ? sprite->visible : false; 
 }
 
-SDL_Rect Entity::GetRenderRect(int frame, bool forBattle) {
-	if (!forBattle) return GameObj::GetRenderRect(frame);
-
-	SDL_Rect renderRect;
-	if (BattleSprite) {
-		//Always reload the sprite location in case its location became invalid
-		BattleSprite->setLocation(BattlePos.x, BattlePos.y);
-		renderRect = BattleSprite->getRenderRect(frame);
-	}
-	return renderRect;
+void Entity::SetVisible(bool bVisible)
+{ 
+	if (sprite) sprite->visible = bVisible;
 }
 
 Sprite* Entity::CreateEffectSprite(int effect) {
@@ -507,35 +415,4 @@ std::vector<Effect>::iterator Entity::removeEffect(Sprite* sprEffect) {
 void Entity::clearEffects() {
 	for (auto effect : effects) if (effect.sprite) delete effect.sprite;
 	effects.clear();
-}
-
-bool Entity::IsEnemy() {
-	return (BattleType == OBJTYPE_MONSTER || BattleType == OBJTYPE_VSPLAYER || BattleType == OBJTYPE_VSPET) ? true : false;
-}
-
-void Entity::addFloatingLabel(std::string text) {
-	FloatingLabel newLabel;
-	SDL_Point point = GetBattleBasePos();
-	point.y -= 50;
-
-	newLabel.text.reset(stringToTexture(renderer, text, gui->font, 0, { 255, 255, 255, 255 }, 0));
-	newLabel.text->setPosition(point);
-	floatingLabels.push_back(newLabel);
-
-	if (floatingLabels.size() <= 1) return;
-
-	int top = point.y;
-	for (int i = floatingLabels.size() - 2; i >= 0; i--) {
-		SDL_Point pos = floatingLabels[i].text->getPosition();
-
-		//Check if labels overlap, and push previous labels up
-		if (floatingLabels[i].text->getPosition().y + floatingLabels[i].text->height > top) {
-			int newY = top - floatingLabels[i].text->height;
-			int dif = pos.y - newY;
-			pos.x -= dif;
-			pos.y = newY;
-			floatingLabels[i].text->setPosition(pos);
-		}
-		top = pos.y;
-	}
 }

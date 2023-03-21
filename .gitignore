@@ -259,3 +259,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/MAMClient/packetDebugLog.txt

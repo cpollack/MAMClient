@@ -195,8 +195,8 @@ void Dialogue::HandleEvent(SDL_Event &e) {
 
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
-	mx -= windowOffset.x;
-	my -= windowOffset.y;
+	/*mx -= windowOffset.x;
+	my -= windowOffset.y;*/
 
 	SDL_Point p{ mx, my };
 	if (e.type == SDL_MOUSEMOTION) {

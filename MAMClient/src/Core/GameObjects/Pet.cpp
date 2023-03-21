@@ -8,7 +8,6 @@
 #include "Inventory.h"
 
 Pet::Pet(SDL_Renderer *renderer, int id, std::string name, int look) : Monster(renderer, id, name, look) {
-	ID = BattleID | _IDMSK_PET;
 	Type = OBJ_PET;
 }
 
@@ -23,7 +22,6 @@ Pet::~Pet() {
 
 void Pet::updateInfo(pPetInfo* packet) {
 	ID = packet->petId;
-	BattleID = ID | _IDMSK_PET;
 	owner = packet->ownerId;
 
 	Name = packet->name;

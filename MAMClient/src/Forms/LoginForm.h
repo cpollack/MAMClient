@@ -36,11 +36,11 @@ private: //Login Handling
 public: void loginSuccess();
 
 private:
-	LoginState loginState = lsNone;
-	bool loginResponseReceived;
-	int loginAccount, loginSeed;
+	LoginState loginState = LoginState::lsNone;
+	bool loginResponseReceived{false};
+	int loginAccount{0}, loginSeed{0};
 	std::string loginMessage;
-	CMessageForm* messageForm;
+	CMessageForm* messageForm{nullptr};
 
 private: //Event handlers
 	void lblNewAccount_Click(SDL_Event& e);

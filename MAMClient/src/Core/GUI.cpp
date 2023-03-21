@@ -34,70 +34,70 @@ void GUI::changeSkin(std::string sName) {
 
 void GUI::loadGUI() {
 	std::string guiPath = guiDirectory + "\\" + skin + "\\";
-	loadResource(mainWindow, guiPath + "mainwindow.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(surface, guiPath + "surface.jpg", Anchor::ANCOR_BOTTOMLEFT);
-	loadResource(minBack, guiPath + "minback.bmp", Anchor::ANCOR_TOPLEFT);
-	loadResource(topCenter, guiPath + "TopCenter.bmp", Anchor::ANCOR_TOPLEFT);
-	loadResource(topCenter_s, guiPath + "TopCenter_s.bmp", Anchor::ANCOR_TOPLEFT);
-	loadResource(left, guiPath + "Left.bmp", Anchor::ANCOR_TOPLEFT);
-	loadResource(right, guiPath + "Right.bmp", Anchor::ANCOR_TOPRIGHT);
-	loadResource(topLeft, guiPath + "TopLeft.bmp", Anchor::ANCOR_TOPLEFT);
-	loadResource(topLeft_s, guiPath + "TopLeft_s.bmp", Anchor::ANCOR_TOPLEFT);
-	loadResource(topRight, guiPath + "TopRight.bmp", Anchor::ANCOR_TOPRIGHT);
-	loadResource(topRight_s, guiPath + "TopRight_s.bmp", Anchor::ANCOR_TOPRIGHT);
-	loadResource(bottomCenter, guiPath + "BottomCenter.bmp", Anchor::ANCOR_BOTTOMLEFT);
-	loadResource(bottomLeft, guiPath + "BottomLeft.bmp", Anchor::ANCOR_BOTTOMLEFT);
-	loadResource(bottomRight, guiPath + "BottomRight.bmp", Anchor::ANCOR_BOTTOMLEFT);
+	loadResource(mainWindow, guiPath + "mainwindow.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(surface, guiPath + "surface.jpg", Anchor::ANCHOR_BOTTOMLEFT);
+	loadResource(minBack, guiPath + "minback.bmp", Anchor::ANCHOR_TOPLEFT);
+	loadResource(topCenter, guiPath + "TopCenter.bmp", Anchor::ANCHOR_TOPLEFT);
+	loadResource(topCenter_s, guiPath + "TopCenter_s.bmp", Anchor::ANCHOR_TOPLEFT);
+	loadResource(left, guiPath + "Left.bmp", Anchor::ANCHOR_TOPLEFT);
+	loadResource(right, guiPath + "Right.bmp", Anchor::ANCHOR_TOPRIGHT);
+	loadResource(topLeft, guiPath + "TopLeft.bmp", Anchor::ANCHOR_TOPLEFT);
+	loadResource(topLeft_s, guiPath + "TopLeft_s.bmp", Anchor::ANCHOR_TOPLEFT);
+	loadResource(topRight, guiPath + "TopRight.bmp", Anchor::ANCHOR_TOPRIGHT);
+	loadResource(topRight_s, guiPath + "TopRight_s.bmp", Anchor::ANCHOR_TOPRIGHT);
+	loadResource(bottomCenter, guiPath + "BottomCenter.bmp", Anchor::ANCHOR_BOTTOMLEFT);
+	loadResource(bottomLeft, guiPath + "BottomLeft.bmp", Anchor::ANCHOR_BOTTOMLEFT);
+	loadResource(bottomRight, guiPath + "BottomRight.bmp", Anchor::ANCHOR_BOTTOMLEFT);
 
-	loadResource(min, guiPath + "Min.bmp", Anchor::ANCOR_TOPLEFT);
-	loadResource(close, guiPath + "Close.bmp", Anchor::ANCOR_TOPLEFT);
+	loadResource(min, guiPath + "Min.bmp", Anchor::ANCHOR_TOPLEFT);
+	loadResource(close, guiPath + "Close.bmp", Anchor::ANCHOR_TOPLEFT);
 
 	std::string randPic = "login_minpic0" + std::to_string((rand()%4) + 1) + ".jpg";
-	loadResource(login_minpic, guiPath + randPic, Anchor::ANCOR_TOPLEFT);
-	loadResource(minlogo, guiPath + "HL_minlogo.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(login_minpic, guiPath + randPic, Anchor::ANCHOR_TOPLEFT);
+	loadResource(minlogo, guiPath + "HL_minlogo.jpg", Anchor::ANCHOR_TOPLEFT);
 	
-	loadResource(button_basicMsg, guiPath + "button_basicMsg.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(button_basicMsgDown, guiPath + "button_basicMsgDown.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(button_basicMsg, guiPath + "button_basicMsg.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(button_basicMsgDown, guiPath + "button_basicMsgDown.jpg", Anchor::ANCHOR_TOPLEFT);
 
-	loadResource(button_pet, guiPath + "button_pet.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(button_petDown, guiPath + "button_petDown.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(button_pet, guiPath + "button_pet.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(button_petDown, guiPath + "button_petDown.jpg", Anchor::ANCHOR_TOPLEFT);
 
-	loadResource(fight2, guiPath + "fight-2.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(fight1, guiPath + "fight-1.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(fight2, guiPath + "fight-2.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(fight1, guiPath + "fight-1.jpg", Anchor::ANCHOR_TOPLEFT);
 
-	loadResource(chat2, guiPath + "chat-2.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(chat1, guiPath + "chat-1.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(chat2, guiPath + "chat-2.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(chat1, guiPath + "chat-1.jpg", Anchor::ANCHOR_TOPLEFT);
 
-	loadResource(heroStatus, guiPath + "HeroStatus.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(chatPanel, guiPath + "ChatPanel.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(selectMag, guiPath + "SelectMag.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(heroStatus, guiPath + "HeroStatus.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(chatPanel, guiPath + "ChatPanel.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(selectMag, guiPath + "SelectMag.jpg", Anchor::ANCHOR_TOPLEFT);
 
-	loadResource(button_fly_off, guiPath + "button_fly_off.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(button_fly_on, guiPath + "button_fly_on.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(button_fly_off, guiPath + "button_fly_off.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(button_fly_on, guiPath + "button_fly_on.jpg", Anchor::ANCHOR_TOPLEFT);
 
-	loadResource(minMap2, guiPath + "minMap-2.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(minMap1, guiPath + "minMap-1.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(team2, guiPath + "team-2.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(team1, guiPath + "team-1.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(items2, guiPath + "items-2.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(items1, guiPath + "items-1.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(pk2, guiPath + "pk-2.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(pk1, guiPath + "pk-1.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(record2, guiPath + "record-2.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(record1, guiPath + "record-1.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(email2, guiPath + "email-2.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(email1, guiPath + "email-1.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(minMap2, guiPath + "minMap-2.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(minMap1, guiPath + "minMap-1.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(team2, guiPath + "team-2.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(team1, guiPath + "team-1.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(items2, guiPath + "items-2.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(items1, guiPath + "items-1.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(pk2, guiPath + "pk-2.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(pk1, guiPath + "pk-1.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(record2, guiPath + "record-2.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(record1, guiPath + "record-1.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(email2, guiPath + "email-2.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(email1, guiPath + "email-1.jpg", Anchor::ANCHOR_TOPLEFT);
 
-	loadResource(bg_slot, guiPath + "bg_slot.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(green_slot, guiPath + "green_slot.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(orange_slot, guiPath + "orange_slot.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(red_slot, guiPath + "red_slot.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(yellow_slot, guiPath + "yellow_slot.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(bg_slot, guiPath + "bg_slot.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(green_slot, guiPath + "green_slot.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(orange_slot, guiPath + "orange_slot.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(red_slot, guiPath + "red_slot.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(yellow_slot, guiPath + "yellow_slot.jpg", Anchor::ANCHOR_TOPLEFT);
 
-	loadResource(invetoryBg, guiPath + "ItemsPic.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(star_button, guiPath + "star_button.bmp", Anchor::ANCOR_TOPLEFT);
-	loadResource(line1, guiPath + "line1.jpg", Anchor::ANCOR_TOPLEFT);
-	loadResource(line2, guiPath + "line2.jpg", Anchor::ANCOR_TOPLEFT);
+	loadResource(invetoryBg, guiPath + "ItemsPic.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(star_button, guiPath + "star_button.bmp", Anchor::ANCHOR_TOPLEFT);
+	loadResource(line1, guiPath + "line1.jpg", Anchor::ANCHOR_TOPLEFT);
+	loadResource(line2, guiPath + "line2.jpg", Anchor::ANCHOR_TOPLEFT);
 
 	font = TTF_OpenFont("font\\Arial.ttf", 12);
 	fontUni = TTF_OpenFont("font\\ARIALUNI.ttf", 12);
@@ -142,7 +142,7 @@ void GUI::loadFromRenderedText(Texture* aTexture, std::string text, SDL_Color te
 		aTexture->texture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
 		aTexture->width = textSurface->w;
 		aTexture->height = textSurface->h;
-		aTexture->anchor = Anchor::ANCOR_TOPLEFT;
+		aTexture->anchor = Anchor::ANCHOR_TOPLEFT;
 
 		SDL_FreeSurface(textSurface);
 	}

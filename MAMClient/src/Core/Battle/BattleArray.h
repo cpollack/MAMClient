@@ -1,7 +1,7 @@
 #pragma once
 
 class Texture;
-class Entity;
+class Fighter;
 
 struct BattleArrayHeader {
 	char imagePath[256];
@@ -32,7 +32,7 @@ public:
 	bool Load(const char* file, int type, bool bAlly);
 	void Render();
 
-	void SetLeader(Entity *entity) { leader = entity; }
+	void SetLeader(Fighter *fighter) { leader = fighter; }
 
 	SDL_Point GetPosition(int pos, bool bAlly);
 	SDL_Point GetTargetPosition(int pos, bool bAlly);
@@ -41,25 +41,25 @@ public:
 	bool GetVisible() { return visible; }
 
 	BattleArrayHeader header;
-	BattleArrayEntry entry[10];
+	int entry[20];
 
 private:
 	void LoadTexture();
 
 	SDL_Renderer *renderer;
 	bool visible = false;
-	bool allyArray;
+	bool allyArray{};
 	Texture *texture = nullptr;
 	Texture *details = nullptr;
-	int type;
+	int type{};
 	std::string name;
 	std::string pivot;
 	std::string condition;
-	int attack;
-	int defense;
-	int dex;
-	bool top;
+	int attack{0};
+	int defense{0};
+	int dex{0};
+	bool top{};
 
-	Entity *leader = nullptr;
-	SDL_Point leaderPoint;
+	Fighter *leader = nullptr;
+	SDL_Point leaderPoint{};
 };

@@ -127,7 +127,7 @@ protected: typedef std::function<void(SDL_Event&)> EventFunc;
 	void registerEvent(std::string widgetName, std::string eventName, EventFunc evf);
 
 	void btnMinimize_Click(SDL_Event& e);
-	void btnClose_Click(SDL_Event& e);
+	virtual void btnClose_Click(SDL_Event& e);
 
 public:
 	void AddWidget(CWidget* widget);

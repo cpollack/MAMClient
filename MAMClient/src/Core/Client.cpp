@@ -100,7 +100,7 @@ bool Client::connectAccountServer() {
 #ifndef NEWSERVER
 	const char* host = "209.159.153.58";
 #else
-	const char* host = "209.159.153.58";
+	const char* host = "127.0.0.1";
 #endif // !NEWSERVER
 #else
 	const char* host = "127.0.0.1";
@@ -190,7 +190,11 @@ bool Client::connectGameServer() {
 	}
 
 #ifndef DEVSERVER
+#ifndef NEWSERVER
 	unsigned int gamePort = 9527;
+#else
+	unsigned int gamePort = 9525;
+#endif // !NEWSERVER
 #else
 	unsigned int gamePort = 9526;
 #endif // !DEVSERVER
@@ -640,6 +644,9 @@ void Client::createPacketByType(int type, int size, char* header, char* buffer) 
 	case ptPetMagic:
 		packet = new pPetMagic(fullDecryptBuffer, fullBuffer);
 		break;
+	case ptAiNpcInfo:
+		packet = new pAiNpcInfo(fullDecryptBuffer, fullBuffer);
+		break;
 
 	default:
 		packet = new Packet(type, size, fullDecryptBuffer, fullBuffer);
@@ -664,16 +671,34 @@ void Client::logPacketError(std::string error) {
 void Client::writePacketToLog(Packet* packet) {
 	packetLog << std::dec;
 	packetLog << packet->getDescription() << " - Type: " << packet->getType() << " Size: " << packet->getLength() << std::endl;
-	BYTE* buf = packet->getDecryptedBuffer();
+	BYTE* buf;
+
+	buf = packet->getBuffer();
 	if (buf) {
 		//Skip first four bytes, type and size
-		for (int i = 4; i < packet->getLength(); i++)
+		for (int i = 0; i < packet->getLength(); i++)
 		{
 			packetLog << std::setw(2) << std::setfill('0') << std::hex << (int)(unsigned char)buf[i];
 			//packetLog << buf[i];
 		}
 		packetLog << "\n";
-		for (int i = 4; i < packet->getLength(); i++)
+		for (int i = 0; i < packet->getLength(); i++)
+		{
+			//packetLog << (int)(unsigned char)buf[i];
+			packetLog << buf[i];
+		}
+	}
+
+	buf = packet->getDecryptedBuffer();
+	if (buf) {
+		//Skip first four bytes, type and size
+		for (int i = 0; i < packet->getLength(); i++)
+		{
+			packetLog << std::setw(2) << std::setfill('0') << std::hex << (int)(unsigned char)buf[i];
+			//packetLog << buf[i];
+		}
+		packetLog << "\n";
+		for (int i = 0; i < packet->getLength(); i++)
 		{
 			//packetLog << (int)(unsigned char)buf[i];
 			packetLog << buf[i];

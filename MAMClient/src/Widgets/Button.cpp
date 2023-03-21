@@ -178,7 +178,7 @@ void CButton::CreateButtonTexture() {
 	if (usingImages) {
 		if (UseGUI) {
 			if (unpressedImage) delete unpressedImage;
-			unpressedImage = gui->getSkinTexture(renderer, UnPressedImagePath, Anchor::ANCOR_TOPLEFT);
+			unpressedImage = gui->getSkinTexture(renderer, UnPressedImagePath, Anchor::ANCHOR_TOPLEFT);
 			unpressedTexture = unpressedImage->texture;
 		}
 		else {
@@ -202,7 +202,7 @@ void CButton::CreateButtonTexture() {
 	if (usingImages) {
 		if (UseGUI) {
 			if (pressedImage) delete pressedImage;
-			pressedImage = gui->getSkinTexture(renderer, PressedImagePath, Anchor::ANCOR_TOPLEFT);
+			pressedImage = gui->getSkinTexture(renderer, PressedImagePath, Anchor::ANCHOR_TOPLEFT);
 			pressedTexture = pressedImage->texture;
 		}
 		else {

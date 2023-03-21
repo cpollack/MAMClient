@@ -27,26 +27,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -74,8 +74,9 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>F:\SDL2-2.0.10\include;F:\SDL2_image-2.0.3\include;F:\SDL2_ttf-2.0.15\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>F:\SDL2-2.0.10\lib\x86;F:\SDL2_image-2.0.3\lib\x86;F:\SDL2_ttf-2.0.15\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <IncludePath>G:\SDL2-2.0.10\include;G:\SDL2_image-2.0.3\include;G:\SDL2_ttf-2.20.0\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <LibraryPath>G:\SDL2-2.0.10\lib\x86;G:\SDL2_image-2.0.3\lib\x86;G:\SDL2_ttf-2.20.0\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -86,6 +87,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <FloatingPointModel>Precise</FloatingPointModel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_gfx.lib;ws2_32.lib;winmm.lib;FreeImage.lib;FreeImagePlus.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -115,6 +117,7 @@
       <PreprocessToFile>false</PreprocessToFile>
       <FloatingPointModel>Precise</FloatingPointModel>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -163,6 +166,7 @@
     <ClCompile Include="src\Core\GameLibrary.cpp" />
     <ClCompile Include="src\Core\GameMap.cpp" />
     <ClCompile Include="src\Core\GameObjects\Entity.cpp" />
+    <ClCompile Include="src\Core\GameObjects\Fighter.cpp" />
     <ClCompile Include="src\Core\GameObjects\GameObj.cpp" />
     <ClCompile Include="src\Core\GameObjects\Monster.cpp" />
     <ClCompile Include="src\Core\GameObjects\NPC.cpp" />
@@ -206,6 +210,7 @@
     <ClCompile Include="src\Packet\nNpcDialogue.cpp" />
     <ClCompile Include="src\Packet\Packet.cpp" />
     <ClCompile Include="src\Packet\pAction.cpp" />
+    <ClCompile Include="src\Packet\pAiNpcInfo.cpp" />
     <ClCompile Include="src\Packet\pBattleAction.cpp" />
     <ClCompile Include="src\Packet\pBattleResult.cpp" />
     <ClCompile Include="src\Packet\pBattleRound.cpp" />
@@ -263,6 +268,7 @@
     <ClCompile Include="src\Widgets\Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Fighter.h" />
     <ClInclude Include="src\Core\AssetManager.h" />
     <ClInclude Include="src\Core\Battle\Battle.h" />
     <ClInclude Include="src\Core\Battle\BattleAI.h" />
@@ -285,6 +291,7 @@
     <ClInclude Include="src\Core\GameLibrary.h" />
     <ClInclude Include="src\Core\GameMap.h" />
     <ClInclude Include="src\Core\GameObjects\Entity.h" />
+    <ClInclude Include="src\Core\GameObjects\Fighter.h" />
     <ClInclude Include="src\Core\GameObjects\GameObj.h" />
     <ClInclude Include="src\Core\GameObjects\Monster.h" />
     <ClInclude Include="src\Core\GameObjects\NPC.h" />
@@ -327,6 +334,7 @@
     <ClInclude Include="src\Packet\AllPacket.h" />
     <ClInclude Include="src\Packet\Packet.h" />
     <ClInclude Include="src\Packet\pAction.h" />
+    <ClInclude Include="src\Packet\pAiNpcInfo.h" />
     <ClInclude Include="src\Packet\pBattleAction.h" />
     <ClInclude Include="src\Packet\pBattleResult.h" />
     <ClInclude Include="src\Packet\pBattleRound.h" />

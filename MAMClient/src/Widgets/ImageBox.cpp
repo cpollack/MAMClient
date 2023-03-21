@@ -108,7 +108,7 @@ void CImageBox::SetImageFromFile(std::string fileImage) {
 }
 
 void CImageBox::SetImageFromSkin(std::string skinImage) {
-	Texture* sImage = gui->getSkinTexture(renderer, skinImage, Anchor::ANCOR_TOPLEFT);
+	Texture* sImage = gui->getSkinTexture(renderer, skinImage, Anchor::ANCHOR_TOPLEFT);
 	if (sImage) {
 		SetImage(sImage);
 		SkinImage = skinImage;
@@ -160,13 +160,13 @@ void CImageBox::SetImage(Texture* image) {
 	if (image) {
 		//Source Rectangle
 		switch (Anchor) {
-		case ANCOR_TOPLEFT:
+		case ANCHOR_TOPLEFT:
 			srcRect.x = 0;
 			srcRect.y = 0;
 			srcRect.w = image->width > maxWidth ? maxWidth : image->width;
 			srcRect.h = image->height > maxHeight ? maxHeight : image->height;
 			break;
-		case ANCOR_CENTER:
+		case ANCHOR_CENTER:
 			srcRect.w = image->width > maxWidth ? maxWidth : image->width;
 			srcRect.h = image->height > maxHeight ? maxHeight : image->height;
 			srcRect.x = (image->width / 2) - (srcRect.w / 2);

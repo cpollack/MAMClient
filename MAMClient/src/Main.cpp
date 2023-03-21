@@ -18,6 +18,7 @@
 
 //Temp
 #include "TestForm.h"
+#include "RLE.h"
 
 #define FRAMES_PER_SEC 60
 
@@ -40,7 +41,7 @@ MessageManager messageManager;
 CWindow* mainWindow;
 std::vector<CWindow*> Windows;
 std::vector<CWindow*> QueueWindows;
-void *focusedWindow;
+void *focusedWindow{nullptr};
 
 int main(int argc, char *args[]) {
 	setlocale(LC_ALL, "");
@@ -249,7 +250,7 @@ int main(int argc, char *args[]) {
 
 bool init() {
 	//Initialization flag
-	bool success = true;
+	bool success{ true };
 
 	SDL_setenv("SDL_AUDIODRIVER", "directsound", true);
 

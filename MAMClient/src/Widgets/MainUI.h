@@ -20,15 +20,17 @@ public:
 	void Step();
 
 private:
-	std::string getPetElementType();
-	CGauge* addGauge(std::string name, int x, int y, int w, int h, std::string foreground, std::string background, bool verticle);
-	CButton* addMenuButton(std::string name, SDL_Point point, std::string imgPath);
+	std::string getPetElementType();		
+	CButton* addMenuButton(std::string name, SDL_Point point, std::string imgPath, int btnWidth = menuBtnWidth, int btnHeight = menuBtnHeight);
+	CLabel* addLabel(std::string name, SDL_Point point, int w, int h, std::string text, bool bold = false);
+	CButton* addButton(std::string name, SDL_Point point, std::string buttonImg, std::string pushedImg, int btnWidth = menuBtnWidth, int btnHeight = menuBtnHeight);
+	CGauge* addGauge(std::string name, SDL_Point point, int w, int h, std::string foreground, bool verticle = false);
 
 	bool IsAssetPixel(Asset asset, Uint32 *pixels, SDL_Point point);	
 
 private:
-	Asset PlayerFrame;
-	Asset PetFrame;
+	//Asset PlayerFrame;
+	//Asset PetFrame;
 	//const int PetFrameWidth = 150;
 	//const int PetFrameHeight = 60;
 	//Uint32 *playerPixels = nullptr, *petPixels = nullptr;
@@ -56,8 +58,11 @@ public: //Gauges
 	void adjustPetExpGauge(int val);
 
 public: //Labels
+	void updatePlayerDetails();
 	void updatePlayerLevel();
-	void updatePetLevel();
+	//void updatePetLevel();
+
+	void setMapCoordLabels(SDL_Point coord);
 
 private: //Team Buttons
 	CButton *btnTeamCreate, *btnTeamJoin, *btnTeamManage, *btnTeamLeave, *btnTeamDisband;
@@ -73,18 +78,30 @@ private: //Team Buttons
 
 private:
 	CWindow* window;
+
 	CGauge *gaugePlayerHealth, *gaugePlayerMana, *gaugePlayerExp;
 	CGauge *gaugePetHealth, *gaugePetExp;
-	CButton *btnBattle, *btnBattleAuto, *btnBattleRepeat, *btnBattleConfig;
-	CLabel *lblPlayerLevel, *lblPetLevel;
+	CButton* btnBattle, * btnBattleAuto, * btnBattleConfig;
+	//CButton *btnBattle, *btnBattleAuto, *btnBattleRepeat, *btnBattleConfig;
+	//CLabel* lblPlayerLevel, * lblPetLevel;
+	//CLabel *lblPlayerLevel;
 
-	CButton* btnPlayer, * btnPet, * btnInventory, * btnWuxing;
-	CButton* btnKungfu, * btnTeam, * btnSocial, * btnOptions;
+	CLabel* lblCoordX, * lblCoordY;
+	CLabel* lblName, * lblNickName, * lblLevel;
+	CLabel* lblSpouse, * lblCash, * lblReputation;
+	CLabel* lblRank, * lblGuild, * lblGuildRank;
+
+	CButton* btnPlayer, * btnPet;
+	CButton* btnWuxing, * btnOptions;
+	CButton* btnMap, * btnTeam, * btnInventory, * btnKungfu, * btnSocial, * btnFriend;
 
 public:
-	const int menuBtnWidth = 30, menuBtnHeight = 21;
-	const SDL_Point menuPoint[8] = { {532, 540}, {566, 540}, {600, 540}, {634, 540}, 
+	static const int menuBtnWidth = 60, menuBtnHeight = 60;
+	//const int menuBtnWidth = 30, menuBtnHeight = 21;
+	const SDL_Point menuPoint[8] = { {532, 540}, {566, 540}, {600, 540}, {634, 540},
 							   {532, 564}, {566, 564}, {600, 564}, {634, 564} };
+	/*const SDL_Point menuPoint[8] = {{532, 540}, {566, 540}, {600, 540}, {634, 540},
+							   {532, 564}, {566, 564}, {600, 564}, {634, 564} };*/
 
 private:
 	void btnBattle_Click(SDL_Event& e);
@@ -94,11 +111,16 @@ private:
 
 	void btnPlayer_Click(SDL_Event& e);
 	void btnPet_Click(SDL_Event& e);
-	void btnInventory_Click(SDL_Event& e);
-	void btnWuxing_Click(SDL_Event& e);
-	void btnKungfu_Click(SDL_Event& e);
+
+	void btnMap_Click(SDL_Event& e);
 	void btnTeam_Click(SDL_Event& e);
+	void btnInventory_Click(SDL_Event& e);	
+	void btnKungfu_Click(SDL_Event& e);	
 	void btnSocial_Click(SDL_Event& e);
+	void btnFriend_Click(SDL_Event& e);
+
+	//No longer exist, what to do?
+	void btnWuxing_Click(SDL_Event& e);
 	void btnOptions_Click(SDL_Event& e);
 
 	bool MouseOverPlayer, MouseOverPet;
@@ -106,6 +128,5 @@ private:
 	bool btnPet_Down = false;
 };
 
-const int slotWidth = 46, slotHeight = 47;
-const SDL_Point skillSlotPoint[5] = { {132,538}, {179,538}, {226,538}, {273,538}, {320,538} };
-const SDL_Point itemSlotPoint[2] = { {432,538}, {480,538} };
+const int slotWidth = 48, slotHeight = 48;
+const SDL_Point skillSlotPoint[7] = { {430,418}, {478,418}, {526,418}, {574,418}, {622,418}, {670,418}, {718,418} };

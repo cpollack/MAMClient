@@ -89,7 +89,11 @@ void Packet::addInt(int pos, int val) {
 
 
 void Packet::addString(int pos, char *str, int len) {
-	memcpy(buffer + 4 + pos, str, len);
+	addBytes(pos, (BYTE*)str, len);
+}
+
+void Packet::addBytes(int pos, BYTE* arr, int len) {
+	memcpy(buffer + 4 + pos, arr, len);
 }
 
 

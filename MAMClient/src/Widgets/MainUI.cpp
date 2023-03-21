@@ -47,99 +47,90 @@ CMainUI::~CMainUI() {
 }
 
 void CMainUI::CreateWidgets() {
-	lblPlayerLevel = new CLabel(window, "lblPlayerLevel", 29, 501);
-	lblPlayerLevel->SetAlignment(laCenter);
-	lblPlayerLevel->SetVAlignment(lvaCenter);
-	lblPlayerLevel->SetWidth(22);
-	lblPlayerLevel->SetHeight(11);
-	lblPlayerLevel->SetFontSize(10);
-	widgets["lblPlayerLevel"] = lblPlayerLevel;
-	lblPetLevel = new CLabel(window, "lblPetLevel", 767, 570);
-	lblPetLevel->SetAlignment(laCenter);
-	lblPetLevel->SetVAlignment(lvaCenter);
-	lblPetLevel->SetWidth(22);
-	lblPetLevel->SetHeight(11);
-	lblPetLevel->SetFontSize(10);
-	widgets["lblPetLevel"] = lblPetLevel;
+	SDL_Rect surfaceRect{ 10, 600 - 120 - 10, 0, 0 };
 
-	btnBattle = new CButton(window, "btnBattle", 370, 532);
-	btnBattle->SetWidth(60);
-	btnBattle->SetHeight(30);
-	btnBattle->SetUnPressedImage("data/GUI/Main/btnBattle.png");
-	widgets["btnBattle"] = btnBattle;
-	RegisterEvent("btnBattle", "Click", std::bind(&CMainUI::btnBattle_Click, this, std::placeholders::_1));
-	btnBattleAuto = new CButton(window, "btnBattleAuto", 370, 532);
-	btnBattleAuto->SetWidth(60);
-	btnBattleAuto->SetHeight(30);
-	btnBattleAuto->SetUnPressedImage("data/GUI/Main/btnBattle_AutoOff.png");
-	btnBattleAuto->SetPressedImage("data/GUI/Main/btnBattle_AutoOn.png");
-	btnBattleAuto->SetType(ButtonType::btToggle);
-	btnBattleAuto->Toggle(options.GetAutoBattle(), false);
-	btnBattleAuto->SetVisible(false);
-	widgets["btnBattleAuto"] = btnBattleAuto;
-	RegisterEvent("btnBattleAuto", "Click", std::bind(&CMainUI::btnBattleAuto_Click, this, std::placeholders::_1));
-	btnBattleRepeat = new CButton(window, "btnBattleRepeat", 372, 562);
-	btnBattleRepeat->SetWidth(28);
-	btnBattleRepeat->SetHeight(23);
-	btnBattleRepeat->SetUnPressedImage("data/GUI/Main/btnBattleRepeat_off.png");
-	btnBattleRepeat->SetPressedImage("data/GUI/Main/btnBattleRepeat_on.png");
-	btnBattleRepeat->SetType(ButtonType::btToggle);
-	widgets["btnBattleRepeat"] = btnBattleRepeat;
-	RegisterEvent("btnBattleRepeat", "Toggle", std::bind(&CMainUI::btnBattleRepeat_Toggle, this, std::placeholders::_1));
-	btnBattleConfig = new CButton(window, "btnBattle", 402, 564);
-	btnBattleConfig->SetWidth(22);
-	btnBattleConfig->SetHeight(19);
-	btnBattleConfig->SetUnPressedImage("data/GUI/Main/btnBattleConfig.png");
-	widgets["btnBattleConfig"] = btnBattleConfig;
-	RegisterEvent("btnBattleConfig", "Click", std::bind(&CMainUI::btnBattleConfig_Click, this, std::placeholders::_1));
+	//LABELS
+	lblCoordX = addLabel("lblCoordX", { surfaceRect.x + 220, surfaceRect.y + 10 }, 20, 14, "", true);
+	lblCoordY = addLabel("lblCoordY", { surfaceRect.x + 250, surfaceRect.y + 10 }, 20, 14, "", true);
 
-	btnPlayer = addMenuButton("btnPlayer", menuPoint[0], "btnMenuPlayer.png");
-	btnPet = addMenuButton("btnPet", menuPoint[1], "btnMenuPet.png");
-	btnInventory = addMenuButton("btnInventory", menuPoint[2], "btnMenuInventory.png");
-	btnKungfu = addMenuButton("btnKungfu", menuPoint[3], "btnMenuKungfu.png");
-	btnWuxing = addMenuButton("btnWuxing", menuPoint[4], "btnMenuWuxing.png");
-	btnTeam = addMenuButton("btnTeam", menuPoint[5], "btnMenuTeam.png");
-	btnSocial = addMenuButton("btnSocial", menuPoint[6], "btnMenuSocial.png");
-	btnOptions = addMenuButton("btnOptions", menuPoint[7], "btnMenuOptions.png");
+	int col1 = 382, col2 = 518, col3 = 660;
+	int row1 = 52, row2 = 76, row3 = 100;
+	addLabel("lblStaticName", { surfaceRect.x + col1, surfaceRect.y + row1 }, 40, 14, "Name", true);
+	addLabel("lblStaticNickName", { surfaceRect.x + col1, surfaceRect.y + row2 }, 60, 14, "Nickname", true);
+	addLabel("lblStaticLevel", { surfaceRect.x + col1, surfaceRect.y + row3 }, 35, 14, "Level", true);
+	lblName = addLabel("lblName", { surfaceRect.x + col1 + 45, surfaceRect.y + row1 }, 90, 14, "");
+	lblNickName = addLabel("lblNickName", { surfaceRect.x + col1 + 67, surfaceRect.y + row2 }, 75, 14, "");
+	lblLevel = addLabel("lblLevel", { surfaceRect.x + col1 + 37, surfaceRect.y + row3 }, 95, 14, "");
+
+	addLabel("lblStaticSpouse", { surfaceRect.x + col2, surfaceRect.y + row1 }, 45, 14, "Spouse", true);
+	addLabel("lblStaticCash", { surfaceRect.x + col2, surfaceRect.y + row2 }, 30, 14, "Cash", true);
+	addLabel("lblStaticReputation", { surfaceRect.x + col2, surfaceRect.y + row3 }, 65, 14, "Reputation", true);
+	lblSpouse = addLabel("lblSpouse", { surfaceRect.x + col2 + 52, surfaceRect.y + row1 }, 90, 14, "None");
+	lblCash = addLabel("lblCash", { surfaceRect.x + col2 + 38, surfaceRect.y + row2 }, 105, 14, "1");
+	lblReputation = addLabel("lblReputation", { surfaceRect.x + col2 + 73, surfaceRect.y + row3 }, 75, 14, "2");
+
+	lblRank = addLabel("lblRank", { surfaceRect.x + col3, surfaceRect.y + row1 }, 118, 14, "Mortal", false);
+	addLabel("lblStaticGuild", { surfaceRect.x + col3, surfaceRect.y + row2 }, 32, 14, "Guild", true);
+	addLabel("lblStaticGuildRank", { surfaceRect.x + col3, surfaceRect.y + row3 }, 50, 14, "Position", true);
+	lblGuild = addLabel("lblGuild", { surfaceRect.x + col3 + 37, surfaceRect.y + row2 }, 90, 14, "");
+	lblGuildRank = addLabel("lblGuildRank", { surfaceRect.x + col3 + 57, surfaceRect.y + row3 }, 70, 14, "");
+
+	//GAUGES
+	gaugePlayerHealth = addGauge("gaugePlayerHealth", { surfaceRect.x + 62, surfaceRect.y + 47 }, 110, 16, "yellow_slot.jpg");
+	gaugePlayerMana = addGauge("gaugePlayerMana", { surfaceRect.x + 62, surfaceRect.y + 70 }, 110, 16, "green_slot.jpg");
+	gaugePlayerExp = addGauge("gaugePlayerExp", { surfaceRect.x + 62, surfaceRect.y + 93 }, 110, 16, "green_slot.jpg");
+	gaugePetHealth = addGauge("gaugePetHealth", { surfaceRect.x + 259, surfaceRect.y + 47 }, 110, 16, "yellow_slot.jpg");
+	gaugePetExp = addGauge("gaugePetExp", { surfaceRect.x + 259, surfaceRect.y + 70 }, 110, 16, "green_slot.jpg");
+
+	//BUTTONS
+	btnPlayer = addButton("btnPlayer", {surfaceRect.x + 17, surfaceRect.y + 11}, "button_basicMsg.jpg", "button_basicMsgDown.jpg", 73, 25);
+	btnPet = addButton("btnPet", { surfaceRect.x + 102, surfaceRect.y + 11 }, "button_pet.jpg", "button_petDown.jpg", 73, 25);
+
+	btnMap = addButton("btnMap", { surfaceRect.x + 512, surfaceRect.y + 1 }, "minMap-1.jpg", "minMap-2.jpg", 41, 39);
+	btnTeam = addButton("btnTeam", { surfaceRect.x + 554, surfaceRect.y + 1 }, "team-1.jpg", "team-2.jpg", 41, 39);
+	btnInventory = addButton("btnInventory", { surfaceRect.x + 596, surfaceRect.y + 1 },  "items-1.jpg", "items-2.jpg", 41, 39);
+	btnKungfu = addButton("btnKungfu", { surfaceRect.x + 638, surfaceRect.y + 1 }, "PK-1.jpg", "PK-2.jpg", 41, 39);
+	btnSocial = addButton("btnSocial", { surfaceRect.x + 680, surfaceRect.y + 1 }, "record-1.jpg", "record-2.jpg", 41, 39);
+	btnFriend = addButton("btnFriend", { surfaceRect.x + 722, surfaceRect.y + 1 },  "email-1.jpg", "email-2.jpg", 41, 39);
+	//btnWuxing = addMenuButton("btnWuxing", menuPoint[4], "btnMenuWuxing.png");
+	//btnOptions = addMenuButton("btnOptions", menuPoint[7], "btnMenuOptions.png");
 
 	RegisterEvent("btnPlayer", "Click", std::bind(&CMainUI::btnPlayer_Click, this, std::placeholders::_1));
 	RegisterEvent("btnPet", "Click", std::bind(&CMainUI::btnPet_Click, this, std::placeholders::_1));
+
+	RegisterEvent("btnMap", "Click", std::bind(&CMainUI::btnMap_Click, this, std::placeholders::_1));
+	RegisterEvent("btnTeam", "Click", std::bind(&CMainUI::btnTeam_Click, this, std::placeholders::_1));
 	RegisterEvent("btnInventory", "Click", std::bind(&CMainUI::btnInventory_Click, this, std::placeholders::_1));
 	RegisterEvent("btnKungfu", "Click", std::bind(&CMainUI::btnKungfu_Click, this, std::placeholders::_1));
-	RegisterEvent("btnWuxing", "Click", std::bind(&CMainUI::btnWuxing_Click, this, std::placeholders::_1));
-	RegisterEvent("btnTeam", "Click", std::bind(&CMainUI::btnTeam_Click, this, std::placeholders::_1));
 	RegisterEvent("btnSocial", "Click", std::bind(&CMainUI::btnSocial_Click, this, std::placeholders::_1));
-	RegisterEvent("btnOptions", "Click", std::bind(&CMainUI::btnOptions_Click, this, std::placeholders::_1));
+	RegisterEvent("btnFriend", "Click", std::bind(&CMainUI::btnFriend_Click, this, std::placeholders::_1));
 
-	btnTeamCreate = new CButton(window, "btnTeamCreate", 674, 500);
+	//TEAM BUTTONS
+	int teamBtnY = surfaceRect.y - 25;
+	btnTeamCreate = new CButton(window, "btnTeamCreate", 674, teamBtnY);
 	btnTeamCreate->SetWidth(83);
 	btnTeamCreate->SetHeight(21);
-	btnTeamCreate->SetUnPressedImage("data/GUI/Team/btnTeamCreate.png");
-	btnTeamCreate->SetPressedImage("data/GUI/Team/btnTeamCreate.png");
+	btnTeamCreate->SetText("Create");
 	widgets["btnTeamCreate"] = btnTeamCreate;
-	btnTeamJoin = new CButton(window, "btnTeamJoin", 674, 500);
+	btnTeamJoin = new CButton(window, "btnTeamJoin", 674, teamBtnY);
 	btnTeamJoin->SetWidth(83);
 	btnTeamJoin->SetHeight(21);
-	btnTeamJoin->SetUnPressedImage("data/GUI/Team/btnTeamJoin.png");
-	btnTeamJoin->SetPressedImage("data/GUI/Team/btnTeamJoin.png");
+	btnTeamJoin->SetText("Join");
 	widgets["btnTeamJoin"] = btnTeamJoin;
-	btnTeamManage = new CButton(window, "btnTeamManage", 674, 500);
+	btnTeamManage = new CButton(window, "btnTeamManage", 674, teamBtnY);
 	btnTeamManage->SetWidth(83);
 	btnTeamManage->SetHeight(21);
-	btnTeamManage->SetUnPressedImage("data/GUI/Team/btnTeamManage.png");
-	btnTeamManage->SetPressedImage("data/GUI/Team/btnTeamManage.png");
+	btnTeamManage->SetText("Manage");
 	widgets["btnTeamManage"] = btnTeamManage;
-	btnTeamLeave = new CButton(window, "btnTeamLeave", 674, 500);
+	btnTeamLeave = new CButton(window, "btnTeamLeave", 674, teamBtnY);
 	btnTeamLeave->SetWidth(83);
 	btnTeamLeave->SetHeight(21);
-	btnTeamLeave->SetUnPressedImage("data/GUI/Team/btnTeamLeave.png");
-	btnTeamLeave->SetPressedImage("data/GUI/Team/btnTeamLeave.png");
+	btnTeamLeave->SetText("Leave");
 	widgets["btnTeamLeave"] = btnTeamLeave;
-	btnTeamDisband = new CButton(window, "btnTeamDisband", 674, 500);
+	btnTeamDisband = new CButton(window, "btnTeamDisband", 674, teamBtnY);
 	btnTeamDisband->SetWidth(83);
 	btnTeamDisband->SetHeight(21);
-	btnTeamDisband->SetUnPressedImage("data/GUI/Team/btnTeamDisband.png");
-	btnTeamDisband->SetPressedImage("data/GUI/Team/btnTeamDisband.png");
+	btnTeamDisband->SetText("Disband");
 	widgets["btnTeamDisband"] = btnTeamDisband;
 	HideTeamButtons();
 
@@ -151,33 +142,19 @@ void CMainUI::CreateWidgets() {
 }
 
 void CMainUI::Load() {
-	//Player Frame
-	PlayerFrame.reset(new Texture(renderer, "data/GUI/Main/panel_player.png"));
-	PlayerFrame->setPosition({ 0, 477 });
+	updatePlayerDetails();
 
-	if (!gaugePlayerHealth) gaugePlayerHealth = addGauge("gaugePlayerHealth", 32, 515, 70, 70, "player_life.png", "", true);
+	//Player
+	/*if (!gaugePlayerHealth) gaugePlayerHealth = addGauge("gaugePlayerHealth", 32, 515, 70, 70, "player_life.png", "", true);
 	if (!gaugePlayerMana) gaugePlayerMana = addGauge("gaugePlayerMana", 0, 529, 118, 69, "player_mana.png", "", false);
 	if (!gaugePlayerExp) gaugePlayerExp = addGauge("gaugePlayerExp", 127, 593, 260, 7, "player_exp.png", "", false);
 	updatePlayerLevel();
 
-	//Pet Frame
-	std::string element = getPetElementType();
-
-	std::string petPanel = "data/GUI/Main/panel_" + element + ".png";
-	PetFrame.reset(new Texture(renderer, petPanel));
-	PetFrame->setPosition({ 413, 477 });
-
-	std::string petForeground = "pet_life_" + element + ".png";
-	std::string petBackground = "pet_life_" + element + "_back.png";
-	if (!gaugePetHealth) gaugePetHealth = addGauge("gaugePetHealth", 697, 515, 70, 70, petForeground, petBackground, true);
-	else {
-		gaugePetHealth->SetForegroundImage("data/GUI/Main/" + petForeground);
-		gaugePetHealth->SetBackgroundImage("data/GUI/Main/" + petBackground);
-		gaugePetHealth->ReloadAssets();
-	}
-	if (!gaugePetExp) gaugePetExp = addGauge("gaugePetExp", 413, 593, 260, 7, "pet_exp.png", "", false);
-	gaugePetExp->SetRightFill(true);
-	updatePetLevel();
+	//Pet
+	if (!gaugePetHealth) gaugePetHealth = addGauge("gaugePetHealth", 413, 593, 260, 7, "pet_exp.png", "", false);
+	if (!gaugePetExp) gaugePetExp = addGauge("gaugePetExp", 413, 593, 260, 7, "pet_exp.png", "", false);*/
+	//gaugePetExp->SetRightFill(true);
+	//updatePetLevel();
 }
 
 std::string CMainUI::getPetElementType() {
@@ -195,8 +172,8 @@ void CMainUI::ReloadAssets() {
 }
 
 void CMainUI::Render() {
-	SDL_RenderCopy(renderer, PlayerFrame->texture, NULL, &PlayerFrame->getRect());
-	SDL_RenderCopy(renderer, PetFrame->texture, NULL, &PetFrame->getRect());
+	//SDL_RenderCopy(renderer, PlayerFrame->texture, NULL, &PlayerFrame->getRect());
+	//SDL_RenderCopy(renderer, PetFrame->texture, NULL, &PetFrame->getRect());
 
 	for (auto widget : widgets) widget.second->Render();
 }
@@ -211,7 +188,7 @@ void CMainUI::HandleEvent(SDL_Event& e) {
 	}
 
 	if (e.type == CUSTOMEVENT_BATTLE) {
-		if (e.user.code == BATTLE_START) {
+		/*if (e.user.code == BATTLE_START) {
 			btnBattle->SetVisible(false);
 			btnBattleAuto->SetVisible(true);
 			btnBattleAuto->Toggle(options.GetAutoBattle(), false);
@@ -219,7 +196,7 @@ void CMainUI::HandleEvent(SDL_Event& e) {
 		if (e.user.code == BATTLE_END) {
 			btnBattle->SetVisible(true);
 			btnBattleAuto->SetVisible(false);
-		}
+		}*/
 	}
 
 	for (auto widget : widgets) widget.second->HandleEvent(e);
@@ -288,27 +265,49 @@ void CMainUI::Step() {
 	}
 }
 
-CGauge* CMainUI::addGauge(std::string name, int x, int y, int w, int h, std::string foreground, std::string background, bool verticle) {
-	std::string prefix = "data/GUI/Main/";
-
-	CGauge *gauge = new CGauge(Window, name, x, y);
-	gauge->SetWidth(w);
-	gauge->SetHeight(h);
-	gauge->SetForegroundImage(prefix + foreground);
-	if (background.length()) gauge->SetBackgroundImage(prefix + background);
-	gauge->SetVerticle(verticle);
-	widgets[name] = gauge;
-	return gauge;
-}
-
-CButton* CMainUI::addMenuButton(std::string name, SDL_Point point, std::string imgPath) {
+CButton* CMainUI::addMenuButton(std::string name, SDL_Point point, std::string imgPath, int btnWidth, int btnHeight) {
 	std::string prefix = "data/GUI/Main/MenuButtons/";
 	CButton* btnMenu = new CButton(Window, name, point.x, point.y);
 	btnMenu->SetUnPressedImage(prefix + imgPath);
-	btnMenu->SetWidth(menuBtnWidth);
-	btnMenu->SetHeight(menuBtnHeight);
+	btnMenu->SetWidth(btnWidth);
+	btnMenu->SetHeight(btnHeight);
 	widgets[name] = btnMenu;
 	return btnMenu;
+}
+
+CLabel* CMainUI::addLabel(std::string name, SDL_Point point, int w, int h, std::string text, bool bold/*=false*/) {
+	CLabel* lbl = new CLabel(Window, name, point.x, point.y);
+	lbl->SetWidth(w);
+	lbl->SetHeight(h);
+	if (bold) lbl->SetBold(true);
+	lbl->SetAlignment(laLeft);
+	lbl->SetVAlignment(lvaCenter);
+	lbl->SetText(text);
+	widgets[name] = lbl;
+	return lbl;
+}
+
+CButton* CMainUI::addButton(std::string name, SDL_Point point, std::string buttonImg, std::string pushedImg, int btnWidth, int btnHeight) {
+	CButton* btn = new CButton(Window, name, point.x, point.y);
+	btn->SetUnPressedImage(buttonImg);
+	if (pushedImg.length() > 0) btn->SetPressedImage(pushedImg);
+	btn->SetWidth(btnWidth);
+	btn->SetHeight(btnHeight);
+	btn->SetUseGUI(true);
+	widgets[name] = btn;
+	return btn;
+}
+
+CGauge* CMainUI::addGauge(std::string name, SDL_Point point, int w, int h, std::string foreground, bool verticle/*=false*/) {
+	CGauge* gauge = new CGauge(Window, name, point.x, point.y);
+	gauge->SetWidth(w);
+	gauge->SetHeight(h);
+	gauge->SetForegroundImage(foreground);
+	gauge->SetBackgroundImage("bg_slot.jpg");
+	gauge->SetVerticle(verticle);
+	gauge->SetUseGUI(true);
+	widgets[name] = gauge;
+	return gauge;
 }
 
 bool CMainUI::IsAssetPixel(Asset asset, Uint32 *pixels, SDL_Point point) {
@@ -331,15 +330,15 @@ void CMainUI::btnBattle_Click(SDL_Event& e) {
 	}
 
 	int teamSize = 1;
-	pBattleState* battlePacket = new pBattleState(0, teamSize, player->GetID(), 0);
-	gClient.addPacket(battlePacket);
+	//pBattleState* battlePacket = new pBattleState(0, teamSize, player->GetID(), 0);
+	//gClient.addPacket(battlePacket);
 }
 
 void CMainUI::btnBattleAuto_Click(SDL_Event& e) {
 	options.SetAutoBattle(btnBattleAuto->GetToggled());
 }
 
-void CMainUI::btnBattleRepeat_Toggle(SDL_Event& e) {
+/*void CMainUI::btnBattleRepeat_Toggle(SDL_Event& e) {
 	if (!btnBattleRepeat) return;
 	if (options.GetRepeatBattle()) {
 		options.SetRepeatBattle(false);
@@ -354,7 +353,7 @@ void CMainUI::btnBattleRepeat_Toggle(SDL_Event& e) {
 	}
 
 	options.SetRepeatBattle(true);
-}
+}*/
 
 void CMainUI::btnBattleConfig_Click(SDL_Event& e) {
 	if (battle || options.GetRepeatBattle()) return;
@@ -374,6 +373,18 @@ void CMainUI::btnPet_Click(SDL_Event& e) {
 	Windows.push_back(petForm);
 }
 
+void CMainUI::btnMap_Click(SDL_Event& e) {
+	if (battle || options.GetRepeatBattle()) return;
+	//
+}
+
+void CMainUI::btnTeam_Click(SDL_Event& e) {
+	if (battle || options.GetRepeatBattle()) return;
+
+	if (ShowingTeamButtons) HideTeamButtons();
+	else ShowTeamButtons();
+}
+
 void CMainUI::btnInventory_Click(SDL_Event& e) {
 	if (battle || options.GetRepeatBattle()) return;
 	CInventoryForm* invForm = new CInventoryForm();
@@ -385,22 +396,20 @@ void CMainUI::btnKungfu_Click(SDL_Event& e) {
 	//
 }
 
+void CMainUI::btnSocial_Click(SDL_Event& e) {
+	if (battle || options.GetRepeatBattle()) return;
+	//
+}
+
+void CMainUI::btnFriend_Click(SDL_Event& e) {
+	if (battle || options.GetRepeatBattle()) return;
+	//
+}
+
 void CMainUI::btnWuxing_Click(SDL_Event& e) {
 	if (battle || options.GetRepeatBattle()) return;
 	CWuxingForm* wuxForm = new CWuxingForm();
 	Windows.push_back(wuxForm);
-}
-
-void CMainUI::btnTeam_Click(SDL_Event& e) {
-	if (battle || options.GetRepeatBattle()) return;
-
-	if (ShowingTeamButtons) HideTeamButtons();
-	else ShowTeamButtons();
-}
-
-void CMainUI::btnSocial_Click(SDL_Event& e) {
-	if (battle || options.GetRepeatBattle()) return;
-	//
 }
 
 void CMainUI::btnOptions_Click(SDL_Event& e) {
@@ -533,16 +542,37 @@ void CMainUI::adjustPetExpGauge(int val) {
 }
 
 
-void CMainUI::updatePlayerLevel() {
-	lblPlayerLevel->SetText(std::to_string(player->GetLevel()));
+void CMainUI::updatePlayerDetails() {
+	lblName->SetText(StringToWString(player->GetName()));
+	lblNickName->SetText(StringToWString(player->getNickName()));
+	lblSpouse->SetText(StringToWString(player->getSpouse()));
+
+	std::string strLevelCult = formatInt(player->GetLevel()) + "/" + formatInt(player->GetCultivation());
+	lblLevel->SetText(strLevelCult);
+
+	lblCash->SetText(formatInt(player->GetCash()));
+	lblReputation->SetText(formatInt(player->GetReputation()));
+
+	lblRank->SetText(player->GetRankText());
+	lblGuild->SetText(StringToWString(player->getGuild()));
+	lblGuildRank->SetText(StringToWString(player->getGuildTitle()));
 }
 
-void CMainUI::updatePetLevel() {
+void CMainUI::updatePlayerLevel() {
+	//lblPlayerLevel->SetText(std::to_string(player->GetLevel()));
+}
+
+/*void CMainUI::updatePetLevel() {
 	Pet *pPet = player->GetMarchingPet();
 	if (pPet) {
 		lblPetLevel->SetText(std::to_string(pPet->GetLevel()));
 	}
 	else lblPetLevel->SetText("");
+}*/
+
+void CMainUI::setMapCoordLabels(SDL_Point coord) {
+	lblCoordX->SetText(std::to_string(coord.x));
+	lblCoordY->SetText(std::to_string(coord.y));
 }
 
 void CMainUI::ShowTeamButtons() {

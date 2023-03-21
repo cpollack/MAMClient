@@ -1,0 +1,8 @@
+19:9:16 Beginning Login
+19:9:16 Connected to Account Server
+19:9:17 Connected to the Game Server
+19:9:18 Loading player data from packet
+19:9:18 Loading Map WaterCitySuburb
+19:9:18 First Map Loaded
+19:9:18 Login Success, loading game
+19:9:18 Initializing Main

@@ -297,22 +297,15 @@ void CWindow::initUI() {
 	//Deprecate or move?
 	if (!gui) gClient.initializeGUI();
 
-#ifdef SIZE_1024
-	topCenter_s = gui->getSkinTexture(renderer, "1024/TopCenter_s.bmp", Anchor::aTopLeft);
-	bottomCenter = gui->getSkinTexture(renderer, "1024/BottomCenter.bmp", Anchor::aBottomLeft);
-	left = gui->getSkinTexture(renderer, "1024/Left.bmp", Anchor::aTopLeft);
-	right = gui->getSkinTexture(renderer, "1024/Right.bmp", Anchor::aTopRight);
-#else
-	topCenter_s = gui->getSkinTexture(renderer, "TopCenter_s.bmp", Anchor::ANCOR_TOPLEFT);
-	bottomCenter = gui->getSkinTexture(renderer, "BottomCenter.bmp", Anchor::ANCOR_BOTTOMLEFT);
-	left = gui->getSkinTexture(renderer, "Left.bmp", Anchor::ANCOR_TOPLEFT);
-	right = gui->getSkinTexture(renderer, "Right.bmp", Anchor::ANCOR_TOPRIGHT);
-#endif
+	topCenter_s = gui->getSkinTexture(renderer, "TopCenter_s.bmp", Anchor::ANCHOR_TOPLEFT);
+	bottomCenter = gui->getSkinTexture(renderer, "BottomCenter.bmp", Anchor::ANCHOR_BOTTOMLEFT);
+	left = gui->getSkinTexture(renderer, "Left.bmp", Anchor::ANCHOR_TOPLEFT);
+	right = gui->getSkinTexture(renderer, "Right.bmp", Anchor::ANCHOR_TOPRIGHT);
 
-	topLeft_s = gui->getSkinTexture(renderer, "TopLeft_s.bmp", Anchor::ANCOR_TOPLEFT);
-	topRight_s = gui->getSkinTexture(renderer, "TopRight_s.bmp", Anchor::ANCOR_TOPRIGHT);
-	bottomLeft = gui->getSkinTexture(renderer, "BottomLeft.bmp", Anchor::ANCOR_BOTTOMLEFT);
-	bottomRight = gui->getSkinTexture(renderer, "BottomRight.bmp", Anchor::ANCOR_BOTTOMLEFT);
+	topLeft_s = gui->getSkinTexture(renderer, "TopLeft_s.bmp", Anchor::ANCHOR_TOPLEFT);
+	topRight_s = gui->getSkinTexture(renderer, "TopRight_s.bmp", Anchor::ANCHOR_TOPRIGHT);
+	bottomLeft = gui->getSkinTexture(renderer, "BottomLeft.bmp", Anchor::ANCHOR_BOTTOMLEFT);
+	bottomRight = gui->getSkinTexture(renderer, "BottomRight.bmp", Anchor::ANCHOR_BOTTOMLEFT);
 
 	//close = gui->getSkinTexture(renderer, "Close.bmp", Anchor::TOP_LEFT);
 	//minimize = gui->getSkinTexture(renderer, "Min.bmp", Anchor::TOP_LEFT);
@@ -544,10 +537,10 @@ void CWindow::renderPresent() {
 }
 
 SDL_Rect CWindow::getDstRect(Texture* texture, int x, int y) {
-	if (texture->anchor == Anchor::ANCOR_TOPRIGHT || texture->anchor == Anchor::ANCOR_BOTTOMRIGHT) texture->rect.x = x - texture->width;
+	if (texture->anchor == Anchor::ANCHOR_TOPRIGHT || texture->anchor == Anchor::ANCHOR_BOTTOMRIGHT) texture->rect.x = x - texture->width;
 	else texture->rect.x = x;
 
-	if (texture->anchor == Anchor::ANCOR_BOTTOMLEFT || texture->anchor == Anchor::ANCOR_BOTTOMLEFT) texture->rect.y = y - texture->height;
+	if (texture->anchor == Anchor::ANCHOR_BOTTOMLEFT || texture->anchor == Anchor::ANCHOR_BOTTOMRIGHT) texture->rect.y = y - texture->height;
 	else texture->rect.y = y;
 
 	texture->rect.w = texture->width;
@@ -645,6 +638,8 @@ void CWindow::SetUseMinimize(bool min) {
 		btnMinimize->SetPressedImage("Min.bmp");
 		btnMinimize->SetUnPressedImage("Min.bmp");
 		AddWidget(btnMinimize);
+
+		registerEvent("btnMinimize", "Click", std::bind(&CWindow::btnMinimize_Click, this, std::placeholders::_1));
 	}
 }
 

@@ -112,28 +112,18 @@ bool CMainWindow::init()
 void CMainWindow::initUI() {
 	CWindow::initUI();
 
-#ifdef NEWGUI
-	//newGui = gui->getSkinTexture(renderer, "newmain/main.tga", Anchor::aBottomLeft);
-#endif
+	topCenter = gui->getSkinTexture(renderer, "TopCenter.bmp", Anchor::ANCHOR_TOPLEFT);
+	mainWindow = gui->getSkinTexture(renderer, "mainwindow.jpg", Anchor::ANCHOR_TOPLEFT);
+	surface = gui->getSkinTexture(renderer, "surface.jpg", Anchor::ANCHOR_BOTTOMLEFT);
 
-#ifdef SIZE_1024
-	topCenter = gui->getSkinTexture(renderer, "1024/TopCenter.bmp", Anchor::aTopLeft);
-	mainWindow = gui->getSkinTexture(renderer, "1024/mainwindow.jpg", Anchor::aTopLeft);
-	surface = gui->getSkinTexture(renderer, "1024/surface.jpg", Anchor::aTopLeft);
-#else
-	topCenter = gui->getSkinTexture(renderer, "TopCenter.bmp", Anchor::ANCOR_TOPLEFT);
-	mainWindow = gui->getSkinTexture(renderer, "mainwindow.jpg", Anchor::ANCOR_TOPLEFT);
-	surface = gui->getSkinTexture(renderer, "surface.jpg", Anchor::ANCOR_TOPLEFT);
-#endif
-
-	topLeft = gui->getSkinTexture(renderer, "TopLeft.bmp", Anchor::ANCOR_TOPLEFT);
-	topRight = gui->getSkinTexture(renderer, "TopRight.bmp", Anchor::ANCOR_TOPRIGHT);
+	topLeft = gui->getSkinTexture(renderer, "TopLeft.bmp", Anchor::ANCHOR_TOPLEFT);
+	topRight = gui->getSkinTexture(renderer, "TopRight.bmp", Anchor::ANCHOR_TOPRIGHT);
 	
 	surfaceRect = surface->rect;
 	surfaceRect.x = left->width;
 	surfaceRect.y = (Height - surface->height - bottomCenter->height);
 	
-	//minimize = gui->getSkinTexture(renderer, "Min.bmp", Anchor::TOP_LEFT);
+	minimize = gui->getSkinTexture(renderer, "Min.bmp", Anchor::ANCHOR_TOPLEFT);
 }
 
 void CMainWindow::ReloadAssets() {
@@ -349,8 +339,8 @@ void CMainWindow::select_init() {
 		portaitPath = "GUI/player_icon/Man0" + std::to_string(i+1) + ".bmp";
 		portraits[i] = new Texture(renderer, portaitPath, true);
 	}
-	selectedCharacter = gui->getSkinTexture(renderer, "BoxFocus.bmp", ANCOR_TOPLEFT);
-	unselectedCharacter = gui->getSkinTexture(renderer, "BoxNormal.bmp", ANCOR_TOPLEFT);
+	selectedCharacter = gui->getSkinTexture(renderer, "BoxFocus.bmp", ANCHOR_TOPLEFT);
+	unselectedCharacter = gui->getSkinTexture(renderer, "BoxNormal.bmp", ANCHOR_TOPLEFT);
 
 	videoFrame = new CVideoFrame(this, "videoFrame", 20, 33);
 	videoFrame->SetWidth(500);
@@ -570,16 +560,18 @@ void CMainWindow::main_init() {
 	assert(map != nullptr);
 
 	SetTitle("Monster & Me - " + strServer + " - " + std::string(version) + " (" + versionDate + ")");
+	SetUseClose(true);
+	SetUseMinimize(true);
 	Disconnected = false;
 	RelogReady = false;
 
 	//Game Area
-	gameRect = { 0, 0, 800, 525 };
+	gameRect = { 28, 57, 740, 410 };
 	gameTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, gameRect.w, gameRect.h);
 
 	chat = new CChat(this);
 	chat->SetFont(gui->font);
-	AddWidget(chat);
+	//AddWidget(chat);
 
 	// Tell the map the UI boundings are
 	map->setMapUiRect(gameRect);
@@ -661,6 +653,18 @@ void CMainWindow::main_render() {
 	SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
 	SDL_RenderClear(renderer);
 
+	//Background UI
+	SDL_RenderCopy(renderer, topCenter->getTexture(), NULL, &getDstRect(topCenter, 0, 0));
+	SDL_RenderCopy(renderer, left->getTexture(), NULL, &getDstRect(left, 0, 0));
+	SDL_RenderCopy(renderer, right->getTexture(), NULL, &getDstRect(right, Width-1, 0));
+	SDL_RenderCopy(renderer, topLeft->getTexture(), NULL, &getDstRect(topLeft, 0, 0));
+	SDL_RenderCopy(renderer, topRight->getTexture(), NULL, &getDstRect(topRight, Width - 1, 0));
+	SDL_RenderCopy(renderer, mainWindow->getTexture(), NULL, &getDstRect(mainWindow, 8, 48));
+	SDL_RenderCopy(renderer, surface->getTexture(), NULL, &getDstRect(surface, 10, Height - 10));
+	SDL_RenderCopy(renderer, bottomCenter->getTexture(), NULL, &getDstRect(bottomCenter, 0, Height - 1));
+	SDL_RenderCopy(renderer, bottomLeft->getTexture(), NULL, &getDstRect(bottomLeft, 0, Height - 1));
+	SDL_RenderCopy(renderer, bottomRight->getTexture(), NULL, &getDstRect(bottomRight, Width - 1, Height - 1));
+
 	//Battle & Map
 	if (battle) {
 		if (battle->getMode() != BattleMode::bmInit) battle->render();
@@ -679,8 +683,8 @@ void CMainWindow::main_render_ui() {
 	//Display average ticks
 	std::string strTicks = "AvgTick: " + std::to_string(AverageTickLength);
 	Asset astTicks(stringToTexture(renderer, strTicks, gui->font, 0, { 255, 255, 255, 255 }, 0));
-	boxRGBA(renderer, Width - astTicks->width, 0, Width, astTicks->height, 0, 0, 0, 255);
-	astTicks->Render(SDL_Point{ Width - astTicks->width, 0 });
+	//boxRGBA(renderer, Width - astTicks->width, 0, Width, astTicks->height, 0, 0, 0, 255);
+	astTicks->Render(SDL_Point{ Width - astTicks->width - 14, 28 });
 
 	//Menu
 	/*if (!bMenuHidden || battle) {
@@ -753,7 +757,7 @@ void CMainWindow::main_handleEvent(SDL_Event& e) {
 			if (pet) {
 				mainUI->setPetHealthGauge(pet->GetCurrentLife(), pet->GetMaxLife());
 				mainUI->setPetExpGauge(pet->getExperience(), pet->getLevelUpExperience());
-				mainUI->updatePetLevel();
+				//mainUI->updatePetLevel();
 			}
 		}
 	}
@@ -817,7 +821,9 @@ void CMainWindow::main_step() {
 
 	chat->step();
 
-	if (battle) battle->step();
+	if (battle) {
+		battle->step();
+	}
 	else if (map) map->step();
 
 	if (dialogue) {
@@ -888,22 +894,7 @@ void CMainWindow::setPlayerDetailsLabels() {
 	lastMouseoverUser = nullptr;
 	userDetailsStartTime = 0;
 
-#ifdef NEWGUI
-	return;
-#endif
-	lblName->SetText(StringToWString(player->GetName()));
-	lblNickName->SetText(StringToWString(player->getNickName()));
-	lblSpouse->SetText(StringToWString(player->getSpouse()));
-
-	std::string strLevelCult = formatInt(player->GetLevel()) + "/" + formatInt(player->GetCultivation());
-	lblLevel->SetText(strLevelCult);
-
-	lblCash->SetText(formatInt(player->GetCash()));
-	lblReputation->SetText(formatInt(player->GetReputation()));
-
-	lblRank->SetText(player->GetRankText());
-	lblGuild->SetText(StringToWString(player->getGuild()));
-	lblGuildRank->SetText(StringToWString(player->getGuildTitle()));
+	mainUI->updatePlayerDetails();
 }
 
 void CMainWindow::setUserDetailsLabels(User* user) {
@@ -913,10 +904,7 @@ void CMainWindow::setUserDetailsLabels(User* user) {
 }
 
 void CMainWindow::setMapCoordLabels(SDL_Point coord) {
-#ifndef NEWGUI
-	lblCoordX->SetText(std::to_string(coord.x));
-	lblCoordY->SetText(std::to_string(coord.y));
-#endif
+	mainUI->setMapCoordLabels(coord);
 }
 
 void CMainWindow::setPlayerHealthGauge(int val) {
