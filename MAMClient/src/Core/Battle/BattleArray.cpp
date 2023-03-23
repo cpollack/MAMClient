@@ -145,21 +145,12 @@ SDL_Point BattleArray::GetTargetPosition(int pos, bool bAlly) {
 	if (pos < 0 || pos > 9) return{ -1, -1 };
 
 	SDL_Point p = GetPosition(pos, bAlly);
-
-	/*if (bAlly) {
-		p.x += header.tileWidth;
-		p.y -= header.tileHeight;
-	}
-	else {
-		p.x -= header.tileWidth;
-		p.y += header.tileHeight;
-	}*/
 	
 	if (bAlly) {
-		return { p.x - 46, p.y - 25};
+		return { p.x + 46, p.y - 25};
 	}
 	else {
-		return { p.x + 46, p.y + 25 };
+		return { p.x - 46, p.y + 25 };
 	}
 }
 
