@@ -330,7 +330,10 @@ void GameMap::OnClick(SDL_Event& e) {
 
 	if (e.button.button == SDL_BUTTON_RIGHT) {
 		SDL_Point toCoord{ mouseX, mouseY };
+		
+		if (focusedNPC) toCoord = focusedNPC->GetCoord();
 		int rcDir = player->getDirectionToCoord(toCoord);
+
 		player->setDirectionToCoord(toCoord);
 		player->loadSprite();
 
@@ -361,7 +364,17 @@ void GameMap::OnMouseMove(SDL_Event& e) {
 	SDL_Event e2 = e;
 	e2.motion.x = cx;
 	e2.motion.y = cy;
-	for (auto npc : npcs) npc->handleEvent(e2);
+
+	//Get moused over npc, but prioritize current moused over npc in case of overlap
+	NPC* mouseOverNPC = nullptr;
+	for (auto npc : npcs) {
+		npc->handleEvent(e2);
+		//focusedNPC
+		if (focusedNPC == npc && !npc->IsMousedOver()) focusedNPC = nullptr;
+		if (!mouseOverNPC && npc->IsMousedOver()) mouseOverNPC = npc;
+	} 
+	if (!focusedNPC && mouseOverNPC) focusedNPC = mouseOverNPC;
+
 	userManager.handleEventAllUsers(e2);
 }
 
