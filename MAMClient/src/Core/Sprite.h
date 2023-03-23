@@ -71,11 +71,12 @@ public:
 	DWORD startTime, lastFrame;
 	bool started = false;
 	bool visible = true;
-	bool isFinished = false;
+	bool completed = false;
 	BYTE alpha = 0xFF;
-	ColorShifts colorShifts;
+	ColorShifts colorShifts;	
 
 	Sprite(SDL_Renderer* aRenderer, int spriteType = stCharacter);
+	Sprite(SDL_Renderer* aRenderer, int spriteType, ColorShifts shifts);
 	Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType);
 	Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType, ColorShifts shifts);
 	Sprite(SDL_Renderer* aRenderer, std::string file, int toX, int toY);
@@ -90,6 +91,7 @@ public:
 	void LoadFirst();
 	void Sprite::deleteTextures();
 	void Sprite::init(SDL_Renderer* aRenderer, std::vector<std::string> file, int frameCount, int toX, int toY, int spriteType);
+	void setFrames(std::vector<Asset> textures);
 	void Sprite::addFrame(Asset newFrame);
 	void Sprite::render();
 	void Sprite::render(int offsetX, int offsetY);
@@ -117,6 +119,9 @@ public:
 	Asset Sprite::getCurrentTexture();
 
 	Sprite* Sprite::copy();
+
+	typedef std::function<void()> EventFunc;
+	EventFunc OnComplete = nullptr;
 
 private:
 	int StartDelay = 0;

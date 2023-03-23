@@ -7,6 +7,13 @@ Sprite::Sprite(SDL_Renderer* aRenderer, int spriteType) {
 	speed = 1000;
 }
 
+Sprite::Sprite(SDL_Renderer* aRenderer, int spriteType, ColorShifts shifts) {
+	renderer = aRenderer;
+	type = spriteType;
+	speed = 1000;
+	setHsbShifts(shifts);
+}
+
 
 Sprite::Sprite(SDL_Renderer* aRenderer, std::string file, int spriteType) {
 	std::vector<std::string> files;
@@ -124,6 +131,17 @@ void Sprite::init(SDL_Renderer* aRenderer, std::vector<std::string> file, int fr
 	}
 }
 
+void Sprite::setFrames(std::vector<Asset> textures)
+{
+	subimages.clear();
+	if (spr_rect) delete[] spr_rect;
+
+	frames = textures.size();	
+	if (frames > 0) spr_rect = new SDL_Rect[frames];
+	subimages = textures;
+
+	if (colorShifts.size() > 0) setHsbShifts(colorShifts);
+}
 
 void Sprite::addFrame(Asset newFrame) {
 	frames++;
@@ -159,7 +177,6 @@ void Sprite::render(int offsetX, int offsetY) {
 				elapsed = currentTime - startTime;
 			}
 		}
-		else return;
 	}
 
 	//Delay start of sprite by MS
@@ -167,15 +184,7 @@ void Sprite::render(int offsetX, int offsetY) {
 		if (elapsed < StartDelay) return;
 	}
 
-	//Refactor - Speed respresents length of time to do one full cycle of the sprite
-	//More frames means more detail over the animation, but also more loading
-
-	//repeatCount = elapsed / speed;
-	//int nextFrame =  floor((elapsed - (repeatCount * speed)) / (speed * 1.0 / frames));
-
-	//refactor 2, speed/frameInterval is flat 50ms assumed. 
-
-	int nextFrame = currentFrame;
+	int prevFrame = currentFrame;
 	if (bStopOnNextLoop && currentFrame == 0) return;
 
 	if (currentTime - lastFrame > frameInterval) {
@@ -185,27 +194,28 @@ void Sprite::render(int offsetX, int offsetY) {
 			currentFrame = 0;
 			repeatCount++;
 		}
-		nextFrame = currentFrame;
 	}
-
-	//int framesElapsed = elapsed / frameInterval;
-	//repeatCount = framesElapsed / frames;
-	//int nextFrame = framesElapsed % frames;
-
 
 	if (repeatMode > 0) {
 		if (repeatCount >= repeatMode) {
-			nextFrame = frames - 1;
-			isFinished = true;
-			stop();
-			if (type == stEffect) return; //Do not render completed effects
+			currentFrame = prevFrame;
+			if (!completed)
+			{
+				completed = true;
+				if (OnComplete) OnComplete();
+				if (type == stEffect)
+				{
+					visible = false;
+					return; //Do not render completed effects
+				}
+			}
 		}
 	}
 
-	Asset frameTexture = subimages.at(nextFrame);
+	Asset frameTexture = subimages.at(currentFrame);
 	if (frameTexture->texture == nullptr) frameTexture->Load();
 
-	SDL_Rect renderRect = getRenderRect(nextFrame);
+	SDL_Rect renderRect = getRenderRect(currentFrame);
 	bool inView = true;
 	if (camera) inView = SDL_IntersectRect(camera, &renderRect, NULL);
 	if (!inView) return;
@@ -214,10 +224,7 @@ void Sprite::render(int offsetX, int offsetY) {
 
 	int alphaBlendResult = SDL_SetTextureAlphaMod(frameTexture->texture, alpha);
 	
-	//renderRect.x += frameTexture->position.x;
-	//renderRect.y += frameTexture->position.y;
 	frameTexture->Render(SDL_Point{ renderRect.x + offsetX, renderRect.y + offsetY});
-	//SDL_RenderCopy(renderer, frameTexture->texture, NULL, &renderRect);
 }
 
 
@@ -228,7 +235,7 @@ void Sprite::start() {
 	startTime = SDL_GetTicks();
 	lastFrame = startTime;
 	started = true;
-	isFinished = false;
+	completed = false;
 	bStopOnNextLoop = false;
 }
 
@@ -241,7 +248,7 @@ void Sprite::stop() {
 }
 
 bool Sprite::finished() {
-	return isFinished;
+	return completed;
 }
 
 void Sprite::RandomizeTimerDelay() {
