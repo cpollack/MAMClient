@@ -7,6 +7,7 @@ class pItem;
 
 class GameMap;
 class Pet;
+class NPC;
 class Inventory;
 class Item;
 
@@ -26,6 +27,7 @@ public:
 
 	void render();
 	void step();
+	virtual void handleEvent(SDL_Event& e);
 
 public:
 	std::string rankDesc;
@@ -45,14 +47,19 @@ public:
 
 	DWORD lastPositionPacket = 0; //Player position is sent every 2000ms while walking
 
+	NPC* targetedNPC{ nullptr };
+	bool interactedThisFrame = false;
 	
 public:
+	void TargetMonster(NPC* npc);
+	void AttackMonster();
 	void jumpTo(SDL_Point coord);
 	void walkTo(SDL_Point coord);
 
 	virtual void SetCoord(SDL_Point coord);
 protected: 
 	void MoveAlongPath();
+	void OnAttackHit();
 	
 public:
 	void setPlayerInfo(pPlayerInfo* packet);

@@ -86,18 +86,10 @@ void NPC::handleEvent(SDL_Event& e) {
 			interact.user.code = NPC_NONE;
 			interact.user.data1 = this;
 			interact.user.data2 = nullptr;
-
-			//Change direction
 			
 			if (isAiNpc) {
-				setDirection(getDirectionToCoord(player->GetCoord()));
-				Entity::loadSprite();
-				
-				//spawn battle				
-				pBattleState* packet = new pBattleState(bsStart, 1, player->GetID(), 0, ID);
-				gClient.addPacket(packet);
-				interact.user.code = NPC_BATTLE;
-
+				player->TargetMonster(this);								
+				interact.user.code = NPC_TARGET;
 			}
 			else {
 				//Direction must be offset for NPC animation mapping

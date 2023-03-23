@@ -5,6 +5,7 @@
 #include "MainWindow.h"
 #include "GameMap.h"
 #include "Pet.h"
+#include "NPC.h"
 #include "Inventory.h"
 #include "Team.h"
 
@@ -13,6 +14,8 @@
 #include "pAction.h"
 #include "pDirection.h"
 #include "pWalk.h"
+#include "pEmotion.h"
+#include "pBattleState.h"
 
 Player::Player(int acctId, int look, int face, char* name):User(mainForm->renderer, acctId, name, look){
 	AccountId = acctId;
@@ -103,6 +106,8 @@ void Player::render() {
 
 
 void Player::step() {
+	interactedThisFrame = false;
+
 	//Cache current walking so we know when it completes during step phase
 	bool wasWalking = walking;
 	User::step();
@@ -111,6 +116,11 @@ void Player::step() {
 		lastPositionPacket = timeGetTime();
 		pAction* packet = new pAction(AccountId, ID, Direction, Coord.x, Coord.y, amNone);
 		gClient.addPacket(packet);
+
+		//Did we finish movement and are targeting a monster?
+		if (targetedNPC) {
+			AttackMonster();
+		}
 	}
 
 	if (walking) {
@@ -123,9 +133,90 @@ void Player::step() {
 	}
 }
 
+void Player::handleEvent(SDL_Event& e) {
+	//
+}
+
+void Player::TargetMonster(NPC* npc)
+{
+	if (interactedThisFrame) return;
+	if (!npc->isAiNpc) return;
+	//Auto target monsters is not available when on a cloud
+	if (Flying || Ascending || Descending) return;
+
+	targetedNPC = npc;
+	interactedThisFrame = true;
+
+	auto playerCoord = path.size() > 0 ? path[0] : Coord;
+	auto npcCoord = npc->GetCoord();
+
+	//Current on top of the monster
+	if (!walking && playerCoord.x == npcCoord.x && playerCoord.y == npcCoord.y)
+	{
+		AttackMonster();
+		return;
+	}
+
+	std::vector<SDL_Point> newPath = map->getPath(playerCoord, npcCoord, false);
+
+	if (newPath.size() > 1) {
+		auto lastCoord = newPath.back();
+		
+		if (lastCoord.x == npcCoord.x && lastCoord.y == npcCoord.y)
+		{
+			//We can reach the monster
+			//Erase the last element in the path as we want to stop one coord before the target
+			newPath.erase(newPath.begin() + newPath.size() - 1);
+		}
+		else
+		{
+			//We cannot reach the monster, so just try to get close, but drop the target
+			targetedNPC = nullptr;
+		}
+	}
+	else
+	{
+		//No path to be traversed, perhaps we are adjacent
+		if (newPath.size() == 1 && newPath[0].x == npcCoord.x && newPath[0].y == npcCoord.y) {
+			AttackMonster();			
+		}
+		newPath.clear();
+		return;
+	}
+
+	followPath(newPath);
+}
+
+void Player::AttackMonster()
+{
+	setAnimation(Attack01);	
+	loadSprite();	
+
+	sprite->OnComplete = std::bind(&Player::OnAttackHit, this);
+
+	//pEmotion* packet = new pEmotion()
+}
+
+void Player::OnAttackHit()
+{
+	std::cout << "Player OnAttackHit" << std::endl;
+
+	setAnimation(StandBy);
+	loadSprite();
+
+	//spawn battle
+	pBattleState* packet = new pBattleState(bsStart, 1, player->GetID(), 0, targetedNPC->GetID());
+	gClient.addPacket(packet);
+
+	targetedNPC = nullptr;
+	sprite->OnComplete = nullptr;
+}
 
 void Player::jumpTo(SDL_Point coord) {
 	if (!map->isCoordWalkable(coord)) return;
+
+	//Movement interrupts npc targetting
+	targetedNPC = nullptr;
 
 	if (!team) User::jumpTo(coord);
 
@@ -151,6 +242,9 @@ void Player::walkTo(SDL_Point coord) {
 	bool canWalk = true;
 	if (team && team->GetLeader() != this) canWalk = false;
 	if (map->isCoordAPortal(Coord)) canWalk = false;
+
+	//Movement interrupts npc targetting
+	targetedNPC = nullptr;
 
 	//Send walking packets
 	std::vector<Packet*> walkPackets;
@@ -196,6 +290,8 @@ void Player::MoveAlongPath() {
 void Player::SetExperience(int iExp) { 
 	experience = iExp; 
 }*/
+
+
 
 
 int Player::GetLevelUpExperience() {

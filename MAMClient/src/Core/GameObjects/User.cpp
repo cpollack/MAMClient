@@ -100,7 +100,7 @@ void User::render() {
 				LoadCloud(CLOUD_FLY);
 			}
 
-			if (Cloud->isFinished) {
+			if (Cloud->completed) {
 				LoadCloud(CLOUD_FLY);
 			}
 
@@ -118,7 +118,7 @@ void User::render() {
 				loadSprite();
 			}
 
-			if (Cloud && Cloud->isFinished) {
+			if (Cloud && Cloud->completed) {
 				RemoveCloud();
 			}
 
@@ -230,17 +230,20 @@ void User::jumpTo(SDL_Point coord) {
 }
 
 void User::walkTo(SDL_Point coord) {
+	std::vector<SDL_Point> newPath = map->getPath(path.size() > 0 ? path[0] : Coord, coord, (Flying || Ascending) && !Descending);
+	followPath(newPath);
+}
+
+void User::followPath(std::vector<SDL_Point> newPath)
+{
 	if (jumping) {
 		jumping = false;
 	}
-
-	std::vector<SDL_Point> newPath = map->getPath(path.size() > 0 ? path[0] : Coord, coord, (Flying || Ascending) && !Descending);
 
 	if (newPath.size() == 0) {
 		if (walking) {
 			if (path.size() > 1) path.erase(path.begin() + 1, path.end());
 		}
-		else setDirectionToCoord(coord);
 		return;
 	}
 
@@ -256,7 +259,7 @@ void User::walkTo(SDL_Point coord) {
 
 	//Only reset last move timestamp when we are not moving, otherwise the character will boomerang
 	if (!walking) lastMoveTick = timeGetTime();
-	walking = true;	
+	walking = true;
 
 	if (!Flying) setAnimation(Walk);
 	setDirectionToCoord(path[0]);

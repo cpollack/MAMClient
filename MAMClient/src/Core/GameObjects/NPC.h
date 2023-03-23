@@ -32,7 +32,7 @@ public:
 private:
 	virtual void loadSprite();
 
-	bool isAiNpc{ false };
+	
 	int Type;
 
 private:
@@ -44,4 +44,6 @@ private:
 public:
 	int GetType() { return Type; }
 	std::string GetTypeText();
+
+	bool isAiNpc{ false };
 };

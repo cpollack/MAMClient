@@ -14,8 +14,6 @@ void GameObj::render() {
 	RenderPos.y = Position.y + SpriteOffset.y + map->mapOffsetY - map->cameraY;
 	if (!sprite) return;
 
-	if (!sprite->started) sprite->start();
-
 	sprite->setLocation(RenderPos);
 	sprite->render();
 }

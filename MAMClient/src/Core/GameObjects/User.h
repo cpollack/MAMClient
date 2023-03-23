@@ -21,6 +21,7 @@ public:
 public:
 	virtual void jumpTo(SDL_Point coord);
 	virtual void walkTo(SDL_Point coord);
+	virtual void followPath(std::vector<SDL_Point> path);
 	void setLeaving(bool leaving);
 	bool leaveMap();
 	bool getJumping();

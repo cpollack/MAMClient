@@ -273,16 +273,22 @@ bool GameMap::handleEvent(SDL_Event& e) {
 	if (e.type == CUSTOMEVENT_NPC) {
 		NPC* sourceNPC = (NPC*)e.user.data1;
 
-		if (e.user.code == NPC_INTERACT) dialogueNpc = sourceNPC;
-		if (e.user.code == NPC_SHOP) {
-			CShopForm *shopForm = new CShopForm();
+		switch (e.user.code) 
+		{
+			case NPC_INTERACT:
+				dialogueNpc = sourceNPC;
+				break;
 
-			CShop *shop = (CShop*)e.user.data2;
-			if (shop) {
-				shopForm->SetShop(shop);
-				delete shop;
-			}
-			Windows.push_back(shopForm);
+			case NPC_SHOP:
+				CShopForm* shopForm = new CShopForm();
+
+				CShop* shop = (CShop*)e.user.data2;
+				if (shop) {
+					shopForm->SetShop(shop);
+					delete shop;
+				}
+				Windows.push_back(shopForm);
+				break;
 		}
 	}
 
@@ -550,7 +556,7 @@ void GameMap::step() {
 	std::vector<CPetMagic*>::iterator itr = petMagics.begin();
 	while (itr != petMagics.end()) {
 		CPetMagic* pm = *itr;
-		if (pm->isFinished()) {
+		if (pm->completed()) {
 			if (itr != petMagics.end()) itr++;
 			delete pm;
 		}

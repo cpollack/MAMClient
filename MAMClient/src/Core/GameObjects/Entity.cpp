@@ -28,28 +28,15 @@ void Entity::render() {
 
 	render_effects(RenderPos);
 	
-
 	//render_aura()?
 }
-
-/*void Entity::render_battle() {
-	if (!BattleSprite) return;
-
-	if (!BattleSprite->started) BattleSprite->start();
-
-	BattleSprite->setLocation(BattlePos);
-	if (!Invisible) BattleSprite->render();
-
-	render_effects(BattlePos);
-	render_floatingLabels();
-}*/
 
 void Entity::render_effects(SDL_Point point) {
 	std::vector<Effect>::iterator itr = effects.begin();
 	while (itr != effects.end()) {
 		Sprite* effect = itr->sprite;
 		effect->render(point.x, point.y);
-		if (effect->isFinished) {
+		if (effect->completed) {
 			itr = removeEffect(effect);
 			if (itr != effects.end()) itr++;
 		}
@@ -99,7 +86,7 @@ void Entity::step() {
 }
 
 void Entity::handleEvent(SDL_Event& e) {
-	if (!sprite) return;
+	if (!sprite || !sprite->visible) return;
 
 	SDL_Rect sprRect = GetRenderRect();
 
@@ -210,15 +197,15 @@ void Entity::setColorShifts(ColorShifts shifts) {
 }
 
 void Entity::loadSprite() {
-	Sprite *destSprite = nullptr;
-	int DestAnimation = -1;
-	
 	if (lastSpriteAnimation == Animation && lastSpriteDirection == sprDirection) return;
 	lastSpriteAnimation = Animation;
 	lastSpriteDirection = sprDirection;
-	DestAnimation = Animation;
 
-	if (sprite) delete sprite; sprite = nullptr;
+	if (!sprite)
+	{
+		if (options.IsColorDisabled(Look)) sprite = new Sprite(renderer, stCharacter);
+		else sprite = new Sprite(renderer, stCharacter, colorShifts);
+	}
 	if (Animation < 0 || sprDirection < 0) return;
 
 	if (Role.length() == 0) setRole(Look);
@@ -232,54 +219,31 @@ void Entity::loadSprite() {
 		textures.push_back(texture);
 	}
 
-	if (options.IsColorDisabled(Look)) sprite = new Sprite(renderer, textures, stCharacter);
-	else sprite = new Sprite(renderer, textures, stCharacter, colorShifts);
+	sprite->setFrames(textures);
 	sprite->setLocation(Position.x, Position.y);
-	destSprite = sprite;
-
-	/*else {
-		if (lastBattleAnimation == BattleAnimation && lastBattleDirection == BattleSprDirection) return;
-		lastBattleAnimation = BattleAnimation;
-		lastBattleDirection = BattleSprDirection;
-		DestAnimation = BattleAnimation;
-
-		if (BattleSprite) delete BattleSprite; BattleSprite = nullptr;
-		if (BattleAnimation < 0 || BattleSprDirection < 0) return;
-
-		if (Role.length() == 0) setRole(Look);
-
-		std::vector<std::string> frames = getSpriteFramesFromAni(Role, BattleAnimation, BattleSprDirection);
-		if (!frames.size()) return;
-
-		std::vector<Asset> textures;
-		for (auto frame : frames) {
-			Asset texture(new Texture(renderer, frame));
-			textures.push_back(texture);
-		}
-
-		if (options.IsColorDisabled(Look)) BattleSprite = new Sprite(renderer, textures, stCharacter);
-		else BattleSprite = new Sprite(renderer, textures, stCharacter, BattleColorShifts);
-		BattleSprite->setLocation(BattlePos.x, BattlePos.y);
-		destSprite = BattleSprite;
-	}*/
-
 	
-	switch (DestAnimation) {
+	switch (Animation) {
 	case Attack01:
 	case Attack02:
 	case Attack03:
-		destSprite->setFrameInterval(150);
+		sprite->setFrameInterval(50);
+		sprite->repeatMode = 1;
 		break;
 	case Faint:
-		destSprite->setFrameInterval(40);
+		sprite->setFrameInterval(40);
+		sprite->repeatMode = 1;
 		break;
 	case Walk:
-		destSprite->speed = 750;
-		destSprite->setFrameInterval(50);
+		sprite->speed = 750;
+		sprite->setFrameInterval(50);
+		sprite->repeatMode = 0;
 		break;
 	default:
-		destSprite->setFrameInterval(350);
+		sprite->setFrameInterval(350);
+		sprite->repeatMode = 0;
 	}
+
+	sprite->start();
 }
 
 bool Entity::Visible()
