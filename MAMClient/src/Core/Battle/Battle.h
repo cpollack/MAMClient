@@ -78,6 +78,7 @@ public:
 	void render_items();
 	bool handleEvent(SDL_Event& e);
 	void step();
+	void setButtonVisibility();
 
 private:
 	SDL_Renderer *renderer;

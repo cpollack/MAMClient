@@ -222,10 +222,15 @@ void Battle::render() {
 }
 
 void Battle::render_ui() {
-	//Draw Battle Buttons
+	//Reload visibility based on current states
+	setButtonVisibility();
+
+	//Buttons will be hidden based on visibility and not render when appropriate
+	for each (auto button in battleButtons)
+		button.second->Render();
 
 	if (mode == bmTurnPlayer) {
-		if (!selectTarget && !selectItem) {
+		/*if (!selectTarget && !selectItem) {
 			battleButtons[BattleMenu::player_attack]->Render();
 			battleButtons[BattleMenu::player_skill]->Render();
 			battleButtons[BattleMenu::player_defend]->Render();
@@ -233,17 +238,17 @@ void Battle::render_ui() {
 			battleButtons[BattleMenu::player_run]->Render();
 			battleButtons[BattleMenu::player_capture]->Render();
 			//battleButtons[BattleMenu::player_switch]->Render();
-		}
+		}*/
 		if (selectItem) {
 			render_items();
 		}
 	}
 
-	if (mode == bmTurnPet && !selectTarget) {
+	/*if (mode == bmTurnPet && !selectTarget) {
 		battleButtons[BattleMenu::pet_attack]->Render();
 		battleButtons[BattleMenu::pet_skill]->Render();
 		battleButtons[BattleMenu::pet_defend]->Render();
-	}
+	}*/
 }
 
 
@@ -409,7 +414,11 @@ bool Battle::handleEvent(SDL_Event& e) {
 	e2.motion.x = mx;
 	e2.motion.y = my;
 
-	if (mode == bmTurnPlayer) {
+	//Buttons used to be handles by player/pet mode, but would leave improper mouseover states when events were not updated
+	for each (auto button in battleButtons)
+		button.second->HandleEvent(e);
+
+	/*if (mode == bmTurnPlayer) {
 		battleButtons[BattleMenu::player_attack]->HandleEvent(e);
 		battleButtons[BattleMenu::player_skill]->HandleEvent(e);
 		battleButtons[BattleMenu::player_defend]->HandleEvent(e);
@@ -423,7 +432,7 @@ bool Battle::handleEvent(SDL_Event& e) {
 		battleButtons[BattleMenu::pet_attack]->HandleEvent(e);
 		battleButtons[BattleMenu::pet_skill]->HandleEvent(e);
 		battleButtons[BattleMenu::pet_defend]->HandleEvent(e);
-	}
+	}*/
 
 	if (e.type == SDL_MOUSEMOTION) {
 		for (auto fighter : enemies) fighter->handleEvent(e2);
@@ -632,7 +641,7 @@ void Battle::step() {
 			}
 			petAction = -1;
 		}
-		if (petFighter && mode != bmTurnPet) if (petFighter->IsAlive()) petFighter->addEffect(EFFECT_READY);
+		if (petFighter && mode != bmTurnPet && petFighter->IsAlive()) petFighter->addEffect(EFFECT_READY);
 	}
 
 	if (mode == bmWait) {
@@ -720,6 +729,26 @@ void Battle::step() {
 			round++;
 		}
 	}
+}
+
+void Battle::setButtonVisibility() {
+	bool playerButtonsVis = false;
+	if (mode == bmTurnPlayer) {
+		if (!selectTarget && !selectItem) playerButtonsVis = true;
+	}
+	battleButtons[BattleMenu::player_attack]->SetVisible(playerButtonsVis);
+	battleButtons[BattleMenu::player_skill]->SetVisible(playerButtonsVis);
+	battleButtons[BattleMenu::player_defend]->SetVisible(playerButtonsVis);
+	battleButtons[BattleMenu::player_item]->SetVisible(playerButtonsVis);
+	battleButtons[BattleMenu::player_run]->SetVisible(playerButtonsVis);
+	battleButtons[BattleMenu::player_capture]->SetVisible(playerButtonsVis);
+	//battleButtons[BattleMenu::player_switch]->SetVisible(playerButtonsVis);
+
+	bool petButtonsVis = false;
+	if (mode == bmTurnPet && !selectTarget) petButtonsVis = true;
+	battleButtons[BattleMenu::pet_attack]->SetVisible(petButtonsVis);
+	battleButtons[BattleMenu::pet_skill]->SetVisible(petButtonsVis);
+	battleButtons[BattleMenu::pet_defend]->SetVisible(petButtonsVis);
 }
 
 void Battle::btnPlayerAttack_Click(SDL_Event& e) {
@@ -1239,76 +1268,10 @@ void Battle::loadBattleArray(BattleArray** bArray, int arrayId, bool bAlly) {
 	if (!success) return;
 }
 
-
-/*SDL_Point Battle::getBattlePosFromArray(BattleArray* bArray, int fighterNum, bool isSource) {
-	if (!bArray) return { 0, 0 };
-	BYTE* arrayData = bArray->arrayData;
-
-	int *ally15xsets = (int*)(arrayData + 0xE4); // v4[5] - 0xE4
-	int *v5 = (int*)(arrayData + 0xF8); // v5[5] - 0xF8
-	int *v6 = (int*)(arrayData + 0x10C); // v6[5] - 0x10C
-	int *v7 = (int*)(arrayData + 0x120); // v7[5] - 0x120
-	int *v8 = (int*)(arrayData + 0x134); // v8[10] - 0x134
-
-	SDL_Point sourcePos = { 0,0 };
-	SDL_Point targetPos = { 0,0 };
-
-	if (fighterNum >= 5)
-	{
-		if (fighterNum >= 10) //Allies
-		{
-			if (fighterNum >= 15)
-			{
-				if (fighterNum < 20)
-				{
-					sourcePos.x = 46 * (15 - v5[fighterNum]) + 46;
-					sourcePos.y = 25 * (15 - v6[fighterNum]);
-					targetPos.x = 46 * (15 - v5[fighterNum]);
-					targetPos.y = 25 * (15 - v6[fighterNum]) + 25;
-				}
-			}
-			else
-			{
-				sourcePos.x = 46 * (15 - ally15xsets[fighterNum]) + 46;
-				sourcePos.y = 25 * (15 - v5[fighterNum]);
-				targetPos.x = 46 * (15 - ally15xsets[fighterNum]);
-				targetPos.y = 25 * (15 - v5[fighterNum]) + 25;
-			}
-		}
-		else //enemies
-		{
-			sourcePos.x = 46 * v7[fighterNum];
-			sourcePos.y = 25 * v8[fighterNum] + 25;
-			targetPos.x = 46 * v7[fighterNum] + 46;
-			targetPos.y = 25 * v8[fighterNum];
-		}
-	}
-	else // enemies
-	{
-		sourcePos.x = 46 * v6[fighterNum];
-		sourcePos.y = 25 * v7[fighterNum] + 25;
-		targetPos.x = 46 * v6[fighterNum] + 46;
-		targetPos.y = 25 * v7[fighterNum];
-	}
-	
-	if (isSource) return sourcePos;
-	return targetPos;
-}*/
-
-
 bool Battle::doesMouseIntersect(SDL_Rect aRect, int x, int y) {
 	if (x >= aRect.x && x <= (aRect.x + aRect.w) && y >= aRect.y && y <= (aRect.y + aRect.h)) return true;
 	return false;
 }
-
-
-/*bsType Battle::getSceneTypeFromAction(int action) {
-	switch (action) {
-	case player_attack:
-	case pet_attack:
-		return bsType::bsAction;
-	}
-}*/
 
 void Battle::makeChatBubbleTexture() {
 	SDL_Texture *priorTarget = SDL_GetRenderTarget(renderer);
