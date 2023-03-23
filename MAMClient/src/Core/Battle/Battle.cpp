@@ -544,7 +544,7 @@ void Battle::step() {
 			playerAction = baNoAction;
 			battleAct = new pBattleAction(playerAction, round, player->GetID(), 0, 0, player->AccountId);
 			actions.push_back(battleAct);
-			if (playerFighter->IsAlive()) player->addEffect(EFFECT_READY);
+			if (playerFighter->IsAlive()) playerFighter->addEffect(EFFECT_READY);
 		}
 		petAction = baNoAction;
 		battleAct = new pBattleAction(petAction, round, petFighter->GetBattleId(), 0, 0, player->AccountId);
@@ -589,7 +589,7 @@ void Battle::step() {
 			}
 			playerAction = -1;
 		}
-		if (mode != bmTurnPlayer) if (playerFighter->IsAlive()) player->addEffect(EFFECT_READY);
+		if (mode != bmTurnPlayer) if (playerFighter->IsAlive()) playerFighter->addEffect(EFFECT_READY);
 	}
 
 	if (mode == bmTurnPet) {
@@ -676,7 +676,7 @@ void Battle::step() {
 				scenes.pop();
 			}
 			currentScene->step();
-			if (currentScene->isFinished()) {
+			if (currentScene->completed()) {
 				delete currentScene;
 				currentScene = nullptr;
 			}
@@ -740,7 +740,7 @@ void Battle::btnPlayerDefend_Click(SDL_Event& e) {
 
 	pBattleAction* battleAct = new pBattleAction(playerAction, round, player->GetID(), 0, 0, player->AccountId);
 	actions.push_back(battleAct);
-	if (playerFighter->IsAlive()) player->addEffect(EFFECT_READY);
+	if (playerFighter->IsAlive()) playerFighter->addEffect(EFFECT_READY);
 }
 
 void Battle::btnPlayerItem_Click(SDL_Event& e) {
@@ -761,7 +761,7 @@ void Battle::btnPlayerRun_Click(SDL_Event& e) {
 
 	pBattleAction* battleAct = new pBattleAction(playerAction, round, player->GetID(), 0, 0, player->AccountId);
 	actions.push_back(battleAct);
-	if (playerFighter->IsAlive()) player->addEffect(EFFECT_READY);
+	if (playerFighter->IsAlive()) playerFighter->addEffect(EFFECT_READY);
 	if (petFighter && petFighter->IsAlive()) petFighter->addEffect(EFFECT_READY);
 }
 
