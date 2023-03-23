@@ -220,7 +220,6 @@ void Entity::loadSprite() {
 	}
 
 	sprite->setFrames(textures);
-	sprite->setLocation(Position.x, Position.y);
 	
 	switch (Animation) {
 	case Attack01:
