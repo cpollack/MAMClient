@@ -97,7 +97,7 @@ bool BattleScene::isStarted() {
 }
 
 
-bool BattleScene::isFinished() {
+bool BattleScene::completed() {
 	return finished;
 }
 

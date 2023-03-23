@@ -74,7 +74,7 @@ public:
 
 	void BattleScene::start();
 	bool BattleScene::isStarted();
-	bool BattleScene::isFinished();
+	bool BattleScene::completed();
 
 	void BattleScene::step();
 	void BattleScene::perform(bsActor* actor);

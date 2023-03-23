@@ -46,7 +46,7 @@ public:
 	void addSource(int look, ColorShift shifts[3]);
 	void addDestination(int look, ColorShift shifts[3]);
 	void start();
-	bool isFinished() { return (state == PETMAGIC_END); }
+	bool completed() { return (state == PETMAGIC_END); }
 
 private:
 	void createSprite(PetMagic_Entity &entity);

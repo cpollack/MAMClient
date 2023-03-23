@@ -37,7 +37,7 @@ void CWuxingForm::render() {
 		diagram->render();
 
 		if (fireSlot >= 0) {
-			if (fire->isFinished) {
+			if (fire->completed) {
 				ClearSlot(fireSlot);
 				fireSlot = -1;
 				if (GetOvenObjectCount() > 0) diagram->start();
@@ -50,7 +50,7 @@ void CWuxingForm::render() {
 			}
 		}
 		else {
-			if (diagram->isFinished) {
+			if (diagram->completed) {
 				fireSlot = GetNextFilledSlot(true);
 				if (fireSlot < 0) fireSlot = GetNextFilledSlot(false);
 				if (fireSlot >= 0) {
