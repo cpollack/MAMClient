@@ -82,4 +82,5 @@ enum {
 	ITEM_BUY,
 	ITEM_SELL,
 	ITEM_PREVIEW,
+	ITEM_UPDATE,
 };

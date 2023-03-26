@@ -24,8 +24,10 @@ private:
 	std::string name, creator, typeText;
 
 	int look, sort, type, cost, level;
+	int count, stack;
 
 	int life, mana, attack, defence, dexterity;
+	int antiPoison, antiFreeze, antiSleep, antiChaos;
 
 	std::string bigPath, smallPath;
 
@@ -61,6 +63,7 @@ public:
 	int GetAttack();
 	int GetDefence();
 	int GetDexterity();
+	void SetCount(int c) { count = c; }
 };
 
 #endif

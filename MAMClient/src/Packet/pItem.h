@@ -21,8 +21,8 @@ public:
 	int look, itemSort, levelRequired;
 	short life, power, attack, defence, dexterity;
 
-	int v1, v2, v3, v4;
-	int v5, v6, v7, v8;
+	short antiPoison, antiFreeze, antiSleep, antiChaos;
+	short count, stack;
 
 	char name[16] = { 0 };
 	char creator[16] = { 0 };

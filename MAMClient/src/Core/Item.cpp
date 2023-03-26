@@ -23,6 +23,14 @@ Item::Item(pItem* packet) {
 	attack = packet->attack;
 	defence = packet->defence;
 	dexterity = packet->dexterity;
+
+	antiPoison = packet->antiPoison;
+	antiFreeze = packet->antiFreeze;
+	antiSleep = packet->antiSleep;
+	antiChaos = packet->antiChaos;
+
+	count = packet->count;
+	stack = packet->stack;
 	
 	INI* itemLookINI;
 	std::string bigSection = "Big_item" + std::to_string(look);

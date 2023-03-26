@@ -12,18 +12,20 @@ enum ItemAction {
 	//6 - failed during battle
 	//7
 	//9 - failed not enough mny
-	iaUnequip = 10
+	iaUnequip = 10,
 	//11 - related to trade
 	//12 - related to wuxing
 	//14
+	iaUpdateCount = 25,
 };
 
 class pItemAction : public Packet {
 public:
-	int itemId, action;
+	int itemId, data, action;
 
 	pItemAction(char *buf, char* encBuf);
 	pItemAction(int id, int act);
+	pItemAction(int id, int data, int act);
 	~pItemAction();
 
 	virtual void process();

@@ -10,25 +10,41 @@
 pItemAction::pItemAction(char *buf, char* encBuf) {
 	description = "Item Action (Server)";
 	type = ptItemAction;
-	initBuffer(12);
+	initBuffer(16);
 	memcpy(buffer, buf, size);
 	memcpy(encryptedBuffer, encBuf, size);
 
 	getInt(0, &itemId);
-	getInt(4, &action);
+	getInt(4, &data);
+	getInt(8, &action);
 }
 
 
 pItemAction::pItemAction(int id, int act) {
 	description = "Item Action (Client)";
 	type = ptItemAction;
-	initBuffer(12);
+	initBuffer(16);
 
 	itemId = id;
 	action = act;
 
 	addDWord(0, id);
-	addDWord(4, act);
+	addDWord(4, 0);
+	addDWord(8, act);
+}
+
+pItemAction::pItemAction(int id, int data, int act) {
+	description = "Item Action (Client)";
+	type = ptItemAction;
+	initBuffer(16);
+
+	itemId = id;
+	this->data = data;
+	action = act;
+
+	addDWord(0, id);
+	addDWord(4, data);
+	addDWord(8, act);
 }
 
 
@@ -79,6 +95,20 @@ void pItemAction::process() {
 
 		player->inventory->removeItem(itemId, true);
 		break;
+	case iaUpdateCount:
+		auto pItem = player->inventory->getItem(itemId);
+		
+		if (pItem)
+		{
+			e.type = CUSTOMEVENT_ITEM;
+			e.user.code = ITEM_UPDATE;
+			e.user.data1 = pItem;
+			SDL_PushEvent(&e);
+
+			pItem->SetCount(data);
+		}
+
+		break;
 	}
 }
 
@@ -86,7 +116,7 @@ void pItemAction::process() {
 void pItemAction::debugPrint() {
 	Packet::debugPrint();
 
-	std::cout << "Item ID: " << itemId << " Action: " << action << std::endl;
+	std::cout << "Item ID: " << itemId << " Data: " << data << " Action: " << action << std::endl;
 
 	std::cout << std::endl;
 }

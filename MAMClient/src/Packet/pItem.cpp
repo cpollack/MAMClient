@@ -10,7 +10,7 @@
 pItem::pItem(char* buf, char* encBuf) {
 	description = "Item (Server)";
 	type = ptItem;
-	size = 96;
+	size = 78;
 	initBuffer(size);
 	memcpy(buffer, buf, size);
 	memcpy(encryptedBuffer, encBuf, size);
@@ -32,15 +32,13 @@ pItem::pItem(char* buf, char* encBuf) {
 	getWord(62, &defence);
 	getWord(64, &dexterity);
 
-	getWord(66, &v1);
-	getWord(68, &v2);
-	getWord(70, &v3);
-	getWord(72, &v4);
+	getWord(66, &antiPoison);
+	getWord(68, &antiFreeze);
+	getWord(70, &antiSleep);
+	getWord(72, &antiChaos);
 
-	getInt(74, &v5);
-	getInt(78, &v6);
-	getInt(82, &v7);
-	getInt(86, &v8);
+	getWord(74, &count);
+	getWord(76, &stack);
 }
 
 
@@ -101,7 +99,8 @@ void pItem::debugPrint() {
 	std::cout << "[" << mode << "]" << name << " (" << itemId << ") " << creator << " Owner: " << ownerId << std::endl;
 	std::cout << "Cost: " << cost << " Look: " << look << " Sort: " << itemSort << std::endl;
 	std::cout << "Level: " << levelRequired << " HP/Mana: " << life << "/" << power << " At/Df/Dx: " << attack << "/" << defence << "/" << dexterity << std::endl;
-	std::cout << "V1: " << v1 << " V2: " << v2 << " V3: " << v3 << " V4: " << v4 << " V5: " << v5 << " V6: " << v6 << " V7: " << v7 << " V8: " << v8 << std::endl;
+	std::cout << "Anti Poison/Freeze/Sleep/Chaos: " << antiPoison << "/" << antiFreeze << "/" << antiSleep << "/" << antiChaos << std::endl;
+	std::cout << "Count: " << count << "/" << stack << std::endl;
 
 	std::cout << std::endl;
 }
