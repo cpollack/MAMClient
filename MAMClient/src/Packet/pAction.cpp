@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "User.h"
 #include "UserManager.h"
+#include "GameMap.h"
 
 
 pAction::pAction(char *buf, char* encBuf) {
@@ -77,6 +78,14 @@ void pAction::process() {
 		if (user) {
 			user->setLeaving(true);
 		}
+		else {
+			//Is it a NPC?
+			auto npc = map->GetNPCByID(userId);
+			if (npc) {
+				map->RemoveNPC(npc);
+			}
+		}
+		break;
 	case (amFly):
 		user = userManager.getUserById(userId);
 		if (user) user->TakeOff();

@@ -89,6 +89,8 @@ public:
 
 	void GameMap::addNpc(pNpcInfo* packet);
 	void GameMap::addNpc(pAiNpcInfo* packet);
+	NPC* GetNPCByID(int id);
+	void RemoveNPC(NPC* npc);
 	void createDialogue(pNpcDialogue* packet);
 	void GameMap::addColosseum(pColosseum* packet);
 

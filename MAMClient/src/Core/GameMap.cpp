@@ -236,6 +236,23 @@ void GameMap::addNpc(pAiNpcInfo* packet) {
 }
 
 
+NPC* GameMap::GetNPCByID(int id)
+{
+	for each (auto npc in npcs) {
+		if (npc->GetID() == id) return npc;
+	}
+}
+
+void GameMap::RemoveNPC(NPC* npc)
+{
+	auto npcItr = std::find(npcs.begin(), npcs.end(), npc);
+	if (npcItr != npcs.end()) {
+		delete (*npcItr);
+		npcs.erase(npcItr);
+	}
+}
+
+
 void GameMap::addColosseum(pColosseum* packet) {
 	colosseum = new Colosseum(packet);
 }
